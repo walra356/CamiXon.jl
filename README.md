@@ -1,6 +1,6 @@
 # CamiXon
 
-*A documentation generator for Julia.*
+*Image analysis for visible-light backscattering.*
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
