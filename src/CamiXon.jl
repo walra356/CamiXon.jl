@@ -5,7 +5,7 @@ export find_indices
 """
     find_indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
 
-Find all indices of selected Array elements (default: all elements).  
+Find the indices of selected Array elements (default: all elements).  
 
 #### Example 1:
 ```
