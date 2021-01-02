@@ -1,0 +1,13 @@
+name = "CamiXon"
+uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
+authors = ["= <walra356@planet.nl> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
