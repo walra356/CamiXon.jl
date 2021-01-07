@@ -13,6 +13,7 @@ function p(n::Int,k::Int)
     (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : p(n-k,k) + p(n-1,k-1)
 end
 
+
 """
     p(n::Int,k::Int)
     the total number of partitions of n
@@ -24,9 +25,8 @@ function p(n) #total number of integer partions of n
 end
 
 
-
 """
-    get_indices_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
+    function get_indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
 
 Find the index (indices) of selected Array elements (default: all elements).
 
