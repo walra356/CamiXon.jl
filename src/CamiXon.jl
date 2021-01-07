@@ -2,14 +2,7 @@ module CamiXon
 
 export get_indices
 export get_indices_count
-export func
-
-"""
-    func(x)
-
-Double the number `x` plus `1`.
-"""
-func(x) = 2x + 1
+export permutation_count
 
 
 """
@@ -79,32 +72,6 @@ get_indices_count(A)
 ```
 """
 function get_indices_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
-    a == () ? a = unique(A) : false
-    [length(findall(A .== fill(a[i],length(A)))) for i in eachindex(a)]
-end
-
-
-"""
-    find_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
-
-Count the number of indices of selected Array elements (default: all elements).
-
-#### Examples:
-```
-A = collect("ahsgh")
-find_count(A,'h')
-1-element Array{Array{Int64,1},1}:
- 2
-
-find_count(A)
-4-element Array{Array{Int64,1},1}:
- 1
- 2
- 1
- 1
-```
-"""
-function find_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
     a == () ? a = unique(A) : false
     [length(findall(A .== fill(a[i],length(A)))) for i in eachindex(a)]
 end
