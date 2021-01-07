@@ -2,7 +2,7 @@ module CamiXon
 
 export get_indices
 export get_indices_count
-export permutation_count
+export get_permutation_count
 
 
 """
@@ -78,7 +78,7 @@ end
 
 
 """
-    permutation_count(A::AbstractArray{T,N}; unique = false)  where {T,N}
+    get_permutation_count(A::AbstractArray{T,N}; unique = false)  where {T,N}
 
 Count the number of permutations (option: unique permutations).
 
@@ -92,7 +92,7 @@ permutation_count(A; unique=true)
  60
 ```
 """
-function permutation_count(A::AbstractArray{T,N}; unique = false)  where {T,N}
+function get_permutation_count(A::AbstractArray{T,N}; unique = false)  where {T,N}
     if unique
         o = factorial(length(A))
         c = find_count(A)
