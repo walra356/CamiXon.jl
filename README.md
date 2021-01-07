@@ -1,6 +1,6 @@
 # CamiXon
 
-*Image analysis of backscattered light.*
+*Image analysis of backscattered light*
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
