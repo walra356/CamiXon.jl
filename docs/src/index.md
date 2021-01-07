@@ -7,6 +7,6 @@ CurrentModule = CamiXon
 ```@index
 ```
 
-```@autodocs
-Modules = [CamiXon]
+```@docs
+func(x)
 ```
