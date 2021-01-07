@@ -26,7 +26,7 @@ end
 
 
 """
-    get_indices(A::AbstractArray{T,N}, a::T...)
+    get_indices_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
 
 Find the index (indices) of selected Array elements (default: all elements).
 
