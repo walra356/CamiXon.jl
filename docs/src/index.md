@@ -8,5 +8,5 @@ CurrentModule = CamiXon
 ```
 
 ```@docs
-func(x)
+get_indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
 ```
