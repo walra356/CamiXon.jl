@@ -1,5 +1,6 @@
 using CamiXon
 using Documenter
+using LaTeXStrings
 
 makedocs(;
     modules=[CamiXon],
