@@ -4,8 +4,6 @@ export get_indices
 export get_indices_count
 export get_permutation_count
 
-using LaTeXStrings
-
 
 """
     p(n::Int,k::Int)
