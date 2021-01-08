@@ -16,7 +16,8 @@ A package for image analysis of backscattered light
 ```@docs
 indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
 indices_cnt(A::AbstractArray{T,N}, a::T...)  where {T,N}
-permutation_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+partitions_cnt(n::Int,k::Int)
+permutations_cnt(A::AbstractArray{Any,1}; unique = false)
 ```
 
 ## Index
