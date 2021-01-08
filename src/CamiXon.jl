@@ -79,7 +79,7 @@ end
 
 
 """
-    permutations_cnt(A::AbstractArray{Any,1}; unique = false)
+    permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
 
 The number of permutations (option: unique permutations) of the elements of a 1D array.
 
@@ -93,12 +93,12 @@ permutations_cnt(A; unique=true)
  60
 ```
 """
-function permutations_cnt(A::AbstractArray{Any,1}; unique = false)
+function permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
     if unique
         o = factorial(length(A))
         c = indices_cnt(A)
         for i in eachindex(c) o = o ÷ c[i] end
-        return out
+        return o
     else
         return factorial(length(A)) # default
     end
