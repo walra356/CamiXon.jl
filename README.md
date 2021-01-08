@@ -1,6 +1,6 @@
 # CamiXon
 
-*A package for image analysis of backscattered light.*
+*A package for image analysis of backscattered light*
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
