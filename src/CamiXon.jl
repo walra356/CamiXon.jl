@@ -93,7 +93,7 @@ permutations_cnt(A; unique=true)
  60
 ```
 """
-function permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+function permutations_cnt(A::AbstractArray{Any,1}; unique = false)
     if unique
         o = factorial(length(A))
         c = indices_cnt(A)
