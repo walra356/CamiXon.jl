@@ -1,9 +1,9 @@
 module CamiXon
 
 export indices
-export indices_count
+export indices_cnt
 export partitions_cnt
-export permutations_count
+export permutations_cnt
 
 
 """
