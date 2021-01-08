@@ -1,6 +1,6 @@
 # CamiXon
 
-*A a\package for mage analysis of backscattered light.*
+*A package for mage analysis of backscattered light.*
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
