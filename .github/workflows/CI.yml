@@ -47,7 +47,8 @@ jobs:
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
-            Pkg.instantiate()'
+            Pkg.instantiate()
+            Pkg.add("LaTeXStrings")'
       - run: |
           julia --project=docs -e '
             using Documenter: doctest
