@@ -2,25 +2,26 @@ module CamiXon
 
 export indices
 export indices_count
-export permutation_count
+export partitions_cnt
+export permutations_count
 
 
 """
-    partition_cnt(n::Int,k::Int)
+    partitions_cnt(n::Int,k::Int)
     The number of integer partitions of n in k parts
 """
-function partition_cnt(n::Int,k::Int)
-    (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : partition_cnt(n-k,k) + partition_cnt(n-1,k-1)
+function partitions_cnt(n::Int,k::Int)
+    (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : partitions_cnt(n-k,k) + partitions_cnt(n-1,k-1)
 end
 
 
 """
-    partition_cnt(n::Int)
+    partitions_cnt(n::Int)
     The total number of integer partitions of n
 """
-function p(n) 
+function partitions_cnt(n) 
     c = 1
-    for k=2:n c += partition_cnt(n,k) end
+    for k=2:n c += partitions_cnt(n,k) end
     c
 end
 
@@ -78,21 +79,21 @@ end
 
 
 """
-    permutation_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+    permutations_cnt(A::AbstractArray{Any,1}; unique = false)
 
-Count the number of permutations (option: unique permutations).
+The number of permutations (option: unique permutations) of the elements of a 1D array.
 
 #### Examples:
 ```
 A = collect("ahsgh")
-permutation_cnt(A)
+permutations_cnt(A)
  120
 
-permutation_cnt(A; unique=true)
+permutations_cnt(A; unique=true)
  60
 ```
 """
-function permutation_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+function permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
     if unique
         o = factorial(length(A))
         c = indices_cnt(A)
