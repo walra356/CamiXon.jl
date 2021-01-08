@@ -14,11 +14,13 @@ A package for image analysis of backscattered light
 ```
 
 ```@docs
-indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
-indices_cnt(A::AbstractArray{T,N}, a::T...)  where {T,N}
-partitions_cnt(n::Int,k::Int)
-partitions_cnt(n::Int)
-permutation_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+get_indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
+```
+```@docs
+get_indices_count(A::AbstractArray{T,N}, a::T...)  where {T,N}
+```
+```@docs
+get_permutation_count(A::AbstractArray{T,N}; unique = false)  where {T,N}
 ```
 
 ## Index
