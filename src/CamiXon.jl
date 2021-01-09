@@ -26,13 +26,13 @@ end
 
 The total number of integer partitions of n
 
-#### Example
+#### Example:
 ```
 partitions_cnt(5)
  7
 ```
 """
-function partitions_cnt(n) 
+function partitions_cnt(n)
     c = 1
     for k=2:n c += partitions_cnt(n,k) end
     c
