@@ -9,7 +9,7 @@ export permutations_cnt
 """
     partitions_cnt(n::Int,k::Int)
 
-    The number of integer partitions of n in k parts
+The number of integer partitions of n in k parts
 """
 function partitions_cnt(n::Int,k::Int)
     (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : partitions_cnt(n-k,k) + partitions_cnt(n-1,k-1)
@@ -19,7 +19,13 @@ end
 """
     partitions_cnt(n::Int)
 
-    The total number of integer partitions of n
+The total number of integer partitions of n
+
+#### Example
+```
+partitions_cnt(5)
+ 7
+```
 """
 function partitions_cnt(n) 
     c = 1
