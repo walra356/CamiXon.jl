@@ -10,6 +10,11 @@ export permutations_cnt
     partitions_cnt(n::Int,k::Int)
 
 The number of integer partitions of n in k parts
+#### Example:
+```
+partitions_cnt(5,2)
+ 2
+```
 """
 function partitions_cnt(n::Int,k::Int)
     (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : partitions_cnt(n-k,k) + partitions_cnt(n-1,k-1)
@@ -35,9 +40,9 @@ end
 
 
 """
-    function indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
+    indices(A::AbstractArray{T,1}, a::T...)  where T
 
-The index (indices) of selected Array elements (default: all elements).
+The index (indices) of selected Array elements (default: all elements)
 
 #### Examples:
 ```
@@ -52,18 +57,23 @@ indices(A)
  [2, 5]
  [3]
  [4]
+
+A = [1,2,3,4,2]
+indices(A,2)
+1-element Array{Array{Int64,1},1}:
+ [2, 5]
 ```
 """
-function indices(A::AbstractArray{T,N}, a::T...)  where {T,N}
+function indices(A::AbstractArray{T,1}, a::T...)  where T
     a == () ? a = unique(A) : false
     [findall(A .== fill(a[i],length(A))) for i in eachindex(a)]
 end
 
 
 """
-    indices_cnt(A::AbstractArray{T,N}, a::T...)  where {T,N}
+    indices_cnt(A::AbstractArray{T,1}, a::T...)  where T
 
-Count the number of indices of selected Array elements (default: all elements).
+The number of indices of selected Array elements (default: all elements)
 
 #### Examples:
 ```
@@ -80,16 +90,16 @@ indices_cnt(A)
  1
 ```
 """
-function indices_cnt(A::AbstractArray{T,N}, a::T...)  where {T,N}
+function indices_cnt(A::AbstractArray{T,1}, a::T...)  where T
     a == () ? a = unique(A) : false
     [length(findall(A .== fill(a[i],length(A)))) for i in eachindex(a)]
 end
 
 
 """
-    permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+    permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
 
-The number of permutations (option: unique permutations) of the elements of a 1D array.
+The number of permutations (option: unique permutations) of the elements of a 1D array
 
 #### Examples:
 ```
@@ -101,7 +111,7 @@ permutations_cnt(A; unique=true)
  60
 ```
 """
-function permutations_cnt(A::AbstractArray{T,N}; unique = false)  where {T,N}
+function permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
     if unique
         o = factorial(length(A))
         c = indices_cnt(A)
