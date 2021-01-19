@@ -192,6 +192,41 @@ end
 
 
 """
+    all_partitions(n)
+
+The integer partitions of the integer n
+
+#### Examples:
+```
+all_partitions(7)
+15-element Array{Array{Int64,1},1}:
+ [1, 1, 1, 1, 1, 1, 1]
+ [2, 2, 2, 1]
+ [3, 3, 1]
+ [4, 3]
+ [5, 2]
+ [6, 1]
+ [7]
+ [2, 1, 1, 1, 1, 1]
+ [3, 1, 1, 1, 1]
+ [3, 2, 2]
+ [4, 1, 1, 1]
+ [4, 2, 1]
+ [5, 1, 1]
+ [2, 2, 1, 1, 1]
+ [3, 2, 1, 1]
+```
+"""
+function all_partitions(n::Int)
+    o::Array{Array{Int64,1},1} = canonical_partitions([n],1; trailer=true)
+    for i=2:n÷2
+        o = append!(o,next_partitions(o,i))
+    end
+    o
+end
+
+
+"""
     permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
 
 The number of permutations (option: unique permutations) of the elements of a 1D array
