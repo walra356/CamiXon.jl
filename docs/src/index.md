@@ -7,6 +7,7 @@ CurrentModule = CamiXon
 A package for image analysis of backscattered light
 
 ---
+## Table of contents
 
 ```@contents
 ```
