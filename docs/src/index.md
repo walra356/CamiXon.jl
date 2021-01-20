@@ -8,10 +8,10 @@ A package for image analysis of backscattered light
 
 ---
 
-## Functions
-
 ```@contents
 ```
+
+## Functions
 
 ```@docs
 indices(A::AbstractArray{T,1}, a::T...)  where T
