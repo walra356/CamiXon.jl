@@ -99,7 +99,6 @@ function partitions_cnt(n)
 end
 
 
-
 """
     canonical_partitions(A,i; trailer=false)
 
