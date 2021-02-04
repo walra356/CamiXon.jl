@@ -5,7 +5,6 @@ export find_first
 export find_last
 export canonical_partitions
 export integer_partitions
-export permutations_cnt
 
 """
     find_all(A [,a...]; count=false)
@@ -351,33 +350,6 @@ function integer_partitions(n::Int, m=0; transpose=false, count=false)
     
     return count ? np : oo
     
-end
-
-
-"""
-    permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
-
-The number of permutations (option: unique permutations) of the elements of a 1D array
-
-#### Examples:
-```
-A = collect("ahsgh")
-permutations_cnt(A)
- 120
-
-permutations_cnt(A; unique=true)
- 60
-```
-"""
-function permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
-    if unique
-        o = factorial(length(A))
-        c = indices_cnt(A)
-        for i in eachindex(c) o = o ÷ c[i] end
-        return o
-    else
-        return factorial(length(A)) # default
-    end
 end
 
 end
