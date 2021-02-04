@@ -1,115 +1,40 @@
 module CamiXon
 
-export indices
-export indices_cnt
-export partitions_cnt
+export find_all
+export find_first
+export find_last
 export canonical_partitions
-export next_partitions
-export all_partitions
+export integer_partitions
 export permutations_cnt
 
 
-"""
-    indices(A::AbstractArray{T,1}, a::T...)  where T
+function _canonical_partition(n::Int, m::Int)
+    
+    o = Base.fill(m,Base.cld(n,m))                              # init partition
+    o[Base.cld(n,m)]=((n%m)≠0 ? n%m : m)                        # adjust last element of partition 
+    
+    return o 
 
-The index (indices) of selected Array elements (default: all elements)
+end
+
+"""
+    canonical_partitions(n; header=false, reverse=true)
+
+The canonical partition in integers of the integer n
+header=true : unit patition included in output
 
 #### Examples:
 ```
-A = collect("ahsgh")
-indices(A,'h')
-1-element Array{Array{Int64,1},1}:
- [2, 5]
+canonical_partitions(6; header=true, reverse=false)
+6-element Array{Array{Int64,1},1}:
+ [6]
+ [5, 1]
+ [4, 2]
+ [3, 3]
+ [2, 2, 2]
+ [1, 1, 1, 1, 1, 1]
 
-indices(A)
-4-element Array{Array{Int64,1},1}:
- [1]
- [2, 5]
- [3]
- [4]
-
-A = [1,2,3,4,2]
-indices(A,2)
-1-element Array{Array{Int64,1},1}:
- [2, 5]
-```
-"""
-function indices(A::AbstractArray{T,1}, a::T...)  where T
-    a == () ? a = unique(A) : false
-    [findall(A .== fill(a[i],length(A))) for i in eachindex(a)]
-end
-
-
-"""
-    indices_cnt(A::AbstractArray{T,1}, a::T...)  where T
-
-The number of indices of selected Array elements (default: all elements)
-
-#### Examples:
-```
-A = collect("ahsgh")
-indices_cnt(A,'h')
-1-element Array{Array{Int64,1},1}:
- 2
-
-indices_cnt(A)
-4-element Array{Array{Int64,1},1}:
- 1
- 2
- 1
- 1
-```
-"""
-function indices_cnt(A::AbstractArray{T,1}, a::T...)  where T
-    a == () ? a = unique(A) : false
-    [length(findall(A .== fill(a[i],length(A)))) for i in eachindex(a)]
-end
-
-
-"""
-    partitions_cnt(n::Int,k::Int)
-
-The number of integer partitions of n in k parts
-#### Example:
-```
-partitions_cnt(5,2)
- 2
-```
-"""
-function partitions_cnt(n::Int,k::Int)
-    (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : partitions_cnt(n-k,k) + partitions_cnt(n-1,k-1)
-end
-
-
-"""
-    partitions_cnt(n::Int)
-
-The total number of integer partitions of n
-
-#### Example:
-```
-partitions_cnt(5)
- 7
-```
-"""
-function partitions_cnt(n)
-    c = 1
-    for k=2:n c += partitions_cnt(n,k) end
-    c
-end
-
-
-
-"""
-    canonical_partitions(A,i; trailer=false)
-
-The canonical partition in integers of element i of array A
-
-trailer: array A included as last element in the output container
-
-#### Examples:
-```
-canonical_partitions([6],1; trailer=true)
+canonical_partitions(6; header=true)
 6-element Array{Array{Int64,1},1}:
  [1, 1, 1, 1, 1, 1]
  [2, 2, 2]
@@ -118,88 +43,82 @@ canonical_partitions([6],1; trailer=true)
  [5, 1]
  [6]
 
-canonical_partitions([6],1)
+canonical_partitions(6)
 5-element Array{Array{Int64,1},1}:
  [1, 1, 1, 1, 1, 1]
  [2, 2, 2]
  [3, 3]
  [4, 2]
  [5, 1]
-
-canonical_partitions([4,4,4,4],3; trailer=true)
-4-element Array{Array{Int64,1},1}:
- [4, 4, 1, 1, 1, 1, 1, 1, 1, 1]
- [4, 4, 2, 2, 2, 2]
- [4, 4, 3, 3, 2]
- [4, 4, 4, 4]
-
-canonical_partitions([4,4,1,1],3)
-Error: integer partition of 1 at index 3 in [4, 4, 1, 1] coincides with the trailer
 ```
 """
-function canonical_partitions(A::Array{Int,1},i::Int; trailer=false)
-    n = Base.sum(A)                                     # n: partition constant
-    A1 = A[1:i-1]                                       # i: partition index (array A[i] to be partitioned)
-    ni = n-Base.sum(A1)                                 # ni: sub-partition constant at index i
-    m = trailer ? A[i] : A[i]-1                         # m: depth of partition (with or without trailer)
-    o = [Base.fill(k,Base.cld(ni,k)) for k=1:m]         # init partitions starting at element i and fill folder o
-    for k in eachindex(o)
-        o[k][Base.cld(ni,k)]=((ni%k)≠0 ? ni%k : k)      # adjust last value of the partitions
-        o[k] = prepend!(o[k],A1)                        # complete partition with A1
-    end
-    o = o==[] ? println("Error: integer partition of $(A[i]) at index $i in $A coincides with the trailer") : o
-end
-
-
-"""
-    next_partitions(o,i)
-
-The canonical partitions of  o[1][:] o[2][:] ... at index i
-
-#### Examples:
-```
-o = [[4,4,4,4]]
-1-element Array{Array{Int64,1},1}:
- [4, 4, 4, 4]
-
-o = next_partitions(o,2)
-3-element Array{Array{Int64,1},1}:
- [4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
- [4, 2, 2, 2, 2, 2, 2]
- [4, 3, 3, 3, 3]
-
-o = next_partitions(o,3)
-3-element Array{Array{Int64,1},1}:
- [4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
- [4, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1]
- [4, 3, 2, 2, 2, 2, 1]
-
-o = next_partitions(o,4)
-1-element Array{Array{Int64,1},1}:
- [4, 3, 2, 1, 1, 1, 1, 1, 1, 1]
-
-o = next_partitions(o,5)
-```
-"""
-function next_partitions(o::Array{Array{Int,1},1},i)
-    c::Array{Array{Int,1},1} = []
-    for p ∈ eachindex(o)
-        if i<=length(o[p]) && o[p][i]>1
-            c = append!(c,canonical_partitions(o[p],i))
+function canonical_partitions(n::Int, m=0; header=true, reverse=true)
+    
+    h = header ? n : n-1
+    
+    if m == 0
+        if reverse
+            o = [_canonical_partition(n,m) for m=1:h]
+        else
+            o = [_canonical_partition(n,m) for m=h:-1:1]
         end
+    elseif 0 < m <= n
+        o = _canonical_partition(n,m)
+    else
+        o = nothing
     end
-    c==[] ? nothing : c
+    
+    return o 
+
 end
 
 
-"""
-    all_partitions(n)
 
-The integer partitions of the integer n
+function _partition_count(n::Int,k::Int) 
+    
+    (n<0)|(k<0)|(k>n) ? 0 : (k==n)|(k==1) ? 1 : _partition_count(n-k,k) + _partition_count(n-1,k-1)
+    
+end
+
+function _partition(a::Array{Int,1}, n::Int, i::Int, cp::Array{Array{Array{Int,1},1},1})
+    
+    o = a[1:i-1]
+    m = a[i]-1                                           # m: partition value
+    ni = n - Base.sum(o)                                 # ni: sub-partition index at partition index i 
+      
+    Base.append!(o,cp[ni][m])                            # complete partition by appending it to a
+    
+    return o
+    
+end
+
+function _restricted_partitions(o::Array{Int,1}, n::Int, np::Int, ll::Array{Array{Int,1},1}, cp::Array{Array{Array{Int,1},1},1})
+    
+    oo = [o]
+               
+    for p=1:np-1
+        i = Base.findlast(oo[p].>ll[length(oo[p])])
+        Base.append!(oo,[_partition(oo[p],n,i,cp)])
+    end
+    
+    return oo
+    
+end
+
+"""
+    integer_partitions(n [,m]; transpose=false, count=false)
+
+default              : The integer partitions of n 
+count=true           : The number of integer partitions of n 
+transpose=false/true : for m>0 restricted to partitions with maximum part/length m
+
+definitions: 
+The integer partition of the positive integer n is a nonincreasing sequence of positive integers p1, p2,... pk whose sum is n.
+The elements of the sequence are called the parts of the partition. 
 
 #### Examples:
 ```
-all_partitions(7)
+integer_partitions(7)
 15-element Array{Array{Int64,1},1}:
  [1, 1, 1, 1, 1, 1, 1]
  [2, 2, 2, 1]
@@ -208,22 +127,68 @@ all_partitions(7)
  [5, 2]
  [6, 1]
  [7]
- [2, 1, 1, 1, 1, 1]
- [3, 1, 1, 1, 1]
+ [2, 2, 1, 1, 1]
  [3, 2, 2]
- [4, 1, 1, 1]
  [4, 2, 1]
  [5, 1, 1]
- [2, 2, 1, 1, 1]
+ [2, 1, 1, 1, 1, 1]
  [3, 2, 1, 1]
+ [4, 1, 1, 1]
+ [3, 1, 1, 1, 1]
+
+integer_partitions(7; count=true)
+15
+
+integer_partitions(7,4; count=true)
+3
+
+integer_partitions(7,4)
+3-element Array{Array{Int64,1},1}:
+ [4, 3]
+ [4, 2, 1]
+ [4, 1, 1, 1]
+
+integer_partitions(7,4; transpose=true)
+3-element Array{Array{Int64,1},1}:
+ [2, 2, 2, 1]
+ [3, 2, 1, 1]
+ [4, 1, 1, 1]
+
 ```
 """
-function all_partitions(n::Int)
-    o::Array{Array{Int64,1},1} = canonical_partitions([n],1; trailer=true)
-    for i=2:n÷2
-        o = append!(o,next_partitions(o,i))
+function integer_partitions(n::Int, m=0; transpose=false, count=false)
+    
+    ll = [ones(Int,l) for l=1:n]     
+    cp = [canonical_partitions(m) for m=1:n] 
+    oo = [ll[n]]
+    pc = [_partition_count(n,m)  for m=1:n]
+    
+    np = m > 0 ? pc[m] : sum(pc)
+    
+    if !count
+        
+        if m == 0
+            o = [_restricted_partitions(cp[n][p],n,pc[p],ll,cp) for p=2:n]
+            for p=1:n-1 append!(oo,o[p]) end
+        else
+            oo = _restricted_partitions(cp[n][m],n,pc[m],ll,cp)
+        end
+        
+        if transpose               
+            for p=1:np
+                l = length(oo[p])
+                s=max(oo[p][1],l)
+                mat = zeros(Int,s,s)
+                for j=1:l for i=1:oo[p][j] mat[i,j]=1 end end
+                oo[p] = [sum(mat[i,:]) for i=1:oo[p][1]]
+            end
+        
+        end 
+
     end
-    o
+    
+    return count ? np : oo
+    
 end
 
 
@@ -254,3 +219,4 @@ function permutations_cnt(A::AbstractArray{T,1}; unique = false)  where T
 end
 
 end
+
