@@ -15,13 +15,11 @@ A package for image analysis of backscattered light
 ## Functions
 
 ```@docs
-indices(A::AbstractArray{T,1}, a::T...)  where T
-indices_cnt(A::AbstractArray{T,1}, a::T...)  where T
-partitions_cnt(n::Int,k::Int)
-partitions_cnt(n::Int)
-canonical_partitions
-next_partitions
-all_partitions
+find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
+find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
+find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
+canonical_partitions(n::Int, m=0; header=true, reverse=true)
+integer_partitions(n::Int, m=0; transpose=false, count=false)
 permutations_cnt(A::AbstractArray{Any,1}; unique = false)
 ```
 
