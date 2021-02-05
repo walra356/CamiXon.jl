@@ -1,7 +1,7 @@
 module CamiXon
 
 export decompose_filnam
-export collect_fits_files
+export combine_fits_files
 export find_all
 export find_first
 export find_last
@@ -65,7 +65,7 @@ function decompose_filnam(str::String)
 end
 
 """
-    collect_fits_files(str1, str2; info=false)
+    combine_fits_files(str1, str2; info=false)
 
 Collect a series .fits files into a single .fits file.
 
@@ -75,7 +75,7 @@ collect_fits_files("T01.fits", "T22.fits"; info=false)
 T01-T22.FITS: file was created (for more information set info=true)
 ```
 """
-function collect_fits_files(filnamFirst::String, filnamLast::String; info=false)
+function combine_fits_files(filnamFirst::String, filnamLast::String; info=false)
     
     dir = uppercase.(readdir())
     filnamFirst = uppercase(filnamFirst)
