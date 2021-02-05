@@ -1,6 +1,7 @@
 module CamiXon
 
 export decompose_filnam
+export collect_fits_files
 export find_all
 export find_first
 export find_last
@@ -74,7 +75,7 @@ collect_fits_files("T01.fits", "T22.fits"; info=false)
 T01-T22.FITS: file was created (for more information set info=true)
 ```
 """
-function pack_fits_files(filnamFirst::String, filnamLast::String; info=false)
+function collect_fits_files(filnamFirst::String, filnamLast::String; info=false)
     
     dir = uppercase.(readdir())
     filnamFirst = uppercase(filnamFirst)
