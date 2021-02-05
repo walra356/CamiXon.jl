@@ -2,6 +2,7 @@ using CamiXon
 using Test
 
 @testset "CamiXon.jl" begin
+    @test decompose_filnam("T23.01.fits") == Dict("Extension" => ".FITS","Numerator" => "01","Prefix" => "T23.","Name" => "T23.01") 
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
