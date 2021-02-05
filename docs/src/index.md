@@ -15,7 +15,7 @@ A package for image analysis of backscattered light
 ## File manipulation
 
 ```@docs
-function decompose_filnam(str::String)
+decompose_filnam(str::String)
 ```
 
 ## Search algorithms
