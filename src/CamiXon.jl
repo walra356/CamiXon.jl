@@ -67,7 +67,7 @@ end
 """
     combine_fits_files(str1, str2; info=false)
 
-Collect a series .fits files into a single .fits file.
+Combine a series of .fits files into a single .fits file.
 
 #### Example:
 ```
