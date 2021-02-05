@@ -13,6 +13,7 @@ export integer_partitions
 Decompose filename into its name (and, if present, extension, prefix and numerator).
 
 #### Examples:
+```
 strExample = "T23.01.fits"
 
 dict = decompose_filnam(strExample)
