@@ -64,6 +64,91 @@ function decompose_filnam(str::String)
 end
 
 """
+    collect_fits_files(str1, str2; info=false)
+
+Collect a series .fits files into a single .fits file.
+
+#### Example:
+```
+collect_fits_files("T01.fits", "T22.fits"; info=false)
+T01-T22.FITS: file was created (for more information set info=true)
+```
+"""
+function pack_fits_files(filnamFirst::String, filnamLast::String; info=false)
+    
+    dir = uppercase.(readdir())
+    filnamFirst = uppercase(filnamFirst)
+    filnamLast = uppercase(filnamLast)
+    
+    if filnamFirst ∉ dir
+        println("jwError: " * filnamFirst * " (file not found)")
+    else
+        d = decompose_filnam(filnamFirst)
+        strPre = get(d,"Prefix","Error: no prefix")
+        strNum = get(d,"Numerator","Error: no Numerator")
+        strExt = get(d,"Extension","Error: no extension")
+        valNum = parse(Int,strNum )
+        numLeadingZeros = length(strNum) - length(string(valNum))
+    end
+    
+    if filnamLast ∉ dir
+        println("jwError: " * filnamLast * " (file not found)")
+    else
+        d = decompose_filnam(filnamLast)
+        strPre2 = get(d,"Prefix","Error: no prefix")
+        strNum2 = get(d,"Numerator","Error: no Numerator")
+        strExt2 = get(d,"Extension","Error: no extension")
+        valNum2 = parse(Int,strNum2 )
+        numLeadingZeros2 = length(strNum2) - length(string(valNum2))
+    end
+    
+    if strPre ≠ strPre2
+        return println("jwError: " * strPre * " ≠ " * strPre2 * " (prefixes must be identical)")
+    elseif strExt ≠ strExt2
+        return println("jwError: " * strExt * " ≠ " * strExt2 * " (file extensions must be identical)")
+    elseif strExt ≠ ".FITS"
+        return println("jwError: file extension must be '.fits'")
+    end
+        
+    numFiles = 1 + valNum2 - valNum
+    fileFirst = FITS(filnamFirst)
+    metaInfo = read_header(fileFirst[1])
+    dataFirst = read(fileFirst[1])  # read an image from disk
+    close(fileFirst)
+    t = typeof(dataFirst[1,1,1])
+    s = size(dataFirst)
+    dataStack =  Array{t,3}(undef, s[1], s[2] , numFiles)
+    
+    itr = valNum:valNum2 
+    filnamNext = filnamFirst
+    for i ∈ itr
+        L = length(filnamNext)
+        filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
+        if L < length(filnamNext) 
+            numLeadingZeros = numLeadingZeros -1
+            filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
+        end
+        fileNext = FITS(filnamNext)
+        dataNext = read(fileNext[1])  # read an image from disk
+        close(fileNext)
+        dataStack[:, :,i] = dataNext[:, :,1]
+    end
+    
+    filnamOut = strPre * strNum * "-" * strPre * strNum2 * strExt
+    fileOut = FITS(filnamOut,"w")
+    write(fileOut, dataStack; header=metaInfo)
+    if info
+        println("Output fileOut:\r\n", fileOut)
+        println("\r\nOutput fileOut[1]:\r\n", fileOut[1])
+        close(fileOut)
+        println("\r\nmetaInformation:\r\n", metaInfo)
+    else
+        close(fileOut)
+        println(filnamOut * ": file was created (for more information set info=true)")
+    end
+end
+
+"""
     find_all(A [,a...]; count=false)
 
 A: string/array of elements of the same type
