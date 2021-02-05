@@ -71,7 +71,7 @@ Collect a series .fits files into a single .fits file.
 
 #### Example:
 ```
-collect_fits_files("T01.fits", "T22.fits"; info=false)
+combine_fits_files("T01.fits", "T22.fits"; info=false)
 T01-T22.FITS: file was created (for more information set info=true)
 ```
 """
