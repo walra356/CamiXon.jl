@@ -6,7 +6,7 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 [[CamiXon]]
 path = ".."
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
-version = "1.0.2"
+version = "1.0.3"
 
 [[Dates]]
 deps = ["Printf"]
