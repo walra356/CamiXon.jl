@@ -1,5 +1,6 @@
 module CamiXon
 
+export decompose_filnam
 export find_all
 export find_first
 export find_last
@@ -7,11 +8,67 @@ export canonical_partitions
 export integer_partitions
 
 """
+    decompose_filnam(str)
+
+Decompose filename into its name (and, if present, extension, prefix and numerator).
+
+#### Examples:
+strExample = "T23.01.fits"
+
+dict = decompose_filnam(strExample)
+Dict{String,String} with 4 entries:
+  "Extension" => ".FITS"
+  "Numerator" => "01"
+  "Prefix"    => "T23."
+  "Name"      => "T23.01"
+
+get(dict,"Numerator","Numerator: Key absent")
+"01"
+
+get(dict,"Wild","Key absent")
+"Key absent"
+```
+"""
+function decompose_filnam(str::String)
+    
+    str = uppercase(str)
+    ne = find_last(str,'.')[1]                 # ne: first digit of extension
+    nl = length(str)                           # ne: length of file name including extension
+    ne == nothing ? extension = false : extension = true 
+    
+    if extension
+        strNam = str[1:ne-1]
+        strExt = str[ne:nl]
+        isnumeric(str[ne-1]) ? n = ne-1 : n = nothing    
+        o = [("Name", strNam), ("Extension", strExt)]
+    else
+        strNam = str[1:ne-1]
+        strExt = nothing
+        isnumeric(str[nl]) ? n = nl : n = nothing   
+        o = [("Name", strNam)]
+    end
+
+    if n != nothing
+        strNum = "" 
+        while isnumeric(str[n]) 
+            strNum = str[n] * strNum
+            n -= 1
+        end
+        strPre = str[1:n]
+        append!(o,[("Prefix", strPre),("Numerator", strNum)])
+    end
+    
+    return Dict(o)
+    
+end
+
+"""
     find_all(A [,a...]; count=false)
 
 A: string/array of elements of the same type
 
 default   : Array containing the index (indices) of selected elements of A (default: all elements) 
+
 count=true: The number of indices found for selected elements of A (default: all elements)  
 
 #### Examples:
@@ -68,6 +125,7 @@ The first index of selected Array element
 A: string/array of elements of the same type
 
 default  : Array containing the first index (indices) of selected elements of A (default: all elements) 
+
 dict=true: Dict for the first index (indices) of selected elements of A (default: all elements) 
 
 #### Examples:
@@ -122,6 +180,7 @@ The last index of selected Array element
 A: string/array of elements of the same type
 
 default  : Array containing the lasst index (indices) of selected elements of A (default: all elements) 
+
 dict=true: Dict for the lasst index (indices) of selected elements of A (default: all elements)
 
 #### Examples:
@@ -182,6 +241,7 @@ end
     canonical_partitions(n; header=false, reverse=true)
 
 The canonical partition in integers of the integer n
+
 header=true : unit patition included in output
 
 #### Examples:
@@ -270,11 +330,15 @@ end
     integer_partitions(n [,m]; transpose=false, count=false)
 
 default              : The integer partitions of n 
+
 count=true           : The number of integer partitions of n 
+
 transpose=false/true : for m>0 restricted to partitions with maximum part/length m
 
-definitions: 
+definitions:
+
 The integer partition of the positive integer n is a nonincreasing sequence of positive integers p1, p2,... pk whose sum is n.
+
 The elements of the sequence are called the parts of the partition. 
 
 #### Examples:
