@@ -8,6 +8,7 @@ export find_last
 export canonical_partitions
 export integer_partitions
 
+Pkg.add("FITSIO")
 """
     decompose_filnam(str)
 
