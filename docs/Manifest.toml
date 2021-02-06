@@ -73,10 +73,10 @@ version = "0.1.1"
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
-[[IteratorInterfaceExtensions]]
-git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
-uuid = "82899510-4779-5014-852e-03e436cf321d"
-version = "1.0.0"
+#[[IteratorInterfaceExtensions]]
+#git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
+#uuid = "82899510-4779-5014-852e-03e436cf321d"
+#version = "1.0.0"
 
 [[JLLWrappers]]
 git-tree-sha1 = "a431f5f2ca3f4feef3bd7a5e94b8b8d4f2f647a0"
