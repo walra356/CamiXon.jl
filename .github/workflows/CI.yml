@@ -52,6 +52,7 @@ jobs:
             Pkg.add("FITSIO")'
       - run: |
           julia --project=docs -e '
+            using FITSIO
             using Documenter: doctest
             using CamiXon
             doctest(CamiXon)'
