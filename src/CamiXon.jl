@@ -484,7 +484,7 @@ function integer_partitions(n::Int, m=0; transpose=false, count=false)
         end
 
     end
-
+    
     return count ? np : oo
 
 end
