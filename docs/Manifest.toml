@@ -36,7 +36,6 @@ version = "1.5.1"
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
 uuid = "e2d170a0-9d28-54be-80f0-106bbe20a464"
 version = "1.0.0"
->>>>>>> 62d42bfc877932f14fc98557d943357d15e94516
 
 [[Dates]]
 deps = ["Printf"]
