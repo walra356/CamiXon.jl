@@ -1,5 +1,3 @@
-using Pkg
-Pkg.add("FITSIO")
 using CamiXon
 using Documenter
 using LaTeXStrings
