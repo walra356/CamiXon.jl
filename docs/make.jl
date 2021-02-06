@@ -3,7 +3,7 @@ using Documenter
 using LaTeXStrings
 using Pkg
 Pkg.add("FITSIO")
-using FITSIO
+using FITSIO 
 
 makedocs(;
     modules=[CamiXon],
