@@ -14,8 +14,6 @@ deps = ["FITSIO"]
 path = ".."
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 version = "1.0.4"
-<<<<<<< HEAD
-=======
 
 [[CFITSIO]]
 deps = ["CFITSIO_jll"]
