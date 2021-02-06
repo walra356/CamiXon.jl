@@ -12,10 +12,12 @@ using FITSIO
 
 """
     decompose_filnam(str)
+
 Decompose filename into its name (and, if present, extension, prefix and numerator).
 #### Examples:
 ```
 strExample = "T23.01.fits"
+
 dict = decompose_filnam(strExample)
 Dict{String,String} with 4 entries:
   "Extension" => ".FITS"
@@ -24,6 +26,7 @@ Dict{String,String} with 4 entries:
   "Name"      => "T23.01"
 get(dict,"Numerator","Numerator: Key absent")
 "01"
+
 get(dict,"Wild","Key absent")
 "Key absent"
 ```
@@ -63,6 +66,7 @@ end
 
 """
     combine_fits_files(str1, str2; info=false)
+
 Combine a series of .fits files into a single .fits file.
 #### Example:
 ```
@@ -147,7 +151,9 @@ end
 """
     find_all(A [,a...]; count=false)
 A: string/array of elements of the same type
+
 default   : Array containing the index (indices) of selected elements of A (default: all elements)
+
 count=true: The number of indices found for selected elements of A (default: all elements)
 #### Examples:
 ```
@@ -156,21 +162,25 @@ B = [1,2,3,2,5]
 str = "aβcβd";
 find_all(A) == find_all(B) == find_all(str)
 true
+
 find_all(A,:📌)
 1-element Array{Array{Int64,1},1}:
  [2, 4]
+
 find_all(str)
 4-element Array{Array{Int64,1},1}:
  [1]
  [2, 4]
  [3]
  [5]
+
 find_all(A; count=true)
 4-element Array{Int64,1}:
  1
  2
  1
  1
+
 str = "📑📌📢📌📞"
 find_all(str,'📌')
 1-element Array{Array{Int64,1},1}:
@@ -193,7 +203,9 @@ end
 """
     find_first(A [,a...]; dict=false)
 The first index of selected Array element
+
 A: string/array of elements of the same type
+
 default  : Array containing the first index (indices) of selected elements of A (default: all elements)
 dict=true: Dict for the first index (indices) of selected elements of A (default: all elements)
 #### Examples:
@@ -201,20 +213,25 @@ dict=true: Dict for the first index (indices) of selected elements of A (default
 A = [:📑,:📌,:📢,:📌,:📞]
 B = [1,2,3,2,5]
 str = "aβcβd";
+
 find_first(A) == find_first(B) == find_first(str)
 true
+
 find_first(A,:📌)
 1-element Array{Array{Int64,1},1}:
  2
+
 find_last(A,:📌; dict=true)
 1-element Array{Pair{Symbol,Int64},1}:
  :📌 => 2
+
 find_last(A; dict=true)
 4-element Array{Pair{Symbol,Int64},1}:
  :📑 => 1
  :📌 => 2
  :📢 => 3
  :📞 => 5
+
 find_first(str)
 4-element Array{Int64,1}:
  1
@@ -237,9 +254,13 @@ end
 
 """
     find_last(A [,a...]; dict=false)
+
 The last index of selected Array element
+
 A: string/array of elements of the same type
+
 default  : Array containing the lasst index (indices) of selected elements of A (default: all elements)
+
 dict=true: Dict for the lasst index (indices) of selected elements of A (default: all elements)
 #### Examples:
 ```
@@ -248,18 +269,22 @@ B = [1,2,3,2,5]
 str = "aβcβd";
 find_last(A) == find_first(B) == find_first(str)
 true
+
 find_last(A,:📌)
 1-element Array{Array{Int64,1},1}:
  4
+
 find_last(A,:📌; dict=true)
 1-element Array{Pair{Symbol,Int64},1}:
  :📌 => 4
+
 find_last(A; dict=true)
 4-element Array{Pair{Symbol,Int64},1}:
  :📑 => 1
  :📌 => 4
  :📢 => 3
  :📞 => 5
+
 find_last(str)
 4-element Array{Int64,1}:
  1
@@ -292,7 +317,9 @@ end
 
 """
     canonical_partitions(n; header=false, reverse=true)
+
 The canonical partition in integers of the integer n
+
 header=true : unit patition included in output
 #### Examples:
 ```
@@ -304,6 +331,7 @@ canonical_partitions(6; header=true, reverse=false)
  [3, 3]
  [2, 2, 2]
  [1, 1, 1, 1, 1, 1]
+
 canonical_partitions(6; header=true)
 6-element Array{Array{Int64,1},1}:
  [1, 1, 1, 1, 1, 1]
@@ -312,6 +340,7 @@ canonical_partitions(6; header=true)
  [4, 2]
  [5, 1]
  [6]
+
 canonical_partitions(6)
 5-element Array{Array{Int64,1},1}:
  [1, 1, 1, 1, 1, 1]
@@ -376,11 +405,17 @@ end
 
 """
     integer_partitions(n [,m]; transpose=false, count=false)
+
 default              : The integer partitions of n
+
 count=true           : The number of integer partitions of n
+
 transpose=false/true : for m>0 restricted to partitions with maximum part/length m
+
 definitions:
+
 The integer partition of the positive integer n is a nonincreasing sequence of positive integers p1, p2,... pk whose sum is n.
+
 The elements of the sequence are called the parts of the partition.
 #### Examples:
 ```
@@ -401,15 +436,19 @@ integer_partitions(7)
  [3, 2, 1, 1]
  [4, 1, 1, 1]
  [3, 1, 1, 1, 1]
+
 integer_partitions(7; count=true)
 15
+
 integer_partitions(7,4; count=true)
 3
+
 integer_partitions(7,4)
 3-element Array{Array{Int64,1},1}:
  [4, 3]
  [4, 2, 1]
  [4, 1, 1, 1]
+ 
 integer_partitions(7,4; transpose=true)
 3-element Array{Array{Int64,1},1}:
  [2, 2, 2, 1]
