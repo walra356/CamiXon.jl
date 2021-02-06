@@ -2,7 +2,7 @@ using CamiXon
 using Documenter
 using LaTeXStrings
 using Pkg
-Pkg.add("FITSIO")
+#Pkg.add("FITSIO")
 using FITSIO
 
 makedocs(;
