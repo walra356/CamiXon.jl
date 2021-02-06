@@ -9,6 +9,18 @@ path = ".."
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 version = "1.0.4"
 
+[[CFITSIO]]
+deps = ["CFITSIO_jll"]
+git-tree-sha1 = "7a54220c2a310e7c791e6992fe3a1a8a91154b1e"
+uuid = "3b1b4be9-1499-4b22-8d78-7db3344d1961"
+version = "1.1.1"
+
+[[CFITSIO_jll]]
+deps = ["LibCURL_jll", "Libdl", "Pkg"]
+git-tree-sha1 = "262a3a9ab0b4f03efb57f58b20cbca8b47ab6af9"
+uuid = "b3e40c51-02ae-5482-8a39-3ace5868dcf4"
+version = "3.48.0+0"
+
 [[DataAPI]]
 git-tree-sha1 = "8ab70b4de35bb3b8cc19654f6b893cf5164f8ee8"
 uuid = "9a962f9c-6df0-11e9-0e5d-c546b8b5ee8a"
