@@ -8,6 +8,8 @@ export find_last
 export canonical_partitions
 export integer_partitions
 
+using FITSIO
+
 """
     decompose_filnam(str)
 
