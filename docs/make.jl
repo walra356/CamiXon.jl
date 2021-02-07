@@ -1,7 +1,5 @@
 using CamiXon
 using Documenter
-using LaTeXStrings
-using FITSIO
 
 makedocs(;
     modules=[CamiXon],
