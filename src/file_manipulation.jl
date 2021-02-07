@@ -1,3 +1,5 @@
+using FITSIO
+
 """
     decompose_filnam(str)
 
