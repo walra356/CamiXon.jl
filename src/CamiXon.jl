@@ -10,6 +10,6 @@ export integer_partitions
 
 include("file_manipulation.jl")
 include("search_algorithms.jl")
-include("mathematics.jl")
+include("mathematics.jl") 
 
 end
