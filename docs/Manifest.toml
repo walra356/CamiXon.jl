@@ -28,9 +28,9 @@ uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 version = "1.1.0"
 
 [[DataAPI]]
-git-tree-sha1 = "8ab70b4de35bb3b8cc19654f6b893cf5164f8ee8"
+git-tree-sha1 = "6d64b28d291cb94a0d84e6e41081fb081e7f717f"
 uuid = "9a962f9c-6df0-11e9-0e5d-c546b8b5ee8a"
-version = "1.5.1"
+version = "1.5.0"
 
 [[DataValueInterfaces]]
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
