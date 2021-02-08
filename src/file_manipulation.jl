@@ -185,7 +185,7 @@ T01.FITS was saved as T01A.FITS
 ```
 """
 
-function fits_copy(filnam; filnamOut="")
+function fits_copy(filnam filnamOut="")
     
     dir = uppercase.(readdir())
     filnam = uppercase(filnam)
@@ -193,13 +193,13 @@ function fits_copy(filnam; filnamOut="")
     if filnam ∉ dir
         return println("jwError: " * filnam * " (file not found)")
     else
-        d = disect_filnam(filnam)
+        d = decompose_filnam(filnam)
         strNam = get(d,"Name","jwError: no name")
         strExt = get(d,"Extension","jwError: no extension")
         if filnamOut == ""
             filnamOut = strNam * " - Copy" * strExt
         else
-            d2 = disect_filnam(filnamOut)
+            d2 = decompose_filnam(filnamOut)
             strNamOut = get(d2,"Name","jwError: no name")
             filnamOut = strNamOut * strExt
         end
