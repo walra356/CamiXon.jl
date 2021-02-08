@@ -34,7 +34,7 @@ using Test
     @test fits_info("T01.fits") == "T01.FITS: file was found (for more information set info=true)"
     @test fits_info("T03.fits") == "Error: T03.FITS (file not found)"
     @test fits_copy("T03.fits") == "Error: T03.FITS (file not found)"
-    @test fits_copy("T01.fits") == "T01.FITS was saved as T01 - Copy.FITS"
+    @test fits_copy("T01.fits") == "T01.FITS was saved as T01 - Copy.FITS" 
     @test fits_copy("T01.fits","T01a.fits") == "T01.FITS was saved as T01A.FITS"
 
 end
