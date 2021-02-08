@@ -184,7 +184,6 @@ fits_copy("T01.fits","T01a.fits")       # assumption: file "T01.fits" in current
 T01.FITS was saved as T01A.FITS
 ```
 """
-
 function fits_copy(filnam, filnamOut="")
     
     dir = uppercase.(readdir())
