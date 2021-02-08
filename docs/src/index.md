@@ -16,6 +16,7 @@ A package for image analysis of backscattered light
 
 ```@docs
 decompose_filnam(str::String)
+fits_info(filnam::String; info=false)
 combine_fits_files(filnamFirst::String, filnamLast::String; info=false)
 ```
 
