@@ -30,5 +30,6 @@ using Test
     @test integer_partitions(7,4) == [[4, 3], [4, 2, 1], [4, 1, 1, 1]]
     @test integer_partitions(7,4;count=true) == 3
     @test integer_partitions(7; transpose=true) == [[7], [4, 3], [5, 2], [6, 1], [3, 2, 2], [3, 3, 1], [4, 2, 1], [5, 1, 1], [2, 2, 2, 1], [3, 2, 1, 1], [4, 1, 1, 1], [2, 2, 1, 1, 1], [3, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]]
+    @test decompose_filnam("T01.fits") == Dict("Extension" => ".FITS","Numerator" => "01","Prefix" => "T","Name" => "T01") 
 
 end
