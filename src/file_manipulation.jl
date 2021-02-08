@@ -93,11 +93,11 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     end
 
     if strPre ≠ strPre2
-        return println("jwError: " * strPre * " ≠ " * strPre2 * " (prefixes must be identical)")
+        return "Error: " * strPre * " ≠ " * strPre2 * " (prefixes must be identical)"
     elseif strExt ≠ strExt2
-        return println("jwError: " * strExt * " ≠ " * strExt2 * " (file extensions must be identical)")
+        return "Error: " * strExt * " ≠ " * strExt2 * " (file extensions must be identical)"
     elseif strExt ≠ ".FITS"
-        return println("jwError: file extension must be '.fits'")
+        return "Error: file extension must be '.fits'"
     end
 
     numFiles = 1 + valNum2 - valNum
@@ -134,7 +134,7 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
         println("\r\nmetaInformation:\r\n", metaInfo)
     else
         close(fileOut)
-        println(filnamOut * ": file was created (for more information set info=true)")
+        return filnamOut * ": file was created (for more information set info=true)"
     end
 end
 
@@ -154,7 +154,7 @@ function fits_info(filnam::String; info=false)
     filnam = uppercase(filnam)
     
     if filnam ∉ dir
-        println("jwError: " * filnam * " (file not found)")
+        return "Error: " * filnam * " (file not found)"
     else
         file = FITS(filnam)
         metaInfo = read_header(file[1])
@@ -166,7 +166,7 @@ function fits_info(filnam::String; info=false)
             println("\r\nmetaInformation:\r\n", metaInfo)
         else
             close(file)
-            println(filnam * ": file was found (for more information set info=true)")
+            return filnam * ": file was found (for more information set info=true)"
         end
     end
 end
@@ -190,16 +190,16 @@ function fits_copy(filnam, filnamOut="")
     filnam = uppercase(filnam)
     
     if filnam ∉ dir
-        return println("jwError: " * filnam * " (file not found)")
+        return println("Error: " * filnam * " (file not found)")
     else
         d = decompose_filnam(filnam)
-        strNam = get(d,"Name","jwError: no name")
-        strExt = get(d,"Extension","jwError: no extension")
+        strNam = get(d,"Name","Error: no name")
+        strExt = get(d,"Extension","Error: no extension")
         if filnamOut == ""
             filnamOut = strNam * " - Copy" * strExt
         else
             d2 = decompose_filnam(filnamOut)
-            strNamOut = get(d2,"Name","jwError: no name")
+            strNamOut = get(d2,"Name","Error: no name")
             filnamOut = strNamOut * strExt
         end
         file = FITS(filnam)
@@ -209,6 +209,6 @@ function fits_copy(filnam, filnamOut="")
         write(fileOut, data; header=metaInfo)
         close(file)
         close(fileOut)
-        return println(filnam * " was saved as " * filnamOut)
+        return filnam * " was saved as " * filnamOut
     end
 end
