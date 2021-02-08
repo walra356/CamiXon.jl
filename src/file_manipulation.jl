@@ -137,3 +137,79 @@ function combine_fits_files(filnamFirst::String, filnamLast::String; info=false)
         println(filnamOut * ": file was created (for more information set info=true)")
     end
 end
+
+"""
+    fits_info(filnam; info=false)
+
+The metainformation of the file "filnam.fits"
+#### Example:
+```
+fits_info("T01.fits"; info=false)         # assumption: file "T01.fits" in current directory
+T01.FITS: file was found (for more information set info=true)
+```
+"""
+function fits_info(filnam::String; info=false)
+    
+    dir = uppercase.(readdir())
+    filnam = uppercase(filnam)
+    
+    if filnam ∉ dir
+        println("jwError: " * filnam * " (file not found)")
+    else
+        file = FITS(filnam)
+        metaInfo = read_header(file[1])
+        data = read(file[1])  # read an image from disk
+        if info
+            println(file)
+            println("\r\n", file[1])
+            close(file)
+            println("\r\nmetaInformation:\r\n", metaInfo)
+        else
+            close(file)
+            println(filnam * ": file was found (for more information set info=true)")
+        end
+    end
+end
+
+"""
+    fits_copy(filnam; filnamOut="")
+
+Copy the file "filnam.fits"
+#### Example:
+```
+fits_copy("T01.fits")                   # assumption: file "T01.fits" in current directory
+T01.FITS was saved as T01 - Copy.FITS
+
+fits_copy("T01.fits","T01a.fits")       # assumption: file "T01.fits" in current directory
+T01.FITS was saved as T01A.FITS
+```
+"""
+
+function fits_copy(filnam; filnamOut="")
+    
+    dir = uppercase.(readdir())
+    filnam = uppercase(filnam)
+    
+    if filnam ∉ dir
+        return println("jwError: " * filnam * " (file not found)")
+    else
+        d = disect_filnam(filnam)
+        strNam = get(d,"Name","jwError: no name")
+        strExt = get(d,"Extension","jwError: no extension")
+        if filnamOut == ""
+            filnamOut = strNam * " - Copy" * strExt
+        else
+            d2 = disect_filnam(filnamOut)
+            strNamOut = get(d2,"Name","jwError: no name")
+            filnamOut = strNamOut * strExt
+        end
+        file = FITS(filnam)
+        metaInfo = read_header(file[1])
+        data = read(file[1])  # read an image from disk
+        fileOut = FITS(filnamOut,"w")
+        write(fileOut, data; header=metaInfo)
+        close(file)
+        close(fileOut)
+        return println(filnam * " was saved as " * filnamOut)
+    end
+end
