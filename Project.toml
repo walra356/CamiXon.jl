@@ -4,7 +4,9 @@ authors = ["= <walra356@planet.nl> and contributors"]
 version = "1.0.9"
 
 [deps]
-FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb" 
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 
 [compat]
 julia = "1"
