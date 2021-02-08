@@ -3,7 +3,7 @@ module CamiXon
 export decompose_filnam
 export fits_info
 export fits_copy
-export combine_fits_files
+export fits_combine
 export find_all
 export find_first
 export find_last
