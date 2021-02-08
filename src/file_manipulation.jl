@@ -190,7 +190,7 @@ function fits_copy(filnam, filnamOut="")
     filnam = uppercase(filnam)
     
     if filnam ∉ dir
-        return println("Error: " * filnam * " (file not found)")
+        return "Error: " * filnam * " (file not found)"
     else
         d = decompose_filnam(filnam)
         strNam = get(d,"Name","Error: no name")
