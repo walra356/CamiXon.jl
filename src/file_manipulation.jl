@@ -55,16 +55,16 @@ function decompose_filnam(str::String)
 end
 
 """
-    combine_fits_files(str1, str2; info=false)
+    fits_combine(str1, str2; info=false)
 
 Combine a series of .fits files into a single .fits file.
 #### Example:
 ```
-combine_fits_files("T01.fits", "T22.fits"; info=false)
+fits_combine("T01.fits", "T22.fits"; info=false)
 T01-T22.FITS: file was created (for more information set info=true)
 ```
 """
-function combine_fits_files(filnamFirst::String, filnamLast::String; info=false)
+function fits_combine(filnamFirst::String, filnamLast::String; info=false)
 
     dir = uppercase.(readdir())
     filnamFirst = uppercase(filnamFirst)
