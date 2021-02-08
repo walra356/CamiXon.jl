@@ -172,7 +172,7 @@ function fits_info(filnam::String; info=false)
 end
 
 """
-    fits_copy(filnam; filnamOut="")
+    fits_copy(filnam, filnamOut="")
 
 Copy the file "filnam.fits"
 #### Example:
@@ -185,7 +185,7 @@ T01.FITS was saved as T01A.FITS
 ```
 """
 
-function fits_copy(filnam filnamOut="")
+function fits_copy(filnam, filnamOut="")
     
     dir = uppercase.(readdir())
     filnam = uppercase(filnam)
