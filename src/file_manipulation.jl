@@ -142,10 +142,10 @@ end
 """
     fits_info(filnam; info=false)
 
-The metainformation of the file "filnam.fits"
+Metainformation of "filnam.fits"
 #### Example:
 ```
-fits_info("T01.fits"; info=false)         # assumption: file "T01.fits" in current directory
+fits_info("T01.fits"; info=false)
 T01.FITS: file was found (for more information set info=true)
 ```
 """
@@ -175,13 +175,13 @@ end
 """
     fits_copy(filnam, filnamOut="")
 
-Copy the file "filnam.fits"
-#### Example:
+Copy "filnam.fits" to "filnamOut.fits"
+#### Examples:
 ```
-fits_copy("T01.fits")                   # assumption: file "T01.fits" in current directory
+fits_copy("T01.fits")
 T01.FITS was saved as T01 - Copy.FITS
 
-fits_copy("T01.fits","T01a.fits")       # assumption: file "T01.fits" in current directory
+fits_copy("T01.fits","T01a.fits")
 T01.FITS was saved as T01A.FITS
 ```
 """
