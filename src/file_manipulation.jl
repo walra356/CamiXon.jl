@@ -72,7 +72,7 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     filnamLast = uppercase(filnamLast)
 
     if filnamFirst ∉ dir
-        println("jwError: " * filnamFirst * " (file not found)")
+        error(filnamFirst * ": file not found")
     else
         d = decompose_filnam(filnamFirst)
         strPre = get(d,"Prefix","Error: no prefix")
@@ -83,7 +83,7 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     end
 
     if filnamLast ∉ dir
-        println("jwError: " * filnamLast * " (file not found)")
+         error(filnamLast * ": file not found")
     else
         d = decompose_filnam(filnamLast)
         strPre2 = get(d,"Prefix","Error: no prefix")
@@ -94,11 +94,11 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     end
 
     if strPre ≠ strPre2
-        return "Error: " * strPre * " ≠ " * strPre2 * " (prefixes must be identical)"
+        error(strPre * " ≠ " * strPre2 * " (prefixes must be identical)")
     elseif strExt ≠ strExt2
-        return "Error: " * strExt * " ≠ " * strExt2 * " (file extensions must be identical)"
+        error(strExt * " ≠ " * strExt2 * " (file extensions must be identical)")
     elseif strExt ≠ ".FITS"
-        return "Error: file extension must be '.fits'"
+        error("file extension must be '.fits'")
     end
 
     numFiles = 1 + valNum2 - valNum
@@ -155,7 +155,7 @@ function fits_info(filnam::String; info=false)
     filnam = uppercase(filnam)
     
     if filnam ∉ dir
-        return "Error: " * filnam * " (file not found)"
+        error(filnam * ": file not found")
     else
         file = FITS(filnam)
         metaInfo = read_header(file[1])
@@ -191,7 +191,7 @@ function fits_copy(filnam, filnamOut="")
     filnam = uppercase(filnam)
     
     if filnam ∉ dir
-        return "Error: " * filnam * " (file not found)"
+        error(filnam * ": file not found")
     else
         d = decompose_filnam(filnam)
         strNam = get(d,"Name","Error: no name")
