@@ -14,6 +14,7 @@ Dict{String,String} with 4 entries:
   "Numerator" => "01"
   "Prefix"    => "T23."
   "Name"      => "T23.01"
+
 get(dict,"Numerator","Numerator: Key absent")
 "01"
 
@@ -47,7 +48,7 @@ function decompose_filnam(str::String)
             n -= 1
         end
         strPre = str[1:n]
-        append!(o,[("Prefix", strPre),("Numerator", strNum)])
+        Base.append!(o,[("Prefix", strPre),("Numerator", strNum)])
     end
 
     return Dict(o)
