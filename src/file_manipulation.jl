@@ -113,9 +113,9 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     itr = valNum:valNum2
     filnamNext = filnamFirst
     for i ∈ itr
-        L = length(filnamNext)
+        l = length(filnamNext)
         filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
-        if L < length(filnamNext)
+        if l < length(filnamNext)
             numLeadingZeros = numLeadingZeros -1
             filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
         end
