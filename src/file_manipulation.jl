@@ -1,5 +1,16 @@
 using FITSIO
 
+# A FITS file consists of a name and one or more header-data-units (HDUs) concatenated one after the other. The FITS object is a collection of these HDUs.
+
+# The file 'filnamA.fits' is opened for 'reading only' by the command fileA = FITS(filnamA,'r').
+# The second argument can be 'r' (read-only; default), 'r+' (read-write) or 'w' (read/create-write). 
+# In the 'write' mode, a  new file is created or any existing file of the same name is overwritten. 
+
+# The file fileA consists of one or more HDU's, fileA[1](, fileA[2],...). 
+# HDUs consist of data blocks with a header containing metainformation, accessible by the commands read() and read_header().
+# In the given example this becomes: dataA = read(fileA[1]) and metaInfoA = read_header(fileA[1])"
+# The 3D array dataA represents a stack of images. The first image is obtained by the command imgA = dataA[:, :,1].
+
 """
     decompose_filnam(str)
 
@@ -142,7 +153,7 @@ end
 """
     fits_info(filnam; info=false)
 
-Metainformation of "filnam.fits"
+Metainformation of 'filnam.fits'
 #### Example:
 ```
 fits_info("T01.fits"; info=false)
