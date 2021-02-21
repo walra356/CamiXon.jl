@@ -163,16 +163,16 @@ function fits_info(filnam::String; info=false)
     
     Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
 
-    file = FITS(filnam)
-    meta = read_header(file[1])
-    data = read(file[1])  # read an image from disk
+    f = FITS(filnam)
+    m = read_header(f[1])
+    d = read(f[1])  # read an image from disk
     if info
-        println(file)
-        println("\r\n", file[1])
-        close(file)
-        println("\r\nmetaInformation:\r\n", metaInfo)
+        println(f)
+        println("\r\n", f[1])
+        close(f)
+        println("\r\nmetaInformation:\r\n", m)
     else
-        close(file)
+        close(f)
         return filnam * ": file was found (for more information set info=true)"
     end
 end
@@ -207,11 +207,11 @@ function fits_copy(filnam, filnam2="")
     end
     
     f1 = FITS(filnam)
-    m1 = read_header(file1[1])
-    d1 = FITSIO.read(file1[1])  # read an image from disk
+    m1 = read_header(f1[1])
+    d1 = FITSIO.read(f1[1])  # read an image from disk
     
     f2 = FITS(filnam2,"w")
-    d2 = FITSIO.write(file2, d1; header=m1)
+    d2 = FITSIO.write(f2, d1; header=m1)
     
     close(f1)
     close(f2)
