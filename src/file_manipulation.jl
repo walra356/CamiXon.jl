@@ -34,8 +34,7 @@ get(dict,"Wild","Key absent")
 ```
 """
 function decompose_filnam(str::String)
-
-    str = uppercase(str)
+    
     ne = find_last(str,'.')[1]                 # ne: first digit of extension
     nl = length(str)                           # ne: length of file name including extension
     ne == nothing ? extension = false : extension = true
