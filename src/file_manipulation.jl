@@ -21,7 +21,7 @@ strExample = "T23.01.fits"
 
 dict = decompose_filnam(strExample)
 Dict{String,String} with 4 entries:
-  "Extension" => ".FITS"
+  "Extension" => ".fits"
   "Numerator" => "01"
   "Prefix"    => "T23."
   "Name"      => "T23.01"
