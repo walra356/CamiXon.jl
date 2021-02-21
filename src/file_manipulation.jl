@@ -76,32 +76,26 @@ T01-T22.FITS: file was created (for more information set info=true)
 ```
 """
 function fits_combine(filnamFirst::String, filnamLast::String; info=false)
+    
+    Base.Filesystem.isfile(filnamFirst) ? true : return filnamFirst * ": file not found in current directory"
+    Base.Filesystem.isfile(filnamLast) ? true : return filnamLast * ": file not found in current directory"
 
-    dir = uppercase.(readdir())
     filnamFirst = uppercase(filnamFirst)
     filnamLast = uppercase(filnamLast)
 
-    if filnamFirst ∉ dir
-        error(filnamFirst * ": file not found")
-    else
-        d = decompose_filnam(filnamFirst)
-        strPre = get(d,"Prefix","Error: no prefix")
-        strNum = get(d,"Numerator","Error: no Numerator")
-        strExt = get(d,"Extension","Error: no extension")
-        valNum = parse(Int,strNum )
-        numLeadingZeros = length(strNum) - length(string(valNum))
-    end
+    d = decompose_filnam(filnamFirst)
+    strPre = get(d,"Prefix","Error: no prefix")
+    strNum = get(d,"Numerator","Error: no Numerator")
+    strExt = get(d,"Extension","Error: no extension")
+    valNum = parse(Int,strNum )
+    numLeadingZeros = length(strNum) - length(string(valNum))
 
-    if filnamLast ∉ dir
-         error(filnamLast * ": file not found")
-    else
-        d = decompose_filnam(filnamLast)
-        strPre2 = get(d,"Prefix","Error: no prefix")
-        strNum2 = get(d,"Numerator","Error: no Numerator")
-        strExt2 = get(d,"Extension","Error: no extension")
-        valNum2 = parse(Int,strNum2 )
-        numLeadingZeros2 = length(strNum2) - length(string(valNum2))
-    end
+    d = decompose_filnam(filnamLast)
+    strPre2 = get(d,"Prefix","Error: no prefix")
+    strNum2 = get(d,"Numerator","Error: no Numerator")
+    strExt2 = get(d,"Extension","Error: no extension")
+    valNum2 = parse(Int,strNum2 )
+    numLeadingZeros2 = length(strNum2) - length(string(valNum2))
 
     if strPre ≠ strPre2
         error(strPre * " ≠ " * strPre2 * " (prefixes must be identical)")
