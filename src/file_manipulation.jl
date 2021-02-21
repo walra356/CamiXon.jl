@@ -178,9 +178,9 @@ function fits_info(filnam::String; info=false)
 end
 
 """
-    fits_copy(filnam, filnamOut="")
+    fits_copy(filnam, filnam2="")
 
-Copy "filnam.fits" to "filnamOut.fits"
+Copy "filnam.fits" to "filnam2.fits"
 #### Examples:
 ```
 fits_copy("T01.fits")
