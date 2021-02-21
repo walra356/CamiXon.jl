@@ -190,37 +190,37 @@ Copy "filnam.fits" to "filnamOut.fits"
 #### Examples:
 ```
 fits_copy("T01.fits")
-T01.FITS was saved as T01 - Copy.FITS
+T01.fits was saved as T01 - Copy.fits
 
 fits_copy("T01.fits","T01a.fits")
-T01.FITS was saved as T01A.FITS
+T01.fits was saved as T01a.fits
 ```
 """
-function fits_copy(filnam, filnamOut="")
+function fits_copy(filnam, filnam2="")
     
-    dir = uppercase.(readdir())
-    filnam = uppercase(filnam)
+    Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
+
+    d1 = decompose_filnam(filnam)
     
-    if filnam ∉ dir
-        error(filnam * ": file not found")
+    strNam = Base.get(d1,"Name","Error: no name")
+    strExt = Base.get(d1,"Extension","Error: no extension")
+        
+    if filnam2 == ""
+        filnam2 = strNam * " - Copy" * strExt
     else
-        d = decompose_filnam(filnam)
-        strNam = get(d,"Name","Error: no name")
-        strExt = get(d,"Extension","Error: no extension")
-        if filnamOut == ""
-            filnamOut = strNam * " - Copy" * strExt
-        else
-            d2 = decompose_filnam(filnamOut)
-            strNamOut = get(d2,"Name","Error: no name")
-            filnamOut = strNamOut * strExt
-        end
-        file = FITS(filnam)
-        metaInfo = read_header(file[1])
-        data = read(file[1])  # read an image from disk
-        fileOut = FITS(filnamOut,"w")
-        write(fileOut, data; header=metaInfo)
-        close(file)
-        close(fileOut)
-        return filnam * " was saved as " * filnamOut
+        d2 = decompose_filnam(filnam2)
+        strNam2 = Base.get(d2,"Name","Error: no name") * strExt
     end
+    
+    file1 = FITS(filnam)
+    meta1 = read_header(file1[1])
+    data1 = FITSIO.read(file1[1])  # read an image from disk
+    
+    file2 = FITS(filnam2,"w")
+    dummy = FITSIO.write(file2, data1; header=meta1)
+    
+    close(file1)
+    close(file2)
+        
+    return filnam * " was saved as1 " * filnam2
 end
