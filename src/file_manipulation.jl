@@ -157,29 +157,24 @@ Metainformation of 'filnam.fits'
 #### Example:
 ```
 fits_info("T01.fits"; info=false)
-T01.FITS: file was found (for more information set info=true)
+T01.fits: file was found (for more information set info=true)
 ```
 """
 function fits_info(filnam::String; info=false)
     
-    dir = uppercase.(readdir())
-    filnam = uppercase(filnam)
-    
-    if filnam ∉ dir
-        error(filnam * ": file not found")
+    Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
+
+    file = FITS(filnam)
+    meta = read_header(file[1])
+    data = read(file[1])  # read an image from disk
+    if info
+        println(file)
+        println("\r\n", file[1])
+        close(file)
+        println("\r\nmetaInformation:\r\n", metaInfo)
     else
-        file = FITS(filnam)
-        metaInfo = read_header(file[1])
-        data = read(file[1])  # read an image from disk
-        if info
-            println(file)
-            println("\r\n", file[1])
-            close(file)
-            println("\r\nmetaInformation:\r\n", metaInfo)
-        else
-            close(file)
-            return filnam * ": file was found (for more information set info=true)"
-        end
+        close(file)
+        return filnam * ": file was found (for more information set info=true)"
     end
 end
 
@@ -222,5 +217,5 @@ function fits_copy(filnam, filnam2="")
     close(file1)
     close(file2)
         
-    return filnam * " was saved as1 " * filnam2
+    return filnam * " was saved as " * filnam2
 end
