@@ -207,15 +207,15 @@ function fits_copy(filnam, filnam2="")
         strNam2 = Base.get(d2,"Name","Error: no name") * strExt
     end
     
-    file1 = FITS(filnam)
-    meta1 = read_header(file1[1])
-    data1 = FITSIO.read(file1[1])  # read an image from disk
+    f1 = FITS(filnam)
+    m1 = read_header(file1[1])
+    d1 = FITSIO.read(file1[1])  # read an image from disk
     
-    file2 = FITS(filnam2,"w")
-    dummy = FITSIO.write(file2, data1; header=meta1)
+    f2 = FITS(filnam2,"w")
+    d2 = FITSIO.write(file2, d1; header=m1)
     
-    close(file1)
-    close(file2)
+    close(f1)
+    close(f2)
         
     return filnam * " was saved as " * filnam2
 end
