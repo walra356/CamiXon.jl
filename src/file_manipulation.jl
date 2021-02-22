@@ -106,10 +106,10 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     end
 
     numFiles = 1 + valNum2 - valNum
-    fileFirst = FITS(filnamFirst)
-    metaInfo = read_header(fileFirst[1])
-    dataFirst = read(fileFirst[1])  # read an image from disk
-    close(fileFirst)
+    fileFirst = FITSIO.FITS(filnamFirst)
+    metaInfo = FITSIO.read_header(fileFirst[1])
+    dataFirst = Base.read(fileFirst[1])  # read an image from disk
+    Base.close(fileFirst)
     t = typeof(dataFirst[1,1,1])
     s = size(dataFirst)
     dataStack =  Array{t,3}(undef, s[1], s[2] , numFiles)
@@ -124,21 +124,21 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
             filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
         end
         fileNext = FITS(filnamNext)
-        dataNext = read(fileNext[1])  # read an image from disk
-        close(fileNext)
+        dataNext = Base.read(fileNext[1])  # read an image from disk
+        Base.close(fileNext)
         dataStack[:, :,i] = dataNext[:, :,1]
     end
 
     filnamOut = strPre * strNum * "-" * strPre * strNum2 * strExt
-    fileOut = FITS(filnamOut,"w")
-    write(fileOut, dataStack; header=metaInfo)
+    fileOut = FITSIO.FITS(filnamOut,"w")
+    Base.write(fileOut, dataStack; header=metaInfo)
     if info
         println("Output fileOut:\r\n", fileOut)
         println("\r\nOutput fileOut[1]:\r\n", fileOut[1])
-        close(fileOut)
+        Base.close(fileOut)
         println("\r\nmetaInformation:\r\n", metaInfo)
     else
-        close(fileOut)
+        Base.close(fileOut)
         return filnamOut * ": file was created (for more information set info=true)"
     end
 end
@@ -157,16 +157,16 @@ function fits_info(filnam::String; info=false)
     
     Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
 
-    f = FITS(filnam)
-    m = read_header(f[1])
-    d = read(f[1])  # read an image from disk
+    f = FITSIO.FITS(filnam)
+    m = FITSIO.read_header(f[1])
+    d = Base.read(f[1])  # read an image from disk
     if info
         println(f)
         println("\r\n", f[1])
-        close(f)
+        Base.close(f)
         println("\r\nmetaInformation:\r\n", m)
     else
-        close(f)
+        Base.close(f)
         return filnam * ": file was found (for more information set info=true)"
     end
 end
@@ -200,15 +200,15 @@ function fits_copy(filnam, filnam2="")
         strNam2 = Base.get(d2,"Name","Error: no name") * strExt
     end
     
-    f1 = FITS(filnam)
-    m1 = read_header(f1[1])
-    d1 = FITSIO.read(f1[1])  # read an image from disk
+    f1 = FITSIO.FITS(filnam)
+    m1 = FITSIO.read_header(f1[1])
+    d1 = Base.read(f1[1])  # read an image from disk
     
-    f2 = FITS(filnam2,"w")
-    d2 = FITSIO.write(f2, d1; header=m1)
+    f2 = FITSIO.FITS(filnam2,"w")
+    d2 = Base.write(f2, d1; header=m1)
     
-    close(f1)
-    close(f2)
+    Base.close(f1)
+    Base.close(f2)
         
     return filnam * " was saved as " * filnam2
 end
