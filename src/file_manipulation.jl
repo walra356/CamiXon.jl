@@ -35,25 +35,25 @@ get(dict,"Wild","Key absent")
 """
 function decompose_filnam(str::String)
     
-    ne = find_last(str,'.')[1]                 # ne: first digit of extension
+    ne = Base.findlast('.',str)                # ne: first digit of extension
     nl = length(str)                           # ne: length of file name including extension
     ne == nothing ? extension = false : extension = true
 
     if extension
         strNam = str[1:ne-1]
         strExt = str[ne:nl]
-        isnumeric(str[ne-1]) ? n = ne-1 : n = nothing
+        Base.Unicode.isdigit(str[ne-1]) ? n = ne-1 : n = nothing
         o = [("Name", strNam), ("Extension", strExt)]
     else
         strNam = str[1:ne-1]
         strExt = nothing
-        isnumeric(str[nl]) ? n = nl : n = nothing
+        Base.Unicode.isdigit(str[nl]) ? n = nl : n = nothing
         o = [("Name", strNam)]
     end
 
     if n != nothing
         strNum = ""
-        while isnumeric(str[n])
+        while Base.Unicode.isdigit(str[n])
             strNum = str[n] * strNum
             n -= 1
         end
