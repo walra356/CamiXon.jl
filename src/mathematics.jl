@@ -159,10 +159,10 @@ function integer_partitions(n::Int, m=0; transpose=false, count=false)
     if !count
 
         if m == 0
-            o = [_restricted_partitions(cp[n][p],n,pc[p],ll,cp) for p=2:n]
+            o = [_restricted_partitions(cp[n][p],n,pc[p],cp) for p=2:n]
             for p=1:n-1 append!(oo,o[p]) end
         else
-            oo = _restricted_partitions(cp[n][m],n,pc[m],ll,cp)
+            oo = _restricted_partitions(cp[n][m],n,pc[m],cp)
         end
 
         if transpose
