@@ -9,7 +9,7 @@ using FITSIO
 # The file fileA consists of one or more HDU's, fileA[1](, fileA[2],...). 
 # HDUs consist of data blocks with a header containing metainformation, accessible by the commands read() and read_header().
 # In the given example this becomes: dataA = read(fileA[1]) and metaInfoA = read_header(fileA[1])"
-# The 3D array dataA represents a stack of images. The first image is obtained by the command imgA = dataA[:, :,1].
+# The 3D array dataA represents a stack of images. The first image is obtained by the command imgA = dataA[:, :,1]. 
 
 """
     decompose_filnam(str)
