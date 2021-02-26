@@ -5,6 +5,7 @@ export fits_combine
 export fits_copy
 export fits_info
 export fits_key_copy
+export fits_key_create
 export fits_key_delete
 export fits_key_edit
 export fits_key_info
