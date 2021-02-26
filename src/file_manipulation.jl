@@ -172,7 +172,7 @@ function fits_info(filnam::String; info=false)
 end
 
 """
-    fits_copy(filnam, filnam2="")
+    fits_copy(filnam [, filnam2="" [; protect=true]])
 
 Copy "filnam.fits" to "filnam2.fits"
 #### Examples:
@@ -180,13 +180,15 @@ Copy "filnam.fits" to "filnam2.fits"
 fits_copy("T01.fits")
 T01.fits was saved as T01 - Copy.fits
 
-fits_copy("T01.fits","T01a.fits")
+fits_copy("T01.fits", "T01a.fits"; protect=false)
 T01.fits was saved as T01a.fits
 ```
 """
-function fits_copy(filnam, filnam2="")
+function fits_copy(filnam, filnam2=""; protect=true)
     
-    Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
+    _file_exists(filnam) || return "$filnam: file not found"
+    
+    _file_exists(filnam2) &&  protect && return "$filnam2: filname in use (overwrite protected)"
 
     d1 = decompose_filnam(filnam)
     
