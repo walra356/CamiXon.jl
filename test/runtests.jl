@@ -32,6 +32,6 @@ using Test
     @test decompose_filnam("T01.fits") == Dict("Extension" => ".fits","Numerator" => "01","Prefix" => "T","Name" => "T01") 
     @test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     @test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits" 
-    @test fits_copy("T01.fits","T01a.fits") == "T01.fits was saved as T01a.fits"
+    @test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
 
 end
