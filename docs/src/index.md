@@ -16,9 +16,14 @@ A package for image analysis of backscattered light
 
 ```@docs
 decompose_filnam(str::String)
-fits_info(filnam::String; info=false)
-fits_copy(filnam, filnamOut="")
 fits_combine(filnamFirst::String, filnamLast::String; info=false)
+fits_copy(filnam, filnamOut=""; protect=true)
+fits_info(filnam::String; info=false)
+fits_key_create(filnam::String, key::String, value, comment::String)
+fits_key_delete(filnam::String, key::String)
+fits_key_edit(filnam::String, key::String, value, comment::String)
+fits_key_info(filnam::String, key::String)
+fits_key_rename(filnam::String, key::String, keynew::String)
 ```
 
 ## Search algorithms
