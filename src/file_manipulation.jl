@@ -362,7 +362,7 @@ function fits_key_delete(filnam::String, key::String)
     Base.close(f2)    
     Base.close(f1)
     
-    fits_copy(buffer,filnam)
+    fits_copy(buffer,filnam; protect=false)
     Base.Filesystem.rm(buffer)
     
     return _key_exists(filnam,key) || "$key: key succesfully deleted"
