@@ -33,12 +33,11 @@ using Test
     @test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     @test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits" 
     @test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
-    filnam = "T01.fits"
-    @test fits_key_info(filnam,"test") == "key 'TEST' not in use"                            #1 6 tests preserve order            
-    @test fits_key_create(filnam,"Test",3,"this is a test") == ("TEST", 3, "this is a test") #2
-    @test fits_key_rename(filnam,"test","test1") == ("TEST1", 3, "this is a test")           #3 
-    @test fits_key_edit(filnam,"Test1",3,"this is a test") == ("TEST1", 3, "this is a test") #4
-    @test fits_key_info(filnam,"Test1") == ("TEST1", 3, "this is a test")                    #5
-    @test fits_key_delete(filnam,"test1") == "TEST1: key succesfully deleted"                #6 
+    @test fits_key_info("T01.fits","test") == "key 'TEST' not in use"                            #1 6 tests preserve order            
+    @test fits_key_create("T01.fits","Test",3,"this is a test") == ("TEST", 3, "this is a test") #2
+    @test fits_key_rename("T01.fits","test","test1") == ("TEST1", 3, "this is a test")           #3 
+    @test fits_key_edit("T01.fits","Test1",3,"this is a test") == ("TEST1", 3, "this is a test") #4
+    @test fits_key_info("T01.fits","Test1") == ("TEST1", 3, "this is a test")                    #5
+    @test fits_key_delete"T01.fits","test1") == "TEST1: key succesfully deleted"                #6 
 
 end
