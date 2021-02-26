@@ -11,6 +11,59 @@ using FITSIO
 # In the given example this becomes: dataA = read(fileA[1]) and metaInfoA = read_header(fileA[1])"
 # The 3D array dataA represents a stack of images. The first image is obtained by the command imgA = dataA[:, :,1]. 
 
+function _file_exists(filnam::String)
+    
+    return Base.Filesystem.isfile(filnam) ? true : false
+    
+end 
+
+function _key_size_ok(key::String)
+    
+    return length(key) < 9 ? true : false
+    
+end 
+
+function _key_comment_ok(comment::String)
+    
+    return length(comment) < 48 ? true : false
+    
+end       
+    
+function _key_exists(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    
+    Base.close(f)
+        
+    return Base.haskey(m, key) ? true : false
+    
+end         
+    
+function _key_available(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    
+    Base.close(f)
+        
+    return !Base.haskey(m, key) ? true : false
+    
+end   
+    
+function _key_reserved(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    r = FITSIO.reserved_key_indices(m) 
+    i = m.map[key]
+    
+    Base.close(f)
+    
+    return i ∈ r ? true : false
+    
+end
+
 """
     decompose_filnam(str)
 
