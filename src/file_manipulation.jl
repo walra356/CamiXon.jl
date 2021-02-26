@@ -15,7 +15,7 @@ function _file_exists(filnam::String)
     
     return Base.Filesystem.isfile(filnam) ? true : false
     
-end 
+end
 
 function _key_size_ok(key::String)
     
@@ -130,8 +130,8 @@ T01-T22.FITS: file was created (for more information set info=true)
 """
 function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     
-    Base.Filesystem.isfile(filnamFirst) ? true : return filnamFirst * ": file not found in current directory"
-    Base.Filesystem.isfile(filnamLast) ? true : return filnamLast * ": file not found in current directory"
+    _file_exists(filnamFirst) || return "$filnamFirst: file not found"
+    _file_exists(filnamLast) || return "$filnamLast: file not found"
 
     filnamFirst = uppercase(filnamFirst)
     filnamLast = uppercase(filnamLast)
@@ -208,7 +208,7 @@ T01.fits: file was found (for more information set info=true)
 """
 function fits_info(filnam::String; info=false)
     
-    Base.Filesystem.isfile(filnam) ? true : return filnam * ": file not found in current directory"
+    _file_exists(filnam) || return "$filnam: file not found"
 
     f = FITSIO.FITS(filnam)
     m = FITSIO.read_header(f[1])
@@ -271,59 +271,6 @@ function fits_copy(filnam, filnam2=""; protect=true)
     return filnam * " was saved as " * filnam2
 end
 
-function _file_exists(filnam::String)
-    
-    return Base.Filesystem.isfile(filnam) ? true : false
-    
-end 
-
-function _key_size_ok(key::String)
-    
-    return length(key) < 9 ? true : false
-    
-end 
-
-function _key_comment_ok(comment::String)
-    
-    return length(comment) < 48 ? true : false
-    
-end       
-    
-function _key_exists(filnam::String,key::String)
-    
-    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
-    m = FITSIO.read_header(f[1])       # read hdu header from file
-    
-    Base.close(f)
-        
-    return Base.haskey(m, key) ? true : false
-    
-end         
-    
-function _key_available(filnam::String,key::String)
-    
-    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
-    m = FITSIO.read_header(f[1])       # read hdu header from file
-    
-    Base.close(f)
-        
-    return !Base.haskey(m, key) ? true : false
-    
-end   
-    
-function _key_reserved(filnam::String,key::String)
-    
-    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
-    m = FITSIO.read_header(f[1])       # read hdu header from file
-    r = FITSIO.reserved_key_indices(m) 
-    i = m.map[key]
-    
-    Base.close(f)
-    
-    return i ∈ r ? true : false
-    
-end
-
 """
     fits_key_create(filnam, key, value, comment)
 
@@ -358,9 +305,8 @@ function fits_key_create(filnam::String, key::String, value, comment::String)
     
 end
 
-
 """
-    fits_key_edit(filnam, key)
+    fits_key_delete(filnam, key)
 
 edit FITS key record
 #### Example:
