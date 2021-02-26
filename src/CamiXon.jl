@@ -1,9 +1,14 @@
 module CamiXon
 
 export decompose_filnam
-export fits_info
-export fits_copy
 export fits_combine
+export fits_copy
+export fits_info
+export fits_key_copy
+export fits_key_delete
+export fits_key_edit
+export fits_key_info
+export fits_key_rename
 export find_all
 export find_first
 export find_last
