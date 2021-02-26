@@ -196,33 +196,6 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
     end
 end
 
-"""
-    fits_info(filnam [; info=false])
-
-Metainformation of 'filnam.fits'
-#### Example:
-```
-fits_info("T01.fits"; info=false)
-T01.fits: file was found (for more information set info=true)
-```
-"""
-function fits_info(filnam::String; info=false)
-    
-    _file_exists(filnam) || return "$filnam: file not found"
-
-    f = FITSIO.FITS(filnam)
-    m = FITSIO.read_header(f[1])
-    d = Base.read(f[1])  # read an image from disk
-    if info
-        println(f)
-        println("\r\n", f[1])
-        Base.close(f)
-        println("\r\nmetaInformation:\r\n", m)
-    else
-        Base.close(f)
-        return filnam * ": file was found (for more information set info=true)"
-    end
-end
 
 """
     fits_copy(filnam [, filnam2="" [; protect=true]])
@@ -269,6 +242,35 @@ function fits_copy(filnam, filnam2=""; protect=true)
     Base.close(f2)
         
     return filnam * " was saved as " * filnam2
+end
+
+
+"""
+    fits_info(filnam [; info=false])
+
+Metainformation of 'filnam.fits'
+#### Example:
+```
+fits_info("T01.fits"; info=false)
+T01.fits: file was found (for more information set info=true)
+```
+"""
+function fits_info(filnam::String; info=false)
+    
+    _file_exists(filnam) || return "$filnam: file not found"
+
+    f = FITSIO.FITS(filnam)
+    m = FITSIO.read_header(f[1])
+    d = Base.read(f[1])  # read an image from disk
+    if info
+        println(f)
+        println("\r\n", f[1])
+        Base.close(f)
+        println("\r\nmetaInformation:\r\n", m)
+    else
+        Base.close(f)
+        return filnam * ": file was found (for more information set info=true)"
+    end
 end
 
 """
@@ -492,7 +494,7 @@ function fits_key_rename(filnam::String, key::String, keynew::String)
     Base.close(f2)    
     Base.close(f1)
     
-    fits_copy(buffer,filnam)
+    fits_copy(buffer,filnam; protect=false)
     Base.Filesystem.rm(buffer)
     
     f = FITSIO.FITS(filnam,"r+")             # open file (read-write mode)
