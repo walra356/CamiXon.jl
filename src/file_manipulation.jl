@@ -119,7 +119,7 @@ function decompose_filnam(str::String)
 end
 
 """
-    fits_combine(str1, str2; info=false)
+    fits_combine(str1, str2 [; info=false])
 
 Combine a series of .fits files into a single .fits file.
 #### Example:
@@ -197,7 +197,7 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
 end
 
 """
-    fits_info(filnam; info=false)
+    fits_info(filnam [; info=false])
 
 Metainformation of 'filnam.fits'
 #### Example:
@@ -232,6 +232,9 @@ Copy "filnam.fits" to "filnam2.fits"
 ```
 fits_copy("T01.fits")
 T01.fits was saved as T01 - Copy.fits
+
+fits_copy("T01.fits", "T01a.fits")
+"T01a.fits: filname in use (overwrite protected)"
 
 fits_copy("T01.fits", "T01a.fits"; protect=false)
 T01.fits was saved as T01a.fits
