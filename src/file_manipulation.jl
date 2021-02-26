@@ -270,3 +270,291 @@ function fits_copy(filnam, filnam2=""; protect=true)
         
     return filnam * " was saved as " * filnam2
 end
+
+function _file_exists(filnam::String)
+    
+    return Base.Filesystem.isfile(filnam) ? true : false
+    
+end 
+
+function _key_size_ok(key::String)
+    
+    return length(key) < 9 ? true : false
+    
+end 
+
+function _key_comment_ok(comment::String)
+    
+    return length(comment) < 48 ? true : false
+    
+end       
+    
+function _key_exists(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    
+    Base.close(f)
+        
+    return Base.haskey(m, key) ? true : false
+    
+end         
+    
+function _key_available(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    
+    Base.close(f)
+        
+    return !Base.haskey(m, key) ? true : false
+    
+end   
+    
+function _key_reserved(filnam::String,key::String)
+    
+    f = FITSIO.FITS(filnam,"r+")       # open file (read-write mode)
+    m = FITSIO.read_header(f[1])       # read hdu header from file
+    r = FITSIO.reserved_key_indices(m) 
+    i = m.map[key]
+    
+    Base.close(f)
+    
+    return i ∈ r ? true : false
+    
+end
+
+"""
+    fits_key_create(filnam, key, value, comment)
+
+create FITS key record
+#### Example:
+```
+filnam = "T01.fits"
+fits_key_create(filnam,"Test",3,"this is a test")
+("TEST", 3, "this is a test")
+```
+"""
+function fits_key_create(filnam::String, key::String, value, comment::String)
+    
+    key = Base.Unicode.uppercase(strip(key))
+    
+    _file_exists(filnam) || return "$filnam: file not found"
+
+    _key_size_ok(key) || return error("error: $keynew: key name exceeds 8 characters (FITS record standard)")
+    
+    _key_available(filnam,key) || return "key '$key' cannot be created (already exists)"
+    
+    _key_comment_ok(comment) || println("Warning: comment truncated at 47 characters (FITS record standard)")
+    
+    f = FITSIO.FITS(filnam,"r+")                                    # open file append mode)
+    k = FITSIO.write_key(f[1], key, value, Base.first(comment,47))  # write new key
+    m = FITSIO.read_header(f[1])                                    # read hdu header from file   
+    k = FITSIO.read_key(f[1],m.map[key])                            # test read new key
+    
+    Base.close(f)
+
+    return k[1], k[2], k[3]
+    
+end
+
+
+"""
+    fits_key_edit(filnam, key)
+
+edit FITS key record
+#### Example:
+```
+filnam = "T01.fits"
+fits_key_info(filnam,"test")
+"key 'TEST' not in use"
+
+fits_key_create(filnam,"Test",3,"this is a test")
+("TEST", 3, "this is a test")
+
+fits_key_delete(filnam,"test")
+"TEST: key succesfully deleted"
+
+fits_key_info(filnam,"test1")
+"key 'TEST' not in use"
+```
+"""    
+function fits_key_delete(filnam::String, key::String)
+    
+    key = Base.Unicode.uppercase(strip(key))
+    
+    _file_exists(filnam) || return "$filnam: file not found"
+    
+    _key_exists(filnam,key) || return "key '$key' cannot be deleted (key not found)"
+    
+    _key_reserved(filnam,key) && return error("error: $key: reserved key (FITS record standard)")
+    
+    buffer = "kanweg.fits"
+    Base.Filesystem.isfile(buffer) && Base.Filesystem.rm(buffer)
+    
+    f1 = FITSIO.FITS(filnam,"r+")             # open file (read-only mode)
+    d1 = Base.read(f1[1])                    # read data first hdu from file
+    m1 = FITSIO.read_header(f1[1])           # read hdu header from file
+    r1 = FITSIO.reserved_key_indices(m1)   
+    
+    f2 = FITSIO.FITS(buffer,"w")             # open file (write mode)
+    d2 = Base.write(f2, d1)                  # write data first hdu to buffer (create default header)
+    
+    for i ∈ eachindex(m1.keys)
+        k = FITSIO.read_key(f1[1],i)
+        if i ∈ r1
+            continue
+        elseif k[1] == key
+            continue
+        else
+            FITSIO.write_key(f2[1], k[1], k[2], k[3])
+        end
+    end
+    
+    Base.close(f2)    
+    Base.close(f1)
+    
+    fits_copy(buffer,filnam)
+    Base.Filesystem.rm(buffer)
+    
+    return _key_exists(filnam,key) || "$key: key succesfully deleted"
+    
+end
+
+
+"""
+    fits_key_edit(filnam, key, value, comment)
+
+edit FITS key record
+#### Example:
+```
+filnam = "T01.fits"
+fits_key_edit(filnam, "USERTXT1", 3, "my text")
+("USERTXT1", 3, "my text")
+```
+"""
+function fits_key_edit(filnam::String, key::String, value, comment::String)
+    
+    key = Base.Unicode.uppercase(strip(key))
+    
+    _file_exists(filnam) || return "$filnam: file not found"
+    
+    _key_exists(filnam,key) || return "key '$key' not found"
+    
+    _key_reserved(filnam,key) && return error("error: $key: reserved key (FITS record standard)")
+    
+    _key_comment_ok(comment) || println("Warning: comment truncated at 47 characters (FITS record standard)")
+    
+    f = FITSIO.FITS(filnam,"r+")                                    # open file read-write mode)
+    k = FITSIO.write_key(f[1], key, value, Base.first(comment,47))  # write new key
+    m = FITSIO.read_header(f[1])                                    # read hdu header from file   
+    k = FITSIO.read_key(f[1],m.map[key])                            # read new key
+    
+    Base.close(f)
+
+    return k[1], k[2], k[3]
+    
+end
+
+"""
+    fits_key_info(filnam::String, key::String)
+
+show FITS key record
+#### Example:
+```
+filnam = "T01.fits"
+fits_key_info(filnam,"NAXIS1")
+("NAXIS1", 512, "length of data axis 1")
+```
+"""
+function fits_key_info(filnam::String, key::String)
+    
+    key = Base.Unicode.uppercase(strip(key))
+    
+    _file_exists(filnam) || return error("error: $filnam: file not found")
+    
+    _key_exists(filnam,key) || return "key '$key' not in use"
+    
+    f = FITSIO.FITS(filnam,"r")                                     # open file read-write mode)
+    m = FITSIO.read_header(f[1])                                    # read hdu header from file   
+    k = FITSIO.read_key(f[1],m.map[key])                            # read new key
+    
+    Base.close(f)
+
+    return k[1], k[2], k[3]
+    
+end
+
+"""
+    fits_key_rename(filnam, key, keynew)
+
+rename FITS key
+#### Examples:
+```
+filnam = "T01.fits"
+fits_key_info(filnam,"test1")
+"key 'TEST1' not in use"
+
+fits_key_create(filnam,"Test",3,"this is a test")
+("TEST", 3, "this is a test")
+
+fits_key_rename(filnam,"test","test1")
+("TEST1", 3, "this is a test")
+
+fits_key_info(filnam,"test1")
+("TEST1", 3, "this is a test")
+```
+"""    
+function fits_key_rename(filnam::String, key::String, keynew::String)
+    
+    key = Base.Unicode.uppercase(strip(key))
+    
+    keynew = Base.Unicode.uppercase(strip(keynew))
+    
+    _file_exists(filnam) || return "$filnam: file not found"
+
+    _key_size_ok(keynew) || return error("error: $keynew: key name exceeds 8 characters")
+    
+    _key_exists(filnam,key) || return "key '$key' cannot be renamed (key not found)"
+    
+    _key_reserved(filnam,key) && return error("error: $key: reserved key (FITS record standard)")
+    
+    (_key_available(filnam,keynew) || keynew == key) || return "$keynew: key already in use"
+    
+    buffer = "kanweg.fits"
+    Base.Filesystem.isfile(buffer) && Base.Filesystem.rm(buffer)
+    
+    f1 = FITSIO.FITS(filnam,"r+")             # open file (read-write mode)
+    d1 = Base.read(f1[1])                    # read data first hdu from file
+    m1 = FITSIO.read_header(f1[1])           # read hdu header from file
+    r1 = FITSIO.reserved_key_indices(m1)   
+    
+    f2 = FITSIO.FITS(buffer,"w")             # open file (write mode)
+    d2 = Base.write(f2, d1)                  # write data first hdu to buffer (create default header)
+    
+    for i ∈ eachindex(m1.keys)
+        k = FITSIO.read_key(f1[1],i)
+        if i ∈ r1
+            continue
+        elseif k[1] == key
+            FITSIO.write_key(f2[1], keynew, k[2], k[3]) 
+        else
+            FITSIO.write_key(f2[1], k[1], k[2], k[3])
+        end
+    end
+    
+    Base.close(f2)    
+    Base.close(f1)
+    
+    fits_copy(buffer,filnam)
+    Base.Filesystem.rm(buffer)
+    
+    f = FITSIO.FITS(filnam,"r+")             # open file (read-write mode)
+    m = FITSIO.read_header(f[1])             # read hdu header from file    
+    k = FITSIO.read_key(f[1],m.map[keynew])  # read key
+    
+    Base.close(f)
+
+    return k[1], k[2], k[3]
+    
+end
