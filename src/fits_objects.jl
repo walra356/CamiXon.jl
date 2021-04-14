@@ -44,17 +44,3 @@ struct FITS_HDU{T,V}
     dataobject::V
     
 end
-
-# ....................................................... FORTRAN related .............................................................................
-
-struct FORTRAN_format
-    
-    Type::String
-    TypeChar::Char                      # primary DataType 
-    EngSci::Union{Char,Nothing}         # secundary DataType char (N for engineering, S for scientific)
-    width::Int                          # field width
-    nmin::Int                           # minimum number of digits displayed
-    ndec::Int                           # number of digits to right of decimal
-    nexp::Int                           # number of digits in exponent
-    
-end
