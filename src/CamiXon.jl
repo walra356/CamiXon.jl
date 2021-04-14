@@ -15,11 +15,14 @@ export find_first
 export find_last
 export canonical_partitions
 export integer_partitions
+export cast_FORTRAN_format
+export cast_FORTRAN_datatype
 
 include("file_manipulation.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
+include("FORTRAN.jl")
 include("search_algorithms.jl")
 include("mathematics.jl") 
 
