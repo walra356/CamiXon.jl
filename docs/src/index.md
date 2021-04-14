@@ -25,6 +25,12 @@ fits_key_edit(filnam::String, key::String, value, comment::String)
 fits_key_info(filnam::String, key::String)
 fits_key_rename(filnam::String, key::String, keynew::String)
 ```
+## FORTRAN format 
+
+```@docs
+cast_FORTRAN_format(str::String)
+cast_FORTRAN_datatype(str::String)
+```
 
 ## Search algorithms
 
