@@ -24,8 +24,6 @@ export FITS_header
 export FITS_data
 export FITS_HDU
 
-struct FITS_HDU{T,V}
-
 include("file_manipulation.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
