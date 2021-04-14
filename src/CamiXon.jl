@@ -17,6 +17,7 @@ export canonical_partitions
 export integer_partitions
 
 include("file_manipulation.jl")
+include("fits_pointers")
 include("search_algorithms.jl")
 include("mathematics.jl") 
 
