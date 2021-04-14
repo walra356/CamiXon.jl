@@ -28,11 +28,11 @@ fits_key_rename(filnam::String, key::String, keynew::String)
 ## FITS
 
 ```@docs
-export FITS_name
-export FITS_table
-export FITS_header
-export FITS_data
-export FITS_HDU
+FITS_name
+FITS_table
+FITS_header
+FITS_data
+FITS_HDU
 ```
 
 ## FORTRAN 
