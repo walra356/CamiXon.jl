@@ -17,6 +17,7 @@ export canonical_partitions
 export integer_partitions
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
+export FORTRAN_format
 
 include("file_manipulation.jl")
 include("fits_pointers.jl")
