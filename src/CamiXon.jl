@@ -19,6 +19,7 @@ export integer_partitions
 include("file_manipulation.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
+include("write_io.jl")
 include("search_algorithms.jl")
 include("mathematics.jl") 
 
