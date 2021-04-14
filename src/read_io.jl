@@ -25,7 +25,7 @@ function _read_data(o::IO, hduindex::Int)                   # read all data usin
           
       dicts = FITS_header.dict
     hdutype = Base.get(dicts,"XTENSION", "'PRIMARY '")
-    hdutype = strip(hdutype[2:9])
+    hdutype = Base.strip(hdutype[2:9])
            
     hdutype == "PRIMARY"  && return _read_IMAGE_data(o, hduindex)
     hdutype == "IMAGE"    && return _read_IMAGE_data(o, hduindex) 
