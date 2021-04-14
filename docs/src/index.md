@@ -25,7 +25,7 @@ fits_key_edit(filnam::String, key::String, value, comment::String)
 fits_key_info(filnam::String, key::String)
 fits_key_rename(filnam::String, key::String, keynew::String)
 ```
-## FORTRAN format 
+## FORTRAN 
 
 ```@docs
 FORTRAN_format
