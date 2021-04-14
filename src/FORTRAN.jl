@@ -1,5 +1,13 @@
 # ....................................................... FORTRAN-format object .............................................................................
 
+"""
+    FORTRAN_format
+
+FORTRAN format object with fields Type, TypeChar, EngSci, width, nmin, ndec, nexp.
+#### Examples:
+```
+```
+"""
 struct FORTRAN_format
     
     Type::String
