@@ -18,6 +18,13 @@ export integer_partitions
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 export FORTRAN_format
+export FITS_name
+export FITS_table
+export FITS_header
+export FITS_data
+export FITS_HDU
+
+struct FITS_HDU{T,V}
 
 include("file_manipulation.jl")
 include("fits_pointers.jl")
