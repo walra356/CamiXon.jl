@@ -28,6 +28,7 @@ fits_key_rename(filnam::String, key::String, keynew::String)
 ## FORTRAN format 
 
 ```@docs
+FORTRAN_format
 cast_FORTRAN_format(str::String)
 cast_FORTRAN_datatype(str::String)
 ```
