@@ -122,7 +122,7 @@ println(a);println(b)
 """
 function fits_create(filename::String, data=[]; protect=true)
     
-    _validate_FITSname(filename)                            
+    _validate_FITS_name(filename)                            
     _isavailable(filename, protect) || error("FitsError: '$filename': creation failed") 
 
     nhdu = 1
@@ -233,11 +233,11 @@ fits_copy("T01.fits", "T01a.fits"; protect=false)
 function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     
     o = _fits_read_IO(filenameA)   
-    f = cast_FITSname(filenameA)
+    f = cast_FITS_name(filenameA)
     
     filenameB = filenameB == " " ? "$(f.name) - Copy.fits" : filenameB
     
-    _validate_FITSname(filenameB)
+    _validate_FITS_name(filenameB)
     
     strA = "'$filenameA' was saved as '$filenameB'"
     strB = "'$filenameA': copy failed"
