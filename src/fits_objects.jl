@@ -29,7 +29,7 @@ end
 """
     FITS_header
 
-Object to hold the header information of a FITS\_HDU of given 'hduindex'. 
+Object to hold the header information of a FITS_HDU of given 'hduindex'. 
 The fields are .hduindex, .records, .keys, .values, .comments, .dict, .maps.
 """
 struct FITS_header
@@ -47,7 +47,7 @@ end
 """
     FITS_data
 
-Object to hold the data of a FITS\_HDU of given 'hduindex' and 'hdutypes'. 
+Object to hold the data of a FITS_HDU of given 'hduindex' and 'hdutypes'. 
 The accepted types are 'PRIMARY', 'IMAGE' and 'TABLE' ('BINTABLE' is not implemented). 
 The fields are .hduindex, .hdutypes and .data.
 """
@@ -62,7 +62,7 @@ end
 """
     FITS_HDU
 
-Object to hold FITS\_header and FITS\_data objects of a FITS\_HDU of given 'hduindex' and 'hdutypes' from file 'filename'. 
+Object to hold FITS_header and FITS_data objects of a FITS_HDU of given 'hduindex' and 'hdutypes' from file 'filename'. 
 The fields are .filename, .hduindex, .header and .dataobject.
 """
 struct FITS_HDU{T,V}
