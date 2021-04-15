@@ -34,6 +34,7 @@ FITS_header
 FITS_data
 FITS_name
 cast_FITS_name(filename::String)
+print_hduinfo(FITS_HDU)
 ```
 
 ## FORTRAN 
