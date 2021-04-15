@@ -5,8 +5,8 @@
 
 Print metafinformation of given `FITS_HDU`
 #### Example:
-
 '''
+
 strExample = "minimal.fits"
 f = fits_create(strExample; protect=false)
 print_hduinfo(f[1])
@@ -22,6 +22,7 @@ print_hduinfo(f[1])
  EXTEND  =                    T / FITS dataset may contain extensions            
  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
  END
+
 '''
 """
 function print_hduinfo(FITS_HDU)
@@ -50,8 +51,8 @@ end
 
 Parse `FITS_TABLE` into a Vector of its columns
 #### Example:
-
 '''
+
 f = fits_create("minimal.fits";protect=false)
 fits_info(f[1])
 
@@ -66,6 +67,7 @@ fits_info(f[1])
  EXTEND  =                    T / FITS dataset may contain extensions            
  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
  END
+
 '''
 """
 function parse_FITS_TABLE(FITS_HDU)
@@ -99,8 +101,8 @@ end
 
 Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs
 #### Examples:
-
 '''
+
 f = fits_create("minimal.fits";protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
@@ -115,6 +117,7 @@ b = f[1].header.keys
 println(a);println(b)
  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
+
 '''
 """
 function fits_create(filename::String, data=[]; protect=true)
@@ -142,8 +145,8 @@ end
 
 Read FITS file and return Array of `FITS_HDU`'s
 #### Examples:
-
 '''
+
 f = fits_create("minimal.fits";protect=false)
 f[1].dataobject.data
 
@@ -153,6 +156,7 @@ g = fits_read("minimal.fits")
 g[1].dataobject.data
 
  Any[]
+
 '''
 """
 function fits_read(filename::String)
@@ -175,9 +179,10 @@ end
 
 Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs
 #### Examples:
-
 '''
+
 f = fits_read("minimal.fits")
+
 '''
 """
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")   
@@ -213,6 +218,7 @@ end
 Copy "filenameA" to "filenameB" (with mandatory ".fits" extension)
 #### Examples:
 ```
+
 fits_copy("T01.fits")
 'T01.fits' was saved as 'T01 - Copy.fits'
 
@@ -221,6 +227,7 @@ filename (T01a.fits) in use (overwrite protected)
 
 fits_copy("T01.fits", "T01a.fits"; protect=false)
 'T01.fits' was saved as 'T01a.fits'
+
 ```
 """
 function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
@@ -246,6 +253,7 @@ end
 Add a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
+
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
 fits_add_key(filnam, 1, "EXTEND2", true, "FITS dataset may contain extension")
@@ -267,6 +275,7 @@ fits_info(f[1])
  EXTEND2 =                    T / FITS dataset may contain extension             
  END
 ```
+
 """
 function fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
     
@@ -301,6 +310,7 @@ end
 Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
+
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
 fits_add_key(filnam, 1, "EXTEND12", true, "FITS dataset may contain extension")
@@ -308,6 +318,7 @@ fits_add_key(filnam, 1, "EXTEND12", true, "FITS dataset may contain extension")
 
 fits_edit_key(filnam, 1, "EXTEND12", true, "FITS dataset new comment")
 'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
+
 '''
 """
 function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
@@ -343,6 +354,7 @@ end
 
 Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduindex]` of file with name 'filename'
 #### Examples:
+
 ```
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
@@ -361,6 +373,7 @@ fits_delete_key(filnam, 1, "EXTEND12")
 
 fits_delete_key(filnam, 1, "NAXIS")
  'NAXIS': cannot be deleted (key protected under FITS standard)
+
 '''
 """
 function fits_delete_key(filename::String, hduindex::Int, key::String)
