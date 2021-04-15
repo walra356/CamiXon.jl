@@ -49,7 +49,7 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
-            using FITSIO
+            #using FITSIO
             using Documenter: doctest
             using CamiXon
             doctest(CamiXon)'
