@@ -190,7 +190,9 @@ function fits_extend(filename::String, data_extend, hdutype="IMAGE")
     
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
     
-    return _fits_save(FITS)
+    _fits_save(FITS)
+       
+    return FITS
     
 end
 
