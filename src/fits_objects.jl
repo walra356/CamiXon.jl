@@ -23,20 +23,20 @@ end
 # ........................................... cast filename into a FITSname object .................................
 
 """
-    cast_FITSname(filename::String)
+    cast_FITS_name(filename::String)
 
 Decompose the FITS filename 'filnam.fits' into its name, prefix, numerator and extension.
 #### Examples:
 ```
 strExample = "T23.01.fits"
-f = analyze_FITSname(strExample)
+f = analyze_FITS_name(strExample)
 FITS_name("T23.01", "T23.", "01", ".fits")
 
 f.name, f.prefix, f.numerator, f.extension
 ("T23.01", "T23.", "01", ".fits")
 ```
 """
-function cast_FITSname(str::String)
+function cast_FITS_name(str::String)
 
     Base.length(Base.strip(str)) == 0 && return error("Error: filename required")
     
