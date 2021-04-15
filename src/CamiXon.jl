@@ -32,6 +32,7 @@ include("write_io.jl")
 include("fits_objects.jl")
 include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
+include("private_sector.jl")
 include("search_algorithms.jl")
 include("mathematics.jl") 
 
