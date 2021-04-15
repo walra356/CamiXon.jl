@@ -24,6 +24,7 @@ export FITS_table
 export FITS_header
 export FITS_data
 export FITS_HDU
+export print_hduinfo
 
 include("file_manipulation.jl")
 include("fits_pointers.jl")
@@ -33,6 +34,7 @@ include("fits_objects.jl")
 include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
 include("private_sector.jl")
+include("public_sector.jl")
 include("search_algorithms.jl")
 include("mathematics.jl") 
 
