@@ -352,7 +352,7 @@ end
 """
     fits_delete_key(filename, hduindex, key)
 
-Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduindex]` of file with name 'filename'
+Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduindex]` of file with name  'filename'
 #### Examples:
 
 ```
