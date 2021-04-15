@@ -1,5 +1,23 @@
 # .................................. read-io (header sector) .......................................................
 
+function _fits_read_IO(filename::String)
+    
+    Base.Filesystem.isfile(filename) || error("Error: $filename: file not found in current directory")
+    
+    a = _validate_FITSname(filename)
+    
+    o = IOBuffer()
+    
+    nbytes = Base.write(o,Base.read(filename))            # number of bytes
+    nblock = nbytes ÷ 2880                                # number of blocks (2880 bytes/block)
+    remain = nbytes % 2880                                # remainder (incomplete block)
+    
+    remain > 0 && return error("FitsError: format requires integer number of blocks of 2880 bytes")
+    
+    return o
+    
+end
+
 function _read_header(o::IO, hduindex::Int)
         
     ptr = _hdu_pointers(o)
