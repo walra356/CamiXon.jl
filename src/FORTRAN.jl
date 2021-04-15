@@ -3,15 +3,17 @@
 """
     FORTRAN_format
 
-Object to decompose FORTRAN format specifier into its fields.
+Object to hold a FORTRAN format specifier decomposed into its fields.
 Accepted datatype specifiers are:  Aw,  Iw,  Fw.d,  Ew.d,  Dw.d. 
 Accepted output formating specifiers are: Aw,  Iw.m,  Bw.m,  Ow.m,  Zw.m,  Fw.d,  Ew.dEe,  ENw.d,  ESw.d,  Gw.dEe,  Dw.dEe.
+Notation: 'w' - width, 'm' (optional) - minimum number of digits, 'd' - number of digits to right of decimal, 
+'e' - number of digits in exponent; 'N'/'S' (optional) - switch for engineering/scientific formating of the 'E' type.
 
 The fields are:
-* `Type::String`: primary DataType
-* `TypeChar::Char`: primary DataType character
-* `EngSci::Union{Char,Nothing}`: secundary DataType character (N for engineering, S for scientific)
-* `width::Int`: field width
+* `Type::String`: primary FORTRAN datatype
+* `TypeChar::Char`: primary FORTRAN datatype character
+* `EngSci::Union{Char,Nothing}`: secundary datatype character (N for engineering, S for scientific)
+* `width::Int`: width of numeric field
 * `nmin::Int`: minimum number of digits displayed
 * `ndec::Int`: number of digits to right of decimal
 * `nexp::Int`: number of digits in exponent
