@@ -104,3 +104,33 @@ struct FITS_data
     
 end
 
+# .................................. cast into FITS_header and FITS_data objects ....................................
+
+function _cast_data(hduindex::Int, hdutype::String, data)
+    
+    return FITS_data(hduindex, hdutype, data)
+
+end
+
+function _cast_header(records::Array{String,1}, hduindex::Int)
+   
+    records = _rm_blanks(records)         # remove blank records to collect header records data (key, val, comment) 
+    nrec = length(records)                # number of keys in header with given hduindex
+
+    keys = [Base.strip(records[i][1:8]) for i=1:nrec]
+    vals = [records[i][9:10] ≠ "= " ? records[i][11:31] : _fits_parse(records[i][11:31]) for i=1:nrec]
+    coms = [records[i][34:80] for i=1:nrec]
+    dict = [keys[i] => vals[i] for i=1:nrec]
+    maps = [keys[i] => i for i=1:nrec]
+    
+    return FITS_header(hduindex,records,keys,vals,coms,Dict(dict),Dict(maps))
+    
+end
+
+function _rm_blanks(records::Array{String,1})               # remove blank records
+    
+    record_B = repeat(' ',length(records[1]))
+    
+    return [records[i] for i ∈ findall(records .≠ record_B)]
+    
+end
