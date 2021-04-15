@@ -3,7 +3,7 @@
 """
     FITS_name
 
-FITS object to decompose filenames of the type 'p#.fits'. The fields are '.name' (p#.fits), '.prefix' (p), '.numerator' (#) and '.extension' (.fits).
+FITS object to decompose filenames of the type 'p#.fits'. The fields are .name (p#.fits), .prefix (p), .numerator (#) and .extension (.fits).
 """
 struct FITS_name
     
@@ -17,7 +17,7 @@ end
 """
     FITS_table
 
-Object to hold the rows of an ASCII TABLE HDU of given 'hduindex'. The fields are '.hduindex' and '.rows'.
+Object to hold the rows of an ASCII TABLE HDU of given 'hduindex'. The fields are .hduindex and .rows.
 """
 struct FITS_table
     
@@ -29,8 +29,8 @@ end
 """
     FITS_header
 
-Object to hold the header information of a FITS_HDU of given 'hduindex'. 
-The fields are '.hduindex', '.records', '.keys', '.values', '.comments' '.dict', '.maps'.
+Object to hold the header information of a FITS\_HDU of given 'hduindex'. 
+The fields are .hduindex, .records, .keys, .values, .comments, .dict, .maps.
 """
 struct FITS_header
     
@@ -47,9 +47,9 @@ end
 """
     FITS_data
 
-Object to hold the data of a FITS_HDU of given 'hduindex' and 'hdutypes'. 
+Object to hold the data of a FITS\_HDU of given 'hduindex' and 'hdutypes'. 
 The accepted types are 'PRIMARY', 'IMAGE' and 'TABLE' ('BINTABLE' is not implemented). 
-The fields are '.hduindex', '.hdutypes' and '.data'.
+The fields are .hduindex, .hdutypes and .data.
 """
 struct FITS_data
     
@@ -62,8 +62,8 @@ end
 """
     FITS_HDU
 
-Object to hold 'FITS_header' and 'FITS_data' objects of 'FITS_HDU' of given 'hduindex' and 'hdutypes' from file 'filename'. 
-The fields are '.filename', '.hduindex', '.header' and '.dataobject'.
+Object to hold FITS\_header and FITS\_data objects of a FITS\_HDU of given 'hduindex' and 'hdutypes' from file 'filename'. 
+The fields are .filename, .hduindex, .header and .dataobject.
 """
 struct FITS_HDU{T,V}
     
