@@ -62,7 +62,7 @@ end
 """
     FITS_HDU
 
-Object to hold the FITS_header and FITS_data objects of a FITS_HDU of given 'hduindex' and 'hdutypes' from file 'filename'. 
+Object to hold the 'FITS_header' and 'FITS_data' objects of a 'FITS_HDU' of given 'hduindex' and 'hdutypes' from file 'filename'. 
 The fields are '.filename', '.hduindex', '.header' and '.dataobject'.
 """
 struct FITS_HDU{T,V}
