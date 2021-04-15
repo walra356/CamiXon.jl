@@ -28,8 +28,8 @@ fits_read(filename::String)
 fits_extend(filename::String, data_extend, hdutype="IMAGE") 
 fits_copy(filenameA::String, filenameB::String=" "; protect=true)
 fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
-fits_edit_key(filename, hduindex, key, value, comment)
-fits_delete_key(filename, hduindex, key)
+fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+fits_delete_key(filename::String, hduindex::Int, key::String)
 ```
 
 ## FORTRAN 
