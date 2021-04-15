@@ -30,11 +30,19 @@ fits_key_rename(filnam::String, key::String, keynew::String)
 ```@docs
 FITS_HDU
 FITS_table
+parse_FITS_TABLE(FITS_HDU)
 FITS_header
 FITS_data
 FITS_name
 cast_FITS_name(filename::String)
 print_hduinfo(FITS_HDU)
+fits_create(filename::String, data=[]; protect=true)
+fits_read(filename::String)
+fits_extend(filename::String, data_extend, hdutype="IMAGE") 
+fits_copy(filenameA::String, filenameB::String=" "; protect=true)
+fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+fits_edit_key(filename, hduindex, key, value, comment)
+fits_delete_key(filename, hduindex, key)
 ```
 
 ## FORTRAN 
