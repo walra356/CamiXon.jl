@@ -23,7 +23,7 @@ end
 # ........................................... cast filename into a FITSname object .................................
 
 """
-    cast_FITSname("filnam.fits")
+    cast_FITSname(filename::String)
 
 Decompose the FITS filename 'filnam.fits' into its name, prefix, numerator and extension.
 #### Examples:
