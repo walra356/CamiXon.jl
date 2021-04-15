@@ -19,7 +19,7 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 export FITS_name
-export cast_FITSname
+export cast_FITS_name
 export FITS_table
 export FITS_header
 export FITS_data
