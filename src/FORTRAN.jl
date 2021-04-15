@@ -33,7 +33,7 @@ end
 # ................... cast format or datatype string 'format' into FORTRAN_format object ...........................
 
 """
-    cast_FORTRAN_format("format")
+    cast_FORTRAN_format(format::String)
 
 Decompose the format specifier 'format' into its fields and cast this into the FORTRAN_format object.
 Allowed format specifiers are of the types: Aw, Iw.m, Bw.m, Ow.m, Zw.m, Fw.d, Ew.dEe, ENw.d, ESw.d, Gw.dEe, Dw.dEe,
@@ -104,7 +104,7 @@ end
 
 
 """
-    cast_FORTRAN_datatype("format")
+    cast_FORTRAN_datatype(format::String)
 
 Decompose the format specifier 'format' into its fields and cast this into the FORTRAN_format object.
 Allowed format specifiers are of the types: Aw, Iw, Fw.d, Ew.d, Dw.d, 
