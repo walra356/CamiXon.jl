@@ -1,9 +1,39 @@
 # ...................................................... FITS objects .........................................................
 
 """
+    FITS_HDU
+
+Object to hold a single "Header-Data Unit" (HDU) of a give FITS file. 
+
+Object to hold `FITS_header` and `FITS_data` objects of a `FITS_HDU` of given `hduindex` and `hdutypes` from file 'filename'. 
+
+The fields are 
+
+* `.filename`
+* `.hduindex`   
+* `.header`
+* `.dataobject
+"""
+struct FITS_HDU{T,V}
+    
+    filename::String    
+    hduindex::Int
+    header::T
+    dataobject::V
+    
+end
+
+
+"""
     FITS_name
 
-FITS object to decompose filenames of the type 'p#.fits'. The fields are .name (p#.fits), .prefix (p), .numerator (#) and .extension (.fits).
+FITS object to decompose filenames of the type 'p#.fits'. 
+
+The fields are:
+* `.name`     : for filename 'p#.fits' this is 'p#.fits'
+* `.prefix    : for filename 'p#.fits' this is `p`
+* `.numerator`: for filename 'p#.fits' this is `#`, a serial number (e.g., '3') or a range (e.g., '3-7')
+* `.extension`:  for filename 'p#.fits' this is '.fits'.
 """
 struct FITS_name
     
@@ -59,17 +89,3 @@ struct FITS_data
     
 end
 
-"""
-    FITS_HDU
-
-Object to hold `FITS_header` and `FITS_data` objects of a `FITS_HDU` of given `hduindex` and `hdutypes` from file 'filename'. 
-The fields are .filename, .hduindex, .header and .dataobject.
-"""
-struct FITS_HDU{T,V}
-    
-    filename::String    
-    hduindex::Int
-    header::T
-    dataobject::V
-    
-end
