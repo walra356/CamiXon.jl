@@ -1,8 +1,8 @@
-########################################### FITS private sector #####################################################
+# ............................................ FITS private sector ................................................................
 
-function _validate_FITSname(filename::String)
+function _validate_FITS_name(filename::String)
      
-    return cast_FITSname(filename)
+    return cast_FITS_name(filename)
     
 end
 
@@ -17,7 +17,7 @@ function _isavailable(filename::String, protect::Bool)
     
 end
 
-function _fits_parse(str::String)
+function _fits_parse(str::String) # routine 
     
     T = Float32    
     s = Base.strip(str)
