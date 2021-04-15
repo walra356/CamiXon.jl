@@ -1,12 +1,12 @@
 # ......................................... FITS public sector .................................................................
 
 """
-'''
     print_hduinfo(FITS_HDU)
 
-Print metafinformation of given FITS_HDU
+Print metafinformation of given `FITS_HDU`
 #### Example:
 
+'''
 strExample = "minimal.fits"
 f = fits_create(strExample; protect=false)
 print_hduinfo(f[1])
@@ -46,12 +46,12 @@ end
 # ....................... parse FITS_TABLE into a Vector of its columns .........................................
 
 """
-'''
     parse_FITS_TABLE(HDU)
 
-Parse FITS_TABLE into a Vector of its columns
+Parse `FITS_TABLE` into a Vector of its columns
 #### Example:
 
+'''
 f = fits_create("minimal.fits";protect=false)
 fits_info(f[1])
 
@@ -94,14 +94,13 @@ function parse_FITS_TABLE(FITS_HDU)
     
 end
 
-
 """
-'''
     fits_create(filename [, data [; protect=true]])
 
 Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs
 #### Examples:
 
+'''
 f = fits_create("minimal.fits";protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
@@ -139,11 +138,12 @@ end
 
 
 """
-'''
     fits_read(filename)
 
-Read FITS file and return Array of HDUs
+Read FITS file and return Array of `FITS_HDU`'s
 #### Examples:
+
+'''
 f = fits_create("minimal.fits";protect=false)
 f[1].dataobject.data
 
@@ -170,6 +170,16 @@ function fits_read(filename::String)
     
 end
 
+"""
+    fits_extend(filename, data_extend, hdutype="IMAGE") 
+
+Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs
+#### Examples:
+
+'''
+f = fits_read("minimal.fits")
+'''
+"""
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")   
         
     hdutype == "IMAGE"    ? (records, data) = _IMAGE_input(data_extend)    : 
