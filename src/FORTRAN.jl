@@ -3,14 +3,14 @@
 """
     FORTRAN_format
 
-The FORTRAN format specifier decomposed into its fields.
-Accepted datatype format specifiers are:  Aw,  Iw,  Fw.d,  Ew.d,  Dw.d 
-Accepted output formating specifiers are: Aw,  Iw.m,  Bw.m,  Ow.m,  Zw.m,  Fw.d,  Ew.dEe,  ENw.d,  ESw.d,  Gw.dEe,  Dw.dEe
+Object to decompose FORTRAN format specifier into its fields.
+Accepted datatype specifiers are:  Aw,  Iw,  Fw.d,  Ew.d,  Dw.d. 
+Accepted output formating specifiers are: Aw,  Iw.m,  Bw.m,  Ow.m,  Zw.m,  Fw.d,  Ew.dEe,  ENw.d,  ESw.d,  Gw.dEe,  Dw.dEe.
 
 The fields are:
-* `Type::STring`: primary DataType
-* `TypeChar::Char`: secundary DataType  (N for engineering, S for scientific)
-* `EngSci::Union{Char,Nothing}`:
+* `Type::String`: primary DataType
+* `TypeChar::Char`: primary DataType character
+* `EngSci::Union{Char,Nothing}`: secundary DataType character (N for engineering, S for scientific)
 * `width::Int`: field width
 * `nmin::Int`: minimum number of digits displayed
 * `ndec::Int`: number of digits to right of decimal
