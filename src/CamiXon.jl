@@ -15,10 +15,11 @@ export find_first
 export find_last
 export canonical_partitions
 export integer_partitions
+export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
-export FORTRAN_format
 export FITS_name
+export cast_FITSname
 export FITS_table
 export FITS_header
 export FITS_data
