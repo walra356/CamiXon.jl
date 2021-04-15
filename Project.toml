@@ -4,7 +4,7 @@ authors = ["= <walra356@planet.nl> and contributors"]
 version = "1.1.7"
 
 [deps]
-FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
+#FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
 
 [compat]
 #FITSIO = "0.16"
