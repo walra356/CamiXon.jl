@@ -1,21 +1,6 @@
 # ............................................ FITS private sector ................................................................
 
-function _validate_FITS_name(filename::String)
-     
-    return cast_FITS_name(filename)
-    
-end
 
-function _isavailable(filename::String, protect::Bool)
-     
-    str = "FitsWarning: '$filename': filename in use (set ';protect=false' to overwrite)"
-     
-    available = (!Base.Filesystem.isfile(filename) | !protect)
-    available || println(str)
-        
-    return  available ? true : false
-    
-end
 
 function _fits_parse(str::String) # routine 
     
