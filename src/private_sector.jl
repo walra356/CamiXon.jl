@@ -58,29 +58,3 @@ function _fits_parse(str::String)
     return error("FitsError: $str: parsing error")
 
 end
-
-
-# .................................. save to file for FITS array ...................................................
-
-function _fits_write_IO(o::IO, filename::String)
-      
-    s = Base.open(filename,"w")   
-        Base.write(s,o.data)    
-        Base.close(s)
-
-end
-
-function _fits_save(FITS)
-    
-    o = IOBuffer()  
-      
-    for i ∈ eachindex(FITS)
-        a = _write_header(FITS[i])
-        Base.write(o,Array{UInt8,1}(a.data))
-        b = _write_data(FITS[i])
-        b.size > 0 && Base.write(o,Array{UInt8,1}(b.data))
-    end
-        
-    return _fits_write_IO(o, FITS[1].filename)                    # same filename in all HDUs                
-    
-end
