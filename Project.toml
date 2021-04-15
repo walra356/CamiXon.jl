@@ -1,7 +1,7 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 authors = ["= <walra356@planet.nl> and contributors"]
-version = "1.1.4"
+version = "1.1.5"
 
 [deps]
 FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
