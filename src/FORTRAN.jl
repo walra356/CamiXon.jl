@@ -3,20 +3,28 @@
 """
     FORTRAN_format
 
-FORTRAN format object with fields Type, TypeChar, EngSci, width, nmin, ndec, nexp.
-#### Examples:
-```
-```
+The FORTRAN format specifier decomposed into its fields.
+Accepted datatype format specifiers are:  Aw,  Iw,  Fw.d,  Ew.d,  Dw.d 
+Accepted output formating specifiers are: Aw,  Iw.m,  Bw.m,  Ow.m,  Zw.m,  Fw.d,  Ew.dEe,  ENw.d,  ESw.d,  Gw.dEe,  Dw.dEe
+
+The fields are:
+* `Type::STring`: primary DataType
+* `TypeChar::Char`: secundary DataType  (N for engineering, S for scientific)
+* `EngSci::Union{Char,Nothing}`:
+* `width::Int`: field width
+* `nmin::Int`: minimum number of digits displayed
+* `ndec::Int`: number of digits to right of decimal
+* `nexp::Int`: number of digits in exponent
 """
 struct FORTRAN_format
     
     Type::String
-    TypeChar::Char                      # primary DataType 
-    EngSci::Union{Char,Nothing}         # secundary DataType char (N for engineering, S for scientific)
-    width::Int                          # field width
-    nmin::Int                           # minimum number of digits displayed
-    ndec::Int                           # number of digits to right of decimal
-    nexp::Int                           # number of digits in exponent
+    TypeChar::Char                        
+    EngSci::Union{Char,Nothing}
+    width::Int
+    nmin::Int
+    ndec::Int
+    nexp::Int
     
 end
 
@@ -26,7 +34,7 @@ end
     cast_FORTRAN_format("format")
 
 Decompose the format specifier 'format' into its fields and cast this into the FORTRAN_format object.
-Allowed formate specifiers are of the types: Aw, Iw.m, Bw.m, Ow.m, Zw.m, Fw.d, Ew.dEe, ENw.d, ESw.d, Gw.dEe, Dw.dEe,
+Allowed format specifiers are of the types: Aw, Iw.m, Bw.m, Ow.m, Zw.m, Fw.d, Ew.dEe, ENw.d, ESw.d, Gw.dEe, Dw.dEe,
 with: 'w' - width, 'm' (optional) - minimum number of digits, 'd' - number of digits to right of decimal, 
 'e' - number of digits in exponent; 'N'/'S' (optional) - switch for engineering/scientific formating of the 'E' type.
 #### Examples:
@@ -97,7 +105,7 @@ end
     cast_FORTRAN_datatype("format")
 
 Decompose the format specifier 'format' into its fields and cast this into the FORTRAN_format object.
-Allowed formate specifiers are of the types: Aw, Iw, Fw.d, Ew.d, Dw.d, 
+Allowed format specifiers are of the types: Aw, Iw, Fw.d, Ew.d, Dw.d, 
 where: 'w' - width, 'd' - number of digits to right of decimal point.
 #### Examples:
 ```
