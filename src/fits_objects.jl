@@ -77,15 +77,13 @@ end
 """
     FITS_HDU
 
-Object to hold a single "Header-Data Unit" (HDU) of a give FITS file. 
-
-Object to hold `FITS_header` and `FITS_data` objects of a `FITS_HDU` of given `hduindex` and `hdutypes` from file 'filename'. 
+Object to hold a single "Header-Data Unit" (HDU). 
 
 The fields are 
-* `.filename::String`
+* `.filename::String`: name of the corresponding FITS file
 * `.hduindex::Int`: identifier (a file may contain more than one HDU)
-* `.header::T, where T=FITS_header`
-* `.dataobject::V, where V=FITS_data` 
+* `.header::T, where T=FITS_header`: the header object
+* `.dataobject::V, where V=FITS_data`: the data object 
 """
 struct FITS_HDU{T,V}
     
@@ -97,25 +95,9 @@ struct FITS_HDU{T,V}
 end
 
 """
-    FITS_table
-
-Object to hold the rows of an ASCII `TABLE HDU` of given 'hduindex'. 
-
-The fields are:
-* `.hduindex::Int`: identifier (a file may contain more than one HDU)
-* `.rows::Array{String,1}`: the table formated as an array of rows os ASCII strings
-"""
-struct FITS_table
-    
-    hduindex::Int
-    rows::Array{String,1}
-    
-end
-
-"""
     FITS_header
 
-Object to hold the header information of a `FITS_HDU` of given `hduindex`. 
+Object to hold the header information of a `FITS_HDU`. 
 
 The fields are:
 * `.hduindex::Int`: identifier (a file may contain more than one HDU)
@@ -163,13 +145,12 @@ function _cast_header(records::Array{String,1}, hduindex::Int)
     
 end
 
-# ........................................... FITS_data object .................................
+# ........................................... FITS_data object ..........................................................
 
 """
     FITS_data
 
-Object to hold the data of the `FITS_HDU` of given `hduindex` and `hdutype`. 
- 
+Object to hold the data of the `FITS_HDU` of given `hduindex` and `hdutype`.  
 
 The fields are:
 * `.hduindex::Int`: identifier (a file may contain more than one HDU)
@@ -191,3 +172,22 @@ function _cast_data(hduindex::Int, hdutype::String, data)
     return FITS_data(hduindex, hdutype, data)
 
 end
+
+
+"""
+    FITS_table
+
+Object to hold the data of a `TABLE HDU`, i.e., a `FITS_HDU` for ASCII tables. 
+
+The fields are:
+* `.hduindex::Int`: identifier (a file may contain more than one HDU)
+* `.rows::Array{String,1}`: the table formated as an array of rows of ASCII strings
+"""
+struct FITS_table
+    
+    hduindex::Int
+    rows::Array{String,1}
+    
+end
+
+.................................................................................
