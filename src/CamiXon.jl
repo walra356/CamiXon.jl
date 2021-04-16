@@ -2,9 +2,13 @@ module CamiXon
 
 
 export fits_create
+export test_fits_create
 export fits_read
+export test_fits_read
 export fits_extend
+export test_fits_extend
 export fits_info
+export test_fits_info
 export fits_copy
 export fits_add_key
 export fits_edit_key
