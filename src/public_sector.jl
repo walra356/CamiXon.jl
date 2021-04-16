@@ -78,7 +78,9 @@ end
 """
     fits_create(filename [, data [; protect=true]])
 
-Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs
+Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs.
+Key:
+* `protect::Bool`: overwrite protection
 #### Examples:
 ```
 strExample = "minimal.fits"
@@ -198,7 +200,7 @@ end
 """
     fits_extend(filename, data_extend, hdutype="IMAGE") 
 
-Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs
+Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs.
 #### Examples:
 ```
 strExample = "test_example.fits"
@@ -284,6 +286,8 @@ end
     fits_copy(filenameA [, filenameB="" [; protect=true]])
 
 Copy "filenameA" to "filenameB" (with mandatory ".fits" extension)
+Key:
+* `protect::Bool`: overwrite protection
 #### Examples:
 ```
 fits_copy("T01.fits")
