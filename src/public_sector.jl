@@ -38,8 +38,7 @@ function fits_info(FITS_HDU)
     
     records = FITS_HDU.header.records
     
-    append!(info,records)
-    _rm_blanks(records)
+    append!(info,_rm_blanks!(records))
 
     return print(Base.join(info .* "\r\n"))
     
