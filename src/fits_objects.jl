@@ -122,14 +122,6 @@ end
 
 # ........................................... cast records into a FITS_header object .................................
 
-function _rm_blanks(records::Array{String,1})               # remove blank records
-    
-    record_B = repeat(' ',length(records[1]))
-    
-    return [records[i] for i ∈ findall(records .≠ record_B)]
-    
-end
-
 function _cast_header(records::Array{String,1}, hduindex::Int)
    
     records = _rm_blanks(records)         # remove blank records to collect header records data (key, val, comment) 
