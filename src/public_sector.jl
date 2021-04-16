@@ -1,7 +1,7 @@
 # ......................................... FITS public sector .................................................................
 
 """
-    print_hduinfo(FITS_HDU)
+    fits_info(FITS_HDU)
 
 Print metafinformation of given `FITS_HDU`
 #### Example:
@@ -9,7 +9,7 @@ Print metafinformation of given `FITS_HDU`
 
 strExample = "minimal.fits"
 f = fits_create(strExample; protect=false)
-print_hduinfo(f[1])
+fits_info(f[1])
 
  File: minimal.fits
  HDU: 1
@@ -25,7 +25,7 @@ print_hduinfo(f[1])
 
 ```
 """
-function print_hduinfo(FITS_HDU)
+function fits_info(FITS_HDU)
     
     info = [
         "\r\nFile: " * FITS_HDU.filename * "\r\n",
