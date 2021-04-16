@@ -25,10 +25,10 @@ By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objec
 
 ```@docs
 FITS_HDU
-FITS_table
-parse_FITS_TABLE(FITS_HDU)
 FITS_header
 FITS_data
+FITS_table
+parse_FITS_TABLE(FITS_HDU)
 FITS_name
 cast_FITS_name(filename::String)
 print_hduinfo(FITS_HDU)
