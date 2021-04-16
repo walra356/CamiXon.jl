@@ -9,7 +9,6 @@ Key:
 * `printformat::Bool`: output formatted by function `print`
 #### Example:
 ```
-
 strExample = "minimal.fits"
 f = fits_create(strExample; protect=false)
 fits_info(f[1])
@@ -26,6 +25,8 @@ fits_info(f[1])
  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
  END
 
+@test fits_info()
+ Test Passed
 ```
 """
 function fits_info(FITS_HDU; printformat=true)
@@ -72,7 +73,7 @@ println(a);println(b)
  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
 
 @test fits_create()
- \\bf{Test Passed}
+ Test Passed
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
@@ -125,6 +126,8 @@ f = fits_read(strExample)
 f[1].dataobject.data
  Any[]
 
+@test fits_read()
+ Test Passed
 ```
 """
 function fits_read(filename::String)
@@ -148,9 +151,10 @@ end
 Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs
 #### Examples:
 ```
-
 f = fits_read("minimal.fits")
 
+@test fits_read()
+ Test Passed
 ```
 """
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")   
