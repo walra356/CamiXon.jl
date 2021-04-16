@@ -4,7 +4,7 @@ function _fits_read_IO(filename::String)
     
     Base.Filesystem.isfile(filename) || error("Error: $filename: file not found in current directory")
     
-    a = _validate_FITSname(filename)
+    a = _validate_FITS_name(filename)
     
     o = IOBuffer()
     
