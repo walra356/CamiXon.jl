@@ -43,7 +43,7 @@ function fits_info(FITS_HDU; printformat=true)
     
     Base.append!(info,_rm_blanks(records))
 
-    return printformat? print(Base.join(info .* "\r\n")) : Base.join(info .* "\r\n")
+    return printformat ? print(Base.join(info .* "\r\n")) : Base.join(info .* "\r\n")
     
 end
 
