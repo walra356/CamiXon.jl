@@ -102,11 +102,11 @@ Object to hold the header information of a `FITS_HDU`.
 The fields are:
 * `.hduindex::Int`: identifier (a file may contain more than one HDU)
 * `.records::Array{String,1}`:  the header formated as an array of strings of 80 ASCII characters
-* `.keys::Array{String,1}`: keys[i] - key corresponding to `records[i]`
-* `.values::Array{Any,1}`: value[i] - corresponding to `records[i]
-* `.comments`: comments[i] - comment corresponding to given `records[i]
-* `.dict::Dict{String,Any}`: Dictionary key[i] => value[i]
-* `.maps::Dict{String,Int}`: Dictionary key[i] => i
+* `.keys::Array{String,1}`: keys[i] - key corresponding to `records[i]` for record index `i` 
+* `.values::Array{Any,1}`: value[i] - corresponding to `records[i]`
+* `.comments`: comments[i] - comment corresponding to given `records[i]`
+* `.dict::Dict{String,Any}`: Dictionary `key[i] => value[i]`
+* `.maps::Dict{String,Int}`: Dictionary `key[i] => i`
 """
 struct FITS_header
     
