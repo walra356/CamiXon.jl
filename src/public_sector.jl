@@ -50,21 +50,24 @@ end
 Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs
 #### Examples:
 ```
-
-f = fits_create("minimal.fits";protect=false)
+strExample = "minimal.fits"
+f = fits_create(strExample;protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
 println(a);println(b)
  Any[]
  ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
 
+strExample = "example.fits"
 data = [0x0000043e, 0x0000040c, 0x0000041f]
-f = fits_create("remove.fits", data; protect=false)
+f = fits_create(strExample, data; protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
 println(a);println(b)
  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
+
+
 
 ```
 """
