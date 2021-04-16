@@ -14,20 +14,20 @@ strExample = "minimal.fits"
 f = fits_create(strExample; protect=false)
 fits_info(f[1])
 
- File: minimal.fits
- HDU: 1
- DataType: Any
- Datasize: (0,)
+  File: minimal.fits
+  HDU: 1
+  DataType: Any
+  Datasize: (0,)
 
- Metainformation:
- SIMPLE  =                    T / file does conform to FITS standard             
- NAXIS   =                    0 / number of data axes                            
- EXTEND  =                    T / FITS dataset may contain extensions            
- COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
- END
+  Metainformation:
+  SIMPLE  =                    T / file does conform to FITS standard             
+  NAXIS   =                    0 / number of data axes                            
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
+  END
 
 @test fits_info()
- Test Passed
+  Test Passed
 ```
 """
 function fits_info(FITS_HDU; printformat=true)
@@ -86,8 +86,8 @@ f = fits_create(strExample;protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
 println(a);println(b)
- Any[]
- ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
+  Any[]
+  ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
 
 strExample = "example.fits"
 data = [0x0000043e, 0x0000040c, 0x0000041f]
@@ -95,11 +95,11 @@ f = fits_create(strExample, data; protect=false)
 a = f[1].dataobject.data
 b = f[1].header.keys
 println(a);println(b)
- UInt32[0x0000043e, 0x0000040c, 0x0000041f]
- ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
+  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
+  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
 
 @test fits_create()
- Test Passed
+  Test Passed
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
@@ -139,8 +139,6 @@ function fits_create()
     
 end
 
-
-
 # .................................................... fits_read ...................................................
 """
     fits_read(filename)
@@ -148,14 +146,16 @@ end
 Read FITS file and return Array of `FITS_HDU`s
 #### Example:
 ```
-strExample
+strExample = "minimal.fits"
 fits_create(strExample;protect=false)
 f = fits_read(strExample)
 f[1].dataobject.data
- Any[]
+  Any[]
+
+rm(strExample); f = nothing
 
 @test fits_read()
- Test Passed
+  Test Passed
 ```
 """
 function fits_read(filename::String)
@@ -201,10 +201,28 @@ end
 Extend the FITS file of given filename with the data of `hdutype` from `data_extend`  and return Array of HDUs
 #### Examples:
 ```
-f = fits_read("minimal.fits")
+strExample = "test_example.fits"
+data = [0x0000043e, 0x0000040c, 0x0000041f]
+f = fits_create(strExample, data, protect=false)
+table1 = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
+table2 = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
+table3 = [1.23,2.12,3.,4.,5.]
+table4 = ['a','b','c','d','e']
+table5 = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
+data = [table1,table2,table3,table4,table5]
+f = fits_extend(strExample, data, "TABLE")
+f[2].dataobject.data
+  5-element Vector{String}:
+   "1.0e-6 1086 1.23 a a                    "
+   "2.0e-6 1036 2.12 b bb                   "
+   "3.0e-6 1055 3.0  c ccc                  "
+   "4.0e-6 1070 4.0  d dddd                 "
+   "5.0e-6 1071 5.0  e ABCeeaeeEEEEEEEEEEEE "
+
+rm(strExample); f = nothing; data =nothing
 
 @test fits_read()
- Test Passed
+  Test Passed
 ```
 """
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")   
@@ -269,13 +287,13 @@ Copy "filenameA" to "filenameB" (with mandatory ".fits" extension)
 #### Examples:
 ```
 fits_copy("T01.fits")
-'T01.fits' was saved as 'T01 - Copy.fits'
+    'T01.fits' was saved as 'T01 - Copy.fits'
 
 fits_copy("T01.fits", "T01a.fits")
-filename (T01a.fits) in use (overwrite protected)
+    filename (T01a.fits) in use (overwrite protected)
 
 fits_copy("T01.fits", "T01a.fits"; protect=false)
-'T01.fits' was saved as 'T01a.fits'
+    'T01.fits' was saved as 'T01a.fits'
 ```
 """
 function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
@@ -310,18 +328,18 @@ fits_add_key(filnam, 1, "EXTEND2", true, "FITS dataset may contain extension")
 f = fits_read(filnam)
 fits_info(f[1])
 
- File: minimal.fits
- HDU: 1
- DataType: Any
- Datasize: (0,)
+  File: minimal.fits
+  HDU: 1
+  DataType: Any
+  Datasize: (0,)
 
- Metainformation:
- SIMPLE  =                    T / file does conform to FITS standard              
- NAXIS   =                    0 / number of data axes                            
- EXTEND  =                    T / FITS dataset may contain extensions            
- COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
- EXTEND2 =                    T / FITS dataset may contain extension             
- END
+  Metainformation:
+  SIMPLE  =                    T / file does conform to FITS standard              
+  NAXIS   =                    0 / number of data axes                            
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
+  EXTEND2 =                    T / FITS dataset may contain extension             
+  END
 
 ```
 """
