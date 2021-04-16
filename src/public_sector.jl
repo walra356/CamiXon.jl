@@ -44,58 +44,6 @@ function print_hduinfo(FITS_HDU)
     
 end
 
-# ....................... parse FITS_TABLE into a Vector of its columns .........................................
-
-"""
-    parse_FITS_TABLE(HDU)
-
-Parse `FITS_TABLE` into a Vector of its columns
-#### Example:
-```
-
-f = fits_create("minimal.fits";protect=false)
-fits_info(f[1])
-
- File: minimal.fits
- HDU: 1
- DataType: Any
- Datasize: (0,)
-
- Metainformation:
- SIMPLE  =                    T / file does conform to FITS standard             
- NAXIS   =                    0 / number of data axes                            
- EXTEND  =                    T / FITS dataset may contain extensions            
- COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
- END
-
-```
-"""
-function parse_FITS_TABLE(FITS_HDU)
-    
-    dict = FITS_HDU.header.dict
-    thdu = Base.strip(Base.get(dict,"XTENSION", "UNKNOWN") ,['\'',' '])
-    
-    thdu == "TABLE" || return error("Error: $thdu is not an ASCII TABLE HDU")
-    
-    ncols = Base.get(dict,"TFIELDS", 0)
-    nrows = Base.get(dict,"NAXIS2", 0)
-    tbcol = [Base.get(dict,"TBCOL$n", 0) for n=1:ncols]
-    tform = [Base.get(dict,"TFORM$n", 0) for n=1:ncols]
-    ttype = [cast_FORTRAN_format(tform[n]).Type for n=1:ncols]
-    tchar = [cast_FORTRAN_format(tform[n]).TypeChar for n=1:ncols]
-    width = [cast_FORTRAN_format(tform[n]).width for n=1:ncols]
-      itr = [(tbcol[k]:tbcol[k]+width[k]-1) for k=1:ncols]
-    
-     data = FITS_HDU.dataobject.data
-     data = [[data[i][itr[k]] for i=1:nrows] for k=1:ncols]
-     data = [tchar[k] == 'D' ? Base.join.(Base.replace!.(Base.collect.(data[k]), 'D'=>'E')) : data[k] for k=1:ncols]
-     Type = [ttype[k] == "Aw" ? (width[k] == 1 ? Char : String) : ttype[k] == "Iw" ? Int : Float64 for k=1:ncols]
-     data = [ttype[k] == "Aw" ? data[k] : parse.(Type[k],(data[k])) for k=1:ncols]
-    
-    return data
-    
-end
-
 """
     fits_create(filename [, data [; protect=true]])
 
