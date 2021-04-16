@@ -47,6 +47,7 @@ function fits_info(FITS_HDU; printformat=true)
     
 end
 
+# .................................................... fits_create ...................................................
 """
     fits_create(filename [, data [; protect=true]])
 
@@ -70,8 +71,8 @@ println(a);println(b)
  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
 
-
-
+@test fits_create()
+ \bf{passed test}
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
@@ -90,6 +91,24 @@ function fits_create(filename::String, data=[]; protect=true)
     _fits_save(FITS)
        
     return FITS
+    
+end
+# ............................
+function fits_create()
+    
+    strExample = "minimal.fits"
+    f = fits_create(strExample, protect=false)
+    
+    test1 = f[1].header.keys[1]  == "SIMPLE"
+    test2 = f[1].dataobject.data == Any[]
+    test3 = get(Dict(f[1].header.dict),"SIMPLE",0)
+    test4 = get(Dict(f[1].header.dict),"NAXIS",0) == 0
+    
+    rm(strExample); f = nothing
+    
+    test = .![test1, test2, test3, test4]
+
+    return !convert(Bool,sum(test))
     
 end
 
