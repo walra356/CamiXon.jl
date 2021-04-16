@@ -72,7 +72,7 @@ println(a);println(b)
  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
 
 @test fits_create()
- \bf{passed test}
+ \\bf{passed test}
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
