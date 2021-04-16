@@ -1,4 +1,4 @@
-function _run_fits_create()
+function run_fits_create()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false)
@@ -16,7 +16,7 @@ function _run_fits_create()
     
 end
 
-function _run_fits_extend()
+function run_fits_extend()
     
     strExample = "test_example.fits"
     data = [0x0000043e, 0x0000040c, 0x0000041f]
@@ -44,7 +44,7 @@ function _run_fits_extend()
     
 end
 
-function _run_fits_read()
+function run_fits_read()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false)    
@@ -64,7 +64,7 @@ function _run_fits_read()
     
 end
 
-function _run_fits_info()
+function run_fits_info()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false)    
@@ -84,7 +84,7 @@ function _run_fits_info()
     
 end
 
-function _run_fits_info()
+function run_fits_info()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false) 
