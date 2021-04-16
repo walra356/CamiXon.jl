@@ -94,18 +94,13 @@ end
 """
     fits_read(filename)
 
-Read FITS file and return Array of `FITS_HDU`'s
-#### Examples:
+Read FITS file and return Array of `FITS_HDU`s
+#### Example:
 ```
-
-f = fits_create("minimal.fits";protect=false)
+strExample
+fits_create(strExample;protect=false)
+f = fits_read(strExample)
 f[1].dataobject.data
-
- Any[]
-
-g = fits_read("minimal.fits")
-g[1].dataobject.data
-
  Any[]
 
 ```
