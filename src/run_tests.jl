@@ -1,4 +1,4 @@
-function run_fits_create()
+function test_fits_create()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false)
@@ -16,7 +16,7 @@ function run_fits_create()
     
 end
 
-function run_fits_extend()
+function test_fits_extend()
     
     strExample = "test_example.fits"
     data = [0x0000043e, 0x0000040c, 0x0000041f]
@@ -44,7 +44,7 @@ function run_fits_extend()
     
 end
 
-function run_fits_read()
+function test_fits_read()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false)    
@@ -64,27 +64,7 @@ function run_fits_read()
     
 end
 
-function run_fits_info()
-    
-    strExample = "minimal.fits"
-    f = fits_create(strExample, protect=false)    
-    f = nothing 
-    f = fits_read(strExample)
-    
-    test1 = f[1].header.keys[1]  == "SIMPLE"
-    test2 = f[1].dataobject.data == Any[]
-    test3 = get(Dict(f[1].header.dict),"SIMPLE",0)
-    test4 = get(Dict(f[1].header.dict),"NAXIS",0) == 0
-    
-    rm(strExample); f = nothing
-    
-    test = .![test1, test2, test3, test4]
-
-    return !convert(Bool,sum(test))
-    
-end
-
-function run_fits_info()
+function test_fits_info()
     
     strExample = "minimal.fits"
     f = fits_create(strExample, protect=false) 
