@@ -33,7 +33,7 @@ function fits_info(FITS_HDU)
         "hdutype: " * FITS_HDU.dataobject.hdutype,
         "DataType: " * string(Base.eltype(FITS_HDU.dataobject.data)),
         "Datasize: " * string(Base.size(FITS_HDU.dataobject.data)),
-        "\r\nMetainformation:\r\n"
+        "\r\nMetainformation:"
         ]
     
     records = FITS_HDU.header.records
