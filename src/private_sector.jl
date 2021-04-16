@@ -17,7 +17,7 @@ function _isavailable(filename::String, protect::Bool)
     
 end
 
-function _rm_blanks!(records::Array{String,1})               # remove blank records
+function _rm_blanks(records::Array{String,1})               # remove blank records
     
     record_B = repeat(' ',length(records[1]))
     
