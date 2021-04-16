@@ -28,19 +28,20 @@ fits_info(f[1])
 function fits_info(FITS_HDU)
     
     info = [
-        "\r\nFile: " * FITS_HDU.filename * "\r\n",
-        "hdu: " * string(FITS_HDU.hduindex) * "\r\n",
-        "hdutype: " * FITS_HDU.dataobject.hdutype * "\r\n",
-        "DataType: " * string(Base.eltype(FITS_HDU.dataobject.data)) * "\r\n",
-        "Datasize: " * string(Base.size(FITS_HDU.dataobject.data)) * "\r\n",
-        "\r\nMetainformation:\r\n"
+        "\r\nFile: " * FITS_HDU.filename,
+        "hdu: " * string(FITS_HDU.hduindex),
+        "hdutype: " * FITS_HDU.dataobject.hdutype,
+        "DataType: " * string(Base.eltype(FITS_HDU.dataobject.data)),
+        "Datasize: " * string(Base.size(FITS_HDU.dataobject.data)),
+        "\r\nMetainformation:
         ]
     
-    records = FITS_HDU.header.records .* "\r\n"
+    records = FITS_HDU.header.records
     
     append!(info,records)
+    _rm_blanks(records)
 
-    return print(Base.join(info))
+    return print(Base.join(info .* "\r\n"))
     
 end
 
