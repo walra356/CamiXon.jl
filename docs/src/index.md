@@ -15,13 +15,17 @@ A package for image analysis of backscattered light
 ## FITS
 
 FITS stands for 'Flexible Image Transport System'. This is an open standard for storage of primary and processed image data. 
-The standard was developed for the astronomy community to store a set of images together with tables of spectral information.
-Within CamiXion only the basic FITS functionality is implemented for users not requiring the sophisticated celestal coordinate information.
+The standard was origionally developed for the astronomy community to store a set of images together with tables of spectral information.
+Over the years it has developed into a professionally maintained scientific standard.
+
+Within CamiXion only the basic FITS functionality is implemented for users not requiring celestal coordinate information.
+The user can create, read and extend .fits files as well as create, edit and delete user-defined metainformation.
 
 A FITS file consists of a name and one or more header-data-units (HDUs) concatenated one after the other.
 Each HDU consists of a data block preceeded by header records containing metainformation.
 
-By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU' objects to the variable `f`.
+By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objects to the variable `f`.
+
 
 ```@docs
 FITS_HDU
