@@ -1,9 +1,12 @@
 # ......................................... FITS public sector .................................................................
 
 """
-    fits_info(FITS_HDU)
+    fits_info(FITS_HDU; printformat=true)
 
 Print metafinformation of given `FITS_HDU`
+
+Key:
+* `printformat::Bool`: output formatted by function `print`
 #### Example:
 ```
 
@@ -25,22 +28,22 @@ fits_info(f[1])
 
 ```
 """
-function fits_info(FITS_HDU)
+function fits_info(FITS_HDU; printformat=true)
     
     info = [
         "\r\nFile: " * FITS_HDU.filename,
-        "hdu: " * string(FITS_HDU.hduindex),
+        "hdu: " * Base.string(FITS_HDU.hduindex),
         "hdutype: " * FITS_HDU.dataobject.hdutype,
-        "DataType: " * string(Base.eltype(FITS_HDU.dataobject.data)),
-        "Datasize: " * string(Base.size(FITS_HDU.dataobject.data)),
+        "DataType: " * Base.string(Base.eltype(FITS_HDU.dataobject.data)),
+        "Datasize: " * Base.string(Base.size(FITS_HDU.dataobject.data)),
         "\r\nMetainformation:"
         ]
     
     records = FITS_HDU.header.records
     
-    append!(info,_rm_blanks(records))
+    Base.append!(info,_rm_blanks(records))
 
-    return print(Base.join(info .* "\r\n"))
+    return printformat? print(Base.join(info .* "\r\n")) : Base.join(info .* "\r\n")
     
 end
 
