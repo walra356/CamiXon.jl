@@ -47,5 +47,6 @@ include("private_sector.jl")
 include("public_sector.jl")
 include("search_algorithms.jl")
 include("mathematics.jl") 
+include("run_tests.jl") 
 
 end
