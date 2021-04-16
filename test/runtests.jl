@@ -34,7 +34,7 @@ using Test
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits" 
     #@test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
     @test fits_create()
-    #@test test_fits_extend()
-    #@test test_fits_read()
-    #@test test_fits_info()
+    @test fits_extend()
+    @test fits_read()
+    @test fits_info()
 end
