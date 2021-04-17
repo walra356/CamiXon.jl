@@ -502,7 +502,7 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     
     _fits_save([FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i ∈ eachindex(FITS_headers)])
     
-    return println("'$key': key deleted")
+    return @printf "'$key': key deleted"
     
 end
 # test ...
@@ -515,8 +515,8 @@ function fits_delete_key()
     fits_delete_key(strExample, 1, "EXTEND2");
 
     f = fits_read(strExample)
- 
     test = Base.get(f[1].header.dict,"EXTEND2",1)
+    test = convert(Bool,test)
     
     rm(strExample)
            
