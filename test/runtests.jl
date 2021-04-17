@@ -37,4 +37,9 @@ using Test
     @test fits_extend()
     @test fits_read()
     @test fits_info()
+    @test fits_copy()
+    @test fits_create_key()
+    @test fits_edit_key()
+    @test fits_delete_key()
+    
 end
