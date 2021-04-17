@@ -306,7 +306,7 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     
     ok = Base.Filesystem.isfile(filenameB)
     
-    return ok ? "'$filenameA' was saved as '$filenameB'" : error("FitsError: '$filenameA': copy failed")
+    return ok ? println("'$filenameA' was saved as '$filenameB'") : println("'$filenameA': copy failed")
     
 end
 
@@ -363,7 +363,7 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Real, c
     f = fits_read(filename)
     ok = Base.get(f[hduindex].header.dict, key, " ") == val
     
-    return ok ? "'$key': key added'" : error("FitsError: '$key': error in adding key'")
+    return ok ? println("'$key': key added'") : println("'$key': error in adding key'")
     
 end
 
@@ -408,7 +408,7 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, 
     f = fits_read(filename)
     ok = Base.get(f[hduindex].header.dict, key, " ") == val
     
-    return ok ? "'$key': edit key completed'" : error("FitsError: '$key': error in editing'")
+    return ok ? println("'$key': edit key completed'") : println("'$key': error in editing'")
     
 end
 
@@ -463,7 +463,7 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     f = fits_read(filename)
     ok = Base.get(f[hduindex].header.dict, key, true)
     
-    return ok ? "'$key': key deleted" : error("FitsError: $key: key not deleted")
+    return ok ? println("'$key': key deleted") : prinln("'$key': key not deleted")
     
 end
 
