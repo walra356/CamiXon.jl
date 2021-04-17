@@ -38,5 +38,3 @@ using Test
     @test fits_read()
     @test fits_info()
 end
-
-end
