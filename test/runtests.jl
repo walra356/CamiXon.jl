@@ -36,6 +36,6 @@ using Test
     @test fits_create()
     @test fits_extend()
     @test fits_read()
-    @test fits_info())
-    
+    @test fits_info()
+    end
 end
