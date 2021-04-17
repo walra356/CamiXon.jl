@@ -129,7 +129,7 @@ function fits_create()
     test3 = get(Dict(f[1].header.dict),"SIMPLE",0)
     test4 = get(Dict(f[1].header.dict),"NAXIS",0) == 0
     
-    rm(strExample); f = nothing
+    rm(strExample)
     
     test = .![test1, test2, test3, test4]
 
@@ -151,9 +151,6 @@ f[1].dataobject.data
   Any[]
 
 rm(strExample); f = nothing
-
-@test fits_read()
-  Test Passed
 ```
 """
 function fits_read(filename::String)
@@ -305,10 +302,14 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     strA = "'$filenameA' was saved as '$filenameB'"
     strB = "'$filenameA': copy failed"
     
-    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
+    _isavailable(filenameB, protect) && _fits_write_IO(o,filenameB)
+    
+    strMessage = _isavailable(filenameB, protect) ? strA : strB
+    
+    return message ? strMessage : nothing
     
 end
-# Test ...
+# test ...
 function fits_copy()
     
     strExample_A = "test_example_A.fits"
@@ -317,7 +318,7 @@ function fits_copy()
     data = [0x0000043e, 0x0000040c, 0x0000041f]
     f = fits_create(strExample_A, data, protect=false)
     
-    fits_copy(strExample_A, strExample_B; protect=false)
+    fits_copy(strExample_A, strExample_B; protect=false);                    # ; suppress message
     
     test = Base.Filesystem.isfile(strExample_B)
     
@@ -380,7 +381,22 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Real, c
     return println("'$key': key added; new record: '$(H.records[i])'")
     
 end
+# test ...
+function fits_add_key()
+    
+    strExample="minimal.fits"
+    fits_create(strExample; protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
 
+    f = fits_read(strExample)
+ 
+    test = Base.get(f[1].header.dict,"EXTEND2",0)
+    
+    rm(strExample)
+           
+    return test
+    
+end
 
 """
     fits_edit_key(filename, hduindex, key, value, comment)
@@ -421,6 +437,23 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, 
     _fits_save([FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i ∈ eachindex(FITS_headers)])
     
     return println("'$key': key edited; new record: '$(H.records[i])'")
+    
+end
+# test ...
+function fits_edit_key()
+    
+    strExample="minimal.fits"
+    fits_create(strExample; protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
+    fits_edit_key(strExample, 1, "EXTEND2", false, "value was changed");
+
+    f = fits_read(strExample)
+ 
+    test = !Base.get(f[1].header.dict,"EXTEND2",1)
+    
+    rm(strExample)
+           
+    return test
     
 end
 
@@ -476,3 +509,22 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     return println("'$key': key deleted")
     
 end
+# test ...
+function fits_delete_key()
+    
+    strExample="minimal.fits"
+    fits_create(strExample; protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
+    fits_edit_key(strExample, 1, "EXTEND2", false, "value was changed");
+    fits_delete_key(strExample, 1, "EXTEND2");
+
+    f = fits_read(strExample)
+ 
+    test = Base.get(f[1].header.dict,"EXTEND2",1)
+    
+    rm(strExample)
+           
+    return test
+    
+end
+
