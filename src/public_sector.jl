@@ -302,25 +302,11 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     strA = "'$filenameA' was saved as '$filenameB'"
     strB = "'$filenameA': copy failed"
     
-    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
+    _isavailable(filenameB, protect) &&  _fits_write_IO(o,filenameB)
     
-end
-# test ...
-function fits_copy()
+    ok = Base.Filesystem.isfile(filenameB)
     
-    strExample_A = "test_example_A.fits"
-    strExample_B = "test_example_B.fits"
-    
-    data = [0x0000043e, 0x0000040c, 0x0000041f]
-    f = fits_create(strExample_A, data, protect=false)
-    
-    fits_copy(strExample_A, strExample_B; protect=false);                    # ; suppress message
-    
-    test = Base.Filesystem.isfile(strExample_B)
-    
-    rm(strExample_A); rm(strExample_B)
-
-    return test
+    return ok ? "'$filenameA' was saved as '$filenameB'" ? error("FitsError: '$filenameA': copy failed")
     
 end
 
@@ -373,24 +359,11 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Real, c
     H = _cast_header(H.records, hduindex)                               # here we cast FITS_headers[hduindex] 
     
     _fits_save([FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i ∈ eachindex(FITS_headers)])
-    
-    return println("'$key': key added; new record: '$(H.records[i])'")
-    
-end
-# test ...
-function fits_add_key()
-    
-    strExample="minimal.fits"
-    fits_create(strExample; protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
 
-    f = fits_read(strExample)
- 
-    test = Base.get(f[1].header.dict,"EXTEND2",0)
+    f = fits_read(filename)
+    ok = Base.get(f[hduindex].header.dict, key, " ") == val
     
-    rm(strExample)
-           
-    return test
+    return ok ? "'$key': key added'" : error("FitsError: '$key': error in adding key'")
     
 end
 
@@ -426,33 +399,18 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, 
      
     H = FITS_headers[hduindex]
         Base.haskey(H.maps, key) ||  return println("'$key': cannot be deleted (key not found)")
-    i = Base.get(H.maps, key, "error: key not found")
+    i = Base.get(H.maps, key, error("FitsError: $key: key not found"))
         H.records[i] = Base.rpad(key,8) * "= " * Base.lpad(val,20) * " / " * Base.rpad(com,47)
     H = _cast_header(H.records, hduindex) 
     
     _fits_save([FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i ∈ eachindex(FITS_headers)])
+
+    f = fits_read(filename)
+    ok = Base.get(f[hduindex].header.dict, key, " ") == val
     
-    return println("'$key': key edited; new record: '$(H.records[i])'")
+    return ok ? "'$key': edit key completed'" : error("FitsError: '$key': error in editing'")
     
 end
-# test ...
-function fits_edit_key()
-    
-    strExample="minimal.fits"
-    fits_create(strExample; protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
-    fits_edit_key(strExample, 1, "EXTEND2", false, "value was changed");
-
-    f = fits_read(strExample)
- 
-    test = !Base.get(f[1].header.dict,"EXTEND2",1)
-    
-    rm(strExample)
-           
-    return test
-    
-end
-
 
 """
     fits_delete_key(filename, hduindex, key)
@@ -496,31 +454,16 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     
     H = FITS_headers[hduindex]
         Base.haskey(H.maps, key) || return println("'$key': cannot be deleted (key not found)") 
-    i = Base.get(H.maps, key, "error: key not found")
+    i = Base.get(H.maps, key, error("FitsError: $key: key not found"))
         Base.splice!(H.records,i)
     H = _cast_header(H.records, hduindex)                           # here we cast FITS_headers[hduindex] 
     
     _fits_save([FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i ∈ eachindex(FITS_headers)])
-    
-    return @printf "'$key': key deleted"
-    
-end
-# test ...
-function fits_delete_key()
-    
-    strExample="minimal.fits"
-    fits_create(strExample; protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension");      # ; suppress message
-    fits_edit_key(strExample, 1, "EXTEND2", false, "value was changed");
-    fits_delete_key(strExample, 1, "EXTEND2");
 
-    f = fits_read(strExample)
-    test = Base.get(f[1].header.dict,"EXTEND2",1)
-    test = convert(Bool,test)
+    f = fits_read(filename)
+    ok = Base.get(f[hduindex].header.dict, key, true)
     
-    rm(strExample)
-           
-    return test
+    return ok ? "'$key': key deleted" : error("FitsError: $key: key not deleted"))
     
 end
 
