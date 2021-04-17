@@ -302,11 +302,7 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     strA = "'$filenameA' was saved as '$filenameB'"
     strB = "'$filenameA': copy failed"
     
-    _isavailable(filenameB, protect) && _fits_write_IO(o,filenameB)
-    
-    strMessage = _isavailable(filenameB, protect) ? strA : strB
-    
-    return message ? strMessage : nothing
+    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
     
 end
 # test ...
