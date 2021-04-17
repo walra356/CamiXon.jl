@@ -463,7 +463,7 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     f = fits_read(filename)
     ok = Base.get(f[hduindex].header.dict, key, true)
     
-    return ok ? "'$key': key deleted" : error("FitsError: $key: key not deleted"))
+    return ok ? "'$key': key deleted" : error("FitsError: $key: key not deleted")
     
 end
 
