@@ -25,9 +25,6 @@ fits_info(f[1])
   EXTEND  =                    T / FITS dataset may contain extensions            
   COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
   END
-
-@test fits_info()
-  Test Passed
 ```
 """
 function fits_info(FITS_HDU; printformat=true)
@@ -48,7 +45,7 @@ function fits_info(FITS_HDU; printformat=true)
     return printformat ? print(Base.join(info .* "\r\n")) : Base.join(info .* "\r\n")
     
 end
-# ............ test ............
+#  test ...
 function fits_info()
     
     strExample = "minimal.fits"
@@ -69,6 +66,8 @@ function fits_info()
             ]
        
     test = fits_info(f[1]; printformat=false) == Base.join(info .* "\r\n")
+    
+    rm(strExample)
     
     return test
     
@@ -99,9 +98,6 @@ b = f[1].header.keys
 println(a);println(b)
   UInt32[0x0000043e, 0x0000040c, 0x0000041f]
   ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
-
-@test fits_create()
-  Test Passed
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
@@ -122,7 +118,7 @@ function fits_create(filename::String, data=[]; protect=true)
     return FITS
     
 end
-# ............ test ............
+# test ...
 function fits_create()
     
     strExample = "minimal.fits"
@@ -174,7 +170,7 @@ function fits_read(filename::String)
     return FITS
     
 end
-# ............ test ............
+# test ...
 function fits_read()
     
     strExample = "minimal.fits"
@@ -222,9 +218,6 @@ f[2].dataobject.data
    "5.0e-6 1071 5.0  e ABCeeaeeEEEEEEEEEEEE "
 
 rm(strExample); f = nothing; data =nothing
-
-@test fits_read()
-  Test Passed
 ```
 """
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")   
@@ -252,7 +245,7 @@ function fits_extend(filename::String, data_extend, hdutype="IMAGE")
     return FITS
     
 end
-# ............ test ............
+# test ...
 function fits_extend()
     
     strExample = "test_example.fits"
@@ -315,7 +308,24 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
     
 end
+# Test ...
+function fits_copy()
+    
+    strExample_A = "test_example_A.fits"
+    strExample_B = "test_example_B.fits"
+    
+    data = [0x0000043e, 0x0000040c, 0x0000041f]
+    f = fits_create(strExample_A, data, protect=false)
+    
+    fits_copy(strExample_A, strExample_B; protect=false)
+    
+    test = Base.Filesystem.isfile(strExample_B)
+    
+    rm(strExample_A); rm(strExample_B)
 
+    return test
+    
+end
 
 """
     fits_add_key(filename, hduindex, key, value, comment)
@@ -323,11 +333,10 @@ end
 Add a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
-
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
 fits_add_key(filnam, 1, "EXTEND2", true, "FITS dataset may contain extension")
- 'EXTEND2': key added; new record: 'EXTEND2 =                    T / FITS dataset may contain extension             '
+  'EXTEND2': key added; new record: 'EXTEND2 =                    T / FITS dataset may contain extension             '
 
 f = fits_read(filnam)
 fits_info(f[1])
@@ -344,7 +353,6 @@ fits_info(f[1])
   COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg               
   EXTEND2 =                    T / FITS dataset may contain extension             
   END
-
 ```
 """
 function fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
@@ -380,15 +388,13 @@ end
 Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
-
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
 fits_add_key(filnam, 1, "EXTEND12", true, "FITS dataset may contain extension")
-'EXTEND12': key added; new record: 'EXTEND12=                    T / FITS dataset may contain extension             '
+  'EXTEND12': key added; new record: 'EXTEND12=                    T / FITS dataset may contain extension             '
 
 fits_edit_key(filnam, 1, "EXTEND12", true, "FITS dataset new comment")
-'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
-
+  'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
 ```
 """
 function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
@@ -443,7 +449,6 @@ fits_delete_key(filnam, 1, "EXTEND12")
 
 fits_delete_key(filnam, 1, "NAXIS")
  'NAXIS': cannot be deleted (key protected under FITS standard)
-
 ```
 """
 function fits_delete_key(filename::String, hduindex::Int, key::String)
