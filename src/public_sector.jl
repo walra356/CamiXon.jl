@@ -281,13 +281,13 @@ Key:
 #### Examples:
 ```
 fits_copy("T01.fits")
-    'T01.fits' was saved as 'T01 - Copy.fits'
+  'T01.fits' was saved as 'T01 - Copy.fits'
 
 fits_copy("T01.fits", "T01a.fits")
-    filename (T01a.fits) in use (overwrite protected)
+  filename (T01a.fits) in use (overwrite protected)
 
 fits_copy("T01.fits", "T01a.fits"; protect=false)
-    'T01.fits' was saved as 'T01a.fits'
+  'T01.fits' was saved as 'T01a.fits'
 ```
 """
 function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
