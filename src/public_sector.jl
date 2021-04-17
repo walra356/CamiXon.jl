@@ -297,16 +297,12 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     
     filenameB = filenameB == " " ? "$(f.name) - Copy.fits" : filenameB
     
-    _validate_FITS_name(filenameB)
+    _validate_FITSname(filenameB)
     
     strA = "'$filenameA' was saved as '$filenameB'"
     strB = "'$filenameA': copy failed"
     
-    _isavailable(filenameB, protect) &&  _fits_write_IO(o,filenameB)
-    
-    ok = Base.Filesystem.isfile(filenameB)
-    
-    return ok ? println("'$filenameA' was saved as '$filenameB'") : println("'$filenameA': copy failed")
+    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
     
 end
 
