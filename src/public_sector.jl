@@ -306,7 +306,7 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     
     ok = Base.Filesystem.isfile(filenameB)
     
-    return ok ? "'$filenameA' was saved as '$filenameB'" ? error("FitsError: '$filenameA': copy failed")
+    return ok ? "'$filenameA' was saved as '$filenameB'" : error("FitsError: '$filenameA': copy failed")
     
 end
 
