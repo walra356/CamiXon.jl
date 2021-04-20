@@ -67,7 +67,7 @@ function _format_recordvalue(val::Any)
       
     typeof(val) <: Real   && return _format_recordvalue_numeric(val)
     typeof(val) <: String && _is_recordvalue_charstring(val) && return _format_recordvalue_charstring(val)
-    #typeof(val) <: DateTime && return _format_recordvalue_datetime(val)
+    typeof(val) <: DateTime && return _format_recordvalue_datetime(val)
     
     return error("FitsError: invalid record value type")
      
