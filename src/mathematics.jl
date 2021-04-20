@@ -82,12 +82,12 @@ function _partition(a::Array{Int,1}, n::Int, i::Int, cp::Array{Array{Array{Int,1
 
 end
 
-function _restricted_partitions(o::Array{Int,1}, n::Int, np::Int, ll::Array{Array{Int,1},1}, cp::Array{Array{Array{Int,1},1},1})
+function _restricted_partitions(o::Array{Int,1}, n::Int, np::Int, cp::Array{Array{Array{Int,1},1},1})
 
     oo = [o]
 
     for p=1:np-1
-        i = Base.findlast(oo[p].>ll[length(oo[p])])
+        i = Base.findlast(x -> x > 1, oo[p])
         Base.append!(oo,[_partition(oo[p],n,i,cp)])
     end
 
@@ -150,20 +150,19 @@ integer_partitions(7,4; transpose=true)
 """
 function integer_partitions(n::Int, m=0; transpose=false, count=false)
 
-    ll = [ones(Int,l) for l=1:n]
     cp = [canonical_partitions(m) for m=1:n]
-    oo = [ll[n]]
     pc = [_partition_count(n,m)  for m=1:n]
+    oo = [ones(Int,n)]
 
     np = m > 0 ? pc[m] : sum(pc)
 
     if !count
 
         if m == 0
-            o = [_restricted_partitions(cp[n][p],n,pc[p],ll,cp) for p=2:n]
+            o = [_restricted_partitions(cp[n][p],n,pc[p],cp) for p=2:n]
             for p=1:n-1 append!(oo,o[p]) end
         else
-            oo = _restricted_partitions(cp[n][m],n,pc[m],ll,cp)
+            oo = _restricted_partitions(cp[n][m],n,pc[m],cp)
         end
 
         if transpose

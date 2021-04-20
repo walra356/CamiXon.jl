@@ -43,7 +43,7 @@ function find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  wh
 
     a == () ? a = Base.unique(A) : nothing
 
-    o = [Base.findall(A .== Base.fill(a[i],length(A))) for i in eachindex(a)]
+    o = [Base.findall(x -> x == a[i], A) for i in eachindex(a)]
 
     return count ? length.(o) : o
 
@@ -97,7 +97,7 @@ function find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  w
 
     a == () ? a = Base.unique(A) : nothing
 
-    o = [Base.findfirst(A .== Base.fill(a[i],length(A))) for i in eachindex(a)]
+    o = [Base.findfirst(x -> x == a[i], A) for i in eachindex(a)]
 
     return dict ? [a[i] => o[i] for i in eachindex(a)] : o
 
@@ -150,7 +150,7 @@ function find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  wh
 
     a == () ? a = Base.unique(A) : nothing
 
-    o = [Base.findlast(A .== Base.fill(a[i],length(A))) for i ∈ eachindex(a)]
+    o = [Base.findlast(x -> x == a[i], A) for i ∈ eachindex(a)]
 
     return dict ? [a[i] => o[i] for i ∈ eachindex(a)] : o
 
