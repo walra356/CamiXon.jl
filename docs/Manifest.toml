@@ -34,9 +34,14 @@ version = "1.5.0"
 
 [[DataValueInterfaces]]
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
-	@@ -41,160 +180,958 @@ version = "1.0.0"
-deps = ["Printf"]
-uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+uuid = "e2d170a0-9d28-54be-80f0-106bbe20a464"
+version = "1.0.0"
+
+#[[DataValueInterfaces]]
+#git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
+#	@@ -41,160 +180,958 @@ version = "1.0.0"
+#deps = ["Printf"]
+#uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
