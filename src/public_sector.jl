@@ -363,7 +363,7 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Union{R
     return FITS
     
 end
-function fits_add_key11111(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
+function fits_add_key1111(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
     
     o = _fits_read_IO(filename)  
     
