@@ -6,6 +6,12 @@ function _validate_FITS_name(filename::String)
     
 end
 
+function _isascii_printable(str::Union{Char,String})
+    
+    return isascii(str) ? !convert(Bool,sum(.!(31 .< Int.(collect(str)) .< 127))) : false
+    
+end
+
 function _isavailable(filename::String, protect::Bool)
      
     str = "FitsWarning: '$filename': filename in use (set ';protect=false' to overwrite)"
