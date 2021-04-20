@@ -344,6 +344,35 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Union{R
        FITS_data = [_read_data(o,i) for i=1:nhdu] 
     
     newrecords = _fits_new_records(key, val, com)
+    nrec = length(newrecords)
+     
+    H = FITS_headers[hduindex]
+        Base.haskey(H.maps,key) && return println("'$key': key in use (use different key name or edit key)")
+    i = Base.get(H.maps, "END", "Error: key not found")
+        H.records[i] = newrecords[1]
+        Base.push!(H.records, "END" * Base.repeat(" ",77))
+        nrec > 1 ? [Base.push!(H.records, newrecords[i]) for i=2:nrec] : 0
+        Base.push!(H.records, "END" * Base.repeat(" ",77))
+    
+    FITS_headers[hduindex] = _cast_header(H.records, hduindex)                               
+    
+    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
+    
+    _fits_save(FITS)
+    
+    return FITS
+    
+end
+function fits_add_key11111(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
+    
+    o = _fits_read_IO(filename)  
+    
+    nhdu = _hdu_count(o)
+    
+    FITS_headers = [_read_header(o,i) for i=1:nhdu] 
+       FITS_data = [_read_data(o,i) for i=1:nhdu] 
+    
+    newrecords = _fits_new_records(key, val, com)
      
     H = FITS_headers[hduindex]
     Base.haskey(H.maps,key) && return println("'$key': key in use (use different key name or edit key)")
