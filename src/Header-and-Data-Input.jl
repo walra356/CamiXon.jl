@@ -1,5 +1,7 @@
 # ....................... Header and Data input ..................
 
+using Dates
+
 function _fits_eltype(nbits::Int, bzero::Number)
     
     E = nbits ==   8 ? UInt8 : 
