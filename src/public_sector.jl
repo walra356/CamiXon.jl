@@ -378,7 +378,7 @@ fits_edit_key(filnam, 1, "EXTEND12", true, "FITS dataset new comment")
   'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
 ```
 """
-function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+function fits_edit_key(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
 
     o = _fits_read_IO(filename)
 
