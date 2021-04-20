@@ -1,5 +1,6 @@
 using CamiXon
 using Documenter
+using Dates
 
 makedocs(;
     modules=[CamiXon],
