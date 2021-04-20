@@ -47,7 +47,7 @@ function _format_recordvalue_numeric(val::Real)
     
 end
 
-function _format_recordvalue_datetime(val::DateTime)
+function _format_recordvalue_datetime(val::Dates.DateTime)
     
     return "'" * string(val) * "'"
     
