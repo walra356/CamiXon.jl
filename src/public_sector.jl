@@ -388,16 +388,20 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, 
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
     key = strip(key)
-    val = val == true ? "T" : val == false ? "F" : val
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
 
     key ∈ res && return println("'$key': cannot be edited (key protected under FITS standard)")
+    
+    newrecords = _fits_new_records(key, val, com)
+    nrec = length(newrecords)
 
     H = FITS_headers[hduindex]
         Base.haskey(H.maps, key) ||  return println("'$key': cannot be deleted (key not found)")
     i = Base.get(H.maps, key, error("FitsError: $key: key not found"))
-        H.records[i] = Base.rpad(key,8) * "= " * Base.lpad(val,20) * " / " * Base.rpad(com,47)
-    H = _cast_header(H.records, hduindex)
+        H.records[i] = newrecords[1]
+        nrec > 1 ? [Base.push!(H.records, newrecords[i]) for i=2:nrec] : 0
+
+    FITS_headers[hduindex] = _cast_header(H.records, hduindex)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
@@ -451,12 +455,14 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
         Base.haskey(H.maps, key) || return println("'$key': cannot be deleted (key not found)")
     i = Base.get(H.maps, key, error("FitsError: $key: key not found"))
         Base.splice!(H.records,i)
-    H = _cast_header(H.records, hduindex)                           # here we cast FITS_headers[hduindex]
+
+    FITS_headers[hduindex] = _cast_header(H.records, hduindex)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
     _fits_save(FITS)
 
     return FITS
+
 
 end
