@@ -79,7 +79,7 @@ function _format_recordkey(key::String)
       
     length(Base.strip(key)) < 9 ? key = Base.strip(key) : (println(strkey); key = key[1:8])
     
-    return rpad(join(key),8)
+    return rpad(key,8)
      
 end
 
