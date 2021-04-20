@@ -4,6 +4,7 @@ authors = ["= <walra356@planet.nl> and contributors"]
 version = "1.2.3"
 
 [deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 #FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
 
 [compat]
