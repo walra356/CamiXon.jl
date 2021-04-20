@@ -363,62 +363,6 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Union{R
     return FITS
     
 end
-function fits_add_key111(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
-    
-    o = _fits_read_IO(filename)  
-    
-    nhdu = _hdu_count(o)
-    
-    FITS_headers = [_read_header(o,i) for i=1:nhdu] 
-       FITS_data = [_read_data(o,i) for i=1:nhdu] 
-    
-    newrecords = _fits_new_records(key, val, com)
-     
-    H = FITS_headers[hduindex]
-    Base.haskey(H.maps,key) && return println("'$key': key in use (use different key name or edit key)")
-    H.records = H.records[1:end-1]
-   [Base.push!(H.records, newrecords[i]) for i ∈ eachindex(newrecords)]
-    Base.push!(H.records, "END" * Base.repeat(" ",77))
-    
-    FITS_headers[hduindex] = _cast_header(H.records, hduindex)                               
-    
-    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
-    
-    _fits_save(FITS)
-    
-    return FITS
-    
-end
-function fits_add_key22222222222(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
-    
-    o = _fits_read_IO(filename)  
-    
-    nhdu = _hdu_count(o)
-    
-    FITS_headers = [_read_header(o,i) for i=1:nhdu] 
-       FITS_data = [_read_data(o,i) for i=1:nhdu] 
-    
-    strkey = "Key truncated at 8 characters (FITS standard)"    
-    strval = "Value truncated at 20 characters (FITS standard)"    
-    strcom = "Comment truncated at 47 characters (FITS standard)"
-    
-    length(key) < 9 ? key = Base.strip(key) : (println(strkey); key = key[1:8])
-    val = val == true ? "T" : val == false ? "F" : val
-     
-    H = FITS_headers[hduindex]
-        Base.haskey(H.maps,key) && return println("'$key': key in use (use different key name or edit key)")
-    i = Base.get(H.maps, "END", "Error: key not found")
-        H.records[i] = rpad(key,8) * "= " * lpad(val,20) * " / " * rpad(com,47)
-        Base.push!(H.records, "END" * Base.repeat(" ",77))
-    H = _cast_header(H.records, hduindex)                               # here we cast FITS_headers[hduindex] 
-    
-    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
-    
-    _fits_save(FITS)
-    
-    return FITS
-    
-end
 
 """
     fits_edit_key(filename, hduindex, key, value, comment)
