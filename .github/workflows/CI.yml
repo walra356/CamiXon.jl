@@ -50,7 +50,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: doctest
-            using Dates
             using CamiXon
             doctest(CamiXon)'
       - run: julia --project=docs docs/make.jl
