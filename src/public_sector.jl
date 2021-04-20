@@ -387,7 +387,7 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Union{
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
-    key = strip(key)
+    key = join(strip(key))  # join to turn substring into string
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
 
     key ∈ res && return println("'$key': cannot be edited (key protected under FITS standard)")
@@ -446,7 +446,7 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
-    key = strip(key)
+    key = join(strip(key))
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","BSCALE","END"]
 
     key ∈ res && return println("'$key': cannot be deleted (key protected under FITS standard)")
