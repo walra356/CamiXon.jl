@@ -17,6 +17,12 @@ function _isavailable(filename::String, protect::Bool)
     
 end
 
+function _isascii_printable(str::Union{Char,String})
+    
+    return isascii(str) ? !convert(Bool,sum(.!(31 .< Int.(collect(str)) .< 127))) : false
+    
+end
+
 function _rm_blanks(records::Array{String,1})               # remove blank records
     
     record_B = repeat(' ',length(records[1]))
