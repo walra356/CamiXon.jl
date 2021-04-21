@@ -391,7 +391,7 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, c
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
     key ∈ res && return println("'$key': cannot be edited (key protected under FITS standard)")
 
-    val = _is_recordvalue_charstring(val::Any) ? val : typeof(val) <: Real ? val : error("FitsError: "not a valid value type")
+    val = _is_recordvalue_charstring(val::Any) ? val : (typeof(val) <: Real) ? val : error("FitsError: not a valid value type")
 
     newrecords = _fits_new_records(key, val, com)
     nrec = length(newrecords)
@@ -417,7 +417,6 @@ end
 
 Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduindex]` of file with name  'filename'
 #### Examples:
-
 ```
 filnam="minimal.fits"
 fits_create(filnam;protect=false)
