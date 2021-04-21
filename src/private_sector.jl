@@ -2,7 +2,6 @@
 
 using Dates
 
-
 function _fits_bzero(E::DataType)
 
     return E ∉ [Int8, UInt16, UInt32, UInt64, UInt128] ? 0.0 : E == Int8 ? -128 : 2^(8E.size-1)
