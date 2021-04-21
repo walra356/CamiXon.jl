@@ -378,8 +378,8 @@ fits_edit_key(filnam, 1, "EXTEND12", true, "FITS dataset new comment")
   'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
 ```
 """
-function fits_edit_key(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
-
+function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, com::String)
+println("hoi")
     o = _fits_read_IO(filename)
 
     nhdu = _hdu_count(o)
@@ -387,11 +387,12 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Union{
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
-    key = join(strip(key))  # join to turn substring into string
+    key = string(strip(key))
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
-
     key ∈ res && return println("'$key': cannot be edited (key protected under FITS standard)")
-    
+
+    val = _is_recordvalue_charstring(val::Any) ? val : typeof(val) <: Real ? val : error("FitsError: "not a valid value type")
+
     newrecords = _fits_new_records(key, val, com)
     nrec = length(newrecords)
 
