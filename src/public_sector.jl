@@ -1,18 +1,87 @@
 # ......................................... FITS public sector .................................................................
+# .................................................... fits_create ...................................................
+"""
+    fits_create(filename [, data [; protect=true]])
+
+Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs.
+Key:
+* `protect::Bool`: overwrite protection
+#### Examples:
+```
+strExample = "minimal.fits"
+fits_create(strExample;protect=false)
+
+f = fits_read(strExample)
+a = f[1].dataobject.data
+b = f[1].header.keys
+println(a);println(b)
+  Any[]
+  ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
+
+strExample = "example.fits"
+data = [0x0000043e, 0x0000040c, 0x0000041f]
+fits_create(strExample, data; protect=false)
+
+f = fits_read(strExample)
+a = f[1].dataobject.data
+b = f[1].header.keys
+println(a);println(b)
+  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
+  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
+```
+"""
+function fits_create(filename::String, data=[]; protect=true)
+
+    strErr = "FitsError: '$filename': creation failed (filename in use - set ';protect=false' to overrule overwrite protection)"
+
+    _validate_FITS_name(filename)
+    _isavailable(filename, protect) || error(strErr)
+
+    nhdu = 1
+    hdutype = "PRIMARY"
+
+       FITS_data = [_cast_data(i, hdutype, data) for i=1:nhdu]
+    FITS_headers = [_cast_header(_PRIMARY_input(FITS_data[i]), i) for i=1:nhdu]
+
+    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
+
+    return _fits_save(FITS)
+
+end
+# test ...
+function fits_create()
+
+    strExample = "minimal.fits"
+    fits_create(strExample, protect=false)
+
+    f = fits_read(strExample)
+    a = f[1].header.keys[1]  == "SIMPLE"
+    b = f[1].dataobject.data == Any[]
+    c = get(Dict(f[1].header.dict),"SIMPLE",0)
+    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0
+
+    rm(strExample)
+
+    test = .![a, b, c, d]
+
+    return !convert(Bool,sum(test))
+
+end
+
 
 # .................................................... fits_info ...................................................
 """
-    fits_info(FITS_HDU; printformat=true)
+    fits_info(hdu)
 
 Print metafinformation of given `FITS_HDU`
-
-Key:
-* `printformat::Bool`: output formatted by function `print`
 #### Example:
 ```
 strExample = "minimal.fits"
-f = fits_create(strExample; protect=false)
-fits_info(f[1])
+fits_create(strExample)
+
+f = fits_read(strExample)
+p = fits_info(f[1])
+println(p)
 
   File: minimal.fits
   HDU: 1
@@ -27,30 +96,33 @@ fits_info(f[1])
   END
 ```
 """
-function fits_info(FITS_HDU; printformat=true)
+function fits_info(hdu::FITS_HDU)
+
+    typeof(hdu) <: FITS_HDU || error("FitsWarning: FITS_HDU not found")
 
     info = [
-        "\r\nFile: " * FITS_HDU.filename,
-        "hdu: " * Base.string(FITS_HDU.hduindex),
-        "hdutype: " * FITS_HDU.dataobject.hdutype,
-        "DataType: " * Base.string(Base.eltype(FITS_HDU.dataobject.data)),
-        "Datasize: " * Base.string(Base.size(FITS_HDU.dataobject.data)),
+        "\r\nFile: " * hdu.filename,
+        "hdu: " * Base.string(hdu.hduindex),
+        "hdutype: " * hdu.dataobject.hdutype,
+        "DataType: " * Base.string(Base.eltype(hdu.dataobject.data)),
+        "Datasize: " * Base.string(Base.size(hdu.dataobject.data)),
         "\r\nMetainformation:"
         ]
 
-    records = FITS_HDU.header.records
+    records = hdu.header.records
 
-    Base.append!(info,_rm_blanks(records))
+    Base.append!(info, records)
 
-    return printformat ? print(Base.join(info .* "\r\n")) : Base.join(info .* "\r\n")
+    return Base.join(info .* "\r\n")
 
 end
 #  test ...
 function fits_info()
 
     strExample = "minimal.fits"
-    f = fits_create(strExample, protect=false)
+    fits_create(strExample; protect=false)
 
+    f = fits_read(strExample)
     info = [
             "\r\nFile: minimal.fits",
             "hdu: 1",
@@ -65,75 +137,11 @@ function fits_info()
             "END                                                                             "
             ]
 
-    test = fits_info(f[1]; printformat=false) == Base.join(info .* "\r\n")
+    test = fits_info(f[1]) == Base.join(info .* "\r\n")
 
     rm(strExample)
 
     return test
-
-end
-
-# .................................................... fits_create ...................................................
-"""
-    fits_create(filename [, data [; protect=true]])
-
-Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs.
-Key:
-* `protect::Bool`: overwrite protection
-#### Examples:
-```
-strExample = "minimal.fits"
-f = fits_create(strExample;protect=false)
-a = f[1].dataobject.data
-b = f[1].header.keys
-println(a);println(b)
-  Any[]
-  ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
-
-strExample = "example.fits"
-data = [0x0000043e, 0x0000040c, 0x0000041f]
-f = fits_create(strExample, data; protect=false)
-a = f[1].dataobject.data
-b = f[1].header.keys
-println(a);println(b)
-  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
-  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
-```
-"""
-function fits_create(filename::String, data=[]; protect=true)
-
-    _validate_FITS_name(filename)
-    _isavailable(filename, protect) || error("FitsError: '$filename': creation failed")
-
-    nhdu = 1
-    hdutype = "PRIMARY"
-
-       FITS_data = [_cast_data(i, hdutype, data) for i=1:nhdu]
-    FITS_headers = [_cast_header(_PRIMARY_input(FITS_data[i]), i) for i=1:nhdu]
-
-    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
-
-    _fits_save(FITS)
-
-    return FITS
-
-end
-# test ...
-function fits_create()
-
-    strExample = "minimal.fits"
-    f = fits_create(strExample, protect=false)
-
-    test1 = f[1].header.keys[1]  == "SIMPLE"
-    test2 = f[1].dataobject.data == Any[]
-    test3 = get(Dict(f[1].header.dict),"SIMPLE",0)
-    test4 = get(Dict(f[1].header.dict),"NAXIS",0) == 0
-
-    rm(strExample)
-
-    test = .![test1, test2, test3, test4]
-
-    return !convert(Bool,sum(test))
 
 end
 
@@ -334,7 +342,7 @@ fits_info(f[1])
   END
 ```
 """
-function fits_add_key(filename::String, hduindex::Int, key::String, val::Union{Real,String,Char}, com::String)
+function fits_add_key(filename::String, hduindex::Int, key::String, val::Any, com::String)
 
     o = _fits_read_IO(filename)
 
@@ -343,17 +351,18 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Union{R
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
+    key = _format_key(key)
+
+    h = FITS_headers[hduindex]
+    Base.get(h.maps, key, 0) > 0 && return println("FitsError: '$key': key in use (use different name or edit key)")
+
     newrecords = _fits_new_records(key, val, com)
-    nrec = length(newrecords)
 
-    H = FITS_headers[hduindex]
-        Base.haskey(H.maps,key) && return println("'$key': key in use (use different key name or edit key)")
-    i = Base.get(H.maps, "END", 0)
-        i > 0 ? H.records[i] = newrecords[1] : error("Error: key not found")
-        nrec > 1 ? [Base.push!(H.records, newrecords[i]) for i=2:nrec] : 0
-        Base.push!(H.records, "END" * Base.repeat(" ",77))
+    Base.pop!(h.records)
+   [Base.push!(h.records, newrecords[i]) for i ∈ eachindex(newrecords)]
+    Base.push!(h.records, "END" * Base.repeat(" ",77))
 
-    FITS_headers[hduindex] = _cast_header(H.records, hduindex)
+    FITS_headers[hduindex] = _cast_header(h.records, hduindex)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
@@ -387,22 +396,23 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, c
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
-    key = string(strip(key))
+    key = _format_key(key)
     res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
-    key ∈ res && return println("'$key': cannot be edited (key protected under FITS standard)")
+    key ∈ res && return println("FitsError: '$key': cannot be edited (key protected under FITS standard)")
 
-    val = _is_recordvalue_charstring(val::Any) ? val : (typeof(val) <: Real) ? val : error("FitsError: not a valid value type")
+    h = FITS_headers[hduindex]
+    i = Base.get(h.maps, key, 0)
+    i == 0 && return println("FitsError: '$key': key not found")
 
+    nold = length(h.keys)
+    nobs = length(_fits_obsolete_records(h,i))
     newrecords = _fits_new_records(key, val, com)
-    nrec = length(newrecords)
+    oldrecords = h.records[i+nobs:end]
+   [Base.pop!(h.records) for j=i:nold]
+   [Base.push!(h.records, newrecords[i]) for i ∈ eachindex(newrecords)]
+   [Base.push!(h.records, oldrecords[i]) for i ∈ eachindex(oldrecords)]
 
-    H = FITS_headers[hduindex]
-        Base.haskey(H.maps, key) ||  error("FitsError: '$key': cannot be edited (key not found)")
-    i = Base.get(H.maps, key, 0)
-        H.records[i] = newrecords[1]
-        nrec > 1 ? [Base.push!(H.records, newrecords[i]) for i=2:nrec] : 0
-
-    FITS_headers[hduindex] = _cast_header(H.records, hduindex)
+    FITS_headers[hduindex] = _cast_header(h.records, hduindex)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
@@ -446,17 +456,21 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     FITS_headers = [_read_header(o,i) for i=1:nhdu]
        FITS_data = [_read_data(o,i) for i=1:nhdu]
 
-    key = join(strip(key))
-    res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","BSCALE","END"]
+    key = _format_key(key)
+    res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
+    key ∈ res && return println("FitsError: '$key': cannot be edited (key protected under FITS standard)")
 
-    key ∈ res && return println("'$key': cannot be deleted (key protected under FITS standard)")
+    h = FITS_headers[hduindex]
+    i = Base.get(h.maps, key, 0)
+    i == 0 && return println("FitsError: '$key': key not found")
 
-    H = FITS_headers[hduindex]
-        Base.haskey(H.maps, key) || error("FitsError: '$key': cannot be deleted (key not found)")
-    i = Base.get(H.maps, key, 0)
-        Base.splice!(H.records,i)
+    nold = length(h.keys)
+    nobs = length(_fits_obsolete_records(h,i))
+    oldrecords = h.records[i+nobs:end]
+   [Base.pop!(h.records) for j=i:nold]
+   [Base.push!(h.records, oldrecords[i]) for i ∈ eachindex(oldrecords)]
 
-    FITS_headers[hduindex] = _cast_header(H.records, hduindex)
+    FITS_headers[hduindex] = _cast_header(h.records, hduindex)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
@@ -464,5 +478,42 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
 
     return FITS
 
+end
+
+"""
+    fits_rename_key(filename, hduindex, keyold, keynew)
+
+Rename the key of a header record of file with name 'filename'
+#### Example:
+```              '
+```
+"""
+function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
+
+    o = _fits_read_IO(filename)
+
+    nhdu = _hdu_count(o)
+
+    FITS_headers = [_read_header(o,i) for i=1:nhdu]
+       FITS_data = [_read_data(o,i) for i=1:nhdu]
+
+    keyold = _format_key(keyold)
+       res = ["SIMPLE","BITPIX","NAXIS","NAXIS1","NAXIS2","NAXIS3","BZERO","END"]
+    keyold ∈ res && return println("FitsWarning: '$keyold': cannot be renamed (key protected under FITS standard)")
+
+    h = FITS_headers[hduindex]
+    i = Base.get(h.maps, keyold, 0)
+    i == 0 && return println("FitsError: '$keyold': key not found")
+    Base.get(h.maps, keynew, 0) > 0 && return println("FitsWarning: '$keynew': key in use (use different name or edit key)")
+
+    h.records[i] = rpad(keynew,8) * h.records[i][9:80]
+
+    FITS_headers[hduindex] = _cast_header(h.records, hduindex)
+
+    FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
+
+    _fits_save(FITS)
+
+    return FITS
 
 end

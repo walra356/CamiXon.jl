@@ -34,14 +34,15 @@ cast_FITS_name(filename::String)
 fits_info(FITS_HDU)
 fits_create(filename::String, data=[]; protect=true)
 fits_read(filename::String)
-fits_extend(filename::String, data_extend, hdutype="IMAGE") 
+fits_extend(filename::String, data_extend, hdutype="IMAGE")
 fits_copy(filenameA::String, filenameB::String=" "; protect=true)
 fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
-fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
 fits_delete_key(filename::String, hduindex::Int, key::String)
+fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
 ```
 
-## FORTRAN 
+## FORTRAN
 
 ```@docs
 FORTRAN_format

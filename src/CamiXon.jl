@@ -8,6 +8,7 @@ export fits_copy
 export fits_add_key
 export fits_edit_key
 export fits_delete_key
+export fits_rename_key
 export FITS_HDU
 export FITS_header
 export FITS_data

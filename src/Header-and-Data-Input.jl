@@ -2,7 +2,7 @@
 
 function _PRIMARY_input(FITS_data)
 
-    FITS_data.hdutype == "PRIMARY" || return error("FitsError: FITS_data is not of hdutype 'PRIMARY'")
+    FITS_data.hdutype == "PRIMARY" || error("FitsError: FITS_data is not of hdutype 'PRIMARY'")
 
     r::Array{String,1} = []
 
