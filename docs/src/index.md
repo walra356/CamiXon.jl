@@ -31,7 +31,7 @@ FITS_table
 parse_FITS_TABLE(FITS_HDU)
 FITS_name
 cast_FITS_name(filename::String)
-fits_info(FITS_HDU)
+fits_info(hdu::FITS_HDU)
 fits_create(filename::String, data=[]; protect=true)
 fits_read(filename::String)
 fits_extend(filename::String, data_extend, hdutype="IMAGE")
