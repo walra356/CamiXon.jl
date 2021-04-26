@@ -589,7 +589,7 @@ function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew
     i == 0 && return println("FitsError: '$keyold': key not found")
     Base.get(h.maps, keynew, 0) > 0 && return println("FitsWarning: '$keynew': key in use (use different name or edit key)")
 
-    h.records[i] = rpad(KEYNEW,8) * h.records[i][9:80]
+    h.records[i] = rpad(keynew,8) * h.records[i][9:80]
 
     FITS_headers[hduindex] = _cast_header(h.records, hduindex)
 
