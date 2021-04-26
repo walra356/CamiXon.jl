@@ -516,9 +516,7 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
-    _fits_save(FITS)
-
-    return FITS
+    return _fits_save(FITS)
 
 end
 # test ...
@@ -595,9 +593,7 @@ function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
-    _fits_save(FITS)
-
-    return FITS
+    return _fits_save(FITS)
 
 end
 # test ...
