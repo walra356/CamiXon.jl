@@ -473,20 +473,19 @@ end
 Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduindex]` of file with name  'filename'
 #### Examples:
 ```
-filnam="minimal.fits"
-fits_create(filnam;protect=false)
-fits_add_key(filnam, 1, "EXTEND123", true, "FITS dataset may contain extension")
- 'EXTEND123' key truncated at 8 characters (FITS standard)
- 'EXTEND12': key added; new record: 'EXTEND12=                    T / FITS dataset may contain extension             '
+strExample="minimal.fits"
+fits_create(strExample;protect=false)
+fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
 
-fits_add_key(filnam, 1, "EXTEND12", true, "FITS dataset may contain extension")
- 'EXTEND12': key in use (use different key name or edit key)
+f = fits_read(strExample)
+i = get(f[1].header.maps,"EXTEND2",0)
+  5
 
-fits_delete_key(filnam, 1, "EXTEND12")
- 'EXTEND12': key deleted
+fits_delete_key(strExample, 1, "EXTEND2")
 
-fits_delete_key(filnam, 1, "EXTEND12")
- 'EXTEND12': cannot be deleted (key not found)
+f = fits_read(strExample)
+i = get(f[1].header.maps,"EXTEND2",0)
+  0
 
 fits_delete_key(filnam, 1, "NAXIS")
  'NAXIS': cannot be deleted (key protected under FITS standard)
@@ -524,13 +523,53 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     return FITS
 
 end
+# test ...function fits_delete_key()
+
+    strExample="minimal.fits"
+    fits_create(strExample;protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+
+    test1 = i == 5
+
+    fits_delete_key(strExample, 1, "EXTEND2")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+
+    test2 = i == 0
+
+    test = .![test1, test2]
+
+    rm(strExample)
+
+    return !convert(Bool,sum(test))
+
+end
 
 """
     fits_rename_key(filename, hduindex, keyold, keynew)
 
 Rename the key of a header record of file with name 'filename'
 #### Example:
-```              '
+```
+strExample="minimal.fits"
+fits_create(strExample;protect=false)
+fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
+
+f = fits_read(strExample)
+i = get(f[1].header.maps,"EXTEND2",0)
+  5
+
+fits_rename_key(strExample, 1,"EXTEND2", "EXTEND3")
+
+f = fits_read(strExample)
+i = get(f[1].header.maps,"EXTEND3",0)
+  5
+
+rm(strExample)
 ```
 """
 function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
@@ -560,5 +599,31 @@ function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew
     _fits_save(FITS)
 
     return FITS
+
+end
+# test ...
+function fits_rename_key()
+
+    strExample="minimal.fits"
+    fits_create(strExample;protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+
+    test1 = i == 5
+
+    fits_rename_key(strExample, 1,"EXTEND2", "EXTEND3")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND3",0)
+
+    test2 = i == 5
+
+    test = .![test1, test2]
+
+    rm(strExample)
+
+    return !convert(Bool,sum(test))
 
 end
