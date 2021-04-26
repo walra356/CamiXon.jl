@@ -58,11 +58,11 @@ function fits_create()
     a = f[1].header.keys[1]  == "SIMPLE"
     b = f[1].dataobject.data == Any[]
     c = get(Dict(f[1].header.dict),"SIMPLE",0)
-    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0
+    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0;
 
     rm(strExample)
 
-    test = .![a, b, c, d]
+    test = .![a, b, c, d];
 
     return !convert(Bool,sum(test))
 
@@ -154,6 +154,7 @@ Read FITS file and return Array of `FITS_HDU`s
 ```
 strExample = "minimal.fits"
 fits_create(strExample;protect=false)
+
 f = fits_read(strExample)
 f[1].dataobject.data
   Any[]
@@ -179,23 +180,21 @@ end
 function fits_read()
 
     strExample = "minimal.fits"
-    f = fits_create(strExample, protect=false)
-    f = nothing
+    fits_create(strExample, protect=false)
+
     f = fits_read(strExample)
+    a = f[1].header.keys[1]  == "SIMPLE"
+    b = f[1].dataobject.data == Any[]
+    c = get(Dict(f[1].header.dict),"SIMPLE",0)
+    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0;
 
-    test1 = f[1].header.keys[1]  == "SIMPLE"
-    test2 = f[1].dataobject.data == Any[]
-    test3 = get(Dict(f[1].header.dict),"SIMPLE",0)
-    test4 = get(Dict(f[1].header.dict),"NAXIS",0) == 0
+    rm(strExample)
 
-    rm(strExample); f = nothing
-
-    test = .![test1, test2, test3, test4]
+    test = .![a, b, c, d];
 
     return !convert(Bool,sum(test))
 
 end
-
 
 # .................................................... fits_extend ...................................................
 """
@@ -206,14 +205,18 @@ Extend the FITS file of given filename with the data of `hdutype` from `data_ext
 ```
 strExample = "test_example.fits"
 data = [0x0000043e, 0x0000040c, 0x0000041f]
-f = fits_create(strExample, data, protect=false)
-table1 = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
-table2 = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
-table3 = [1.23,2.12,3.,4.,5.]
-table4 = ['a','b','c','d','e']
-table5 = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
-data = [table1,table2,table3,table4,table5]
-f = fits_extend(strExample, data, "TABLE")
+fits_create(strExample, data, protect=false)
+
+f = fits_read(strExample)
+a = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
+b = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
+c = [1.23,2.12,3.,4.,5.]
+d = ['a','b','c','d','e']
+e = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
+data = [a,b,c,d,e]
+fits_extend(strExample, data, "TABLE")
+
+f = fits_read(strExample)
 f[2].dataobject.data
   5-element Vector{String}:
    "1.0e-6 1086 1.23 a a                    "
@@ -222,7 +225,7 @@ f[2].dataobject.data
    "4.0e-6 1070 4.0  d dddd                 "
    "5.0e-6 1071 5.0  e ABCeeaeeEEEEEEEEEEEE "
 
-rm(strExample); f = nothing; data =nothing
+rm(strExample); f = data = a = b = c = d = e = nothing
 ```
 """
 function fits_extend(filename::String, data_extend, hdutype="IMAGE")
@@ -255,30 +258,33 @@ function fits_extend()
 
     strExample = "test_example.fits"
     data = [0x0000043e, 0x0000040c, 0x0000041f]
-    f = fits_create(strExample, data, protect=false)
+    fits_create(strExample, data, protect=false)
 
-    table1 = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
-    table2 = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
-    table3 = [1.23,2.12,3.,4.,5.]
-    table4 = ['a','b','c','d','e']
-    table5 = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
-    data = [table1,table2,table3,table4,table5]
-    f = fits_extend(strExample, data, "TABLE")
+    f = fits_read(strExample)
+    a = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
+    b = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
+    c = [1.23,2.12,3.,4.,5.]
+    d = ['a','b','c','d','e']
+    e = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
+    data = [a,b,c,d,e]
+    fits_extend(strExample, data, "TABLE")
 
-    test1 = f[1].header.keys[1]  == "SIMPLE"
-    test2 = f[1].dataobject.data[1] == 0x0000043e
-    test3 = f[2].header.keys[1]  == "XTENSION"
-    test4 = f[2].dataobject.data[1] == "1.0e-6 1086 1.23 a a                    "
-    test5 = get(Dict(f[2].header.dict),"NAXIS",0) == 2
+    f = fits_read(strExample)
+    a = f[1].header.keys[1]  == "SIMPLE"
+    b = f[1].dataobject.data[1] == 0x0000043e
+    c = f[2].header.keys[1]  == "XTENSION"
+    d = f[2].dataobject.data[1] == "1.0e-6 1086 1.23 a a                    "
+    e = get(Dict(f[2].header.dict),"NAXIS",0) == 2
 
-    rm(strExample); f = nothing; data = nothing
+    rm(strExample)
 
-    test = .![test1, test2, test3, test4, test5]
+    test = .![a, b, c, d, e]
 
     return !convert(Bool,sum(test))
 
 end
 
+# .................................................... fits_copy ...................................................
 
 """
     fits_copy(filenameA [, filenameB="" [; protect=true]])
@@ -314,19 +320,21 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
 
 end
 
+# .................................................... fits_add_key ...................................................
+
 """
     fits_add_key(filename, hduindex, key, value, comment)
 
 Add a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
-filnam="minimal.fits"
-fits_create(filnam;protect=false)
-fits_add_key(filnam, 1, "EXTEND2", true, "FITS dataset may contain extension")
-  'EXTEND2': key added; new record: 'EXTEND2 =                    T / FITS dataset may contain extension             '
+strExample="minimal.fits"
+fits_create(strExample;protect=false)
+fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
 
-f = fits_read(filnam)
-fits_info(f[1])
+f = fits_read(strExample)
+p = fits_info(f[1])
+println(p)
 
   File: minimal.fits
   HDU: 1
@@ -366,9 +374,25 @@ function fits_add_key(filename::String, hduindex::Int, key::String, val::Any, co
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
-    _fits_save(FITS)
+    return _fits_save(FITS)
 
-    return FITS
+end
+# test ...
+function fits_add_key()
+
+    strExample="minimal.fits"
+    fits_create(strExample;protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+    r = f[1].header.records;
+
+    test = r[i] == "EXTEND2 =                    T / FITS dataset may contain extension             "
+
+    rm(strExample)
+
+    return test
 
 end
 
@@ -378,13 +402,17 @@ end
 Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
 ```
-filnam="minimal.fits"
-fits_create(filnam;protect=false)
-fits_add_key(filnam, 1, "EXTEND12", true, "FITS dataset may contain extension")
-  'EXTEND12': key added; new record: 'EXTEND12=                    T / FITS dataset may contain extension             '
+    strExample="minimal.fits"
+    fits_create(strExample;protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+    fits_edit_key(strExample, 1, "EXTEND2", false, "comment has changed")
 
-fits_edit_key(filnam, 1, "EXTEND12", true, "FITS dataset new comment")
-  'EXTEND12': key edited; new record: 'EXTEND12=                    F / FITS dataset new comment                       '
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+    f[1].header.records[i]
+      "EXTEND2 =                    F / comment has changed                            "
+
+    rm(strExample)
 ```
 """
 function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, com::String)
@@ -416,9 +444,26 @@ function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, c
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 
-    _fits_save(FITS)
+    return _fits_save(FITS)
 
-    return FITS
+end
+# test ...
+function fits_edit_key()
+
+    strExample="minimal.fits"
+    fits_create(strExample;protect=false)
+    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+    fits_edit_key(strExample, 1, "EXTEND2", false, "comment has changed")
+
+    f = fits_read(strExample)
+    i = get(f[1].header.maps,"EXTEND2",0)
+    r = f[1].header.records;
+
+    test = r[i] == "EXTEND2 =                    F / comment has changed                            "
+
+    rm(strExample)
+
+    return test
 
 end
 
