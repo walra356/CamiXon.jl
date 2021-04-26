@@ -523,7 +523,8 @@ function fits_delete_key(filename::String, hduindex::Int, key::String)
     return FITS
 
 end
-# test ...function fits_delete_key()
+# test ...
+function fits_delete_key()
 
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
