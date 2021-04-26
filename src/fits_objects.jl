@@ -105,7 +105,7 @@ end
 # ....................... parse FITS_TABLE into a Vector of its columns .........................................
 
 """
-    parse_FITS_TABLE(FITS_HDU)
+    parse_FITS_TABLE(hdu)
 
 Parse `FITS_TABLE` into a Vector of its columns for further processing by the user.
 #### Example:
@@ -128,9 +128,9 @@ fits_info(f[1])
 
 ```
 """
-function parse_FITS_TABLE(FITS_HDU)
+function parse_FITS_TABLE(hdu::FITS_HDU)
 
-    dict = FITS_HDU.header.dict
+    dict = hdu.header.dict
     thdu = Base.strip(Base.get(dict,"XTENSION", "UNKNOWN") ,['\'',' '])
 
     thdu == "TABLE" || return error("Error: $thdu is not an ASCII TABLE HDU")
@@ -144,7 +144,7 @@ function parse_FITS_TABLE(FITS_HDU)
     width = [cast_FORTRAN_format(tform[n]).width for n=1:ncols]
       itr = [(tbcol[k]:tbcol[k]+width[k]-1) for k=1:ncols]
 
-     data = FITS_HDU.dataobject.data
+     data = hdu.dataobject.data
      data = [[data[i][itr[k]] for i=1:nrows] for k=1:ncols]
      data = [tchar[k] == 'D' ? Base.join.(Base.replace!.(Base.collect.(data[k]), 'D'=>'E')) : data[k] for k=1:ncols]
      Type = [ttype[k] == "Aw" ? (width[k] == 1 ? Char : String) : ttype[k] == "Iw" ? Int : Float64 for k=1:ncols]

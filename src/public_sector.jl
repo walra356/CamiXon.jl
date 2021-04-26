@@ -80,8 +80,7 @@ strExample = "minimal.fits"
 fits_create(strExample)
 
 f = fits_read(strExample)
-p = fits_info(f[1])
-println(p)
+p = fits_info(f[1]); println(p)
 
   File: minimal.fits
   HDU: 1
@@ -330,11 +329,10 @@ Add a header record of given 'key, value and comment' to 'HDU[hduindex]' of file
 ```
 strExample="minimal.fits"
 fits_create(strExample;protect=false)
-fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
 f = fits_read(strExample)
-p = fits_info(f[1])
-println(p)
+p = fits_info(f[1]); println(p)
 
   File: minimal.fits
   HDU: 1
@@ -346,7 +344,7 @@ println(p)
   NAXIS   =                    0 / number of data axes
   EXTEND  =                    T / FITS dataset may contain extensions
   COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg
-  EXTEND2 =                    T / FITS dataset may contain extension
+  KEYNEW1 =                    T / FITS dataset may contain extension
   END
 ```
 """
@@ -382,13 +380,13 @@ function fits_add_key()
 
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+    fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
     r = f[1].header.records;
 
-    test = r[i] == "EXTEND2 =                    T / FITS dataset may contain extension             "
+    test = r[i] == "KEYNEW1 =                    T / FITS dataset may contain extension             "
 
     rm(strExample)
 
@@ -404,13 +402,13 @@ Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of fil
 ```
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
-    fits_edit_key(strExample, 1, "EXTEND2", false, "comment has changed")
+    fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
+    fits_edit_key(strExample, 1, "KEYNEW1", false, "comment has changed")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
     f[1].header.records[i]
-      "EXTEND2 =                    F / comment has changed                            "
+      "KEYNEW1 =                    F / comment has changed                            "
 
     rm(strExample)
 ```
@@ -452,14 +450,14 @@ function fits_edit_key()
 
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
-    fits_edit_key(strExample, 1, "EXTEND2", false, "comment has changed")
+    fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
+    fits_edit_key(strExample, 1, "KEYNEW1", false, "comment has changed")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
     r = f[1].header.records;
 
-    test = r[i] == "EXTEND2 =                    F / comment has changed                            "
+    test = r[i] == "KEYNEW1 =                    F / comment has changed                            "
 
     rm(strExample)
 
@@ -475,16 +473,16 @@ Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduind
 ```
 strExample="minimal.fits"
 fits_create(strExample;protect=false)
-fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
+fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 
 f = fits_read(strExample)
-i = get(f[1].header.maps,"EXTEND2",0)
+get(f[1].header.maps,"KEYNEW1",0)
   5
 
-fits_delete_key(strExample, 1, "EXTEND2")
+fits_delete_key(strExample, 1, "KEYNEW1")
 
 f = fits_read(strExample)
-i = get(f[1].header.maps,"EXTEND2",0)
+get(f[1].header.maps,"KEYNEW1",0)
   0
 
 fits_delete_key(filnam, 1, "NAXIS")
@@ -528,17 +526,17 @@ function fits_delete_key()
 
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "FITS dataset may contain extension")
+    fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
 
     test1 = i == 5
 
-    fits_delete_key(strExample, 1, "EXTEND2")
+    fits_delete_key(strExample, 1, "KEYNEW1")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
 
     test2 = i == 0
 
@@ -551,23 +549,23 @@ function fits_delete_key()
 end
 
 """
-    fits_rename_key(filename, hduindex, keyold, keynew)
+    fits_rename_key(filename, hduindex, keyold, kewnew)
 
 Rename the key of a header record of file with name 'filename'
 #### Example:
 ```
 strExample="minimal.fits"
 fits_create(strExample;protect=false)
-fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
+fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 
 f = fits_read(strExample)
-i = get(f[1].header.maps,"EXTEND2",0)
+get(f[1].header.maps,"KEYNEW1",0)
   5
 
-fits_rename_key(strExample, 1,"EXTEND2", "EXTEND3")
+fits_rename_key(strExample, 1,"KEYNEW1", "KEYNEW2")
 
 f = fits_read(strExample)
-i = get(f[1].header.maps,"EXTEND3",0)
+get(f[1].header.maps,"KEYNEW2",0)
   5
 
 rm(strExample)
@@ -591,7 +589,7 @@ function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew
     i == 0 && return println("FitsError: '$keyold': key not found")
     Base.get(h.maps, keynew, 0) > 0 && return println("FitsWarning: '$keynew': key in use (use different name or edit key)")
 
-    h.records[i] = rpad(keynew,8) * h.records[i][9:80]
+    h.records[i] = rpad(KEYNEW,8) * h.records[i][9:80]
 
     FITS_headers[hduindex] = _cast_header(h.records, hduindex)
 
@@ -607,17 +605,17 @@ function fits_rename_key()
 
     strExample="minimal.fits"
     fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "EXTEND2", true, "comment to record 5")
+    fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND2",0)
+    i = get(f[1].header.maps,"KEYNEW1",0)
 
     test1 = i == 5
 
-    fits_rename_key(strExample, 1,"EXTEND2", "EXTEND3")
+    fits_rename_key(strExample, 1,"KEYNEW1", "KEYNEW2")
 
     f = fits_read(strExample)
-    i = get(f[1].header.maps,"EXTEND3",0)
+    i = get(f[1].header.maps,"KEYNEW2",0)
 
     test2 = i == 5
 

@@ -22,20 +22,31 @@ A FITS file consists of a sequence of one or more header-data-units (HDUs), each
 
 By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objects from the file `filnam` to the variable `f`.
 
+# FITS Types
 
 ```@docs
 FITS_HDU
 FITS_header
 FITS_data
 FITS_table
-parse_FITS_TABLE(FITS_HDU)
+parse_FITS_TABLE(hdu::FITS_HDU)
 FITS_name
 cast_FITS_name(filename::String)
+```
+
+# FITS File Methods
+
+```@docs
 fits_info(hdu::FITS_HDU)
 fits_create(filename::String, data=[]; protect=true)
 fits_read(filename::String)
 fits_extend(filename::String, data_extend, hdutype="IMAGE")
 fits_copy(filenameA::String, filenameB::String=" "; protect=true)
+```
+
+# FITS Key Methods
+
+```@docs
 fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
 fits_delete_key(filename::String, hduindex::Int, key::String)
 fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)

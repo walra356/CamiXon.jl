@@ -290,7 +290,7 @@ function fits_key_create(filnam::String, key::String, value, comment::String)
     
     _file_exists(filnam) || return "$filnam: file not found"
 
-    _key_size_ok(key) || return error("error: $keynew: key name exceeds 8 characters (FITS record standard)")
+    _key_size_ok(key) || return error("error: $KEYNEW: key name exceeds 8 characters (FITS record standard)")
     
     _key_available(filnam,key) || return "key '$key' cannot be created (already exists)"
     
@@ -434,7 +434,7 @@ function fits_key_info(filnam::String, key::String)
 end
 
 """
-    fits_key_rename(filnam, key, keynew)
+    fits_key_rename(filnam, key, KEYNEW)
 
 rename FITS key
 #### Examples:
@@ -453,21 +453,21 @@ fits_key_info(filnam,"test1")
 ("TEST1", 3, "this is a test")
 ```
 """    
-function fits_key_rename(filnam::String, key::String, keynew::String)
+function fits_key_rename(filnam::String, key::String, KEYNEW::String)
     
     key = Base.Unicode.uppercase(strip(key))
     
-    keynew = Base.Unicode.uppercase(strip(keynew))
+    KEYNEW = Base.Unicode.uppercase(strip(KEYNEW))
     
     _file_exists(filnam) || return "$filnam: file not found"
 
-    _key_size_ok(keynew) || return error("error: $keynew: key name exceeds 8 characters")
+    _key_size_ok(KEYNEW) || return error("error: $KEYNEW: key name exceeds 8 characters")
     
     _key_exists(filnam,key) || return "key '$key' cannot be renamed (key not found)"
     
     _key_reserved(filnam,key) && return error("error: $key: reserved key (FITS record standard)")
     
-    (_key_available(filnam,keynew) || keynew == key) || return "$keynew: key already in use"
+    (_key_available(filnam,KEYNEW) || KEYNEW == key) || return "$KEYNEW: key already in use"
     
     buffer = "kanweg.fits"
     Base.Filesystem.isfile(buffer) && Base.Filesystem.rm(buffer)
@@ -485,7 +485,7 @@ function fits_key_rename(filnam::String, key::String, keynew::String)
         if i ∈ r1
             continue
         elseif k[1] == key
-            FITSIO.write_key(f2[1], keynew, k[2], k[3]) 
+            FITSIO.write_key(f2[1], KEYNEW, k[2], k[3]) 
         else
             FITSIO.write_key(f2[1], k[1], k[2], k[3])
         end
@@ -499,7 +499,7 @@ function fits_key_rename(filnam::String, key::String, keynew::String)
     
     f = FITSIO.FITS(filnam,"r+")             # open file (read-write mode)
     m = FITSIO.read_header(f[1])             # read hdu header from file    
-    k = FITSIO.read_key(f[1],m.map[keynew])  # read key
+    k = FITSIO.read_key(f[1],m.map[KEYNEW])  # read key
     
     Base.close(f)
 
