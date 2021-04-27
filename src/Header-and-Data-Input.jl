@@ -1,17 +1,17 @@
 # ....................... Header and Data input ..................
 
-function _PRIMARY_input(FITS_data)
+function _PRIMARY_input(dataobject::FITS_data)
 
-    FITS_data.hdutype == "PRIMARY" || error("FitsError: FITS_data is not of hdutype 'PRIMARY'")
+    dataobject.hdutype == "PRIMARY" || error("FitsError: FITS_data is not of hdutype 'PRIMARY'")
 
     r::Array{String,1} = []
 
-         E = Base.eltype(FITS_data.data)
+         E = Base.eltype(dataobject.data)
     nbytes = E.size
      nbits = 8 * nbytes
     bitpix = E <: AbstractFloat ? -abs(nbits) : nbits
     bitpix = Base.lpad(bitpix,20)
-      dims = Base.size(FITS_data.data)
+      dims = Base.size(dataobject.data)
      ndims = dims == (0,) ? 0 : Base.length(dims)
      naxis = Base.lpad(ndims,20)
       dims = ndims > 0 ? [Base.lpad(dims[i],20) for i=1:ndims] : 0
@@ -132,6 +132,7 @@ function _TABLE_input(cols::Vector{Vector{T} where T})     # input array of tabl
    [Base.push!(r,"TTYPE$i  = " * ttype[i] *    " / header of column " * rpad(i,30) ) for i=1:ncols]
    [Base.push!(r,"TBCOL$i  = " * tbcol[i] *    " / pointer to column " * rpad(i,29) ) for i=1:ncols]
    [Base.push!(r,"TFORM$i  = " * tform[i] *    " / data type of column " * rpad(i,27) ) for i=1:ncols]
+   [Base.push!(r,"TDISP$i  = " * tform[i] *    " / data type of column " * rpad(i,27) ) for i=1:ncols]
     Base.push!(r,"COMMENT    Extended FITS HDU   / http://fits.gsfc.nasa.gov/iaufwg               ")
     Base.push!(r,"END                                                                             ")
 

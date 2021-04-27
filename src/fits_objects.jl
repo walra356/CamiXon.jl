@@ -107,9 +107,12 @@ end
 """
     parse_FITS_TABLE(hdu)
 
-Parse `FITS_TABLE` into a Vector of its columns for further processing by the user.
+Parse `FITS_TABLE` (ASCII table) into a Vector of its columns for further processing by the user.
+Default formatting in ISO 2004 FORTRAN data format specified by keys "TFORMS1" - "TFORMSn")
+Display formatting in ISO 2004 FORTRAN data format ("TDISP1" - "TDISPn") prepared for user editing.
 #### Example:
-```strExample = "example.fits"
+```
+strExample = "example.fits"
 data = [10, 20, 30]
 fits_create(strExample, data; protect=false)
 
@@ -123,7 +126,7 @@ fits_extend(strExample, data, "TABLE")
 
 f = fits_read(strExample)
 d = f[2].header.dict
-d = [get(d,"TFORM$i",0) for i=1:5]; println(strip.(d))
+d = [get(d,"TFORM\$i",0) for i=1:5]; println(strip.(d))
   SubString{String}["'E6.1    '", "'I4      '", "'F4.2    '", "'A1      '", "'A20     '"]
 
 f[2].dataobject.data                            # this is the table hdu
