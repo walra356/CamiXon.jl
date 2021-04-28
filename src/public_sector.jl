@@ -344,20 +344,23 @@ fits_create(strExample;protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
 f = fits_read(strExample)
-p = fits_info(f[1]); println(p)
+fits_info(f[1])
 
   File: minimal.fits
-  HDU: 1
+  hdu: 1
+  hdutype: PRIMARY
   DataType: Any
   Datasize: (0,)
 
   Metainformation:
-  SIMPLE  =                    T / file does conform to FITS standard
-  NAXIS   =                    0 / number of data axes
-  EXTEND  =                    T / FITS dataset may contain extensions
-  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg
-  KEYNEW1 =                    T / FITS dataset may contain extension
-  END
+  SIMPLE  =                    T / file does conform to FITS standard             
+  NAXIS   =                    0 / number of data axes                            
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
+  KEYNEW1 =                    T / FITS dataset may contain extension             
+  END                                                                             
+
+  Any[]
 ```
 """
 function fits_add_key(filename::String, hduindex::Int, key::String, val::Any, com::String)
