@@ -112,7 +112,11 @@ function fits_info(hdu::FITS_HDU)
 
     Base.append!(info, records)
 
-    return Base.join(info .* "\r\n")
+    p = Base.join(info .* "\r\n")
+
+    println(p)
+
+    return hdu.dataobject.data
 
 end
 #  test ...
@@ -620,5 +624,77 @@ function fits_rename_key()
     rm(strExample)
 
     return !convert(Bool,sum(test))
+
+end
+
+
+
+# ....................... parse FITS_TABLE into a Vector of its columns .........................................
+
+"""
+    parse_FITS_TABLE(hdu)
+
+Parse `FITS_TABLE` (ASCII table) into a Vector of its columns for further processing by the user.
+Default formatting in ISO 2004 FORTRAN data format specified by keys "TFORMS1" - "TFORMSn")
+Display formatting in ISO 2004 FORTRAN data format ("TDISP1" - "TDISPn") prepared for user editing.
+#### Example:
+```
+strExample = "example.fits"
+data = [10, 20, 30]
+fits_create(strExample, data; protect=false)
+
+t1 = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
+t2 = [0x0000043e, 0x0000040c, 0x0000041f, 0x0000042e, 0x0000042f]
+t3 = [1.23,2.12,3.,4.,5.]
+t4 = ['a','b','c','d','e']
+t5 = ["a","bb","ccc","dddd","ABCeeaeeEEEEEEEEEEEE"]
+data = [t1,t2,t3,t4,t5]
+fits_extend(strExample, data, "TABLE")
+
+f = fits_read(strExample)
+d = f[2].header.dict
+d = [get(d,"TFORM\$i",0) for i=1:5]; println(strip.(d))
+  SubString{String}["'E6.1    '", "'I4      '", "'F4.2    '", "'A1      '", "'A20     '"]
+
+f[2].dataobject.data                            # this is the table hdu
+  5-element Vector{String}:
+   "1.0e-6 1086 1.23 a a                    "
+   "2.0e-6 1036 2.12 b bb                   "
+   "3.0e-6 1055 3.0  c ccc                  "
+   "4.0e-6 1070 4.0  d dddd                 "
+   "5.0e-6 1071 5.0  e ABCeeaeeEEEEEEEEEEEE "
+
+parse_FITS_TABLE(f[2])
+  5-element Vector{Vector{T} where T}:
+   [1.0e-6, 2.0e-6, 3.0e-6, 4.0e-6, 5.0e-6]
+   [1086, 1036, 1055, 1070, 1071]
+   [1.23, 2.12, 3.0, 4.0, 5.0]
+   ["a", "b", "c", "d", "e"]
+   ["a                   ", "bb                  ", "ccc                 ", "dddd                ", "ABCeeaeeEEEEEEEEEEEE"]
+```
+"""
+function parse_FITS_TABLE(hdu::FITS_HDU)
+
+    dict = hdu.header.dict
+    thdu = Base.strip(Base.get(dict,"XTENSION", "UNKNOWN") ,['\'',' '])
+
+    thdu == "TABLE" || return error("Error: $thdu is not an ASCII TABLE HDU")
+
+    ncols = Base.get(dict,"TFIELDS", 0)
+    nrows = Base.get(dict,"NAXIS2", 0)
+    tbcol = [Base.get(dict,"TBCOL$n", 0) for n=1:ncols]
+    tform = [Base.get(dict,"TFORM$n", 0) for n=1:ncols]
+    ttype = [cast_FORTRAN_format(tform[n]).Type for n=1:ncols]
+    tchar = [cast_FORTRAN_format(tform[n]).TypeChar for n=1:ncols]
+    width = [cast_FORTRAN_format(tform[n]).width for n=1:ncols]
+      itr = [(tbcol[k]:tbcol[k]+width[k]-1) for k=1:ncols]
+
+     data = hdu.dataobject.data
+     data = [[data[i][itr[k]] for i=1:nrows] for k=1:ncols]
+     data = [tchar[k] == 'D' ? Base.join.(Base.replace!.(Base.collect.(data[k]), 'D'=>'E')) : data[k] for k=1:ncols]
+     Type = [ttype[k] == "Aw" ? (width[k] == 1 ? Char : String) : ttype[k] == "Iw" ? Int : Float64 for k=1:ncols]
+     data = [ttype[k] == "Aw" ? data[k] : parse.(Type[k],(data[k])) for k=1:ncols]
+
+    return data
 
 end

@@ -69,7 +69,7 @@ function _table_data_types(cols::Vector{Vector{T} where T})
 
     ncols = length(cols)
     nrows = length(cols[1])
-        f = Array{String,1}(undef,ncols)                                    # format specifier Xw.d
+        f = Array{String,1}(undef,ncols)                                        # format specifier Xw.d
 
     for i ∈ eachindex(f)
         E = eltype(cols[i][1])
