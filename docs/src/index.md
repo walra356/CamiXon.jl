@@ -43,10 +43,10 @@ parse_FITS_TABLE(hdu::FITS_HDU)
 
 ```@docs
 cast_FITS_name(filename::String)
-fits_create(filename::String, data=[]; protect=true)
-fits_read(filename::String)
-fits_extend(filename::String, data_extend, hdutype="IMAGE")
 fits_copy(filenameA::String, filenameB::String=" "; protect=true)
+fits_create(filename::String, data=[]; protect=true)
+fits_extend(filename::String, data_extend, hdutype="IMAGE")
+fits_read(filename::String)
 ```
 
 ### FITS - Key Methods
