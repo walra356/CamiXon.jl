@@ -199,24 +199,6 @@ function _format_recordcomment(com::String,val::Any)::String
     return length(c) > 47 ? com : rpad(c,67-length(v))
 
 end
-function _format_recordcomment222222222(com::String,val::Any)::String
-
-    c = strip(com)
-
-    if typeof(val) <: DateTime
-        strErr = "FitsWarning: comment truncated (FITS standard: 80 characters for DateTime records)"
-        v = _format_recordvalue(val)
-        length(v * c) > 67 ? (c = c[1:67-length(v)]; println(strErr)) : 0
-    elseif typeof(val) <: Real
-        strErr = "FitsWarning: comment truncated (FITS standard: 80 characters for numerical records)"
-        length(c) > 47 ? (c = c[1:47]; println(strErr)) : 0
-    else
-        v = _format_recordvalue(val)
-    end
-
-    return length(c) > 47 ? com : rpad(c,67-length(v))
-
-end
 
 function _format_recordkey(key::String)
 

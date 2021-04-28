@@ -1,5 +1,43 @@
 # ......................................... FITS public sector .................................................................
+
+# .................................................... fits_copy ...................................................
+
+"""
+    fits_copy(filenameA [, filenameB="" [; protect=true]])
+
+Copy "filenameA" to "filenameB" (with mandatory ".fits" extension)
+Key:
+* `protect::Bool`: overwrite protection
+#### Examples:
+```
+fits_copy("T01.fits")
+  'T01.fits' was saved as 'T01 - Copy.fits'
+
+fits_copy("T01.fits", "T01a.fits")
+  filename (T01a.fits) in use (overwrite protected)
+
+fits_copy("T01.fits", "T01a.fits"; protect=false)
+  'T01.fits' was saved as 'T01a.fits'
+```
+"""
+function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
+
+    o = _fits_read_IO(filenameA)
+    f = cast_FITS_name(filenameA)
+
+    filenameB = filenameB == " " ? "$(f.name) - Copy.fits" : filenameB
+
+    _validate_FITS_name(filenameB)
+
+    strA = "'$filenameA' was saved as '$filenameB'"
+    strB = "'$filenameA': copy failed"
+
+    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
+
+end
+
 # .................................................... fits_create ...................................................
+
 """
     fits_create(filename [, data [; protect=true]])
 
@@ -33,17 +71,17 @@ fits_info(f[1])
   Datasize: (3, 3, 1)
 
   Metainformation:
-  SIMPLE  =                    T / file does conform to FITS standard             
-  BITPIX  =                   64 / number of bits per data pixel                  
-  NAXIS   =                    3 / number of data axes                            
-  NAXIS1  =                    3 / length of data axis 1                          
-  NAXIS2  =                    3 / length of data axis 2                          
-  NAXIS3  =                    1 / length of data axis 3                          
-  BZERO   =                  0.0 / offset data range to that of unsigned integer  
-  BSCALE  =                  1.0 / default scaling factor                         
-  EXTEND  =                    T / FITS dataset may contain extensions            
-  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
-  END                                                                             
+  SIMPLE  =                    T / file does conform to FITS standard
+  BITPIX  =                   64 / number of bits per data pixel
+  NAXIS   =                    3 / number of data axes
+  NAXIS1  =                    3 / length of data axis 1
+  NAXIS2  =                    3 / length of data axis 2
+  NAXIS3  =                    1 / length of data axis 3
+  BZERO   =                  0.0 / offset data range to that of unsigned integer
+  BSCALE  =                  1.0 / default scaling factor
+  EXTEND  =                    T / FITS dataset may contain extensions
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg
+  END
 
   3×3×1 Array{Int64, 3}:
   [:, :, 1] =
@@ -295,42 +333,6 @@ function fits_extend()
 
 end
 
-# .................................................... fits_copy ...................................................
-
-"""
-    fits_copy(filenameA [, filenameB="" [; protect=true]])
-
-Copy "filenameA" to "filenameB" (with mandatory ".fits" extension)
-Key:
-* `protect::Bool`: overwrite protection
-#### Examples:
-```
-fits_copy("T01.fits")
-  'T01.fits' was saved as 'T01 - Copy.fits'
-
-fits_copy("T01.fits", "T01a.fits")
-  filename (T01a.fits) in use (overwrite protected)
-
-fits_copy("T01.fits", "T01a.fits"; protect=false)
-  'T01.fits' was saved as 'T01a.fits'
-```
-"""
-function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
-
-    o = _fits_read_IO(filenameA)
-    f = cast_FITS_name(filenameA)
-
-    filenameB = filenameB == " " ? "$(f.name) - Copy.fits" : filenameB
-
-    _validate_FITSname(filenameB)
-
-    strA = "'$filenameA' was saved as '$filenameB'"
-    strB = "'$filenameA': copy failed"
-
-    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
-
-end
-
 # .................................................... fits_add_key ...................................................
 
 """
@@ -353,12 +355,12 @@ fits_info(f[1])
   Datasize: (0,)
 
   Metainformation:
-  SIMPLE  =                    T / file does conform to FITS standard             
-  NAXIS   =                    0 / number of data axes                            
-  EXTEND  =                    T / FITS dataset may contain extensions            
-  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
-  KEYNEW1 =                    T / FITS dataset may contain extension             
-  END                                                                             
+  SIMPLE  =                    T / file does conform to FITS standard
+  NAXIS   =                    0 / number of data axes
+  EXTEND  =                    T / FITS dataset may contain extensions
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg
+  KEYNEW1 =                    T / FITS dataset may contain extension
+  END
 
   Any[]
 ```
@@ -414,7 +416,7 @@ end
 
 Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
-```    
+```
 data = DateTime("2020-01-01T00:00:00.000")
 strExample="minimal.fits"
 fits_create(strExample;protect=false)
@@ -431,12 +433,12 @@ fits_info(f[1])
   Datasize: (0,)
 
   Metainformation:
-  SIMPLE  =                    T / file does conform to FITS standard             
-  NAXIS   =                    0 / number of data axes                            
-  EXTEND  =                    T / FITS dataset may contain extensions            
-  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
-  KEYNEW1 = '2020-01-01T00:00:00' / record 5 changed to a DateTime type           
-  END                                                                             
+  SIMPLE  =                    T / file does conform to FITS standard
+  NAXIS   =                    0 / number of data axes
+  EXTEND  =                    T / FITS dataset may contain extensions
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg
+  KEYNEW1 = '2020-01-01T00:00:00' / record 5 changed to a DateTime type
+  END
 
   Any[]
 ```
@@ -595,12 +597,12 @@ fits_info(f[1])
   Datasize: (0,)
 
   Metainformation:
-  SIMPLE  =                    T / file does conform to FITS standard             
-  NAXIS   =                    0 / number of data axes                            
-  EXTEND  =                    T / FITS dataset may contain extensions            
-  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
-  KEYNEW2 =                    T / this is record 5                               
-  END                                                                             
+  SIMPLE  =                    T / file does conform to FITS standard
+  NAXIS   =                    0 / number of data axes
+  EXTEND  =                    T / FITS dataset may contain extensions
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg
+  KEYNEW2 =                    T / this is record 5
+  END
 
   Any[]
 ```
