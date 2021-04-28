@@ -18,16 +18,38 @@ println(a);println(b)
   Any[]
   ["SIMPLE", "NAXIS", "EXTEND", "COMMENT", "END"]
 
-strExample = "example.fits"
-data = [0x0000043e, 0x0000040c, 0x0000041f]
+strExample = "remove.fits"
+data = [11,21,31,12,22,23,13,23,33]
+data = reshape(data,(3,3,1))
 fits_create(strExample, data; protect=false)
 
 f = fits_read(strExample)
-a = f[1].dataobject.data
-b = f[1].header.keys
-println(a);println(b)
-  UInt32[0x0000043e, 0x0000040c, 0x0000041f]
-  ["SIMPLE", "BITPIX", "NAXIS", "NAXIS1", "BZERO", "BSCALE", "EXTEND", "COMMENT", "END"]
+fits_info(f[1])
+
+  File: remove.fits
+  hdu: 1
+  hdutype: PRIMARY
+  DataType: Int64
+  Datasize: (3, 3, 1)
+
+  Metainformation:
+  SIMPLE  =                    T / file does conform to FITS standard             
+  BITPIX  =                   64 / number of bits per data pixel                  
+  NAXIS   =                    3 / number of data axes                            
+  NAXIS1  =                    3 / length of data axis 1                          
+  NAXIS2  =                    3 / length of data axis 2                          
+  NAXIS3  =                    1 / length of data axis 3                          
+  BZERO   =                  0.0 / offset data range to that of unsigned integer  
+  BSCALE  =                  1.0 / default scaling factor                         
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
+  END                                                                             
+
+  3×3×1 Array{Int64, 3}:
+  [:, :, 1] =
+   11  12  13
+   21  22  23
+   31  23  33
 ```
 """
 function fits_create(filename::String, data=[]; protect=true)
