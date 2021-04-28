@@ -73,26 +73,42 @@ end
 """
     fits_info(hdu)
 
-Print metafinformation of given `FITS_HDU`
+Print metafinformation and data of given `FITS_HDU`
 #### Example:
 ```
-strExample = "minimal.fits"
-fits_create(strExample)
+strExample = "remove.fits"
+data = [11,21,31,12,22,23,13,23,33]
+data = reshape(data,(3,3,1))
+fits_create(strExample, data; protect=false)
 
 f = fits_read(strExample)
-p = fits_info(f[1]); println(p)
+fits_info(f[1])
 
-  File: minimal.fits
-  HDU: 1
-  DataType: Any
-  Datasize: (0,)
+  File: remove.fits
+  hdu: 1
+  hdutype: PRIMARY
+  DataType: Int64
+  Datasize: (3, 3, 1)
 
   Metainformation:
   SIMPLE  =                    T / file does conform to FITS standard
-  NAXIS   =                    0 / number of data axes
+  BITPIX  =                   64 / number of bits per data pixel
+  NAXIS   =                    3 / number of data axes
+  NAXIS1  =                    3 / length of data axis 1
+  NAXIS2  =                    3 / length of data axis 2
+  NAXIS3  =                    1 / length of data axis 3
+  BZERO   =                  0.0 / offset data range to that of unsigned integer
+  BSCALE  =                  1.0 / default scaling factor
   EXTEND  =                    T / FITS dataset may contain extensions
-  COMMENT    Basic FITS file     / http://fits.gsfc.nasa.gov/iaufwg
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg
   END
+
+  3×3×1 Array{Int64, 3}:
+  [:, :, 1] =
+   11  12  13
+   21  22  23
+   31  23  33
+
 ```
 """
 function fits_info(hdu::FITS_HDU)
@@ -112,39 +128,9 @@ function fits_info(hdu::FITS_HDU)
 
     Base.append!(info, records)
 
-    p = Base.join(info .* "\r\n")
-
-    println(p)
+    println(Base.join(info .* "\r\n"))
 
     return hdu.dataobject.data
-
-end
-#  test ...
-function fits_info()
-
-    strExample = "minimal.fits"
-    fits_create(strExample; protect=false)
-
-    f = fits_read(strExample)
-    info = [
-            "\r\nFile: minimal.fits",
-            "hdu: 1",
-            "hdutype: PRIMARY",
-            "DataType: Any",
-            "Datasize: (0,)",
-            "\r\nMetainformation:",
-            "SIMPLE  =                    T / file does conform to FITS standard             ",
-            "NAXIS   =                    0 / number of data axes                            ",
-            "EXTEND  =                    T / FITS dataset may contain extensions            ",
-            "COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               ",
-            "END                                                                             "
-            ]
-
-    test = fits_info(f[1]) == Base.join(info .* "\r\n")
-
-    rm(strExample)
-
-    return test
 
 end
 
