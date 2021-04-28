@@ -389,18 +389,31 @@ end
 
 Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of file with name 'filename'
 #### Example:
-```
-    strExample="minimal.fits"
-    fits_create(strExample;protect=false)
-    fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
-    fits_edit_key(strExample, 1, "KEYNEW1", false, "comment has changed")
+```    
+data = DateTime("2020-01-01T00:00:00.000")
+strExample="minimal.fits"
+fits_create(strExample;protect=false)
+fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
+fits_edit_key(strExample, 1, "KEYNEW1", data, "record 5 changed to a DateTime type")
 
-    f = fits_read(strExample)
-    i = get(f[1].header.maps,"KEYNEW1",0)
-    f[1].header.records[i]
-      "KEYNEW1 =                    F / comment has changed                            "
+f = fits_read(strExample)
+fits_info(f[1])
 
-    rm(strExample)
+  File: minimal.fits
+  hdu: 1
+  hdutype: PRIMARY
+  DataType: Any
+  Datasize: (0,)
+
+  Metainformation:
+  SIMPLE  =                    T / file does conform to FITS standard             
+  NAXIS   =                    0 / number of data axes                            
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
+  KEYNEW1 = '2020-01-01T00:00:00' / record 5 changed to a DateTime type           
+  END                                                                             
+
+  Any[]
 ```
 """
 function fits_edit_key(filename::String, hduindex::Int, key::String, val::Any, com::String)
@@ -545,18 +558,26 @@ Rename the key of a header record of file with name 'filename'
 strExample="minimal.fits"
 fits_create(strExample;protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
+fits_rename_key(strExample, 1, "KEYNEW1",  "KEYNEW2")
 
 f = fits_read(strExample)
-get(f[1].header.maps,"KEYNEW1",0)
-  5
+fits_info(f[1])
 
-fits_rename_key(strExample, 1,"KEYNEW1", "KEYNEW2")
+  File: minimal.fits
+  hdu: 1
+  hdutype: PRIMARY
+  DataType: Any
+  Datasize: (0,)
 
-f = fits_read(strExample)
-get(f[1].header.maps,"KEYNEW2",0)
-  5
+  Metainformation:
+  SIMPLE  =                    T / file does conform to FITS standard             
+  NAXIS   =                    0 / number of data axes                            
+  EXTEND  =                    T / FITS dataset may contain extensions            
+  COMMENT    Primary FITS HDU    / http://fits.gsfc.nasa.gov/iaufwg               
+  KEYNEW2 =                    T / this is record 5                               
+  END                                                                             
 
-rm(strExample)
+  Any[]
 ```
 """
 function fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
