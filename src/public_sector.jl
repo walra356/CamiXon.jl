@@ -14,7 +14,7 @@ fits_copy("T01.fits")
   'T01.fits' was saved as 'T01 - Copy.fits'
 
 fits_copy("T01.fits", "T01a.fits")
-  filename (T01a.fits) in use (overwrite protected)
+  FitsError: 'T01a.fits' in use (set ';protect=false' to lift overwrite protection)
 
 fits_copy("T01.fits", "T01a.fits"; protect=false)
   'T01.fits' was saved as 'T01a.fits'
@@ -28,11 +28,10 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
     filenameB = filenameB == " " ? "$(f.name) - Copy.fits" : filenameB
 
     _validate_FITS_name(filenameB)
+    _isavailable(filenameB, protect) || error("FitsError: '$filenameB' in use (set ';protect=false' to lift overwrite protection)")
+    _fits_write_IO(o,filenameB)
 
-    strA = "'$filenameA' was saved as '$filenameB'"
-    strB = "'$filenameA': copy failed"
-
-    return _isavailable(filenameB, protect) ? (_fits_write_IO(o,filenameB); strA) : strB
+    return println("'$filenameA' was saved as '$filenameB'")
 
 end
 
