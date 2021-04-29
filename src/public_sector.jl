@@ -35,6 +35,70 @@ function fits_copy(filenameA::String, filenameB::String=" "; protect=true)
 
 end
 
+# .................................................... fits_copy ...................................................
+
+function fits_combine(filnamFirst::String, filnamLast::String)
+
+    Base.Filesystem.isfile(filnamFirst) || error("FitsError: '$filnamFirst': file not found")
+    Base.Filesystem.isfile(filnamLast) ||  error("FitsError: '$filnamLast': file not found")
+
+    filnamFirst = uppercase(filnamFirst)
+    filnamLast = uppercase(filnamLast)
+
+    nam = cast_FITS_name(filnamFirst)
+    strPre = nam.prefix
+    strNum = nam.numerator
+    strExt = nam.extension
+    valNum = parse(Int,strNum )
+    numLeadingZeros = length(strNum) - length(string(valNum))
+
+    nam2 = cast_FITS_name(filnamLast)
+    strPre2 = nam2.prefix
+    strNum2 = nam2.numerator
+    strExt2 = nam2.extension
+    valNum2 = parse(Int,strNum2 )
+    numLeadingZeros2 = length(strNum2) - length(string(valNum2))
+
+    if strPre ≠ strPre2
+        error(strPre * " ≠ " * strPre2 * " (prefixes must be identical)")
+    elseif strExt ≠ strExt2
+        error(strExt * " ≠ " * strExt2 * " (file extensions must be identical)")
+    elseif uppercase(strExt) ≠ ".FITS"
+        error("file extension must be '.fits'")
+    end
+
+    numFiles = 1 + valNum2 - valNum
+    f = fits_read(filnamFirst)
+    dataFirst = f[1].dataobject.data  # read an image from disk
+    t = typeof(f[1].dataobject.data[1,1,1])
+    s = size(f[1].dataobject.data)
+
+    dataStack =  Array{t,3}(undef, s[1], s[2] , numFiles)
+
+    itr = valNum:valNum2
+    filnamNext = filnamFirst
+    for i ∈ itr
+        l = length(filnamNext)
+        filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
+        if l < length(filnamNext)
+            numLeadingZeros = numLeadingZeros -1
+            filnamNext = strPre * "0"^numLeadingZeros * string(i) * ".fits"
+        end
+        f = fits_read(filnamNext)
+        dataNext = f[1].dataobject.data                # read an image from disk
+        dataStack[:, :,i] = dataNext[:, :,1]
+    end
+
+    filnamOut = strPre * strNum * "-" * strPre * strNum2 * strExt
+
+    _isavailable(filnamOut,true) || error("FitsError: '$filnamOut': cannot be created (file in use")
+
+    fits_create(filnamOut, dataStack)
+
+    return println("'$filnamOut': file created")
+
+end
+
 # .................................................... fits_create ...................................................
 
 """
