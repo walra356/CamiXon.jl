@@ -11,7 +11,7 @@ Decompose the FITS filename 'filnam.fits' into its name, prefix, numerator and e
 #### Examples:
 ```
 strExample = "T23.01.fits"
-f = analyze_FITS_name(strExample)
+f = cast_FITS_name(strExample)
 FITS_name("T23.01", "T23.", "01", ".fits")
 
 f.name, f.prefix, f.numerator, f.extension
