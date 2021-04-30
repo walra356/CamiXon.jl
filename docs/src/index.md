@@ -66,6 +66,12 @@ cast_FORTRAN_format(str::String)
 cast_FORTRAN_datatype(str::String)
 ```
 
+## PLOTTING
+
+```@docs
+
+```
+
 ## Search algorithms
 
 ```@docs
