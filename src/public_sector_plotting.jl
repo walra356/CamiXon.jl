@@ -1,6 +1,7 @@
 """
     plot_matrix(data [, scale=1.0 [; aspect=0...]])
 
+Heatmap of the (optionally `scaled`) matrix `data` using the colormap `:gist_earth`.
 Keys:
 * `aspect::Real=0`: aspect ratio (default: not scaled)
 * `inline::Bool=true`: switch between inline and displayed input (default: inline)
