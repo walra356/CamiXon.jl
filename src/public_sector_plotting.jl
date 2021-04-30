@@ -8,9 +8,6 @@ Keys:
 * `note::String`: footnote text
 * `textsize::Int`: textsize (default: 10pt)
 * `center::Tuple{Bool,2}`: centering of scale on (x axis, y axis)
-#### Example:
-```
-```
 """
 function plot_matrix(data, scale=1; aspect=0, inline=true, res=(900,600), note=" ", textsize=10, center=(false,false))
 
