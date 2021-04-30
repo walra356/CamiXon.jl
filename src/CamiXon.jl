@@ -21,13 +21,14 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
+export plot_matrix
+
 export find_all
 export find_first
 export find_last
 export canonical_partitions
 export integer_partitions
 
-#include("file_manipulation.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
@@ -36,6 +37,8 @@ include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
 include("private_sector.jl")
 include("public_sector.jl")
+include("private_sector_plotting.jl")
+include("public_sector_plotting.jl")
 include("search_algorithms.jl")
 include("mathematics.jl")
 
