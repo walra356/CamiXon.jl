@@ -66,7 +66,7 @@ cast_FORTRAN_format(str::String)
 cast_FORTRAN_datatype(str::String)
 ```
 
-## PLOTTING
+## Plotting
 
 ```@docs
 plot_matrix(data, scale=1; aspect=0, inline=true, res=(900,600), note=" ", textsize=10, center=(false,false))
