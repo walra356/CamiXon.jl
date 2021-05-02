@@ -1,7 +1,7 @@
 """
     plot_matrices(data [, scale=1.0 [, select=(0,0) [; plotset="defaults"...]]])
 
-Heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
+Plot heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
 Keys:
 * `plotset::Plot2Dset="defaults"`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
@@ -81,7 +81,7 @@ end
 """
     cast_Plot2Dset(aspect [, center [, ticks [, [, labels]]]])
 
-Method to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
+Function to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
 #### Example:
 ```
 plot_defaults = cast_Plot2Dset()
