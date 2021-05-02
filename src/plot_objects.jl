@@ -1,7 +1,7 @@
 """
     Plot2Dset
 
-Plot object for plot parameters
+Type to hold plot parameters
 
 Fields:
 * `.aspect::Real`: aspect ratio
