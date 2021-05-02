@@ -81,17 +81,14 @@ function plot_matrices(data, scale=1, select=(0,0); plotset, supertitle="superti
 
 end
 
-function cast_Plot2Dset(aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1),
-                        title="title", labels=("x", "y"), textsize=10, colormap=:gist_earth)
+function cast_Plot2Dset(aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y"))
 
     typeof(aspect) <: Real || error("Aspect ratio: Real expected")
     typeof(center) == Tuple{Bool,Bool} || error("Center: Tuple{Bool,Bool} expected")
     typeof(ticks) <: Tuple{AbstractRange,AbstractRange} || error("Ticks: Tuple{AbstractRange,AbstractRange} expected")
     typeof(title) == String || error("Title: String expected")
     typeof(labels) <: Tuple{String,String} || error("Labels: Tuple{String,String} expected")
-    typeof(textsize) == Int || error("Textsize: integer expected")
-    typeof(colormap) == Symbol || error("Colormap: Symbol expected")
 
-    return Plot2Dset(aspect, center, ticks, title, labels, textsize, colormap)
+    return Plot2Dset(aspect, center, ticks, title, labels)
 
 end
