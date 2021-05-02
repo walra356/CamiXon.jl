@@ -84,7 +84,8 @@ end
 Method to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
 #### Example:
 ```
-    plotset_defaults = cast_Plot2Dset()
+cast_Plot2Dset()
+  Plot2Dset(0, (true, true), (1:1:1, 1:1:1), "title", ("x", "y"))
 ```
 """
 function cast_Plot2Dset(aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y"))
