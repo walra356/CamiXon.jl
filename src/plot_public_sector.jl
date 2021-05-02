@@ -1,12 +1,10 @@
-#const PLOT_DEFAULTS = cast_Plot2Dset()
-
 """
-    plot_matrices(data [, scale=1.0 [, select=(0,0) [; plotset= [, inline= [, supertitle= [, footnote= [, res=, [testsize=, [colormap=]]]]]]]]])
+    plot_matrices(data [, scale=1.0 [, select=(0,0) [; plotset="defaults"...]]])
 
 Heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
 Keys:
-* `plotset::Plot2Dset=PLOT_DEFAULTS`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
+* `plotset::Plot2Dset="defaults`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
 * `inline::Bool=true`: switch between inline and displayed input (default: `inline`)
 * `supertitle::String`: supertitle (default = `"supertitle"`)
 * `footnote::String`: footnote (default = `"footnote"`)
@@ -14,7 +12,7 @@ Keys:
 * `textsize::Int`: textsize (default: `10`)
 * `colormap::Symbol`: colormap (default: `:gist_earth`)
 """
-function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", settings=PLOT_DEFAULTS, inline=true, res=(900,600))
+function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
 
     GLMakie.activate!()
 
@@ -80,6 +78,15 @@ function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertit
 
 end
 
+"""
+    cast_Plot2Dset(aspect=0 [, center=(true, true) [, ticks=(1:1:1, 1:1:1) [, title="title" [, labels=("x", "y")]]]])
+
+Method to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
+#### Example:
+```
+    plotset_defaults = cast_Plot2Dset()
+```
+"""
 function cast_Plot2Dset(aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y"))
 
     typeof(aspect) <: Real || error("Aspect ratio: Real expected")
