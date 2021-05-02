@@ -23,7 +23,7 @@ function plot_matrices(data, scale=1, select=(0,0); plotset=PLOT_DEFAULTS, super
     data = _format_matrix_array(data)                 # transforms data into a standardized array of matrices
     data = rotr90.(data)
 
-    set = plotset == PLOT_DEFAULTS ? cast_Plot2Dset() : set
+    set = plotset == PLOT_DEFAULTS ? PLOT_DEFAULTS : set
 
     (nx,ny) = size(data[1])
 
