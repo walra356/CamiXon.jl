@@ -16,7 +16,7 @@ Keys:
 """
 function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", settings=PLOT_DEFAULTS, inline=true, res=(900,600))
 
-    CairoMakie.activate!()
+    GLMakie.activate!()
 
     AbstractPlotting.inline!(inline)
 
