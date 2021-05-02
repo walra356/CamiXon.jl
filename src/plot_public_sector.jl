@@ -79,12 +79,12 @@ function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertit
 end
 
 """
-    cast_Plot2Dset(aspect=0 [, center=(true, true) [, ticks=(1:1:1, 1:1:1) [, title="title" [, labels=("x", "y")]]]])
+    cast_Plot2Dset(aspect [, center [, ticks [, [, labels]]]])
 
 Method to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
 #### Example:
 ```
-cast_Plot2Dset()
+plot_defaults = cast_Plot2Dset()
   Plot2Dset(0, (true, true), (1:1:1, 1:1:1), "title", ("x", "y"))
 ```
 """
