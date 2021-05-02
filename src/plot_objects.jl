@@ -1,7 +1,8 @@
 """
     Plot2Dset
 
-Plot object to decompose the names of .fits files.
+Plot object for plot parameters
+
 Fields:
 * `.aspect::Real`: aspect ratio
 * `.center::Tuple{Bool,Bool}`: centering true/false of ticks on x/y axes
