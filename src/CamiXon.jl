@@ -16,12 +16,14 @@ export FITS_table
 export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
+export Plot2Dset
+export cast_Plot2Dset
 
 export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
-export plot_matrix
+export plot_matrices
 
 export find_all
 export find_first
@@ -33,12 +35,13 @@ include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
 include("fits_objects.jl")
+include("fits_private_sector.jl")
+include("fits_public_sector.jl")
+inclide("plot_objects")
+include("plot_private_sector.jl")
+include("plot_public_sector.jl")
 include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
-include("private_sector.jl")
-include("public_sector.jl")
-include("private_sector_plotting.jl")
-include("public_sector_plotting.jl")
 include("search_algorithms.jl")
 include("mathematics.jl")
 

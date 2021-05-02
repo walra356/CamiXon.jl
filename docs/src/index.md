@@ -69,7 +69,7 @@ cast_FORTRAN_datatype(str::String)
 ## Plotting
 
 ```@docs
-plot_matrix(data, scale=1; aspect=0, inline=true, res=(900,600), note=" ", textsize=10, center=(false,false))
+plot_matrices(data, scale=1, select=(0,0); plotset, supertitle="supertitle", footnote="footnote "; settings=PLOT_DEFAULTS, inline=true, res=(900,600))
 ```
 
 ## Search algorithms
