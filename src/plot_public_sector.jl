@@ -81,7 +81,7 @@ end
 """
     cast_Plot2Dset(aspect [, center [, ticks [, [, labels]]]])
 
-Function to set the aspect ratio, ticks centering, ticks, title and labels of a 2D plot.
+Set aspect-ratio, ticks-centering, ticks, title and labels of a Matrix plot.
 #### Example:
 ```
 plot_defaults = cast_Plot2Dset()
