@@ -1,4 +1,7 @@
 module CamiXon
+
+using Dates
+using GLMakie
 #
 export fits_create
 export fits_read
