@@ -8,14 +8,13 @@ Heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 Keys:
 * `plotset::Plot2Dset=PLOT_DEFAULTS`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
 * `inline::Bool=true`: switch between inline and displayed input (default: `inline`)
-* `supertitle::String`: supertitle (default = `" "`)
-* `footnote::String`: footnote (default = `" "`)
+* `supertitle::String`: supertitle (default = `"supertitle"`)
+* `footnote::String`: footnote (default = `"footnote"`)
 * `res::Tuple`: screen resolution (default: `(900,600)`)
 * `textsize::Int`: textsize (default: `10`)
 * `colormap::Symbol`: colormap (default: `:gist_earth`)
 """
-function plot_matrices(data, scale=1, select=(0,0); plotset, supertitle="supertitle", footnote="footnote ";
-                       settings=PLOT_DEFAULTS, inline=true, res=(900,600))
+function plot_matrices(data, scale=1, select=(0,0); plotset=PLOT_DEFAULTS, supertitle="supertitle", footnote="footnote", settings=PLOT_DEFAULTS, inline=true, res=(900,600))
 
     CairoMakie.activate!()
 
