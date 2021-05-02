@@ -4,8 +4,8 @@
 Plot heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
 Keys:
-* `plotset::Plot2Dset="defaults"`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
-* `inline::Bool=true`: switch between inline and displayed input (default: `inline`)
+* `plotset::Plot2Dset`: object for plot parameters (default: `castPlot2Dset()`)
+* `inline::Bool=true`: switch inline/displayed input (default: `inline`)
 * `supertitle::String`: supertitle (default = `"supertitle"`)
 * `footnote::String`: footnote (default = `"footnote"`)
 * `res::Tuple`: screen resolution (default: `(900,600)`)
