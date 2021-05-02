@@ -69,8 +69,9 @@ cast_FORTRAN_datatype(str::String)
 ## Plotting
 
 ```@docs
-plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
+Plot2Dset
 cast_Plot2Dset(aspect=0, center=(true, true), ticks=((1:1:1), (1:1:1)), title="title", labels=("x", "y"))
+plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
 ```
 
 ## Search algorithms
