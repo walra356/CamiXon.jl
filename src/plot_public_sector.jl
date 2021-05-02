@@ -4,7 +4,7 @@
 Heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
 Keys:
-* `plotset::Plot2Dset="defaults`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
+* `plotset::Plot2Dset="defaults"`: aspect=0, center=(true, true), ticks=(1:1:1, 1:1:1), title="title", labels=("x", "y")
 * `inline::Bool=true`: switch between inline and displayed input (default: `inline`)
 * `supertitle::String`: supertitle (default = `"supertitle"`)
 * `footnote::String`: footnote (default = `"footnote"`)
