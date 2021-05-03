@@ -11,17 +11,16 @@ Keys:
 * `res::Tuple`: screen resolution (default: `(900,600)`)
 * `textsize::Int`: textsize (default: `10`)
 * `colormap::Symbol`: colormap (default: `:gist_earth`)
+* `colorbarlabel::String`: scale of colorbar (default: `"Intensity (units)"`)
 """
 function plot_matrices(data, scale=1, select=(0,0);
                         plotset="defaults", supertitle="supertitle", footnote="footnote",
-                        inline=true, res=(900,600), textsize=10, colormap=:gist_earth)
-
-    #GLMakie.activate!()
+                        inline=true, res=(900,600), textsize=10, colormap=:gist_earth, colorbarlabel="Intensity (units)")
 
     AbstractPlotting.inline!(inline)
 
-    data = _format_matrix_array(data)                 # transforms data into a standardized array of matrices
-    data = rotr90.(data)
+    data = _format_matrix_array(data)                 # transforms data into a standardized array of matrices (images)
+    data = rotr90.(data)                              # rotate images to accommodate array convention (1,1) upper left
 
     set = plotset == "defaults" ? cast_Plot2Dset() : plotset
 
@@ -74,7 +73,7 @@ function plot_matrices(data, scale=1, select=(0,0);
     strNote = " Note: output truncated at image $(ncols*nrows) (limited by specified screen resolution)"
     footnote = nz > ncols*nrows ? footnote * strNote  : footnote
     lblFoot = layout[nrows+1,:] = Label(scene, footnote, textsize = textsize * 6/5)
-    supertitle = layout[0,:] = Label(scene, "supertitle", textsize = textsize * 2 , color = (:black, 0.25))
+    supertitle = layout[0,:] = Label(scene, supertitle, textsize = textsize * 2 , color = (:black, 0.25))
 
     return inline ? scene : display(scene)
 
