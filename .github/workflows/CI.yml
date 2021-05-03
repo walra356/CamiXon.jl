@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
-  docs: 
+  docs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +46,8 @@ jobs:
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
-            Pkg.instantiate()'
+            Pkg.instantiate()
+            Pkg.precompile("GLMakie")'
       - run: |
           julia --project=docs -e '
             using Documenter: doctest
