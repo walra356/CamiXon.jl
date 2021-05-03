@@ -12,8 +12,7 @@ Keys:
 * `textsize::Int`: textsize (default: `10`)
 * `colormap::Symbol`: colormap (default: `:gist_earth`)
 """
-
-function plot_matrices(data, scale=1, select=(0,0); 
+function plot_matrices(data, scale=1, select=(0,0);
                         plotset="defaults", supertitle="supertitle", footnote="footnote",
                         inline=true, res=(900,600), textsize=10, colormap=:gist_earth)
 
