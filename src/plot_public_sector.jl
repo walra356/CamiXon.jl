@@ -14,7 +14,7 @@ Keys:
 """
 function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
 
-    GLMakie.activate!()
+    #GLMakie.activate!()
 
     AbstractPlotting.inline!(inline)
 
