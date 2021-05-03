@@ -2,6 +2,7 @@ module CamiXon
 
 using Dates
 #using GLMakie
+using AbstractPlotting
 #
 export fits_create
 export fits_read
