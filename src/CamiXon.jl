@@ -1,14 +1,14 @@
 module CamiXon
 
 using Dates
-#using GLMakie
 using AbstractPlotting
-#
+
 export fits_create
 export fits_read
 export fits_extend
 export fits_info
 export fits_copy
+export fits_combine
 export fits_add_key
 export fits_edit_key
 export fits_delete_key

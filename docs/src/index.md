@@ -43,6 +43,7 @@ parse_FITS_TABLE(hdu::FITS_HDU)
 
 ```@docs
 cast_FITS_name(filename::String)
+fits_combine(filnamFirst::String, filnamLast::String; protect=true)
 fits_copy(filenameA::String, filenameB::String=" "; protect=true)
 fits_create(filename::String, data=[]; protect=true)
 fits_extend(filename::String, data_extend, hdutype="IMAGE")

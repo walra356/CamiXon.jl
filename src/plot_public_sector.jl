@@ -12,7 +12,10 @@ Keys:
 * `textsize::Int`: textsize (default: `10`)
 * `colormap::Symbol`: colormap (default: `:gist_earth`)
 """
-function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
+
+function plot_matrices(data, scale=1, select=(0,0); 
+                        plotset="defaults", supertitle="supertitle", footnote="footnote",
+                        inline=true, res=(900,600), textsize=10, colormap=:gist_earth)
 
     #GLMakie.activate!()
 
@@ -21,7 +24,7 @@ function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertit
     data = _format_matrix_array(data)                 # transforms data into a standardized array of matrices
     data = rotr90.(data)
 
-    set = plotset == "defaults" ? cast_Plot2Dset() : set
+    set = plotset == "defaults" ? cast_Plot2Dset() : plotset
 
     (nx,ny) = size(data[1])
 
@@ -71,8 +74,8 @@ function plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertit
 
     strNote = " Note: output truncated at image $(ncols*nrows) (limited by specified screen resolution)"
     footnote = nz > ncols*nrows ? footnote * strNote  : footnote
-    lblFoot = layout[nrows+1,:] = Label(scene, footnote, textsize = set.textsize * 6/5)
-    supertitle = layout[0,:] = Label(scene, "supertitle", textsize = set.textsize * 2 , color = (:black, 0.25))
+    lblFoot = layout[nrows+1,:] = Label(scene, footnote, textsize = textsize * 6/5)
+    supertitle = layout[0,:] = Label(scene, "supertitle", textsize = textsize * 2 , color = (:black, 0.25))
 
     return inline ? scene : display(scene)
 
