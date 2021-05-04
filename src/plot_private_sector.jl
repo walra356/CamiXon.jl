@@ -31,8 +31,10 @@ function _set_ticks(m::Matrix; center=(false,false), ticks=((1:1:1),(1:1:1)))
 
     (ny,nx) = size(m)
 
-    xticks = ticks[1] == (1:1:1) ? _auto_ticks(nx; center=center[1]) : ticks[1]
-    yticks = ticks[2] == (1:1:1) ? _auto_ticks(ny; center=center[2]) : ticks[2]
+    xcenter = center[1]
+    ycenter = center[2]
+    xticks = ticks[1] == (1:1:1) ? _auto_ticks(nx; center=xcenter) : ticks[1]
+    yticks = ticks[2] == (1:1:1) ? _auto_ticks(ny; center=ycenter) : ticks[2]
 
     return (yticks,xticks)
 

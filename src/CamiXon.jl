@@ -3,6 +3,14 @@ module CamiXon
 using Dates
 using AbstractPlotting
 
+export FITS_HDU
+export FITS_header
+export FITS_data
+export FITS_table
+export parse_FITS_TABLE
+export FITS_name
+export cast_FITS_name
+
 export fits_create
 export fits_read
 export fits_extend
@@ -13,22 +21,15 @@ export fits_add_key
 export fits_edit_key
 export fits_delete_key
 export fits_rename_key
-export FITS_HDU
-export FITS_header
-export FITS_data
-export FITS_table
-export parse_FITS_TABLE
-export FITS_name
-export cast_FITS_name
 
 export Plot2Dset
 export cast_Plot2Dset
 
+export plot_matrices
+
 export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
-
-export plot_matrices
 
 export find_all
 export find_first
