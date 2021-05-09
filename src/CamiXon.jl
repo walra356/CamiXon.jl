@@ -22,8 +22,8 @@ export fits_edit_key
 export fits_delete_key
 export fits_rename_key
 
-export Plot2Dset
-export cast_Plot2Dset
+export Plotset2D
+export cast_Plotset2D
 
 export plot_matrices
 

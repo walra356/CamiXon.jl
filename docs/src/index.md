@@ -70,9 +70,10 @@ cast_FORTRAN_datatype(str::String)
 ## Plotting
 
 ```@docs
-Plot2Dset
-cast_Plot2Dset(aspect=0, center=(true, true), ticks=((1:1:1), (1:1:1)), title="title", labels=("x", "y"))
-plot_matrices(data, scale=1, select=(0,0); plotset="defaults", supertitle="supertitle", footnote="footnote", inline=true, res=(900,600))
+Plotset2D
+cast_Plotset2D(dims, gain=1.0, aspect=0.0, center=(false,false), steps=(0,0), labels=("y", "x"))
+plot_matrices(data, gain=1.0,select=(0,0);plotset="defaults",inline=true,res=(900,600),supertitle="supertitle",footnote="footnote",title="img",
+              textsize=10,colormap=:gist_earth,colorbarlabel="Intensity (counts)",color_supertitle = (:black, 0.25),color_footnote = (:black, 0.25))
 ```
 
 ## Search algorithms

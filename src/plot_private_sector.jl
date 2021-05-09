@@ -1,42 +1,29 @@
-function _auto_ticks(n::Int; center=false)
+function _auto_ticks(n::Real, center::Bool)
 
     if 1 <= n <= 10
-         ticks = center ? (-n÷2:1:n÷2) : (0:1:n)
+         ticks = 1
     elseif 10 < n <=14
-         ticks = center ? (-n÷2:2:n÷2) : (0:2:n)
+         ticks = 2
     elseif 14 < n <=20
-         ticks = center ? (-n÷2:5:n÷2) : (0:5:n)
+         ticks = 5
     else
         n = center ? n÷2 : n
         p = exp10(log10(n)-floor(Int,log10(n)))
         s = 10^(length(string(n))-1)
         if p > 8.4
-            ticks = center ? (-8:4:8).*s : (0:2s:n)
+            ticks = center ? 4s : 2s
         elseif p > 6.3
-            ticks = center ? (-6:3:6).*s : (0:s:n)
+            ticks = center ? 3s : s
         elseif p > 4.2
-            ticks = center ? (-4:2:4).*s : (0:s:n)
+            ticks = center ? 2s : s
         elseif p > 2.1
-            ticks = center ? (-2:1:2).*s : (0:(s÷2):n)
+            ticks = center ? s : s÷2
         else
-            ticks = center ? (-10:5:10).*(s÷10) : (0:2(s÷10):n)
+            ticks = center ? 5(s÷10) : 2(s÷10)
         end
     end
 
     return ticks
-
-end
-
-function _set_ticks(m::Matrix; center=(false,false), ticks=((1:1:1),(1:1:1)))
-
-    (ny,nx) = size(m)
-
-    xcenter = center[1]
-    ycenter = center[2]
-    xticks = ticks[1] == (1:1:1) ? _auto_ticks(nx; center=xcenter) : ticks[1]
-    yticks = ticks[2] == (1:1:1) ? _auto_ticks(ny; center=ycenter) : ticks[2]
-
-    return (yticks,xticks)
 
 end
 
@@ -56,5 +43,21 @@ function _format_matrix_array(data)
     data = isarray3D ? [data[:,:,i] for i=1:size(data)[3]] : data
 
     return data
+
+end
+
+function _set_range(n::Real, center=false)
+
+    return center ? (isodd(n) ? (-n/2:1:n/2) : (0.5-n/2:1:0.5+n/2)) : (0.5:1:0.5+n)  # return range
+
+end
+
+function _set_ticks(n::Real, center=false, step=0)
+
+    step = step == 0 ? _auto_ticks(n, center) : step
+
+    max = (n÷2÷step)step
+
+    return center ? (-max:xticks:max) : (0:step:n)  # return ticks
 
 end
