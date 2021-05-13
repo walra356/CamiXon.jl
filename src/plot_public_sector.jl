@@ -16,7 +16,7 @@ Keys:
 * `colormap::Symbol = :gist_earth`
 * `colorbarlabel::String = "Intensity (units)"`: label for scale of colorbar
 """
-function plot_matrices4(data, gain=1.0, select=(0,0);
+function plot_matrices(data, gain=1.0, select=(0,0);
                         plotset="defaults",
                         inline=true,
                         res=(900,600),
