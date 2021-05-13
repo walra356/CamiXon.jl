@@ -16,7 +16,7 @@ Keys:
 * `colormap::Symbol = :gist_earth`
 * `colorbarlabel::String = "Intensity (units)"`: label for scale of colorbar
 """
-function plot_matrices(data, gain=1.0, select=(0,0);
+function plot_matrices4(data, gain=1.0, select=(0,0);
                         plotset="defaults",
                         inline=true,
                         res=(900,600),
@@ -34,8 +34,8 @@ function plot_matrices(data, gain=1.0, select=(0,0);
     valmin = minimum.(data)
     valmax = maximum.(data)
 
-    dims = size.(data)
-    plotset = plotset == "defaults" ? cast_Plotset2D.(dims) : plotset
+    dims = size.(data)                                                      # array of matrix dimensions
+    plotset = plotset == "defaults" ? cast_Plotset2D.(dims) : plotset       # array of plot settings
 
     itrZ = select == (0,0) ? (1:length(data)) : select
 
@@ -46,14 +46,14 @@ function plot_matrices(data, gain=1.0, select=(0,0);
 
     res = inline ? (res[1], max(res[2], nrows*300)) : res
 
-    scene, layout = layoutscene(resolution = res)
+    f = Figure(resolution = res)
 
     for i=1:nrows
         for j=1:ncols
             iz = (i-1)*ncols+j
             if iz <= nz
                 set = plotset[itrZ[iz]]
-                ax = layout[i,j] = Axis(scene, aspect = set.aspect)
+                ax = Axis(f[i,j], aspect = set.aspect)
                 ax.titlesize = textsize * 7/5
                 ax.title = title *" $(itrZ[iz])"
                 ax.xlabelsize = textsize * 6/5
@@ -71,7 +71,7 @@ function plot_matrices(data, gain=1.0, select=(0,0);
         end
     end
 
-    cb = layout[:,ncols+1] = Colorbar(scene, width = 10, limits = (0, maximum(data[1])), colormap = colormap, flipaxis = false)
+    cb = Colorbar(f[:,ncols+1] , width = 10, limits = (0, maximum(data[1])), colormap = colormap, flipaxis = false)
     cb.ticklabelsize = textsize
     cb.labelsize = textsize * 6/5
     cb.label = colorbarlabel
@@ -80,10 +80,10 @@ function plot_matrices(data, gain=1.0, select=(0,0);
 
     strNote = " Note: output truncated at image $(ncols*nrows) (limited by specified screen resolution)"
     footnote = nz > ncols*nrows ? footnote * strNote  : footnote
-    lblFoot = layout[nrows+1,:] = Label(scene, footnote, textsize = textsize * 6/5, color = color_footnote)
-    supertitle = layout[0,:] = Label(scene, supertitle, textsize = textsize * 2 , color = color_supertitle)
+    lblFoot = Label(f[nrows+1,:], footnote, textsize = textsize * 6/5, color = color_footnote)
+    supertitle = Label(f[0,:], supertitle, textsize = textsize * 2 , color = color_supertitle)
 
-    return scene
+    return f
 
 end
 
@@ -108,8 +108,8 @@ function cast_Plotset2D(dims, gain=1.0, aspect=0.0, center=(false,false), steps=
     (ny,nx) = dims
 
     aspect = aspect == 0.0 ? nx/ny : aspect
-    range = (_set_range(ny, center[1]),_set_range(nx, center[2]))
-    ticks = (_set_ticks(ny, center[1], steps[1]), _set_ticks(nx, center[2], steps[2]))
+    range = (_set_range(ny; center=center[1]),_set_range(nx; center=center[2]))
+    ticks = (_set_ticks(ny, steps[1];center=center[1]), _set_ticks(nx, steps[2]; center=center[2]))
 
     return Plotset2D(dims, gain, aspect, center, range, ticks, labels)
 

@@ -46,18 +46,18 @@ function _format_matrix_array(data)
 
 end
 
-function _set_range(n::Real, center=false)
+function _set_range(n::Real; center=false)
 
     return center ? (isodd(n) ? (-n/2:1:n/2) : (0.5-n/2:1:0.5+n/2)) : (0.5:1:0.5+n)  # return range
 
 end
 
-function _set_ticks(n::Real, center=false, step=0)
+function _set_ticks(n::Real, step=0; center=false)
 
     step = step == 0 ? _auto_ticks(n, center) : step
 
     max = (n÷2÷step)step
 
-    return center ? (-max:xticks:max) : (0:step:n)  # return ticks
+    return center ? (-max:xticks:max) : (0:step:n+1)
 
 end
