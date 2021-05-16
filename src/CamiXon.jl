@@ -22,9 +22,6 @@ export fits_edit_key
 export fits_delete_key
 export fits_rename_key
 
-export Plotset2D
-export cast_Plotset2D
-
 export plot_matrices
 
 export FORTRAN_format

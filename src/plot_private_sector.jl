@@ -27,37 +27,18 @@ function _auto_ticks(n::Real, center::Bool)
 
 end
 
-function _format_matrix_array(data)
+_irow(i::Int,ncols::Int) = (i-1)÷ncols+1
 
-    datatype = typeof(data)
+_icol(i::Int,ncols::Int) = Base.mod1(i, ncols)
 
-    ismatrix_array = datatype <: Array{Matrix{T}, 1} where T<:Real ? true : false
-    isarray1D = datatype <: Array{T,1} where T<:Real ? true : false
-    isarray2D = datatype <: Array{T,2} where T<:Real ? true : false
-    isarray3D = datatype <: Array{T,3} where T<:Real ? true : false
-    isarray = datatype <: (Array{T,N} where {T,N}) ? true : false
+_range(n::Real, center=false) = center ? (Base.isodd(n) ? (-n/2:1:n/2) : (0.5-n/2:1:0.5+n/2)) : (0.5:1:0.5+n)
 
-    isarray || error("PlotError: datatype not a 1D, 2D or 3D array")
-    data = isarray1D ? (ismatrix_array ? data : error("PlotError: datatype not a matrix array")) : data
-    data = isarray2D ? [data] : data
-    data = isarray3D ? [data[:,:,i] for i=1:size(data)[3]] : data
+function _ticks(n::Real, step=0, center=false)
 
-    return data
-
-end
-
-function _set_range(n::Real; center=false)
-
-    return center ? (isodd(n) ? (-n/2:1:n/2) : (0.5-n/2:1:0.5+n/2)) : (0.5:1:0.5+n)  # return range
-
-end
-
-function _set_ticks(n::Real, step=0; center=false)
-
-    step = step == 0 ? _auto_ticks(n, center) : step
+    step = Base.iszero(step) ? _auto_ticks(n, center) : step
 
     max = (n÷2÷step)step
 
-    return center ? (-max:xticks:max) : (0:step:n+1)
+    return center ? (-max:step:max) : (0:step:n+1)
 
 end
