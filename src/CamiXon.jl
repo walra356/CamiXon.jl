@@ -1,17 +1,8 @@
 module CamiXon
 
 using Dates
-#using GLMakie
-#
-export fits_create
-export fits_read
-export fits_extend
-export fits_info
-export fits_copy
-export fits_add_key
-export fits_edit_key
-export fits_delete_key
-export fits_rename_key
+using AbstractPlotting
+
 export FITS_HDU
 export FITS_header
 export FITS_data
@@ -20,14 +11,25 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
-export Plot2Dset
-export cast_Plot2Dset
+export fits_create
+export fits_read
+export fits_extend
+export fits_info
+export fits_copy
+export fits_combine
+export fits_add_key
+export fits_edit_key
+export fits_delete_key
+export fits_rename_key
+
+export Plotset2D
+export cast_Plotset2D
+
+export plot_matrices
 
 export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
-
-export plot_matrices
 
 export find_all
 export find_first

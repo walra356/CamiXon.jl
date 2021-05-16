@@ -37,7 +37,20 @@ end
 
 # .................................................... fits_copy ...................................................
 
-function fits_combine(filnamFirst::String, filnamLast::String)
+"""
+    fits_combine(strFirst, strLast [; protect=true])
+
+Copy "filenameFirst" to "filenameLast" (with mandatory ".fits" extension)
+
+Key:
+* `protect::Bool`: overwrite protection
+#### Example:
+```
+fits_combine("T01.fits", "T22.fits")
+  'T01-T22.fits': file created
+```
+"""
+function fits_combine(filnamFirst::String, filnamLast::String; protect=true)
 
     Base.Filesystem.isfile(filnamFirst) || error("FitsError: '$filnamFirst': file not found")
     Base.Filesystem.isfile(filnamLast) ||  error("FitsError: '$filnamLast': file not found")
@@ -91,9 +104,7 @@ function fits_combine(filnamFirst::String, filnamLast::String)
 
     filnamOut = strPre * strNum * "-" * strPre * strNum2 * strExt
 
-    _isavailable(filnamOut,true) || error("FitsError: '$filnamOut': cannot be created (file in use")
-
-    fits_create(filnamOut, dataStack)
+    fits_create(filnamOut, dataStack; protect)
 
     return println("'$filnamOut': file created")
 
