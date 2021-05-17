@@ -3,7 +3,7 @@
 
 Plot heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
-Keyword arguments:
+Keyword arguments: 
 * `gain::Real = 1.0`: for scaling the value of the matrix elements
 * `steps::Tuple{Real,Real} = (0,0)`: x and y ticks stepsizes
 * `center::Tuple{Bool,Bool} = (false,false)`: x and y centering of ticks ranges
