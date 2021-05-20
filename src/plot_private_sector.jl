@@ -27,9 +27,9 @@ function _auto_ticks(n::Real, center::Bool)
 
 end
 
-_irow(i::Int,ncols::Int) = (i-1)÷ncols+1
+_irows(i::Int,ncols::Int) = (i-1)÷ncols+1
 
-_icol(i::Int,ncols::Int) = Base.mod1(i, ncols)
+_icols(i::Int,ncols::Int) = Base.mod1(i, ncols)
 
 _range(n::Real, center=false) = center ? (Base.isodd(n) ? (-n/2:1:n/2) : (0.5-n/2:1:0.5+n/2)) : (0.5:1:0.5+n)
 

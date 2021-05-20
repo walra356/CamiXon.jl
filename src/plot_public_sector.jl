@@ -3,7 +3,7 @@
 
 Plot heatmap of `data`  of one or more (optionally `value-scaled`) matrices.
 
-Keyword arguments: 
+Keyword arguments:
 * `gain::Real = 1.0`: for scaling the value of the matrix elements
 * `steps::Tuple{Real,Real} = (0,0)`: x and y ticks stepsizes
 * `center::Tuple{Bool,Bool} = (false,false)`: x and y centering of ticks ranges
@@ -45,11 +45,11 @@ function plot_matrices(σ, ncols=3, select=(0,0);
 
     nz = length(itrZ)
 
-    nrows = _irow(nz,ncols)
+    nrows = _irows(nz,ncols)
 
-    f = Figure(resolution=res)
+    fig = Figure(resolution=res)
 
-    ax = [Axis(f[_irow(i,ncols),_icol(i,ncols)]) for i=1:nz]
+    ax = [Axis(fig[_irows(i,ncols),_icols(i,ncols)]) for i=1:nz]
     hm = [heatmap!(ax[i], _range(nx[i],center[1]), _range(ny[i],center[2]),σ[itrZ[i]]) for i ∈ eachindex(ax)]
 
     for i ∈ eachindex(ax)
@@ -77,9 +77,9 @@ function plot_matrices(σ, ncols=3, select=(0,0);
 
     strNote = " Note: output truncated at image $(ncols*nrows) (limited by specified screen resolution)"
     footnote = nz > ncols*nrows ? footnote * strNote  : footnote
-    lblFoot = Label(f[nrows+1,:], footnote, textsize = textsize * 6/5, color = color_footnote)
-    supertitle = Label(f[0,:], supertitle, textsize = textsize * 2 , color = color_supertitle)
+    lblFoot = Label(fig[nrows+1,:], footnote, textsize = textsize * 6/5, color = color_footnote)
+    supertitle = Label(fig[0,:], supertitle, textsize = textsize * 2 , color = color_supertitle)
 
-    return f
+    return fig
 
 end
