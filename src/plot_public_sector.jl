@@ -68,7 +68,7 @@ function plot_matrices(σ, ncols=3, select=(0,0);
         hm[i].colorrange = (valmin[1], valmax[1] * gain)
     end
 
-    cb = Colorbar(f[:,ncols+1] , width = 10, limits = (0, valmax[1]), colormap = colormap, flipaxis = false)
+    cb = Colorbar(fig[:,ncols+1] , width = 10, limits = (0, valmax[1]), colormap = colormap, flipaxis = false)
     cb.ticklabelsize = textsize
     cb.labelsize = textsize * 6/5
     cb.label = colorbarlabel
