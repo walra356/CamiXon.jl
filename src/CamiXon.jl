@@ -1,7 +1,7 @@
 module CamiXon
 
 using Dates
-using AbstractPlotting
+using Makie
 
 export FITS_HDU
 export FITS_header
