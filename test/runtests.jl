@@ -45,8 +45,8 @@ using Test
     @test centers(Base.OneTo(100)) == Base.OneTo(100)
     @test centers(UnitRange(-200:100)) == -200:100
     @test centers(-200..100) == -200..100
-    @test centers([1,4,2,5]) == [0, 1, 5, 7, 12
-    #@test edges(Base.OneTo(100)) == 0.5..99.5
+    @test centers([1,4,2,5]) == [0, 1, 5, 7, 12]
+    @test edges(Base.OneTo(100)) == 0.5..99.5
     @test edges(UnitRange(-200:100)) == 0.5..99.5
     @test edges(-200..100) == -200.5..99.5
     @test edges([1,4,2,5]) == [0, 1, 5, 7, 12]
