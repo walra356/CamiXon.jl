@@ -87,7 +87,7 @@ end
 
 # ==================================== step125(x) ============================================================
 
-"""@docs
+"""
     step125(x)
 
 Step used for deviding the number x in steps according to 1-2-5 scheme
@@ -116,12 +116,12 @@ end
 
 # ==================================== select125(x) ===============================================================
 
-"""@docs
+"""
     select125(x)
 
 Select elements of the collection x by index according to 1-2-5 scheme
 #### Examples:
-```
+```@docs
 x1 = [1,2,4,6,8,10,13,16,18,20,40,60,80,100]
 x2 = string.(x1)
 x3 = Base.OneTo(100)
@@ -138,7 +138,7 @@ select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
 
 # ==================================== ticks125(x) ================================================================
 
-"""@docs
+"""
     ticks125(x)
 
 Tickvalues for x according to 1-2-5 scheme
@@ -164,7 +164,7 @@ end
 
 # ==================================== centerticks(pos) ============================================================
 
-"""@docs
+"""
     centerticks(pos)
 
 Tick positions centered with respect to the pixels of a heatmap (1-2-5 scheme)
@@ -190,7 +190,7 @@ centerticks(seg::Vector{<:Real}) =  select125([Base.sum(seg[1:i]) for i ∈ Base
 
 # ==================================== edgeticks(pos) ============================================================
 
-"""@docs
+"""
     edgeticks(pos)
 
 Tick positions corresponding to the pixel edges of a heatmap (1-2-5 scheme)
@@ -216,7 +216,7 @@ edgeticks(seg::Vector{<:Real}) = Base.append!([0],[Base.sum(seg[1:i]) for i ∈ 
 
 # ==================================== centers(pos) ============================================================
 
-"""@docs
+"""
     centers(pos)
 
 Positions centered with respect to the pixels of a heatmap (1-2-5 scheme).
@@ -238,7 +238,7 @@ centers(pos::UnitRange{Int}) = pos
 centers(pos::IntervalSets.ClosedInterval{<:Real}) = pos
 centers(seg::Vector{<:Real}) = (s=Base.append!([0],seg); return [Base.sum(s[1:i]) for i ∈ Base.eachindex(s)])
 
-"""@docs
+"""
     edges(pos)
 
 Positions corresponding to the pixel edges of a heatmap (1-2-5 scheme).
