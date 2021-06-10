@@ -1,4 +1,5 @@
 using CamiXon
+using Makie: IntervalSets
 using Test
 
 @testset "CamiXon.jl" begin
