@@ -83,6 +83,13 @@ plot_matrices(σ, ncols=3, select=(0,0);
                         colorbarlabel="Intensity (counts)",
                         color_supertitle = (:black, 0.4),
                         color_footnote = (:black, 0.4))
+step125(x::Real)
+select125(x)
+ticks125(x)   
+centerticks(pos)
+edgeticks(pos)  
+centers(pos)
+edges(pos)
 ```
 
 ## Search algorithms
@@ -98,6 +105,8 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```@docs
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
+log10_characteristic_power(x)
+log10_mantissa(x)
 ```
 
 ## Index
