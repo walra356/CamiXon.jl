@@ -83,3 +83,179 @@ function plot_matrices(σ, ncols=3, select=(0,0);
     return fig
 
 end
+
+
+# ==================================== step125(x) ============================================================
+
+"""@docs
+    step125(x)
+
+Step used for deviding the number x in steps according to 1-2-5 scheme
+#### Examples:
+```
+step125.([5,10,21.3,50,100.1])
+5-element Vector{Int64}:
+  1
+  2
+  5
+ 10
+ 20
+```
+"""
+function step125(x::Real)
+
+    m = log10_mantissa(x)
+    p = log10_characteristic_power(x)
+    v = 10^m
+    d = v > 7.9 ? 2.0 : v > 3.9 ? 1.0 : v > 1.49 ? 0.5 : 0.2
+
+    return max(1,round(Int, d *= 10^p))
+
+end
+
+
+# ==================================== select125(x) ===============================================================
+
+"""@docs
+    select125(x)
+
+Select elements of the collection x by index according to 1-2-5 scheme
+#### Examples:
+```
+x1 = [1,2,4,6,8,10,13,16,18,20,40,60,80,100]
+x2 = string.(x1)
+x3 = Base.OneTo(100)
+x4 = (1:100)
+println(select125(x1)); println(select125(x2)); println(select125(x3)); println(select125(x4))
+ [2, 6, 10, 16, 20, 60, 100]
+ ["2", "6", "10", "16", "20", "60", "100"]
+ [20, 40, 60, 80, 100]
+ [20, 40, 60, 80, 100]
+```
+"""
+select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
+
+
+# ==================================== ticks125(x) ================================================================
+
+"""@docs
+    ticks125(x)
+
+Tickvalues for x according to 1-2-5 scheme
+#### Examples:
+```
+ticks125.([5,10,21.3,50,100.1])
+5-element Vector{StepRange{Int64, Int64}}:
+ -5:1:5
+ -10:2:10
+ -20:5:20
+ -50:10:50
+ -100:20:100
+```
+"""
+function ticks125(x)
+
+    Δx = step125(x)
+    xm = (round(Int, x) ÷ Δx) * Δx
+    return (-xm:Δx:xm)
+
+end
+
+
+# ==================================== centerticks(pos) ============================================================
+
+"""@docs
+    centerticks(pos)
+
+Tick positions centered with respect to the pixels of a heatmap (1-2-5 scheme)
+Note that ticks outside the plot limits are not rendered.
+#### Examples:
+```
+x1 = Base.OneTo(100)
+x2 = UnitRange(-200:100)
+x3 = -200..100
+x4 = [1,4,2,5] # specification of segment lenghts
+println(centerticks(x1)); println(centerticks(x2)); println(centerticks(x3)); println(centerticks(x4))
+ -100:20:100
+ -200:50:200
+ -200:50:200
+ Float32[0.5, 3.0, 6.0, 9.5]
+```
+"""
+centerticks(pos::Base.OneTo{Int64}) = ticks125(maximum(abs.(collect(pos))))
+centerticks(pos::UnitRange{Int}) = ticks125(maximum(abs.(collect(pos))))
+centerticks(pos::IntervalSets.ClosedInterval{<:Real}) = ticks125(maximum(abs.(collect(pos.left:pos.right))))
+centerticks(seg::Vector{<:Real}) =  select125([Base.sum(seg[1:i]) for i ∈ Base.eachindex(seg)] .- seg .* 0.5f0)
+
+
+# ==================================== edgeticks(pos) ============================================================
+
+"""@docs
+    edgeticks(pos)
+
+Tick positions corresponding to the pixel edges of a heatmap (1-2-5 scheme)
+Note that ticks outside the plot limits are not rendered.
+#### Examples:
+```
+x1 = Base.OneTo(100)
+x2 = UnitRange(-200:100)
+x3 = -200..100
+x4 = [1,4,2,5] # specification of segment lenghts
+println(edgeticks(x1)); println(edgeticks(x2)); println(edgeticks(x3)); println(edgeticks(x4))
+ -100:20:100
+ -200:50:200
+ -200:50:200
+ [0, 1, 5, 7, 12]
+```
+"""
+edgeticks(pos::Base.OneTo{Int64}) = centerticks(pos)
+edgeticks(pos::UnitRange{Int}) = centerticks(pos)
+edgeticks(pos::IntervalSets.ClosedInterval{<:Real}) = centerticks(pos)
+edgeticks(seg::Vector{<:Real}) = Base.append!([0],[Base.sum(seg[1:i]) for i ∈ Base.eachindex(seg)])
+
+
+# ==================================== centers(pos) ============================================================
+
+"""@docs
+    centers(pos)
+
+Positions centered with respect to the pixels of a heatmap (1-2-5 scheme).
+#### Examples:
+```
+x1 = Base.OneTo(100)
+x2 = UnitRange(-200:100)
+x3 = -200..100
+x4 = [1,4,2,5] # specification of segment lenghts
+println(edgeticks(x1)); println(edgeticks(x2)); println(edgeticks(x3)); println(edgeticks(x4))
+ Base.OneTo(100)
+ -200:100
+ -200..100
+ [0, 1, 5, 7, 12]
+```
+"""
+centers(pos::Base.OneTo{Int64}) = pos
+centers(pos::UnitRange{Int}) = pos
+centers(pos::IntervalSets.ClosedInterval{<:Real}) = pos
+centers(seg::Vector{<:Real}) = (s=Base.append!([0],seg); return [Base.sum(s[1:i]) for i ∈ Base.eachindex(s)])
+
+"""@docs
+    edges(pos)
+
+Positions corresponding to the pixel edges of a heatmap (1-2-5 scheme).
+#### Examples:
+```
+x1 = Base.OneTo(100)
+x2 = UnitRange(-200:100)
+x3 = -200..100
+x4 = [1,4,2,5] # specification of segment lenghts
+println(edges(x1)); println(edges(x2)); println(edges(x3)); println(edges(x4))
+ 0.5..99.5
+ 0.5..99.5
+ -200.5..99.5
+ [0, 1, 5, 7, 12]
+```
+"""
+edges(pos::Base.OneTo{Int64}) = (0.5)..(pos[end] - 0.5)
+edges(pos::UnitRange{Int}) = (0.5)..(pos[end] - 0.5)
+edges(pos::IntervalSets.ClosedInterval{<:Real}) = (pos.left-0.5)..(pos.right-0.5)
+edges(seg::Vector{<:Real}) = (s=Base.append!([0],seg); return [Base.sum(s[1:i]) for i ∈ Base.eachindex(s)])

@@ -2,6 +2,7 @@ module CamiXon
 
 using Dates
 using Makie
+using Makie: IntervalSets
 
 export FITS_HDU
 export FITS_header
@@ -33,6 +34,15 @@ export find_first
 export find_last
 export canonical_partitions
 export integer_partitions
+export log10_characteristic_power
+export log10_mantissa
+export step125
+export select125
+export ticks125
+export centerticks
+export edgeticks
+export centers
+export edges
 
 include("fits_pointers.jl")
 include("read_io.jl")
