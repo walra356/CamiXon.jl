@@ -87,7 +87,7 @@ end
 
 # ==================================== Makie.plot!(plot::Hist) ============================================================
 
-function Makie.plot!(plot::Hist)
+function plot!(plot::Hist)
 
     values = plot[:values]
 

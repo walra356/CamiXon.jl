@@ -24,7 +24,7 @@ export fits_delete_key
 export fits_rename_key
 
 export plot_matrices
-export Makie.plot!
+export plot!
 export step125
 export select125
 export ticks125
