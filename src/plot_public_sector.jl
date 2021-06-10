@@ -85,6 +85,53 @@ function plot_matrices(σ, ncols=3, select=(0,0);
 end
 
 
+# ==================================== Makie.plot!(plot::Hist) ============================================================
+
+function Makie.plot!(plot::Hist)
+
+    values = plot[:values]
+
+    edges = lift(values, plot.bins) do vals, bins
+        if bins isa Int
+            mi, ma = float.(extrema(vals))
+            ma = nextfloat(ma) # hist is right-open, so to include the upper data point, make the last bin a tiny bit bigger
+            return range(mi, ma, length = bins+1)
+        else
+            if !issorted(bins)
+                error("Histogram bins are not sorted: $bins")
+            end
+            return bins
+        end
+    end
+
+    log0 = 0
+    points = lift(edges, plot.normalization) do edges, normalization
+        h = StatsBase.fit(StatsBase.Histogram, values[], edges)
+        h_norm = StatsBase.normalize(h, mode = normalization)
+        centers = edges[1:end-1] .+ (diff(edges) ./ 2)
+        weights = h_norm.weights
+            indices = findall(x -> x < nextfloat(0.0,1), weights) # find all replace zeros <===========================
+            for i in indices weights[i]=Inf end
+            log0 = 0.2 * minimum(weights)
+            for i in indices weights[i]=log0 end # replace zeros by 'log0' <===========================================
+        return Point2f0.(centers, weights)
+    end
+
+    widths = lift(diff, edges)
+
+    # plot the values, not the observables, to be in control of updating
+    bp = barplot!(plot, points[]; width = widths[], plot.attributes..., fillto=log0) # fillto 'log0' <=================
+
+    # update the barplot points without triggering, then trigger with `width`
+    on(widths) do w
+        bp[1].val = points[]
+        bp.width = w
+    end
+
+    return plot
+
+end
+
 # ==================================== step125(x) ============================================================
 
 """

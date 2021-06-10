@@ -24,6 +24,14 @@ export fits_delete_key
 export fits_rename_key
 
 export plot_matrices
+export Makie.plot!
+export step125
+export select125
+export ticks125
+export centerticks
+export edgeticks
+export centers
+export edges
 
 export FORTRAN_format
 export cast_FORTRAN_format
@@ -36,13 +44,6 @@ export canonical_partitions
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
-export step125
-export select125
-export ticks125
-export centerticks
-export edgeticks
-export centers
-export edges
 
 include("fits_pointers.jl")
 include("read_io.jl")
