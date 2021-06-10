@@ -2,7 +2,7 @@ module CamiXon
 
 using Dates
 using Makie
-using Makie: IntervalSets
+using IntervalSets
 
 export FITS_HDU
 export FITS_header
