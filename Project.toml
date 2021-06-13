@@ -10,7 +10,7 @@ IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 
 [compat]
-#Makie = "0.13.14"
+##Makie = "0.13.14"
 IntervalSets = "0.5.3"
 LaTeXStrings = "1.2.1"
 julia = "1"
