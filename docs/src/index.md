@@ -72,7 +72,7 @@ cast_FORTRAN_datatype(str::String)
 ```@docs
 step125(x::Real)
 select125(x)
-ticks125(x)
+ticks(x)
 edges(itr)
 ```
 

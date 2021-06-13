@@ -52,12 +52,12 @@ select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
 # ==================================== ticks125(x) ================================================================
 
 """
-    ticks125(x)
+    ticks(x)
 
 Tickvalues for x according to 1-2-5 scheme
 #### Examples:
 ```
-ticks125.([5,10,21.3,50,100.1])
+ticks.([5,10,21.3,50,100.1])
 5-element Vector{StepRange{Int64, Int64}}:
  -5:1:5
  -10:2:10
@@ -66,16 +66,17 @@ ticks125.([5,10,21.3,50,100.1])
  -100:20:100
 ```
 """
-function ticks125(x)
+function ticks(x)
 
-    Δx = step125(x)
-    xm = (Base.round(Int, x) ÷ Δx) * Δx
+    max = typeof(x) <: IntervalSets.ClosedInterval ? x.right : x[end]
+
+    Δx = step125(max)
+    xm = (round(Int, max) ÷ Δx) * Δx
     return (-xm:Δx:xm)
 
 end
 
-
-# ==================================== edges(pos) ============================================================
+# ==================================== edges(itr) ============================================================
 
 """
     edges(itr)
@@ -83,7 +84,7 @@ end
 Iterators defining the pixel edges of a heatmap (1-2-5 scheme).
 #### Examples:
 ```
-edges(Base.OneTo(100))
+edges(1:100)
  0.5:1.0:99.5
 
 edges(-200:100)
@@ -96,7 +97,7 @@ edges(-200..100)
  -200.5..99.5
 
 edges([0, 1, 5, 7, 12])
-[0, 1, 5, 7, 12]
+ [0, 1, 5, 7, 12]
 ```
 """
 function edges(itr)
@@ -107,5 +108,7 @@ function edges(itr)
     typeof(itr) <: LinRange   && return (itr[1]-0.5):itr.len:(itr[end] - 0.5)
     typeof(itr) <: Vector     && return itr
     typeof(itr) <: IntervalSets.ClosedInterval && return (itr.left-0.5)..(itr.right-0.5)
+
+    return error("Edges: use different iterator type")
 
 end

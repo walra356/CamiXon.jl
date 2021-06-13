@@ -27,7 +27,7 @@ export fits_rename_key
 #export plot!
 export step125
 export select125
-export ticks125
+export ticks
 export edges
 #export centerticks
 #export edgeticks
