@@ -1,4 +1,5 @@
 using CamiXon
+using IntervalSets
 using Test
 
 @testset "CamiXon.jl" begin
