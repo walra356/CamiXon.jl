@@ -70,26 +70,10 @@ cast_FORTRAN_datatype(str::String)
 ## Plotting
 
 ```@docs
-plot_matrices(σ, ncols=3, select=(0,0);
-                        gain=1.0,
-                        steps=(1,1),
-                        center=(false,false),
-                        res=(900,600),
-                        supertitle="supertitle",
-                        footnote="footnote",
-                        title="img",
-                        textsize=10,
-                        colormap=:gist_earth,
-                        colorbarlabel="Intensity (counts)",
-                        color_supertitle = (:black, 0.4),
-                        color_footnote = (:black, 0.4))
 step125(x::Real)
 select125(x)
 ticks125(x)
-centerticks(pos::Base.OneTo{Int64})
-edgeticks(pos::Base.OneTo{Int64})
-centers(pos::Base.OneTo{Int64})
-edges(pos::Base.OneTo{Int64})
+edges(itr)
 ```
 
 ## Search algorithms

@@ -1,7 +1,7 @@
 module CamiXon
 
 using Dates
-using Makie
+#using Makie
 using IntervalSets
 
 export FITS_HDU
@@ -23,15 +23,16 @@ export fits_edit_key
 export fits_delete_key
 export fits_rename_key
 
-export plot_matrices
-export plot!
+#export plot_matrices
+#export plot!
 export step125
 export select125
 export ticks125
-export centerticks
-export edgeticks
-export centers
 export edges
+#export centerticks
+#export edgeticks
+#export centers
+#export edges
 
 export FORTRAN_format
 export cast_FORTRAN_format
