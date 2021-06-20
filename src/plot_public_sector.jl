@@ -100,7 +100,8 @@ end
 Heatmap range transformation for steplength specification vector x
 #### Examples:
 ```@docs
-steps([4,2,6])
+x = [4,2,6]
+steps(x)
  [0, 4, 6, 12]
 ```
 """
@@ -120,7 +121,8 @@ end
 Stepcenter positions for steplength specification vector x
 #### Examples:
 ```@docs
-stepcenters([4,2,6])
+x = [4,2,6]
+stepcenters(x)
  [2.0, 5.0, 9.0]
 ```
 """
@@ -140,7 +142,8 @@ end
 Stepedges for steplength specification vector x
 #### Examples:
 ```@docs
-stepedges([4,2,6])
+x = [4,2,6]
+stepedges(x)
  [0, 4, 6, 12]
 ```
 """
