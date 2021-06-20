@@ -26,7 +26,6 @@ function step125(x::Real)
 
 end
 
-
 # ==================================== select125(x) ===============================================================
 
 """
@@ -35,14 +34,15 @@ end
 Select elements of the collection x by index according to 1-2-5 scheme
 #### Examples:
 ```@docs
-x1 = [1,2,4,6,8,10,13,16,18,20,40,60,80,100]
-x2 = string.(x1)
-x3 = Base.OneTo(100)
-x4 = (1:100)
-println(select125(x1)); println(select125(x2)); println(select125(x3)); println(select125(x4))
+x = [1,2,4,6,8,10,13,16,18,20,40,60,80,100]
+select125(x)
  [2, 6, 10, 16, 20, 60, 100]
+
+x = string.(x)
+select125(x)
  ["2", "6", "10", "16", "20", "60", "100"]
- [20, 40, 60, 80, 100]
+
+select125(1:100)
  [20, 40, 60, 80, 100]
 ```
 """
@@ -91,7 +91,7 @@ function edges(x; dim = 0)
 
 end
 
-# =================================== steps(x) ===============================================================
+# =================================== steps(x) =============================================================
 
 """
     steps(x)
@@ -111,7 +111,8 @@ function steps(x::Vector{T} where T<:Real)
 
 end
 
-# =================================== stepcenters(x) ===============================================================
+# =================================== stepcenters(x) =============================================================
+
 """
     stepcenters(x)
 
@@ -130,12 +131,12 @@ function stepcenters(x::Vector{T} where T<:Real)
 
 end
 
-# =================================== stepedges(x) ===============================================================
+# =================================== stepedges(x) =============================================================
 
 """
     stepedges(x)
 
-Stepedge positions for steplength specification vector x
+Stepedges for steplength specification vector x
 #### Examples:
 ```@docs
 stepedges([4,2,6])
