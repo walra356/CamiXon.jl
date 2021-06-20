@@ -1,7 +1,6 @@
 module CamiXon
 
 using Dates
-#using Makie
 using IntervalSets
 
 export FITS_HDU
@@ -27,8 +26,10 @@ export fits_rename_key
 #export plot!
 export step125
 export select125
-export ticks
 export edges
+export steps
+export stepcenters
+export stepedges
 #export centerticks
 #export edgeticks
 #export centers

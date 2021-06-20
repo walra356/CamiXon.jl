@@ -72,8 +72,10 @@ cast_FORTRAN_datatype(str::String)
 ```@docs
 step125(x::Real)
 select125(x)
-ticks(x)
-edges(itr)
+steps(x)
+stepcenters(x)
+stepedges(x)
+edges(x; dim=0)
 ```
 
 ## Search algorithms

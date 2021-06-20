@@ -48,67 +48,102 @@ println(select125(x1)); println(select125(x2)); println(select125(x3)); println(
 """
 select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
 
-
-# ==================================== ticks125(x) ================================================================
+# ==================================== edges(x) ===============================================================
 
 """
-    ticks(x)
+    edges(x)
 
-Tickvalues for x according to 1-2-5 scheme
+Heatmap range transformation from `center` (default) to `edge` format.
+For ClosedInterval ranging the heatmap dimension has to be supplied manually.
 #### Examples:
-```
-ticks.([5,10,21.3,50,100.1])
-5-element Vector{StepRange{Int64, Int64}}:
- -5:1:5
- -10:2:10
- -20:5:20
- -50:10:50
- -100:20:100
+```@docs
+edges(Base.OneTo(10))
+ 0.5:1.0:9.5
+
+edges(UnitRange(-8:0))
+ -8.5:1.0:-0.5
+
+edges(range(-21.1, 0, length=6))
+ [-23.21, -18.99, -14.77, -10.549999999999999, -6.33, -2.11]
+
+edges(LinRange(-21.1,0,6))
+ [-23.21, -18.990000000000002, -14.77, -10.55, -6.33, -2.1100000000000003]
+
+edges((-21.1)..0; dim=6)
+ (-23.21)..(-2.1100000000000003)
 ```
 """
-function ticks(x)
+function edges(x; dim = 0)
 
-    max = typeof(x) <: IntervalSets.ClosedInterval ? x.right : x[end]
+    T = typeof(x)
+    E = eltype(x)
 
-    Δx = step125(max)
-    xm = (round(Int, max) ÷ Δx) * Δx
-    return (-xm:Δx:xm)
+    strErr = "RangeType $T not implemented"
+
+    T <: Base.OneTo   ? Δx = 1 :
+    T <: UnitRange    ? Δx = 1 :
+    T <: StepRange    ? Δx = x.step :
+    T <: StepRangeLen ? Δx = x.step :
+    T <: LinRange     ? Δx = (x.stop-x.start)/(x.len-1) :
+    T <: IntervalSets.ClosedInterval ? Δx = (x.right-x.left)/(dim-1) : error(strErr)
+
+    return dim > 0 ? (x.left-0.5Δx)..(x.right-0.5Δx) : Δx == 1 ? x .- 0.5Δx : x .- E[0.5Δx]
 
 end
 
-# ==================================== edges(itr) ============================================================
+# =================================== steps(x) ===============================================================
 
 """
-    edges(itr)
+    steps(x)
 
-Iterators defining the pixel edges of a heatmap (1-2-5 scheme).
+Heatmap range transformation for steplength specification vector x
 #### Examples:
-```
-edges(1:100)
- 0.5:1.0:99.5
-
-edges(-200:100)
- -200.5:1.0:99.5
-
-edges(-200:10:100)
- -200.5:10.0:99.5
-
-edges(-200..100)
- -200.5..99.5
-
-edges([0, 1, 5, 7, 12])
- [0, 1, 5, 7, 12]
+```@docs
+steps([4,2,6])
+ [0, 4, 6, 12]
 ```
 """
-function edges(itr)
+function steps(x::Vector{T} where T<:Real)
 
-    typeof(itr) <: Base.OneTo && return (0.5):(itr[end] - 0.5)
-    typeof(itr) <: UnitRange  && return (itr[1]-0.5):(itr[end] - 0.5)
-    typeof(itr) <: StepRange  && return (itr[1]-0.5):itr.step:(itr[end] - 0.5)
-    typeof(itr) <: LinRange   && return (itr[1]-0.5):itr.len:(itr[end] - 0.5)
-    typeof(itr) <: Vector     && return itr
-    typeof(itr) <: IntervalSets.ClosedInterval && return (itr.left-0.5)..(itr.right-0.5)
+    sum(x .< 0) == 0 || error("Error: $x - nagative step length not allowed")
 
-    return error("Edges: use different iterator type")
+    return (s = append!(eltype(x)[0],x); [Base.sum(s[1:i]) for i ∈ Base.eachindex(s)])
+
+end
+
+# =================================== stepcenters(x) ===============================================================
+"""
+    stepcenters(x)
+
+Stepcenter positions for steplength specification vector x
+#### Examples:
+```@docs
+stepcenters([4,2,6])
+ [2.0, 5.0, 9.0]
+```
+"""
+function stepcenters(x::Vector{T} where T<:Real)
+
+    s = append!(eltype(x)[0],x)
+
+    return [Base.sum(s[1:i]) + 0.5x[i] for i ∈ Base.eachindex(x)]
+
+end
+
+# =================================== stepedges(x) ===============================================================
+
+"""
+    stepedges(x)
+
+Stepedge positions for steplength specification vector x
+#### Examples:
+```@docs
+stepedges([4,2,6])
+ [0, 4, 6, 12]
+```
+"""
+function stepedges(x::Vector{T} where T<:Real)
+
+    return steps(x)
 
 end

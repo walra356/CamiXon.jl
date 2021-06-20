@@ -32,11 +32,14 @@ using Test
     @test integer_partitions(7; transpose=true) == [[7], [4, 3], [5, 2], [6, 1], [3, 2, 2], [3, 3, 1], [4, 2, 1], [5, 1, 1], [2, 2, 2, 1], [3, 2, 1, 1], [4, 1, 1, 1], [2, 2, 1, 1, 1], [3, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]]
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
-    @test edges(1:100) == 0.5:1.0:99.5
-    @test edges(-200:100) == -200.5:1.0:99.5
-    @test edges(-200:10:100) == -200.5:10.0:99.5
-    @test edges(-200..100) == -200.5..99.5
-    @test edges([0, 1, 5, 7, 12]) == [0, 1, 5, 7, 12]
+    @test edges(Base.OneTo(10)) == 0.5:1.0:9.5
+    @test edges(UnitRange(-8:0)) == -8.5:1.0:-0.5
+    @test edges(range(-21.1, 0, length=6)) == [-23.21, -18.99, -14.77, -10.549999999999999, -6.33, -2.11]
+    @test edges(LinRange(-21.1,0,6)) == [-23.21, -18.990000000000002, -14.77, -10.55, -6.33, -2.1100000000000003]
+    @test edges(-21.1..0; dim=6) == (-23.21)..(-2.1100000000000003)
+    @test steps([4,2,6]) == [0, 4, 6, 12]
+    @test stepcenters([4,2,6]) == [2.0, 5.0, 9.0]
+    @test stepedges([4,2,6]) == [0, 4, 6, 12]
     #@test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits"
     #@test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
