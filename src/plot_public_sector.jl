@@ -70,6 +70,9 @@ edges(range(-21.1, 0, length=6))
 edges(LinRange(-21.1,0,6))
  [-23.21, -18.990000000000002, -14.77, -10.55, -6.33, -2.1100000000000003]
 
+edges([-21.1, -16.88, -12.66, -8.44, -4.22, 0.0])
+ [-23.21, -18.99, -14.77, -10.55, -6.33, -2.1100000000000003]
+ 
 edges((-21.1)..0; dim=6)
  (-23.21)..(-2.1100000000000003)
 ```
@@ -86,6 +89,7 @@ function edges(x; dim = 0)
     T <: StepRange    ? Δx = x.step :
     T <: StepRangeLen ? Δx = x.step :
     T <: LinRange     ? Δx = (x.stop-x.start)/(x.len-1) :
+    T <: Vector{E}    ? Δx = (x[end]-x[1])/(length(x)-1)  :
     T <: IntervalSets.ClosedInterval ? Δx = (x.right-x.left)/(dim-1) : error(strErr)
 
     return dim > 0 ? (x.left-0.5Δx)..(x.right-0.5Δx) : Δx == 1 ? x .- 0.5Δx : x .- E[0.5Δx]
