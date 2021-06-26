@@ -75,7 +75,7 @@ select125(x)
 steps(x::Vector{T} where T<:Real)
 stepcenters(x::Vector{T} where T<:Real)
 stepedges(x::Vector{T} where T<:Real)
-edges(x; dim=0)
+edges(px, Δx=1.0, x0=0.0)
 ```
 
 ## Search algorithms
