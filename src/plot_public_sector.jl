@@ -52,7 +52,7 @@ select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
 # ==================================== edges(x) ===============================================================
 
 """
-    edges(p [, Δx[, x0]])
+    edges(px [, Δx[, x0]])
 
 Heatmap range transformation from pixel coordinates to physical coordinates,
 with pixelsize Δx and offset x0, both in physical units.
@@ -71,7 +71,7 @@ edges(px, Δx, x0)
  [-1.25, 1.25, 3.75, 6.25, 8.75]
 ```
 """
-edges(x, Δx=1.0, x0=0.0) = collect(p .* Δx) .-(x0 + 0.5Δx)
+edges(px, Δx=1.0, x0=0.0) = collect(p .* Δx) .-(x0 + 0.5Δx)
 
 # =================================== steps(x) =============================================================
 
