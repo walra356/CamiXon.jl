@@ -52,49 +52,26 @@ select125(x) = (n = length(x); return [x[i] for i=step125(n):step125(n):n])
 # ==================================== edges(x) ===============================================================
 
 """
-    edges(x)
+    edges(p [, Δx[, x0]])
 
-Heatmap range transformation from `center` (default) to `edge` format.
-For ClosedInterval ranging the heatmap dimension has to be supplied manually.
+Heatmap range transformation from pixel coordinates to physical coordinates,
+with pixelsize Δx and offset x0, both in physical units.
 #### Examples:
 ```@docs
-edges(Base.OneTo(10))
- 0.5:1.0:9.5
+px = 1:5
+Δx = 2.5
+x0 = 2.5
+edges(px)
+ [0.5, 1.5, 2.5, 3.5, 4.5]
 
-edges(UnitRange(-8:0))
- -8.5:1.0:-0.5
+edges(px, Δx)
+ [1.25, 3.75, 6.25, 8.75, 11.25]
 
-edges(range(-21.1, 0, length=6))
- [-23.21, -18.99, -14.77, -10.549999999999999, -6.33, -2.11]
-
-edges(LinRange(-21.1,0,6))
- [-23.21, -18.990000000000002, -14.77, -10.55, -6.33, -2.1100000000000003]
-
-edges([-21.1, -16.88, -12.66, -8.44, -4.22, 0.0])
- [-23.21, -18.99, -14.77, -10.55, -6.33, -2.1100000000000003]
- 
-edges((-21.1)..0; dim=6)
- (-23.21)..(-2.1100000000000003)
+edges(px, Δx, x0)
+ [-1.25, 1.25, 3.75, 6.25, 8.75]
 ```
 """
-function edges(x; dim = 0)
-
-    T = typeof(x)
-    E = eltype(x)
-
-    strErr = "RangeType $T not implemented"
-
-    T <: Base.OneTo   ? Δx = 1 :
-    T <: UnitRange    ? Δx = 1 :
-    T <: StepRange    ? Δx = x.step :
-    T <: StepRangeLen ? Δx = x.step :
-    T <: LinRange     ? Δx = (x.stop-x.start)/(x.len-1) :
-    T <: Vector{E}    ? Δx = (x[end]-x[1])/(length(x)-1)  :
-    T <: IntervalSets.ClosedInterval ? Δx = (x.right-x.left)/(dim-1) : error(strErr)
-
-    return dim > 0 ? (x.left-0.5Δx)..(x.right-0.5Δx) : Δx == 1 ? x .- 0.5Δx : x .- E[0.5Δx]
-
-end
+edges(x, Δx=1.0, x0=0.0) = collect(p .* Δx) .-(x0 + 0.5Δx)
 
 # =================================== steps(x) =============================================================
 
