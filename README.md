@@ -8,6 +8,6 @@
 
 [docs-img]: https://img.shields.io/badge/docs-v1-blue.svg
 [coveralls-img]: https://img.shields.io/coveralls/github/JuliaLang/julia/master.svg?label=coveralls
-[codecov-img]: https://img.shields.io/codecov/c/github/JuliaLang/julia/master.svg?label=codecov
+[codecov-img]: https://img.shields.io/codecov/c/github/JuliaLang/julia/master.svg?label=codecov 
 
 The package is tested for Windows 10 x64
