@@ -275,11 +275,8 @@ println([f(1.0),f(2.0)])             # values of polynomial for `x = 1.0` and `x
  [6.0, 63.0]
 ```
 """
-function polynom(c::Vector{T}, x::T) where T<:Real
-# ==================================================================================
-#   polynomial c[1] + c[2] x + ... + c[d+1] xᵈ of degree d = length(c)-1
-# ==================================================================================
-    X = ones(T,length(c))
+function polynom(c, x)
+    X = Base.ones(length(c))
     for i=2:length(c)
         X[i] = X[i-1] * x
     end
