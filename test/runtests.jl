@@ -33,7 +33,6 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test polynom_deriv_coeffs([1,1,1,1,1,1],2) == [0, 0, 2, 6, 12, 20]
-    @test CamiXon.polynom([1,1,1,1,1,1],2) == 63
     @test edges(1:5,2.5,2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4,2,6]) == [0, 4, 6, 12]
     @test stepcenters([4,2,6]) == [2.0, 5.0, 9.0]
