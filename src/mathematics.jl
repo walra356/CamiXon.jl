@@ -236,15 +236,15 @@ defined by the elements of the Array `c[1:d+1]`:
 ```
 d = 5
 c = [1.0 for i=1:d+1]
-polynom_deriv_coeffs(c)             # default is direct copy of `c`
+polynom_deriv_coeffs(c)                # default is direct copy of `c`
  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-polynom_deriv_coeffs(c,1)           # coefficients of 1st derivative of `polynom(c,x)`
+polynom_deriv_coeffs(c,1)              # coefficients of 1st derivative of `polynom(c,x)`
  [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
-polynom_deriv_coeffs(c,2)           # coefficients of 2nd derivative of `polynom(c,x)`
+polynom_deriv_coeffs(c,2)              # coefficients of 2nd derivative of `polynom(c,x)`
  [-0.0, 0.0, 2.0, 6.0, 12.0, 20.0]
-polynom_deriv_coeffs(c,5)           # coefficients of 5th derivative of `polynom(c,x)`
+polynom_deriv_coeffs(c,5)              # coefficients of 5th derivative of `polynom(c,x)`
  [0.0, -0.0, 0.0, -0.0, 0.0, 120.0]
-polynom_deriv_coeffs(c,6)           # coefficients of 6th derivative of `polynom(c,x)`
+polynom_deriv_coeffs(c,6)              # coefficients of 6th derivative of `polynom(c,x)`
  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ```
 """
@@ -267,11 +267,11 @@ Polynomial of degree `d = length(c)-1` defined by the elements of array `c`:
 ```
 d = 5
 c = [1.0 for i=1:d+1]
-c = polynom_deriv_coeffs(c)   # default is simple
+c = polynom_deriv_coeffs(c)          # default is simple
 println(c)
  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 f(x) = polynom(c,x)
-println([f(1.0),f(2.0)])      # values of polynomial for `x = 1.0` and `x = 2.0`
+println([f(1.0),f(2.0)])             # values of polynomial for `x = 1.0` and `x = 2.0`
  [6.0, 63.0]
 ```
 """
