@@ -232,7 +232,7 @@ end
     polynom_deriv_coeffs(c[,deriv=0])
 
 Coefficients for the derivatives of the polynomial of degree `d = length(c)-1`
-defined by the elements of the Array `c[1:d+1]`: ``p(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ``
+defined by the elements of the Array `c[1:d+1]`: `` p(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ``
 
 ### Examples:
 ```
