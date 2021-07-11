@@ -46,6 +46,8 @@ export canonical_partitions
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
+export polynom_deriv_coeffs
+export polynom
 
 include("fits_pointers.jl")
 include("read_io.jl")

@@ -93,6 +93,8 @@ canonical_partitions(n::Int, m=0; header=true, reverse=true)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
+polynom_deriv_coeffs(c,deriv=0)
+polynom(c,x)
 ```
 
 ## Index
