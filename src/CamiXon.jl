@@ -2,7 +2,7 @@ module CamiXon
 
 using Dates
 using IntervalSets
-using LinearAlgebraX
+using LinearAlgebra
 
 export FITS_HDU
 export FITS_header
