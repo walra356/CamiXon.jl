@@ -1,5 +1,6 @@
 using CamiXon
 using IntervalSets
+using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
