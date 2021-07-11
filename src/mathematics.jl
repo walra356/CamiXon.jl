@@ -213,3 +213,75 @@ log10_mantissa.([3,30,300])
 ```
 """
 log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
+
+# ==================================== polynom_deriv_coeffs(c,deriv) ============================================================
+
+function _polynom_deriv_multipliers(c,deriv)
+    d = Base.OneTo(length(c))
+    for i=1:deriv
+        c = c .* (d .- i)
+    end
+    return c
+end
+
+"""
+    polynom_deriv_coeffs(c[,deriv=0])
+
+Coefficients for the derivatives of the polynomial of degree `d = length(c)-1` defined by the
+elements of the Array `c[1:d+1]`:
+
+    `polynom(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ`
+
+### Examples:
+```
+d = 5
+c = [1.0 for i=1:d+1]
+println(polynom_deriv_coeffs(c))        # default is direct copy of `c`
+ [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+println(polynom_deriv_coeffs(c,1))      # coefficients of first derivative of `polynom(c,x)`
+ [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+println(polynom_deriv_coeffs(c,2))      # coefficients of 2nd derivative of `polynom(c,x)`
+ [-0.0, 0.0, 2.0, 6.0, 12.0, 20.0]
+println(polynom_deriv_coeffs(c,5))      # coefficients of 5th derivative of `polynom(c,x)`
+ [0.0, -0.0, 0.0, -0.0, 0.0, 120.0]
+println(polynom_deriv_coeffs(c,6))      # coefficients of 6th derivative of `polynom(c,x)`
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+```
+"""
+function polynom_deriv_coeffs(c,deriv=0)
+    deriv < 0 && error("Error: negative derivative not defined")
+    deriv < length(c) || return Base.zeros(length(c))
+    return [_polynom_deriv_multipliers(c, i-1) for i ∈ eachindex(c)][deriv+1]
+end
+
+# ==================================== polynom(c,x) ============================================================
+
+"""
+    polynom(c,x)
+
+Polynomial of degree `d = length(c)-1` defined by the elements of the Array `c[1:d+1]`:
+
+    `polynom(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ`
+
+### Examples:
+```
+d = 5
+c = [1.0 for i=1:d+1]
+c = polynom_deriv_coeffs(c)        # default is simple
+println(c)
+ [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f(x) = polynom(c,x)
+println([f(1.0),f(2.0)])           # values of polynomial for `x` values `x = 1.0` and `x = 2.0`
+ [6.0, 63.0]
+```
+"""
+function polynom(c::Vector{T}, x::T) where T<:Real
+# ==================================================================================
+#   polynomial c[1] + c[2] x + ... + c[d+1] xᵈ of degree d = length(c)-1
+# ==================================================================================
+    X = ones(T,length(c))
+    for i=2:length(c)
+        X[i] = X[i-1] * x
+    end
+    return c ⋅ X
+end
