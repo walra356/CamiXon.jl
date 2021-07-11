@@ -217,11 +217,15 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 # ==================================== polynom_deriv_coeffs(c,deriv) ============================================================
 
 function _polynom_deriv_multipliers(c,deriv)
+
     d = Base.OneTo(length(c))
+
     for i=1:deriv
         c = c .* (d .- i)
     end
+
     return c
+
 end
 
 """
@@ -249,9 +253,12 @@ polynom_deriv_coeffs(c,6)              # coefficients of 6th derivative of `poly
 ```
 """
 function polynom_deriv_coeffs(c,deriv=0)
+
     deriv < 0 && error("Error: negative derivative not defined")
     deriv < length(c) || return Base.zeros(length(c))
+
     return [_polynom_deriv_multipliers(c, i-1) for i ∈ eachindex(c)][deriv+1]
+
 end
 
 # ==================================== polynom(c,x) ============================================================
@@ -259,7 +266,7 @@ end
 """
     polynom(c,x)
 
-Polynomial of degree `d = length(c)-1` defined by the elements of array `c`:
+Polynomial of degree `d = length(c)-1` defined by the elements of array `c[1:d+1]`:
 
     polynom(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ
 
@@ -271,14 +278,18 @@ c = polynom_deriv_coeffs(c)          # default is simple
 println(c)
  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 f(x) = polynom(c,x)
-println([f(1.0),f(2.0)])             # values of polynomial for `x = 1.0` and `x = 2.0`
+println([f(1.0),f(2.0)])             # values of polynomial for x = 1.0 and x = 2.0
  [6.0, 63.0]
 ```
 """
 function polynom(c, x)
+
     X = Base.ones(length(c))
+
     for i=2:length(c)
         X[i] = X[i-1] * x
     end
+
     return c ⋅ X
+
 end
