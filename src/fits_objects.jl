@@ -1,7 +1,7 @@
 # ...................................................... FITS objects .........................................................
 
 """
-    FITS_name
+    FITS_name 
 
 FITS object to decompose the names of .fits files.
 

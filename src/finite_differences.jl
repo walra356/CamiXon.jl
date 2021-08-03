@@ -38,7 +38,7 @@ f_diff_weights(k::Int) = [f_diff_weight(k, i) for i=0:k]
 
 
 """
-    f_diff_weights_array(kmax)
+    f_diff_weights_array(kmax) 
 
 Weight coefficients ``c_0^k,\ \ldots,\ c_k^k`` corresponding to the function values
 ``f[n],\ \ldots,\ f[n-k]``, for the ``k^{th}``-order finite difference operators
