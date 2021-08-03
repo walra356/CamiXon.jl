@@ -57,7 +57,7 @@ export polynom
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
-include("finite_differences")
+include("finite_differences.jl")
 include("fits_objects.jl")
 include("fits_private_sector.jl")
 include("fits_public_sector.jl")
