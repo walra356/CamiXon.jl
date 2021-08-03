@@ -12,6 +12,10 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
+export f_diff_weight
+export f_diff_weights
+export f_diff_weights_array
+
 export fits_create
 export fits_read
 export fits_extend
@@ -53,6 +57,7 @@ export polynom
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
+include("finite_differences")
 include("fits_objects.jl")
 include("fits_private_sector.jl")
 include("fits_public_sector.jl")
