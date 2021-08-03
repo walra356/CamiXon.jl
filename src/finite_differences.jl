@@ -15,7 +15,7 @@ f_diff_weight(k, i)
 """
 f_diff_weight(k::Int, i::Int) = iseven(i) ? Base.binomial(k,i) : -Base.binomial(k,i)
 
-
+# ==============================================================================
 
 @doc raw"""
     f_diff_weights(k::Int)
@@ -38,6 +38,8 @@ f_diff_weights(k)
 """
 f_diff_weights(k::Int) = [f_diff_weight(k, i) for i=0:k]
 
+# ==============================================================================
+
 
 
 @doc raw"""
@@ -56,6 +58,8 @@ kmax = 3
 ```
 """
 f_diff_weights_array(kmax::Int) = [f_diff_weights(k)  for k=0:kmax]
+
+# ==============================================================================
 
 @doc raw"""
     f_diff_expansion_weights(a, ∇)
@@ -88,4 +92,39 @@ function f_diff_expansion_weights(coeffs, ∇)
     l = length(coeffs)
     s = [[coeffs[i] * ∇[i][j] for j=1:i] for i=1:l] # s = coeffs .* ∇  but faster
     return [sum([s[i][j] for i=j:l]) for j=1:l]
+end
+
+# ==============================================================================
+
+@doc raw"""
+    f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
+
+Finite-difference expansion coefficients ``l_i(x)`` for lagrangian interpolation at offset position ``0\le x\le -k,
+```math
+f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
+```
+where ``l_0\equiv 0`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!`` (for ``p=1,\ \ldots,\ k``)
+and ``f[n], ...,f[n-k]`` are elements of a tabulated anaytic function.
+####
+```
+k=3
+∇ = f_diff_weights_array(k)
+x=-1
+l = f_diff_expansion_coeffs_interpolation(k,x)
+r = f_diff_expansion_weights(l, ∇)
+println(l,r)
+ [1, -1, 0, 0][0, 1, 0, 0]
+```
+"""
+function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
+# ======================================================================================
+#   f_difference expansion coefficients for the interpolation interval -k ≤ x ≤ 0
+# ======================================================================================
+    x > 0 ? error("Error: outside interpolation range (x > 0)") :
+    x < -k ? error("Error: outside interpolation range (x < $(-k))") :
+    l = ones(T,k+1)
+    for i=1:k
+        l[i+1] = l[i]*(x+i-1)/i
+    end
+    return l
 end

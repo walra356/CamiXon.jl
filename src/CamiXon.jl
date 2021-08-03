@@ -17,6 +17,7 @@ export f_diff_weight
 export f_diff_weights
 export f_diff_weights_array
 export f_diff_expansion_weights
+export f_diff_expansion_coeffs_interpolation
 
 export fits_create
 export fits_read
