@@ -104,9 +104,12 @@ analytic function at offset position ``0\le x\le -k,
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n] = \sum_{j=0}^{k}r_j^k(x)f[n-j],
 ```
-where ``l_0\equiv 0`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!`` (for ``p=1,\ \ldots,\ k``)
+where ``l_0\equiv 0`` and for ``p=1,\ \ldots,\ k``
+```math
+l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!,
+```
 and ``f[n], ...,f[n-k]`` are elements of the tabulated function. The lagrangian interpolation
-weights ``[r_0,\ \ldots,\ r_k]`` are calculated with the function `r = f_diff_expansion_weights(l, ∇)`
+weights ``[r_0^k,\ \ldots,\ r_k^k]`` are calculated with the function `r = f_diff_expansion_weights(l, ∇)`.
 ####
 ```
 k=3
