@@ -3,7 +3,9 @@
 
 Weight coefficient
 
-``c_{j}^{k}=(-1)^{j}\binom{k}{j},``
+```math
+c_{j}^{k}=(-1)^{j}\binom{k}{j},
+```
 
 of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
 #### Example:
