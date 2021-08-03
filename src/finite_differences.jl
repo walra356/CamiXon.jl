@@ -1,4 +1,4 @@
-@doc raw""""""
+@doc raw"""
     f_diff_weight(k, j)
 
 Weight coefficient
