@@ -16,6 +16,7 @@ export cast_FITS_name
 export f_diff_weight
 export f_diff_weights
 export f_diff_weights_array
+export f_diff_expansion_weights
 
 export fits_create
 export fits_read
