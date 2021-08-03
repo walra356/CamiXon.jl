@@ -108,7 +108,7 @@ where ``l_0\equiv 0`` and
 ```math
 l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!,
 ```
-for ``p=1,\ \ldots,\ k``; ``f[n], ...,f[n-k]`` are elements of the tabulated function. The lagrangian interpolation
+with ``p=1,\ \ldots,\ k``, and ``f[n], ...,f[n-k]`` are elements of the function table. The lagrangian interpolation
 weights ``[r_0^k,\ \ldots,\ r_k^k]`` are calculated with the function `r = f_diff_expansion_weights(l, ∇)`.
 ####
 ```
