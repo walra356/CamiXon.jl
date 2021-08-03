@@ -2,6 +2,7 @@ module CamiXon
 
 using Dates
 using IntervalSets
+using LaTeXStrings
 using LinearAlgebra
 
 export FITS_HDU
