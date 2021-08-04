@@ -6,6 +6,7 @@ Weight coefficient
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
 of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
+Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
 #### Example:
 ```
 k = 5; i = 3
@@ -24,7 +25,7 @@ Weight coefficients ``[c_0^k,\ \ldots,\ c_k^k]`` defining the ``k^{th}``-order f
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_i^kf[n-j],
 ```
-where ``f[n], ...,f[n-k]`` are elements of a tabulated analytic function.
+where ``f[n-k], ...,f[n]`` are elements of a tabulated analytic function (in reversed order).
 #### Example:
 ```@docs
 k = 3
@@ -69,7 +70,7 @@ Summation weights ``[b_0^k,\ ,\ldots,\ b_k^k]`` corresponding to the expansion c
 ```math
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{j}^{k}f[n-j],
 ```
-where ``f[n], ...,f[n-k]`` are elements of a tabulated analytic function.
+where ``f[n-k], ...,f[n]`` are elements of a tabulated analytic function (in reversed order).
 #### Example:
 ```
 k=5
@@ -100,7 +101,7 @@ end
     f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 
 Finite-difference expansion coefficients ``l_p(x)`` for lagrangian interpolation of a tabulated
-analytic function at offset position ``0\le x\le -k``,
+analytic function at offset position ``-k\le x\le `` with respect to the position ``n``,
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n] = \sum_{j=0}^{k}r_j^k(x)f[n-j],
 ```
@@ -108,7 +109,7 @@ where ``l_0\equiv 1`` and
 ```math
 l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!,
 ```
-with ``p=1,\ \ldots,\ k``, and ``f[n], ...,f[n-k]`` are elements of the function table. The lagrangian interpolation
+with ``p=1,\ \ldots,\ k``, and ``f[n-k], ...,f[n]`` are elements of the function table (in reversed order). The lagrangian interpolation
 weights ``[r_0^k,\ \ldots,\ r_k^k]`` are calculated with the function `r = f_diff_expansion_weights(l, ∇)`.
 ####
 ```
