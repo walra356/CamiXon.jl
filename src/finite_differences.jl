@@ -135,23 +135,23 @@ end
 # ==============================================================================
 
 @doc raw"""
-    interpolation_offset_positions(n::Int, k::Int, i::Int)
+    summation_range(n::Int, j::Int, k::Int, i::Int)
 
-*Interpolation-offset positions* ``x(m)`` relative to  positions ``m ∈ (1,\ \ldots,\ n)`` of the analytic
-function ``f(m+x)`` tabulated in *normal ordering*, ``f[1], ..., f[n]``, as used in
-``(k+1)``*-point lagrangian interpolation* at ``i`` intermediate points.
-#### Example:
+*Finite-difference summation range* for position ``j\in (0,\ 1,\ \ldots,\ n(i+1))`` as used
+in ``(k+1)``*-point lagrangian interpolation* with ``i`` intermediate points.
+#### Examples:
 ```
-n = 7; k = 3; i = 0
-o = interpolation_offset(n, k, i); println(o)
- [-3.0, -3.0, -3.0, -3.0, -2.0, -1.0, 0.0]
+n = 7; j = 2, k = 3; i = 0
+a = summation_range(n, j, k, i); println(a)
+b = [summation_range(n, j, k, i) for j=0:(n-1)*m]; println(b)
+ 3:6
+ UnitRange{Int64}[1:4, 2:5, 3:6, 4:7, 4:7, 4:7, 4:7]
 ```
 """
-function interpolation_offset_positions(n::Int, k::Int, i::Int)
-# ======================================================================================
-#   interpolation positions for lagrangian interpolation
-# ======================================================================================
+function summation_range(n::Int, j::Int, k::Int, i::Int) 
+# ================================================================================================
+#   summation range for position j in lagrangian interpolation with i intermediate points
+# ================================================================================================
     m = i + 1
-    o = [i/m - k for i=0:k*m]
-    return append!(repeat(o[1:m],n-k-1),o)
+    return j < (n-1-k)*m  ? UnitRange(j÷m+1,j÷m+k+1) : UnitRange(n-k,n)
 end
