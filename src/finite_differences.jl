@@ -137,8 +137,8 @@ end
 @doc raw"""
     interpolation_offset_positions(n::Int, k::Int, i::Int)
 
-*Interpolation-offset positions* ``x(m)`` relative to  positions ``m`` of the analytic
-function ``f(m+x)`` tabulated in *normal ordering*, ``f[1],\ ...,\ f[n]``, as used in
+*Interpolation-offset positions* ``x(m)`` relative to  positions ``m ∈ (1,\ \ldots,\ n)`` of the analytic
+function ``f(m+x)`` tabulated in *normal ordering*, ``f[1], ..., f[n]``, as used in
 ``(k+1)``*-point lagrangian interpolation* at ``i`` intermediate points.
 #### Example:
 ```
@@ -149,7 +149,7 @@ o = interpolation_offset(n, k, i); println(o)
 """
 function interpolation_offset_positions(n::Int, k::Int, i::Int)
 # ======================================================================================
-#   interpolation offser positions for lagrangian interpolation
+#   interpolation positions for lagrangian interpolation
 # ======================================================================================
     m = i + 1
     o = [i/m - k for i=0:k*m]
