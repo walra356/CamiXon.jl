@@ -13,7 +13,32 @@ A package for image analysis of backscattered light
 ```
 ## Finite-difference methods
 
-Consider aalytic function ``f`` tabulated in *normal ordering*, denoted by ``[f[1],\ldots,f[n]]``, where the indices point to the positions ``x[1],\ldots,x[n]`` on a *grid*. The *finite difference* of two adjacent values on a *uniform* grid is defined by the relation
+Consider an analytic function ``f`` tabulated in *normal ordering*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
+
+```math
+\nabla f[n] = f[n]-f[n-1].
+```
+
+This is called the backward difference notation (rather than the *forward difference* or *central difference* notation). In this notation the  ``k^{th}``-*order finite differences* (also called ``k+1``-point finite differences) are defined given by a *weighted sum* over the function values ``f[n-k],\ \ldots,\ f[n]``,
+
+```math
+\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
+```
+
+The k+1 coefficients
+
+```math
+c_{j}^{k}=(-1)^{j}\binom{k}{j}
+```
+are the *weight factors* (short: *weights*) defining the summation. They are referred to as the ``k^{th}``-order *finite-difference weights* and evaluated by the function `f_diff_weight(k,i)`. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}$``.
+
+Functions:  
+
+`f_diff_weight(k,i)` `` \rightarrow c_i^k``
+
+`f_diff_weights(k)` `` \rightarrow \ [c_k^k,\ c_1^k,\ldots,\ c_0^k]$``
+
+`f_diff_weights_array(kmax)` `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
 
 
 ```@docs
