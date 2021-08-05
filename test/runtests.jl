@@ -26,7 +26,7 @@ using Test
     @test f_diff_weights(3) == [-1, 3, -3, 1]
     @test f_diff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
     @test f_diff_expansion_weights(UnitRange(0,5), f_diff_weights_array(5)) == [15, -55, 85, -69, 29, -5]
-    @test f_diff_expansion_coeffs_interpolation(3,-1) == [1, -1, 0, 0]
+    @test f_diff_expansion_coeffs_interpolation(3,-1) == [1, -2, 1, 0]
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]
