@@ -101,8 +101,9 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 
-*Finite-difference expansion coefficients* ``l_p(x)`` for ``(k+1)``*-point lagrangian interpolation* of the tabulated
-analytic function ``f(n+x)`` at offset position ``-k\le x\le 0`` with respect to the position ``n``,
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+``(k+1)``*-point lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
+at offset position ``x`` with respect to the position ``n``, with ``-k\le x\le 0``,
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 ```
@@ -115,7 +116,7 @@ x=-1
 l = f_diff_expansion_coeffs_interpolation(k,x)
 r = f_diff_expansion_weights(l, ∇)
 println(l,r)
- [1, -1, 0, 0][0, 1, 0, 0]
+ [1, -2, 1, 0][0, 0, 1, 0]
 ```
 """
 function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
@@ -129,4 +130,28 @@ function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
         l[i+1] = l[i]*(-(x+k)+i-1)/i
     end
     return l
+end
+
+# ==============================================================================
+
+@doc raw"""
+    interpolation_offset_positions(n::Int, k::Int, i::Int)
+
+*Interpolation-offset positions* ``x(m)`` relative to  positions ``m`` of the analytic
+function ``f(m+x)`` tabulated in *normal ordering*, ``f[1],\ ...,\ f[n]``, as used in
+``(k+1)``*-point lagrangian interpolation* at ``i`` intermediate points.
+#### Example:
+```
+n = 7; k = 3; i = 0
+o = interpolation_offset(n, k, i); println(o)
+ [-3.0, -3.0, -3.0, -3.0, -2.0, -1.0, 0.0]
+```
+"""
+function interpolation_offset_positions(n::Int, k::Int, i::Int)
+# ======================================================================================
+#   interpolation offser positions for lagrangian interpolation
+# ======================================================================================
+    m = i + 1
+    o = [i/m - k for i=0:k*m]
+    return append!(repeat(o[1:m],n-k-1),o)
 end
