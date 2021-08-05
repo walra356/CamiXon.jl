@@ -13,24 +13,24 @@ A package for image analysis of backscattered light
 ```
 ## Finite-difference methods
 
-Consider an analytic function ``f`` tabulated in *normal ordering*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
+Consider an analytic function ``f`` tabulated in *standard ordering of growing index* at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is given by the relation
 
 ```math
 \nabla f[n] = f[n]-f[n-1].
 ```
 
-This is called the backward difference notation (rather than the *forward difference* or *central difference* notation). In this notation the  ``k^{th}``-*order finite differences* (also called ``k+1``-point finite differences) are defined given by a *weighted sum* over the function values ``f[n-k],\ \ldots,\ f[n]``,
+This is called the *backward difference* notation. In this notation the  ``k^{th}``-*order finite differences* (``k+1``-point finite differences) are defined given by a *weighted sum* over the function values ``f[n],\ \ldots,\ f[n-k]``,
 
 ```math
 \nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
 ```
 
-The k+1 coefficients
+The k+1 coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}$``.
+
+Turning to the standard ordering of terms the summation becomes
 
 ```math
-c_{j}^{k}=(-1)^{j}\binom{k}{j}
-```
-are the *weight factors* (short: *weights*) defining the summation. They are referred to as the ``k^{th}``-order *finite-difference weights* and evaluated by the function `f_diff_weight(k,i)`. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}$``.
+\nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
 
 Functions:  
 
