@@ -44,7 +44,7 @@ Functions:
 `f_diff_weights_array(kmax)` `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
 
 ```@docs
-f_diff_weight(k::Int, i::Int)
+f_diff_weight(k::Int, i::Int)(@ref)
 f_diff_weights(k::Int)
 f_diff_weights_array(kmax::Int)
 ```
