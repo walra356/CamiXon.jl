@@ -169,7 +169,7 @@ n = 7; j = 2, k = 3; i = 0
 summation_range(n, j, k, i)
  3:6
 
-o = [summation_range(n, j, k, i) for j=0:(n-1)*m]; println(o)
+o = [summation_range(n, j, k, i) for j=0:(n-1)*(i+1)]; println(o)
  UnitRange{Int64}[1:4, 2:5, 3:6, 4:7, 4:7, 4:7, 4:7]
 ```
 """
