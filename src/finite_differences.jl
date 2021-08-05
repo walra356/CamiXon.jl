@@ -161,14 +161,15 @@ end
 @doc raw"""
     summation_range(n::Int, j::Int, k::Int, i::Int)
 
-*Finite-difference summation range* for position ``j\in (0,\ 1,\ \ldots,\ n(i+1))`` as used
-in ``(k+1)``*-point lagrangian interpolation* with ``i`` intermediate points.
+*Finite-difference summation range* for interpolation position ``j = 0,\ 1,\ \ldots,\ (n-1)*(i+1)``
+as used in ``(k+1)``*-point lagrangian interpolation* with ``i`` intermediate points.
 #### Examples:
 ```
 n = 7; j = 2, k = 3; i = 0
-a = summation_range(n, j, k, i); println(a)
-b = [summation_range(n, j, k, i) for j=0:(n-1)*m]; println(b)
+summation_range(n, j, k, i)
  3:6
+
+o = [summation_range(n, j, k, i) for j=0:(n-1)*m]; println(o)
  UnitRange{Int64}[1:4, 2:5, 3:6, 4:7, 4:7, 4:7, 4:7]
 ```
 """
