@@ -23,8 +23,8 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞], :📌; dict=true) == [:📌 => 4]
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
     @test f_diff_weight(5, 3) == -10
-    @test f_diff_weights(5) == [1, -5, 10, -10, 5, -1]
-    @test f_diff_weights_array(3) == [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]]
+    @test f_diff_weights(3) == [-1, 3, -3, 1]
+    @test f_diff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
     @test f_diff_expansion_weights(UnitRange(0,5), f_diff_weights_array(5)) == [15, -55, 85, -69, 29, -5]
     @test f_diff_expansion_coeffs_interpolation(3,-1) == [1, -1, 0, 0]
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]

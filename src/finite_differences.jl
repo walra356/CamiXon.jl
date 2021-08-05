@@ -1,12 +1,11 @@
 @doc raw"""
-    f_diff_weight(k::Int, i::Int)
+    f_diff_weight(k, j)
 
 Weight coefficient
 ```math
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
 of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
-Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
 #### Example:
 ```
 k = 5; i = 3
@@ -16,18 +15,22 @@ f_diff_weight(k, i)
 """
 f_diff_weight(k::Int, i::Int) = iseven(i) ? Base.binomial(k,i) : -Base.binomial(k,i)
 
-# ==============================================================================
+
 
 @doc raw"""
-    f_diff_weights(k::Int)
+    f_diff_weights(k)
 
-Weight coefficients ``[c_0^k,\ \ldots,\ c_k^k]`` defining the ``k^{th}``-order finite difference operator,
+Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order finite difference operator,
 ```math
-\nabla^k f[n] = \sum_{j=0}^{k} c_i^kf[n-j],
+\nabla^{k}f[n]	=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
+f[n-k]\\
+\vdots\\
+f[n]
+\end{array}\right]=\sum_{j=0}^{k}c_{k-j}^{k}f[n-k+j],
 ```
-where ``f[n-k], ...,f[n]`` are elements of a tabulated analytic function (in reversed order).
+where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *normal ordering*.
 #### Example:
-```@docs
+```
 k = 3
 f_diff_weights(k)
 4-element Vector{Int64}:
@@ -37,25 +40,22 @@ f_diff_weights(k)
  -1
 ```
 """
-f_diff_weights(k::Int) = [f_diff_weight(k, i) for i=0:k]
-
-# ==============================================================================
-
+f_diff_weights(k::Int) = [f_diff_weight(k, k-i) for i=0:k]
 
 
 @doc raw"""
-    f_diff_weights_array(kmax::Int)
+    f_diff_weights_array(kmax)
 
-Collection of weight coefficients ``[c_0^k,\ \ldots,\ c_j^k]`` defining the finite difference operator ``\nabla^j``  ``(0\le j\le k)``.
+Collection of weight vectors ``[c_k^k,\ \ldots,\ c_0^k]``  defining the finite difference operators ``\nabla^0,\ \ldots,\ \nabla^k``.
 #### Example:
-```@docs
+```
 kmax = 3
 ∇ = f_diff_weights_array(kmax)
 4-element Vector{Vector{Int64}}:
  [1]
- [1, -1]
+ [-1, 1]
  [1, -2, 1]
- [1, -3, 3, -1]
+ [-1, 3, -3, 1]
 ```
 """
 f_diff_weights_array(kmax::Int) = [f_diff_weights(k)  for k=0:kmax]
@@ -65,12 +65,14 @@ f_diff_weights_array(kmax::Int) = [f_diff_weights(k)  for k=0:kmax]
 @doc raw"""
     f_diff_expansion_weights(a, ∇)
 
-Summation weights ``[b_0^k,\ ,\ldots,\ b_k^k]`` corresponding to the expansion coefficients
-``[a_0^k,\ ,\ldots,\ a_k^k]`` of a ``k^{th}``-order finite-difference expansion,
+Weight vector ``[b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coefficients
+``[a_0^k,\ ,\ldots,\ a_k^k]`` of the ``k^{th}``-order finite-difference expansion,
+
 ```math
-\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{j}^{k}f[n-j],
+\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j],
 ```
-where ``f[n-k], ...,f[n]`` are elements of a tabulated analytic function (in reversed order).
+
+where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *normal ordering*.
 #### Example:
 ```
 k=5
@@ -90,9 +92,8 @@ function f_diff_expansion_weights(coeffs, ∇)
 # ======================================================================================
 #   function weights of finite-difference summation
 # ======================================================================================
-    l = length(coeffs)
-    s = [[coeffs[i] * ∇[i][j] for j=1:i] for i=1:l] # s = coeffs .* ∇  but faster
-    return [sum([s[i][j] for i=j:l]) for j=1:l]
+    k = length(coeffs)-1
+    return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
 end
 
 # ==============================================================================
@@ -100,17 +101,12 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficients ``l_p(x)`` for lagrangian interpolation of a tabulated
-analytic function at offset position ``-k\le x\le `` with respect to the position ``n``,
+*Finite-difference expansion coefficients* ``l_p(x)`` for ``(k+1)``*-point lagrangian interpolation* of the tabulated
+analytic function ``f(n+x)`` at offset position ``-k\le x\le 0`` with respect to the position ``n``,
 ```math
-f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n] = \sum_{j=0}^{k}r_j^k(x)f[n-j],
+f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 ```
-where ``l_0\equiv 1`` and
-```math
-l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!,
-```
-with ``p=1,\ \ldots,\ k``, and ``f[n-k], ...,f[n]`` are elements of the function table (in reversed order). The lagrangian interpolation
-weights ``[r_0^k,\ \ldots,\ r_k^k]`` are calculated with the function `r = f_diff_expansion_weights(l, ∇)`.
+where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
 ####
 ```
 k=3
@@ -124,13 +120,13 @@ println(l,r)
 """
 function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 # ======================================================================================
-#   f_difference expansion coefficients for the interpolation interval -k ≤ x ≤ 0
+#   f_difference expansion parameters for the interpolation interval -k ≤ x ≤ 0
 # ======================================================================================
     x > 0 ? error("Error: outside interpolation range (x > 0)") :
     x < -k ? error("Error: outside interpolation range (x < $(-k))") :
     l = ones(T,k+1)
     for i=1:k
-        l[i+1] = l[i]*(x+i-1)/i
+        l[i+1] = l[i]*(-(x+k)+i-1)/i
     end
     return l
 end
