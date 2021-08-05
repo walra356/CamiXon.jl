@@ -24,7 +24,7 @@ Consider an analytic function ``f`` tabulated in *standard ordering of growing i
 This is called the *backward difference* notation. In this notation the  ``k^{th}``-*order finite differences* (``k+1``-point finite differences) are defined given by a *weighted sum* over the function values ``f[n],\ \ldots,\ f[n-k]``,
 
 ```math
-\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
+\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
 ```
 
 The k+1 coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}``.
@@ -37,11 +37,11 @@ Turning to the standard ordering of terms the summation becomes
 
 Functions:  
 
-`f_diff_weight(k,i)` `` \rightarrow c_i^k``
+[`f_diff_weight(k,i)`](@ref) `` \rightarrow c_i^k``
 
-`f_diff_weights(k)` `` \rightarrow \ [c_k^k,\ c_1^k,\ldots,\ c_0^k]$``
+[`f_diff_weights(k)`](@ref) `` \rightarrow \ [c_k^k,\ c_1^k,\ldots,\ c_0^k]$``
 
-`f_diff_weights_array(kmax)` `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
+[`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
 
 ```@docs
 f_diff_weight(k::Int, i::Int)
