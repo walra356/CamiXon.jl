@@ -13,6 +13,8 @@ A package for image analysis of backscattered light
 ```
 ## Finite-difference methods
 
+### Finite differences
+
 Consider an analytic function ``f`` tabulated in *standard ordering of growing index* at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is given by the relation
 
 ```math
@@ -41,11 +43,15 @@ Functions:
 
 `f_diff_weights_array(kmax)` `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
 
-
 ```@docs
 f_diff_weight(k::Int, i::Int)
 f_diff_weights(k::Int)
 f_diff_weights_array(kmax::Int)
+```
+
+### Finite difference expansion
+
+```@docs
 f_diff_expansion_weights(coeffs, ∇)
 f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 interpolation_offset_positions(n::Int, k::Int, i::Int)
