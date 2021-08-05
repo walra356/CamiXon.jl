@@ -108,7 +108,7 @@ at offset position ``x`` with respect to the position ``n``, with ``-k\le x\le 0
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 ```
 where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
-####
+#### Examples:
 ```
 k=3
 ∇ = f_diff_weights_array(k)
