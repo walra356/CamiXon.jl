@@ -25,12 +25,13 @@ This is called the *backward difference* notation. In this notation the  ``k^{th
 \nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
 ```
 
-The k+1 coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}$``.
+The k+1 coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}``.
 
 Turning to the standard ordering of terms the summation becomes
 
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
+```
 
 Functions:  
 
