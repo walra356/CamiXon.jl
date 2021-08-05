@@ -11,7 +11,7 @@ A package for image analysis of backscattered light
 
 ```@contents
 ```
-@doc raw## Finite-difference methods
+## Finite-difference methods
 
 Consider analytic function ``f`` tabulated in *normal ordering*, denoted by $[f[1],\ldots,f[n]]$, where the indices point to the positions $x[1],\ldots,x[n]$ on a *grid*. The *finite difference* of two adjacent values on a *uniform* grid is defined by the relation
 
