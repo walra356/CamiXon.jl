@@ -20,6 +20,7 @@ f_diff_weights_array(kmax::Int)
 f_diff_expansion_weights(coeffs, ∇)
 f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 interpolation_offset_positions(n::Int, k::Int, i::Int)
+summation_range(n::Int, j::Int, k::Int, i::Int)
 ```
 
 ## FITS
