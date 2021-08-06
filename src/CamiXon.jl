@@ -13,6 +13,7 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
+export f_diff_weight
 export f_diff_weights
 export f_diff_weights_array
 export f_diff_expansion_coeffs_interpolation
