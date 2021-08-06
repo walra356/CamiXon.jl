@@ -8,12 +8,12 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j},
 of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
 #### Example:
 ```
-k = 5; i = 3
-f_diff_weight(k, i)
+k = 5; j = 3
+f_diff_weight(k, j)
  -10
 ```
 """
-f_diff_weight(k::Int, i::Int) = iseven(i) ? Base.binomial(k,i) : -Base.binomial(k,i)
+f_diff_weight(k::Int, j::Int) = iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
 
 
 
@@ -40,7 +40,7 @@ f_diff_weights(k)
  -1
 ```
 """
-f_diff_weights(k::Int) = [f_diff_weight(k, k-i) for i=0:k]
+f_diff_weights(k::Int) = [f_diff_weight(k, k-j) for j=0:k]
 
 
 @doc raw"""
@@ -135,48 +135,115 @@ end
 # ==============================================================================
 
 @doc raw"""
-    interpolation_offset_positions(n::Int, k::Int, i::Int)
+    interpolation_offset_positions(n, k, m)
 
-*Interpolation-offset positions* ``x(m)`` relative to  positions ``m ∈ (1,\ \ldots,\ n)`` of the analytic
-function ``f(m+x)`` tabulated in *normal ordering*, ``f[1], ..., f[n]``, as used in
-``(k+1)``*-point lagrangian interpolation* with ``i`` intermediate points.
+Interpolation offset positions for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m``
+as used in ``k^{th}``-order lagrangian interpolation of the anaytic function
+``f`` tabulated in normal ordering on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Example:
 ```
-n = 7; k = 3; i = 0
-o = interpolation_offset(n, k, i); println(o)
+n = 7; k = 3; m = 1
+o = interpolation_offset_positions(n, k, m); println(o)
  [-3.0, -3.0, -3.0, -3.0, -2.0, -1.0, 0.0]
 ```
 """
-function interpolation_offset_positions(n::Int, k::Int, i::Int)
+function interpolation_offset_positions(n::Int, k::Int, m::Int)
 # ======================================================================================
 #   interpolation positions for lagrangian interpolation
 # ======================================================================================
-    m = i + 1
-    o = [i/m - k for i=0:k*m]
+    o = [i/m-k for i=0:k*m]
     return append!(repeat(o[1:m],n-k-1),o)
 end
 
-# ==============================================================================
-
 @doc raw"""
-    summation_range(n::Int, j::Int, k::Int, i::Int)
+    summation_ranges(n, k, i, m)
 
-*Finite-difference summation range* for interpolation position ``j = 0,\ 1,\ \ldots,\ (n-1)*(i+1)``
-as used in ``(k+1)``*-point lagrangian interpolation* with ``i`` intermediate points.
+Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m`` as used in
+``k^{th}``-order lagrangian interpolation of an anaytic function
+``f`` tabulated in normal ordering on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Examples:
-```
-n = 7; j = 2, k = 3; i = 0
-summation_range(n, j, k, i)
- 3:6
-
-o = [summation_range(n, j, k, i) for j=0:(n-1)*(i+1)]; println(o)
- UnitRange{Int64}[1:4, 2:5, 3:6, 4:7, 4:7, 4:7, 4:7]
+```@docs
+n = 7; k = 2; m = 1
+o = [summation_ranges(n,i,k,m) for i=0:(n-1)*m]; println(o)
+ UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
 ```
 """
-function summation_range(n::Int, j::Int, k::Int, i::Int)
+function summation_ranges(n::Int, i::Int, k::Int, m::Int)
 # ================================================================================================
-#   summation range for position j in lagrangian interpolation with i intermediate points
+#   summation range for point position i lagrangian interpolation
 # ================================================================================================
+    return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
+end
+
+
+@doc raw"""
+    f_diff_function_sequences(f, n::Int, k::Int, m::Int)
+
+Finite-difference interpolation sequences (of ``k+1`` function values in normal order) for
+``k^{th}``-order lagrangian intepolation of the anaytic function f(i) tabulated in normal order
+at n points, f[1], ...,f[n].
+#### Example:
+```
+f = [0,1,2,3,4,5,6]
+k = 2; m = 1
+o = f_diff_function_sequences(f, k, m); println(o)
+ [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
+```
+"""
+function f_diff_function_sequences(f, k::Int, m::Int)
+# ================================================================================================
+#   finite-difference function values for interpolation range of lagrangian interpolation
+# ================================================================================================
+    n = length(f)
+    return [f[summation_ranges(n,i,k,m)] for i=0:(n-1)*m]
+end
+
+
+@doc raw"""
+    f_diff_expansion_weights_array(n::Int, k::Int, m::Int)
+
+Function weights for ``k^{th}-order finite-difference expansion on uniform grid of ``(n-1)*m+1`` points.
+#### Example:
+```
+n = 7; k = 3; m = 1
+o = f_diff_expansion_weights_array(n, k, m); println(o)
+ [[1.0, -0.0, 0.0, -0.0], [1.0, -0.0, 0.0, -0.0], [1.0, -0.0, 0.0, -0.0],
+  [1.0, -0.0, 0.0, -0.0], [0.0, 1.0, -0.0, 0.0], [0.0, 0.0, 1.0, -0.0], [0.0, 0.0, 0.0, 1.0]]
+```
+"""
+function f_diff_expansion_weights_array(n::Int, k::Int, m::Int)
+# ================================================================================================
+#   function weights of finite-difference expansion - cf. f_diff_expansion_weights(l[i], ∇)
+# ================================================================================================
+    p = [i/m-k for i=0:k*m]
+    ∇ = f_diff_weights_array(k)
+    l = [f_diff_expansion_coeffs_interpolation(k, p[i]) for i ∈ eachindex(p)]
+    w = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(p)]
+    return append!(repeat(w[1:m],n-k-1),w)
+end
+
+@doc raw"""
+    lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
+
+ ``k^{th}-order lagrangian-interpolation with ``i`` intermediate point of function ``f``
+tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
+#### Example:
+```
+f = [0.0,1,2,3,4,5,6,7]
+domain = 0.0..1.0
+(X,Y) = lagrangian_interpolation([f, domain; k=2, i=1); println((X,Y))
+ (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
+```
+"""
+function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=1)
+# ======================================================================================
+#   lagrangian (k+1)-point interpolation at i interpolation points
+# ======================================================================================
+    n = length(f)
     m = i + 1
-    return j < (n-1-k)*m  ? UnitRange(j÷m+1,j÷m+k+1) : UnitRange(n-k,n)
+    X = range(domain.left, domain.right, length=(n-1)*(i+1)+1)
+    w1 = f_diff_expansion_weights_array(n, k, i+1)
+    w2 = f_diff_function_sequences(f, k, i+1)
+    Y = w1 .⋅ w2
+    return X, Y
 end
