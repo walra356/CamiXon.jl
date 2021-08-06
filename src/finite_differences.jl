@@ -221,7 +221,7 @@ o = f_diff_expansion_weights_array(n, k, m); println(o)
   [1.0, -0.0, 0.0, -0.0], [0.0, 1.0, -0.0, 0.0], [0.0, 0.0, 1.0, -0.0], [0.0, 0.0, 0.0, 1.0]]
 ```
 """
-function f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Float64})
+function f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{T}) where T<:Real
 # ================================================================================================
 #   function weights of finite-difference expansion
 # ================================================================================================
