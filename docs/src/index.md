@@ -70,7 +70,6 @@ Functions:
 `coeffs` = ``[a_0,\ \ldots,\ a_k]``
 
 [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [b_k^k,\ ,\ldots,\ b_0^k]``
-[`f_diff_expansion_weights_array(n, k, m, l)`](@ref) ``\rightarrow ?``
 
 ```@docs
 f_diff_expansion_weights(coeffs, ∇)
