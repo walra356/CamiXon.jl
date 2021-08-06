@@ -73,6 +73,10 @@ Weight vector ``[b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coeff
 ```
 
 where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *normal ordering*.
+Note the difference in ordering between the finite-difference expansion *coefficients*,
+``a_{0},\ \ldots,\ a_{k}``, and the finite-difference expansion *weights*, ``b_k^{k},\ \ldots,\ b_0^{k}``.
+Note that the *coefficients*, ``a_j``, are *independent of* ``k``, whereas the *weights*,
+``b_j^k``, are ``k``*-dependent*.
 #### Example:
 ```
 k=5
