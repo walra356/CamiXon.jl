@@ -181,7 +181,7 @@ end
 @doc raw"""
     f_diff_expansion_weights_array(n::Int, k::Int, m::Int)
 
-Function weights for ``k^{th}-order finite-difference expansion on uniform grid of ``(n-1)*m+1`` points.
+Function weights for ``k^{th}``-order finite-difference expansion on uniform grid of ``(n-1)*m+1`` points.
 #### Example:
 ```
 n = 7; k = 3; m = 1
@@ -204,7 +204,7 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
- ``k^{th}-order lagrangian-interpolation with ``i`` intermediate point of function ``f``
+ ``k^{th}``-order lagrangian-interpolation with ``i`` intermediate point of function ``f``
 tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
