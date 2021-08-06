@@ -21,6 +21,12 @@ export f_diff_expansion_coeffs_interpolation
 export interpolation_offset_positions
 export summation_range
 
+export f_diff_expansion_coeffs_interpolation
+export summation_ranges
+export f_diff_function_sequences
+export f_diff_expansion_weights_array
+export lagrangian_interpolation
+
 export fits_create
 export fits_read
 export fits_extend

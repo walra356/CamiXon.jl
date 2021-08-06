@@ -135,27 +135,6 @@ end
 # ==============================================================================
 
 @doc raw"""
-    interpolation_offset_positions(n, k, m)
-
-Interpolation offset positions for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m``
-as used in ``k^{th}``-order lagrangian interpolation of the anaytic function
-``f`` tabulated in normal ordering on a uniform grid of ``n`` points, f[1], ...,f[n].
-#### Example:
-```
-n = 7; k = 3; m = 1
-o = interpolation_offset_positions(n, k, m); println(o)
- [-3.0, -3.0, -3.0, -3.0, -2.0, -1.0, 0.0]
-```
-"""
-function interpolation_offset_positions(n::Int, k::Int, m::Int)
-# ======================================================================================
-#   interpolation positions for lagrangian interpolation
-# ======================================================================================
-    o = [i/m-k for i=0:k*m]
-    return append!(repeat(o[1:m],n-k-1),o)
-end
-
-@doc raw"""
     summation_ranges(n, k, i, m)
 
 Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m`` as used in
