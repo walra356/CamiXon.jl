@@ -209,7 +209,7 @@ end
 # ==============================================================================
 
 @doc raw"""
-    f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Float64})
+    f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 
 Weight factors for ``k^{th}-order finite-difference expansion for finite-difference expansion
 coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
