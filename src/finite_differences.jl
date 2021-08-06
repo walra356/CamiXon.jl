@@ -216,12 +216,12 @@ coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
 #### Example:
 ```
 n = 7; k = 3; m = 1
-o = f_diff_expansion_weights_array(n, k, m); println(o)
- [[1.0, -0.0, 0.0, -0.0], [1.0, -0.0, 0.0, -0.0], [1.0, -0.0, 0.0, -0.0],
-  [1.0, -0.0, 0.0, -0.0], [0.0, 1.0, -0.0, 0.0], [0.0, 0.0, 1.0, -0.0], [0.0, 0.0, 0.0, 1.0]]
+l = f_diff_expansion_coeffs_array_interpolation(k, m)
+o = f_diff_expansion_weights_array(n, k, m, l); println(o)
+ [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 ```
 """
-function f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{T}) where T<:Real
+function f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 # ================================================================================================
 #   function weights of finite-difference expansion
 # ================================================================================================
