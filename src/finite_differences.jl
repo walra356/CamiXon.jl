@@ -284,7 +284,7 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
     a = append!([0.0], [1.0/i for i=1:k])
     b = f_diff_expansion_coeffs_interpolation(k, x)
 
-    return polynomial_multiplication_coeffs(a, b)[1:k+1]
+    return polynom_multiplication_coeffs(a, b)[1:k+1]
 
 end
 
@@ -343,5 +343,5 @@ function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{F
     Y =  -(n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
 
     return X, Y
-    
+
 end
