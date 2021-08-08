@@ -320,7 +320,7 @@ end
 @doc raw"""
     lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
- ``k^{th}-order lagrangian-differentiation with ``i`` intermediate point of function ``f``
+ ``k^{th}``-order lagrangian-differentiation with ``i`` intermediate point of function ``f``
 tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
