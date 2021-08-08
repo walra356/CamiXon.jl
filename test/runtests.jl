@@ -32,6 +32,10 @@ using Test
     @test [summation_ranges(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
     @test f_diff_function_sequences([0,1,2,3,4,5,6],2, 1) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test lagrangian_interpolation([0.0,1,2,3,4,5,6], 0.0..1.0; k=2, i=1) == (0.0:0.08333333333333333:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0])
+    @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, -1.5]
+    @test f_diff_expansion_coeffs_array_differentiation(2,2) == [[0.0, 1.0, 0.5], [0.0, 1.0, 0.0], [0.0, 1.0, -0.5], [0.0, 1.0, -1.0], [0.0, 1.0, -1.5]]
+    @test f_diff_expansion_coeffs_array_differentiation(2,1) == [[0.0, 1.0, 0.5], [0.0, 1.0, -0.5], [0.0, 1.0, -1.5]]
+    @test lagrangian_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]
@@ -45,6 +49,9 @@ using Test
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test polynom_deriv_coeffs([1.0 for i=1:6],2) == [-0.0, 0.0, 2.0, 6.0, 12.0, 20.0]
     @test polynom([1.0 for i=1:6],2.0) == 63.0
+    @test polynom_multiplication_coeffs([1,1],[1,- 1]) == [1, 0, -1]
+    @test polynom_multiplication_coeffs([1,1],[1,- 1,2]) == [1, 0, 1, 2]
+    @test polynom_multiplication_coeffs([1,- 1,2],[1,1]) == [1, 0, 1, 2]
     @test edges(1:5,2.5,2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4,2,6]) == [0, 4, 6, 12]
     @test stepcenters([4,2,6]) == [2.0, 5.0, 9.0]

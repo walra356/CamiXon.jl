@@ -23,6 +23,9 @@ export f_diff_expansion_weights_array
 export summation_ranges
 export f_diff_function_sequences
 export lagrangian_interpolation
+export f_diff_expansion_coeffs_differentiation
+export f_diff_expansion_coeffs_array_differentiation
+export lagrangian_differentiation
 
 export fits_create
 export fits_read
@@ -59,8 +62,9 @@ export canonical_partitions
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
-export polynom_deriv_coeffs
 export polynom
+export polynom_deriv_coeffs
+export polynom_multiplication_coeffs
 
 include("fits_pointers.jl")
 include("read_io.jl")

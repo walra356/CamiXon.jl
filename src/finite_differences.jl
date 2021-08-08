@@ -251,10 +251,97 @@ function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Flo
 # ======================================================================================
     n = length(f)
     m = i + 1
+
     l = f_diff_expansion_coeffs_array_interpolation(k, m)
     w1 = f_diff_expansion_weights_array(n, k, m, l)
     w2 = f_diff_function_sequences(f, k, m)
     X = range(domain.left, domain.right, length=(n-1)*m+1)
     Y = w1 .⋅ w2
+
     return X, Y
+
+end
+
+# ===================================== f_diff_expansion_coeffs_differentiation(k, x) ====
+
+@doc raw"""
+    f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+``(k+1)``*-point lagrangian differentiation* of the tabulated analytic function ``f(n+x)``
+at position ``x``.
+#### Example:
+```
+k = 2; x = 0
+o = f_diff_expansion_coeffs_differentiation(k,x); println(o)
+ [0.0, 1.0, -1.5]
+```
+"""
+function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+# ======================================================================================
+#   finite difference expansion coeffs for differentiation in interval -k ≤ x ≤ 0
+# ======================================================================================
+    a = append!([0.0], [1.0/i for i=1:k])
+    b = f_diff_expansion_coeffs_interpolation(k, x)
+
+    return polynomial_multiplication_coeffs(a, b)[1:k+1]
+
+end
+
+# ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
+
+@doc raw"""
+    f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
+
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+``(k+1)``*-point lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
+for ``k*m+1`` x positions ``[-k,\ \cdots,\ 0]`` with ``m-1`` intermediate points.
+#### Examples:
+```
+k = 2; m = 2
+o = f_diff_expansion_coeffs_array_differentiation(k,m); println(o)
+ [[0.0, 1.0, 0.5], [0.0, 1.0, 0.0], [0.0, 1.0, -0.5], [0.0, 1.0, -1.0], [0.0, 1.0, -1.5]]
+
+m = 1
+o = f_diff_expansion_coeffs_array_differentiation(k,m); println(o)
+ [[0.0, 1.0, 0.5], [0.0, 1.0, -0.5], [0.0, 1.0, -1.5]]
+```
+"""
+function f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
+
+    p = m ≠ 1 ? [i/m-k for i=0:k*m] : [i-k for i=0:k]
+
+    return [f_diff_expansion_coeffs_differentiation(k, p[i]) for i ∈ eachindex(p)]
+
+end
+
+# ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
+
+@doc raw"""
+    lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
+
+ ``k^{th}-order lagrangian-differentiation with ``i`` intermediate point of function ``f``
+tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
+#### Example:
+```
+f = [0.0,1,2,3,4,5]
+domain = 0.0..5.0
+X,Y = lagrangian_differentiation(f, domain; k=2, i = 0); println(X,Y)
+ (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+```
+"""
+function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
+# ======================================================================================
+#   lagrangian (k+1)-point differentiation at i interpolation points
+# ======================================================================================
+    n = length(f)
+    m = i + 1
+    l = f_diff_expansion_coeffs_array_differentiation(k, m)
+    w1 = f_diff_expansion_weights_array(n, k, m, l)
+    w2 = f_diff_function_sequences(f, k, m)
+    X = range(domain.left, domain.right, length=(n-1)*m+1)
+    Y =  -(n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
+
+    return X, Y
+    
 end

@@ -291,3 +291,36 @@ function polynom(c::Vector{T}, x::T) where T<:Real
     return LinearAlgebra.dot(c, X)
 
 end
+
+# ==================================== polynom_multiplication_coeffs(a, b) ============================================================
+
+@doc raw"""
+    polynom_multiplication_coeffs(a, b)
+
+Product of two polynomials defined by the coefficient vectors ``a`` and ``b``.
+####
+```
+a = [1,1]
+b = [1,- 1]
+o = polynomial_multiplication_coeffs(a, b); println(o)
+ [1, 0, -1]
+```
+"""
+function polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
+
+    n = length(a)
+    m = length(b)
+
+    if m ≥ n
+        o = [sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:n-1]
+        if m≠n append!(o,[sum(a[n-i]*b[1+i+j] for i=0:n-1) for j=1:m-n]) end
+        append!(o,[sum(a[n-i]*b[1+i+j+m-n] for i=0:n-1-j) for j=1:n-1])
+    else
+        o = [sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:m-1]
+        if m≠n append!(o,[sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:n-m]) end
+        append!(o,[sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:m-1])
+    end
+
+    return o
+
+end
