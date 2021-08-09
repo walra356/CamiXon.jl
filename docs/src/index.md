@@ -165,16 +165,16 @@ lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; 
 The Adams-Moulton integration step is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1] = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1]
+y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1] = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1].
 ```
 
 For the evaluation of the integration step we limit the summation to ``k+1`` terms (order ``k``),
 
 ```math
-y[n+1]-y[n]= h\ (\sum_{p=0}^{k}c_p\nabla^p)f[n+1]+\cdots.
+y[n+1]-y[n]= h\ (\sum_{p=0}^{k}b_p\nabla^p)f[n+1]+\cdots.
 ```
 
-where the Adams-Moulton expansion coefficients ``b_0,\ldots,b_k`` are rational numbers, numerically generated function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
+where ``b_0,\ldots,b_k`` are the *Adams-Moulton expansion coefficients*, rational numbers generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
 
 ```math
 y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
