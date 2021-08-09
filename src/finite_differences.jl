@@ -295,7 +295,7 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
-for ``k*m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
+for ``k\!m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
 #### Examples:
 ```
 k = 2; m = 2
