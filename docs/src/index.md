@@ -84,13 +84,9 @@ Inverting this expression we have
 
 
 ```math
-\begin{equation}
-\begin{aligned}
 f[n+1] ={} & (1 - \nabla)^{-1} f[n] = \sum_{p=0}^{\infty}∇^p f[n], \\
-f[n+2] ={} & (1 - \nabla)^{-2} f[n] = \sum_{p=0}^{\infty}p∇^p f[n],\\
+f[n+2] ={} & (1 - \nabla)^{-2} f[n] = \sum_{p=0}^{\infty}p∇^p f[n], \\
            & \vdots
-\end{aligned}
-\end{equation}
 ```
 
 which can be generalized into the form
