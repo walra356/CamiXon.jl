@@ -28,7 +28,7 @@ f[n-k]\\
 f[n]
 \end{array}\right]=\sum_{j=0}^{k}c_{k-j}^{k}f[n-k+j],
 ```
-where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *normal ordering*.
+for use with the elements of an analytic function, ``f``, tabulated in *forward order*, ``f[n-k], ...,f[n]``  (coefficients in backward order).
 #### Example:
 ```
 k = 3

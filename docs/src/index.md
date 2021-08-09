@@ -15,13 +15,13 @@ A package for image analysis of backscattered light
 
 ### Finite differences
 
-Consider an analytic function ``f`` tabulated in *normal ordering of growing index* at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is given by the relation
+Consider an analytic function, ``f``, tabulated in *forward ordering*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is given by the relation
 
 ```math
 \nabla f[n] = f[n]-f[n-1].
 ```
 
-This is called the *backward difference* notation. In this notation the  ``k^{th}``-*order backward difference* (``k+1``-point finite difference) is defined given by a *weighted sum* over the function values ``f[n],\ \ldots,\ f[n-k]``,
+This is given in the *backward difference* notation. In this notation the  ``k^{th}``-*order backward difference*, which involves ``k+1`` points) is defined by a *weighted sum* over the function values in backward order, ``f[n],\ \ldots,\ f[n-k]``,
 
 ```math
 \nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
@@ -29,7 +29,7 @@ This is called the *backward difference* notation. In this notation the  ``k^{th
 
 The k+1 coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}``.
 
-As the function ``f`` is tabulated in standard ordering we change dummy index to write the summation in normal order
+As the function ``f`` is tabulated in forward order we change dummy index to rewrite the summation in forward order (coefficients in backward order)
 
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
@@ -39,7 +39,7 @@ Functions:
 
 [`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
 
-[`f_diff_weights(k)`](@ref) `` \rightarrow \ [c_k^k,\ c_1^k,\ldots,\ c_0^k]$``
+[`f_diff_weights(k)`](@ref) `` \rightarrow \ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ [c_0^0],\ [c_1^1,c_0^1],\ \ldots,\ [c_k^k,\ c_{k-1}^k,\ldots,\ c_0^k] ]``
 
@@ -51,7 +51,7 @@ f_diff_weights_array(kmax::Int)
 
 ### Finite difference expansion
 
-The key relation of finite-difference calculus is the finite-difference expansion, in practice truncated at *order* ``k``,
+Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
 
 ```math
 \sum_{p=0}^{\infty}a_{p}\nabla^{p}f[n]=\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]+\cdots.
