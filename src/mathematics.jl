@@ -231,8 +231,8 @@ end
 """
     polynom_deriv_coeffs(c[,deriv=0])
 
-Coefficients for the derivatives of the polynomial of degree `d = length(c)-1`
-defined by the elements of the Array `c[1:d+1]`: `` p(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ``
+Coefficient vector defining the derivative `deriv` of the polynomial ``p(c,d)``, of degree ``d``,
+defined by the coefficient vector c``=[c_0 +\ \ldots,\ c_d]``.
 
 ### Examples:
 ```
@@ -264,10 +264,11 @@ end
 """
     polynom(c,x)
 
-Polynomial of degree `d = length(c)-1` defined by the elements of array `c[1:d+1]`:
-
-``p(c,x) = c[1] + c[2] x + ... + c[d+1] xᵈ``
-
+Coefficient vector c``=[c_0 +\ \ldots,\ c_d`` defining the polynomial of degree ``d``,
+```math
+p(c,x)=c_0 + c_1*x +\ \cdots,\c_n*x^d],
+where ``d = length(c)-1``.
+```
 ### Examples:
 ```
 d = 5
@@ -297,7 +298,12 @@ end
 @doc raw"""
     polynom_multiplication_coeffs(a, b)
 
-Product of two polynomials defined by the coefficient vectors ``a`` and ``b``.
+Coefficient vector ``c=[c_0,\ \ldots,\ c_(n+m)]`` of the polynomial of degree ``m+n``
+```math
+    p(c,x)=a_0*b_0 + (a_0*b_1 + b_0*a_1)*x +\ \cdots,\ a_n*b_m**x^{n+m},
+```
+given by the product of two polynomials, of degree ``n`` and ``m``, defined by the
+coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_(n+m)]``.
 ####
 ```
 a = [1,1]
