@@ -87,6 +87,8 @@ lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=
 ```
 ### Lagrangian differentiation
 
+
+
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
@@ -94,6 +96,26 @@ lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; 
 ```
 
 ### Adams-Moulton integration
+
+The Adams-Moulton integration step is given by the expansion
+
+```math
+y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1]= h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1]=h (\sum_{k=0}^{\infty}b_k\nabla^k)f[n+1].
+```
+
+A closed expression for the Adams-Moulton expansion coefficients $b_k$ is not available, so these are generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). For the evaluation of the integration step we limit the summation to $k+1$ terms (order ``k``),
+
+```math
+y[n+1]-y[n]= h\ (\sum_{p=0}^{k}c_p\nabla^p)f[n+1]+\cdots,
+```
+
+where ``b_0,\ldots,b_k`` are rational numbers. Extracting the graetest common denominator, ``1/D``, the step becomes
+
+```math
+y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
+```
+
+where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``).
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
