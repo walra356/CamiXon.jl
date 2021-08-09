@@ -189,7 +189,7 @@ end
 
 Finite-difference interpolation sequences (of ``k+1`` function values in forward order) for
 ``k^{th}``*-order lagrangian intepolation* of the anaytic function ``f`` tabulated in forward order
-at n points, f[1], ...,f[n].
+at n points, ``f[1], ...,f[n]``.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
