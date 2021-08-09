@@ -140,7 +140,7 @@ where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion coeffici
 f[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k``-point lagrangian differentiation weights. These are generated for use in *backward order* by the function [`lagrangian_differentiation_coeffs(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
+where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k``-point lagrangian differentiation weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
@@ -162,7 +162,7 @@ The Adams-Moulton integration step is given by the expansion
 y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1]= h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1]=h (\sum_{k=0}^{\infty}b_k\nabla^k)f[n+1].
 ```
 
-A closed expression for the Adams-Moulton expansion coefficients $b_k$ is not available, so these are generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). For the evaluation of the integration step we limit the summation to $k+1$ terms (order ``k``),
+A closed expression for the Adams-Moulton expansion coefficients ``b_k`` is not available, so these are generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). For the evaluation of the integration step we limit the summation to $k+1$ terms (order ``k``),
 
 ```math
 y[n+1]-y[n]= h\ (\sum_{p=0}^{k}c_p\nabla^p)f[n+1]+\cdots,
@@ -175,6 +175,10 @@ y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
 ```
 
 where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``).
+
+Function:
+
+`coeffs` = `f_diff_expansion_coeffs_adams_moulton(k)` ``\rightarrow [b_k^k(x),\ ,\ldots,\ b_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
