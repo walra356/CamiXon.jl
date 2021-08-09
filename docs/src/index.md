@@ -143,9 +143,9 @@ where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k`
 
 Functions:
 
-`coeffs` = `f_diff_expansion_coeffs_differentiation(k,x)` ``\rightarrow [l_0(x),\ \ldots,\ l_k(x)]``
+`coeffs` = [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref) ``\rightarrow [l_0(x),\ \ldots,\ l_k(x)]``
 
-`lagrangian differentiation weights` = `f_diff_expansion_weights(coeffs,∇)` ``\rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
+`lagrangian differentiation weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
