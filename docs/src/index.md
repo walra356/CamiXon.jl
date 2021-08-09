@@ -82,9 +82,15 @@ The definition of the finite difference can be rewritten in the form
 ```
 Inverting this expression we have
 
-``f[n+1] = (1 - \nabla)^{-1} f[n] = \sum_{p=0}^{\infty}∇^p f[n],``
-``f[n+2] = (1 - \nabla)^{-2} f[n] = \sum_{p=0}^{\infty}p∇^p f[n],``
-``\ \ \ \ \ \ \ \ \ \vdots``
+```math
+f[n+1] = (1 - \nabla)^{-1} f[n] = \sum_{p=0}^{\infty}∇^p f[n],
+```
+```math
+f[n+2] = (1 - \nabla)^{-2} f[n] = \sum_{p=0}^{\infty}p∇^p f[n],
+```
+```math
+\ \ \ \ \ \ \ \ \ \vdots
+```
 
 which can be generalized into the form
 
@@ -157,9 +163,15 @@ lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; 
 
 The Adams-Moulton integration step is given by the expansion
 
-``y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1]``
-``\ \ \ \ \ \ = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1]``
-``\ \ \ \ \ \ = =h (\sum_{k=0}^{\infty}b_k\nabla^k)f[n+1].``
+```math
+y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1]
+```
+```math
+\ \ \ \ \ \ = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1]
+```
+```math
+\ \ \ \ \ \ = =h (\sum_{k=0}^{\infty}b_k\nabla^k)f[n+1].
+``
 
 A closed expression for the Adams-Moulton expansion coefficients ``b_k`` is not available, so these are generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). For the evaluation of the integration step we limit the summation to $k+1$ terms (order ``k``),
 
