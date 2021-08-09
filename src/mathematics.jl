@@ -303,7 +303,7 @@ Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` of the polynomial of degree ``
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x +\ \cdots\ a_n b_m x^{n+m},
 ```
 given by the product of two polynomials, of degree ``n`` and ``m``, defined by the
-coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_{n+m}]``.
+coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_m]``.
 ####
 ```
 a = [1,1]
@@ -336,7 +336,7 @@ end
 @doc raw"""
     permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 
-Number of unique permutations of the subarray p[i]
+Number of unique permutations of the subarray ``p[i]``.
 #### Example:
 ```
 p = [[1,2,3],[2,3,1,4,3]]
