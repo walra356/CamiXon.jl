@@ -100,9 +100,9 @@ where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} l_p(x) c_j^p`` are the  *
 
 Functions:
 
-`coeffs` = `f_diff_expansion_coeffs_interpolation(k,x)` ``\rightarrow [l_0(x),\ \ldots,\ l_k(x)]``
+`coeffs` = [`f_diff_expansion_coeffs_interpolation(k,x)`](@ref) ``\rightarrow [l_0(x),\ \ldots,\ l_k(x)]``
 
-`lagrangian interpolation weights` = `f_diff_expansion_weights(coeffs,∇)` ``\rightarrow [r_k^k(x),\ ,\ldots,\ r_0^k(x)]``
+`lagrangian interpolation weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [r_k^k(x),\ ,\ldots,\ r_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
