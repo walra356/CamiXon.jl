@@ -105,7 +105,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
 at offset position ``x`` with respect to the position ``n``, with ``-k\le x\le 0``,
 ```math
@@ -141,9 +141,9 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
-for ``k\,m+1`` values of ``x``.
+for ``k*m+1`` values of ``x``.
 ####
 ```
 k = 2; m = 2
@@ -267,7 +267,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian differentiation* of the tabulated analytic function ``f(n+x)``
 at position ``x``.
 #### Example:
@@ -293,7 +293,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
 for ``k\!m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
 #### Examples:
