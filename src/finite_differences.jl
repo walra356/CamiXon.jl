@@ -143,7 +143,7 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
-for ``k*m+1`` values of ``x``.
+for ``k\,m+1`` values of ``x``.
 ####
 ```
 k = 2; m = 2
