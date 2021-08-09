@@ -72,10 +72,10 @@ Weight vector ``[b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coeff
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{j}^{k}f[n-j]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j],
 ```
 
-where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *normal ordering*.
+where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *forward order*.
 Note the difference in ordering between the finite-difference expansion *coefficients*,
 ``a_{0},\ \ldots,\ a_{k}``, and the finite-difference expansion *weights*, ``b_k^{k},\ \ldots,\ b_0^{k}``.
-Note that the *coefficients*, ``a_j``, are *independent of* ``k``, whereas the *weights*,
+Furthermore, the *coefficients*, ``a_j``, are *independent of* ``k``, whereas the *weights*,
 ``b_j^k``, are ``k``*-dependent*.
 #### Example:
 ```
@@ -106,7 +106,7 @@ end
     f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
-``(k+1)``*-point lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
+``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
 at offset position ``x`` with respect to the position ``n``, with ``-k\le x\le 0``,
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
@@ -142,8 +142,8 @@ end
     f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
-``(k+1)``*-point lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
-for ``k*m+1`` x positions.
+``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
+for ``k*m+1`` values of ``x``.
 ####
 ```
 k = 2; m = 2
@@ -166,8 +166,8 @@ end
     summation_ranges(n, k, i, m)
 
 Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m`` as used in
-``k^{th}``-order lagrangian interpolation of an anaytic function
-``f`` tabulated in normal ordering on a uniform grid of ``n`` points, f[1], ...,f[n].
+``k^{th}``*-order lagrangian interpolation* of the anaytic function
+``f`` tabulated in forward order on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Examples:
 ```@docs
 n = 7; k = 2; m = 1
@@ -187,8 +187,8 @@ end
 @doc raw"""
     f_diff_function_sequences(f, n::Int, k::Int, m::Int)
 
-Finite-difference interpolation sequences (of ``k+1`` function values in normal order) for
-``k^{th}``-order lagrangian intepolation of the anaytic function f(i) tabulated in normal order
+Finite-difference interpolation sequences (of ``k+1`` function values in forward order) for
+``k^{th}``*-order lagrangian intepolation* of the anaytic function ``f`` tabulated in forward order
 at n points, f[1], ...,f[n].
 #### Example:
 ```
@@ -211,7 +211,7 @@ end
 @doc raw"""
     f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 
-Weight factors for ``k^{th}-order finite-difference expansion for finite-difference expansion
+Weight factors for ``k^{th}``*-order finite-difference expansion* with finite-difference expansion
 coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
 #### Example:
 ```
@@ -235,8 +235,8 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
- ``k^{th}``-order lagrangian-interpolation with ``i`` intermediate point of function ``f``
-tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
+ ``k^{th}``*-order lagrangian-interpolation* with ``i`` intermediate point of the analytic function ``f``
+tabulated in forward order at n points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -268,7 +268,7 @@ end
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
-``(k+1)``*-point lagrangian differentiation* of the tabulated analytic function ``f(n+x)``
+``k^{th}``*-order lagrangian differentiation* of the tabulated analytic function ``f(n+x)``
 at position ``x``.
 #### Example:
 ```
@@ -294,8 +294,8 @@ end
     f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots\,\ l_p(x)]`` defining
-``(k+1)``*-point lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
-for ``k*m+1`` x positions ``[-k,\ \cdots,\ 0]`` with ``m-1`` intermediate points.
+``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
+for ``k*m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
 #### Examples:
 ```
 k = 2; m = 2
@@ -320,8 +320,8 @@ end
 @doc raw"""
     lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
- ``k^{th}-order lagrangian-differentiation with ``i`` intermediate point of function ``f``
-tabulated in normal order at n points, ``f[1],\ \ldots,\ f[n]``.
+``k^{th}``*-order lagrangian differentiation* with ``i`` intermediate point of the function ``f``
+tabulated in forward order at n points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5]
