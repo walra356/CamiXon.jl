@@ -228,7 +228,7 @@ function _polynom_deriv_multipliers(c,deriv)
 
 end
 
-"""
+@doc raw"""
     polynom_deriv_coeffs(c[,deriv=0])
 
 Coefficient vector defining the derivative `deriv` of the polynomial ``p(c,d)``, of degree ``d``,
@@ -261,7 +261,7 @@ end
 
 # ==================================== polynom(c,x) ============================================================
 
-"""
+@doc raw"""
     polynom(c,x)
 
 Coefficient vector c``=[c_0 +\ \ldots,\ c_d`` defining the polynomial of degree ``d``,
@@ -296,7 +296,7 @@ end
 # ==================================== polynom_multiplication_coeffs(a, b) ============================================================
 
 @doc raw"""
-    polynom_multiplication_coeffs(a, b)
+    polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
 
 Coefficient vector ``c=[c_0,\ \ldots,\ c_(n+m)]`` of the polynomial of degree ``m+n``
 ```math
@@ -325,6 +325,32 @@ function polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
         o = [sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:m-1]
         if m≠n append!(o,[sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:n-m]) end
         append!(o,[sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:m-1])
+    end
+
+    return o
+
+end
+
+# ==================================== permutations_unique_count(p, i) =======================
+
+@doc raw"""
+    permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+
+Number of unique permutations of the subarray p[i]
+#### Example:
+```
+p = [[1,2,3],[2,3,1,4,3]]
+permutations_unique_count(p,2)
+ 60
+```
+"""
+function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+
+    o = factorial(length(p[i]))
+    d = Dict([(n,count(x->x==n,p[i])) for n ∈ unique(p[i])])
+
+    for j ∈ eachindex(unique(p[i]))
+        o = o ÷ factorial(d[unique(p[i])[j]])
     end
 
     return o
