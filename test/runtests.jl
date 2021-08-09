@@ -52,6 +52,7 @@ using Test
     @test polynom_multiplication_coeffs([1,1],[1,- 1]) == [1, 0, -1]
     @test polynom_multiplication_coeffs([1,1],[1,- 1,2]) == [1, 0, 1, 2]
     @test polynom_multiplication_coeffs([1,- 1,2],[1,1]) == [1, 0, 1, 2]
+    @test permutations_unique_count([[1,2,3],[2,3,1,4,3]],2) == 60
     @test edges(1:5,2.5,2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4,2,6]) == [0, 4, 6, 12]
     @test stepcenters([4,2,6]) == [2.0, 5.0, 9.0]

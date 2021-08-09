@@ -264,11 +264,11 @@ end
 @doc raw"""
     polynom(c,x)
 
-Coefficient vector c``=[c_0 +\ \ldots,\ c_d`` defining the polynomial of degree ``d``,
+Coefficient vector ``c=[c_0 +\ \ldots,\ c_d]`` defining the polynomial of degree ``d``,
 ```math
 p(c,x)=c_0 + c_1*x +\ \cdots,\c_n*x^d],
-where ``d = length(c)-1``.
 ```
+where ``d = length(c)-1``.
 ### Examples:
 ```
 d = 5
@@ -298,12 +298,12 @@ end
 @doc raw"""
     polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
 
-Coefficient vector ``c=[c_0,\ \ldots,\ c_(n+m)]`` of the polynomial of degree ``m+n``
+Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` of the polynomial of degree ``m+n``
 ```math
-    p(c,x)=a_0*b_0 + (a_0*b_1 + b_0*a_1)*x +\ \cdots,\ a_n*b_m**x^{n+m},
+    p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x +\ \cdots\ a_n b_m x^{n+m},
 ```
 given by the product of two polynomials, of degree ``n`` and ``m``, defined by the
-coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_(n+m)]``.
+coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_{n+m}]``.
 ####
 ```
 a = [1,1]

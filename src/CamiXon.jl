@@ -65,6 +65,7 @@ export log10_mantissa
 export polynom
 export polynom_deriv_coeffs
 export polynom_multiplication_coeffs
+export permutations_unique_count
 
 include("fits_pointers.jl")
 include("read_io.jl")
