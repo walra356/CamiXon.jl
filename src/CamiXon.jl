@@ -66,6 +66,7 @@ export polynom
 export polynom_deriv_coeffs
 export polynom_multiplication_coeffs
 export permutations_unique_count
+export f_diff_expansion_coeffs_adams_moulton
 
 include("fits_pointers.jl")
 include("read_io.jl")

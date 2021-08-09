@@ -345,3 +345,45 @@ function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{F
     return X, Y
 
 end
+
+# ========================== f_diff_expansion_coeffs_adams_moulton(k) ===========
+
+
+@doc raw"""
+    f_diff_expansion_coeffs_adams_moulton(k::Int)
+
+#### Examples:
+```
+k = 5
+b = f_diff_expansion_coeffs_adams_moulton(k::Int); println(b)
+ Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
+
+D = denominator(gcd(b)); println(D)
+ 1440
+
+o = convert(Vector{Int},(b .* D)); println(o)
+ [1440, -720, -120, -60, -38, -27]
+```
+"""
+function f_diff_expansion_coeffs_adams_moulton(k::Int)
+
+    k > 17 ? throw("Error: integer overflow in calculating the 18th-order expansion coefficients (k > 17)") : false
+
+    o = ones(Rational,k+1)
+    c = [1//(i+1) for i=1:k]
+    for n=1:k
+        p = CamiXon.integer_partitions(n)
+        a = [1//1 for i ∈ eachindex(p)]
+        for i ∈ eachindex(p)
+            sgn = sign((-1)^length(p[i]))//1
+            a[i] = sgn * permutations_unique_count(p,i)
+            for j ∈ eachindex(p[i])
+                a[i] *= c[p[i][j]]
+            end
+        end
+        o[n+1] = sum(a)
+    end
+
+    return o # Note that D = denominator(gcd(b))
+
+end
