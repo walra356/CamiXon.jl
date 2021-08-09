@@ -162,7 +162,7 @@ lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; 
 
 ### Adams-Moulton integration
 
-The Adams-Moulton integration step is given by the expansion
+The *Adams-Moulton integration* step is given by the expansion
 
 ```math
 y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1] = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1].
