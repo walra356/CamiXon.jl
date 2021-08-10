@@ -226,7 +226,7 @@ o = f_diff_expansion_coeffs_array_interpolation(k,m); println(o)
 function f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
     p = m ≠ 1 ? [i/m-k for i=0:k*m] : [i-k for i=0:k]
     return [f_diff_expansion_coeffs_interpolation(k, p[i]) for i ∈ eachindex(p)]
-end
+end 
 
 # ==============================================================================
 
