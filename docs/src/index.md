@@ -113,7 +113,9 @@ Functions:
 
 ```@docs
 f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
+f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real 
 f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
+f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
 f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 summation_ranges(n::Int, i::Int, k::Int, m::Int)
 f_diff_function_sequences(f, k::Int, m::Int)
@@ -134,7 +136,7 @@ analytically with respect to ``x``.
 \frac{df}{dx}[n+x]=-ln(1-\nabla)\ (1-\nabla)^{-x}f[n]=\sum_{q=1}^{k}\tfrac{1}{q}∇^{q}\sum_{p=0}^{k}l_{p}(x)∇^{p}f[n].
 ```
 
-Expanding the r.h.s.\ in powers of ``\nabla`` for given values of ``n`` and ``x`` we obtain an expression of the form
+Expanding the r.h.s. in powers of ``\nabla`` for given values of ``n`` and ``x`` we obtain an expression of the form
 
 ```math
 \frac{df}{dx}[n+x]=\sum_{p=1}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n],
@@ -159,8 +161,9 @@ f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
 lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
+### Adams-Bashford expansion
 
-### Adams-Moulton integration
+### Adams-Moulton expansion
 
 The *Adams-Moulton integration* step is given by the expansion
 

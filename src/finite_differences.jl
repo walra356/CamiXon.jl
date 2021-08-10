@@ -84,12 +84,12 @@ k=5
 a = UnitRange(0,k)
 b = f_diff_expansion_weights(a, ∇)
 6-element Vector{Int64}:
-  15
- -55
-  85
- -69
-  29
   -5
+  29
+ -69
+  85
+ -55
+  15
 ```
 """
 function f_diff_expansion_weights(coeffs, ∇)
@@ -97,7 +97,8 @@ function f_diff_expansion_weights(coeffs, ∇)
 #   function weights of finite-difference summation
 # ======================================================================================
     k = length(coeffs)-1
-    return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
+    #return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
+    return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================
@@ -120,7 +121,7 @@ x=-1
 l = f_diff_expansion_coeffs_interpolation(k,x)
 r = f_diff_expansion_weights(l, ∇)
 println(l,r)
- [1, -2, 1, 0][0, 0, 1, 0]
+ [1, -1, 0, 0][0, 0, 1, 0]
 ```
 """
 function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
@@ -130,10 +131,77 @@ function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
     x > 0 ? error("Error: outside interpolation range (x > 0)") :
     x < -k ? error("Error: outside interpolation range (x < $(-k))") :
     l = ones(T,k+1)
-    for i=1:k
-        l[i+1] = l[i]*(-(x+k)+i-1)/i
-    end
+    x ≠ 0 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : (for i=2:k+1; l[i] = 0 end)
+    #for i=1:k
+    #    l[i+1] = l[i]*(-(x+k)+i-1)/i
+    #end
     return l
+end
+
+# ==============================================================================
+
+@doc raw"""
+    f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
+
+Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
+``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
+at offset position ``x`` with respect to the position ``n``, with ``x\le 0``,
+```math
+f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
+```
+where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
+#### Examples:
+```
+k=5
+∇ = f_diff_weights_array(k)
+x=1
+l = f_diff_expansion_coeffs_extrapolation(k,x)
+r = f_diff_expansion_weights1(l, ∇)
+println(l,r)
+ [1, 1, 1, 1, 1, 1][-1, 6, -15, 20, -15, 6]
+```
+"""
+function f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
+# ======================================================================================
+#   f_difference expansion coefficients for extrapolation to position n+x
+# ======================================================================================
+    l = ones(T,k+1)
+    x < 0 ? error("Error: x < 0 (outside extrapolation range)") :
+    x ≠ 1 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : l
+    #for i=1:k
+    #    l[i+1] = l[i]*(-(x+k)+i-1)/i
+    #end
+    return l
+end
+
+ # ==============================================================================
+
+ @doc raw"""
+     f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
+
+ Finite-difference expansion weight vector for
+ ``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
+ at offset position ``x`` with respect to the position ``n``, with ``x\le 0``,
+ ```math
+ f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
+ ```
+ where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
+ #### Example:
+ ```
+ k=5
+ ∇ = f_diff_weights_array(k)
+ x=1
+ o = f_diff_expansion_weights_extrapolation(k,x); println(o)
+  [-1, 6, -15, 20, -15, 6]
+ ```
+ """
+ function f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
+# ======================================================================================
+#   reversed Adams-Moulton integration coefficients
+# ======================================================================================
+    ∇ = f_diff_weights_array(k)
+    b = f_diff_expansion_coeffs_extrapolation(k,x)
+    s = f_diff_expansion_weights(b, ∇)
 end
 
 # ==============================================================================

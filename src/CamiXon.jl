@@ -17,8 +17,10 @@ export f_diff_weight
 export f_diff_weights
 export f_diff_weights_array
 export f_diff_expansion_coeffs_interpolation
+export f_diff_expansion_coeffs_extrapolation
 export f_diff_expansion_coeffs_array_interpolation
 export f_diff_expansion_weights
+export f_diff_expansion_weights_extrapolation
 export f_diff_expansion_weights_array
 export summation_ranges
 export f_diff_function_sequences
