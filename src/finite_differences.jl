@@ -241,11 +241,12 @@ o = [summation_ranges(n,i,k,m) for i=0:(n-1)*m]; println(o)
  UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
 ```
 """
-function summation_range(n::Int, i::Int, k::Int, m::Int)
+function summation_range(n::Int, i::Int, k::Int, μ::Int)
 # ================================================================================================
 #   summation range for point position i lagrangian interpolation
 # ================================================================================================
-    return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
+     0 ≤ i ≤ n ? m = μ + 1 : error("Error: position index i outside index range 0 ≤ i ≤ n")
+     return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
 end
 
 # ==============================================================================
