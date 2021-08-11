@@ -113,7 +113,7 @@ Functions:
 
 ```@docs
 f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
-f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real 
+f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
 f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
 f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
 f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
@@ -124,7 +124,7 @@ lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=
 ```
 ### Lagrangian differentiation
 
-To derive the *lagrangian differentiation* formulas we differentiate
+To derive the *lagrangian differentiation* formulas we differentiate 
 
 ```math
 f[n+x] = (1 - \nabla)^{-x} f[n]

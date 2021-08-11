@@ -15,7 +15,7 @@ f_diff_weight(k, j)
 """
 f_diff_weight(k::Int, j::Int) = iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
 
-
+# ==============================================================================
 
 @doc raw"""
     f_diff_weights(k)
