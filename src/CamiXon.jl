@@ -22,7 +22,7 @@ export f_diff_expansion_coeffs_array_interpolation
 export f_diff_expansion_weights
 export f_diff_expansion_weights_extrapolation
 export f_diff_expansion_weights_array
-export summation_ranges
+export summation_range
 export f_diff_function_sequences
 export lagrangian_interpolation
 export f_diff_expansion_coeffs_differentiation
