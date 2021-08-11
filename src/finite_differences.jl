@@ -231,7 +231,7 @@ end
 @doc raw"""
     summation_range(n, k, i, μ)
 
-Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)m`` as used in
+Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)⋅m`` as used in
 ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Examples:
@@ -245,7 +245,8 @@ function summation_range(n::Int, i::Int, k::Int, μ::Int)
 # ================================================================================================
 #   summation range for point position i lagrangian interpolation
 # ================================================================================================
-     0 ≤ i ≤ n*μ ? m = μ + 1 : error("Error: position index i outside index range 0 ≤ i ≤ n")
+      m = μ + 1
+      0 ≤ i ≤ n*m && error("Error: position index i outside index range 0 ≤ i ≤ n⋅m")
      return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
 end
 
@@ -280,7 +281,7 @@ end
     f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 
 Weight factors for ``k^{th}``*-order finite-difference expansion* with finite-difference expansion
-coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
+coefficients ``l`` on uniform grid of ``(n-1)⋅m+1`` points.
 #### Example:
 ```
 n = 7; k = 3; m = 1
@@ -363,7 +364,7 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
-for ``k\!m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
+for ``k⋅m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
 #### Examples:
 ```
 k = 2; m = 2
@@ -389,7 +390,7 @@ end
     lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
 ``k^{th}``*-order lagrangian differentiation* with ``i`` intermediate points of the function ``f``
-tabulated in forward order at n points, ``f[1],\ \ldots,\ f[n]``.
+tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5]
