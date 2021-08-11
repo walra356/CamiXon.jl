@@ -235,13 +235,13 @@ Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m`` as
 ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Examples:
-```@docs
+```
 n = 7; k = 2; m = 1
 o = [summation_ranges(n,i,k,m) for i=0:(n-1)*m]; println(o)
  UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
 ```
 """
-function summation_ranges(n::Int, i::Int, k::Int, m::Int)
+function summation_range(n::Int, i::Int, k::Int, m::Int)
 # ================================================================================================
 #   summation range for point position i lagrangian interpolation
 # ================================================================================================
@@ -251,10 +251,10 @@ end
 # ==============================================================================
 
 @doc raw"""
-    f_diff_function_sequences(f, n::Int, k::Int; i=0)
+    f_diff_function_sequences(f, n::Int, k::Int, μ=0)
 
-Finite-difference interpolation sequences of ``k⋅m+1`` function values, where ``m=i+1``, given in forward
-order including with ``i=m-1`` intermediate points for use in``k^{th}``*-order lagrangian intepolation*
+Finite-difference interpolation sequences of ``k⋅m+1`` function values, where ``m=μ+1``, given in forward
+order including with ``μ`` intermediate points for use in``k^{th}``*-order lagrangian intepolation*
 of the anaytic function ``f`` given in forward order at n points, ``f[1], ...,f[n]``.
 #### Example:
 ```
@@ -264,13 +264,13 @@ o = f_diff_function_sequences(f, k); println(o)
  [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
 ```
 """
-function f_diff_function_sequences(f, k::Int; i=0)
+function f_diff_function_sequences(f, k::Int, μ=0)
 # ================================================================================================
 #   finite-difference function values for interpolation range of lagrangian interpolation
 # ================================================================================================
     n = length(f)
-    m = i +1
-    return [f[summation_ranges(n,j,k,m)] for j=0:(n-1)*m]
+    m = μ +1
+    return [f[summation_range(n,i,k,m)] for i=0:(n-1)*m]
 end
 
 # ==============================================================================
@@ -300,7 +300,7 @@ end
 # ==============================================================================
 
 @doc raw"""
-    lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
+    lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
 
  ``k^{th}``*-order lagrangian-interpolation* with ``i`` intermediate point of the analytic function ``f``
 tabulated in forward order at n points, ``f[1],\ \ldots,\ f[n]``.
@@ -312,16 +312,16 @@ domain = 0.0..1.0
  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
-function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
+function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
 # ======================================================================================
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ======================================================================================
     n = length(f)
-    m = i + 1
+    m = μ + 1
 
     l = f_diff_expansion_coeffs_array_interpolation(k, m)
     w1 = f_diff_expansion_weights_array(n, k, m, l)
-    w2 = f_diff_function_sequences(f, k; i=i)
+    w2 = f_diff_function_sequences(f, k, μ)
     X = range(domain.left, domain.right, length=(n-1)*m+1)
     Y = w1 .⋅ w2
 
@@ -397,15 +397,15 @@ X,Y = lagrangian_differentiation(f, domain; k=2, i = 0); println(X,Y)
  (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 ```
 """
-function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
+function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, μ=0)
 # ======================================================================================
 #   lagrangian (k+1)-point differentiation at i interpolation points
 # ======================================================================================
     n = length(f)
-    m = i + 1
+    m = μ + 1
     l = f_diff_expansion_coeffs_array_differentiation(k, m)
     w1 = f_diff_expansion_weights_array(n, k, m, l)
-    w2 = f_diff_function_sequences(f, k; i=i)
+    w2 = f_diff_function_sequences(f, k, μ)
     X = range(domain.left, domain.right, length=(n-1)*m+1)
     Y =  (n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
 
