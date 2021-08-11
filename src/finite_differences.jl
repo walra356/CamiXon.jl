@@ -169,9 +169,6 @@ function f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
     l = ones(T,k+1)
     x < 0 ? error("Error: x < 0 (outside extrapolation range)") :
     x ≠ 1 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : l
-    #for i=1:k
-    #    l[i+1] = l[i]*(-(x+k)+i-1)/i
-    #end
     return l
 end
 
@@ -254,25 +251,26 @@ end
 # ==============================================================================
 
 @doc raw"""
-    f_diff_function_sequences(f, n::Int, k::Int, m::Int)
+    f_diff_function_sequences(f, n::Int, k::Int; i=0)
 
-Finite-difference interpolation sequences (of ``k+1`` function values in forward order) for
-``k^{th}``*-order lagrangian intepolation* of the anaytic function ``f`` tabulated in forward order
-at n points, ``f[1], ...,f[n]``.
+Finite-difference interpolation sequences of ``k⋅m+1`` function values, where ``m=i+1``, given in forward
+order including with ``i=m-1`` intermediate points for use in``k^{th}``*-order lagrangian intepolation*
+of the anaytic function ``f`` given in forward order at n points, ``f[1], ...,f[n]``.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
-k = 2; m = 1
-o = f_diff_function_sequences(f, k, m); println(o)
+k = 2
+o = f_diff_function_sequences(f, k); println(o)
  [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
 ```
 """
-function f_diff_function_sequences(f, k::Int, m::Int)
+function f_diff_function_sequences(f, k::Int; i=0)
 # ================================================================================================
 #   finite-difference function values for interpolation range of lagrangian interpolation
 # ================================================================================================
     n = length(f)
-    return [f[summation_ranges(n,i,k,m)] for i=0:(n-1)*m]
+    m = i +1
+    return [f[summation_ranges(n,j,k,m)] for j=0:(n-1)*m]
 end
 
 # ==============================================================================
@@ -323,7 +321,7 @@ function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Flo
 
     l = f_diff_expansion_coeffs_array_interpolation(k, m)
     w1 = f_diff_expansion_weights_array(n, k, m, l)
-    w2 = f_diff_function_sequences(f, k, m)
+    w2 = f_diff_function_sequences(f, k; i=i)
     X = range(domain.left, domain.right, length=(n-1)*m+1)
     Y = w1 .⋅ w2
 
@@ -407,9 +405,9 @@ function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{F
     m = i + 1
     l = f_diff_expansion_coeffs_array_differentiation(k, m)
     w1 = f_diff_expansion_weights_array(n, k, m, l)
-    w2 = f_diff_function_sequences(f, k, m)
+    w2 = f_diff_function_sequences(f, k; i=i)
     X = range(domain.left, domain.right, length=(n-1)*m+1)
-    Y =  -(n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
+    Y =  (n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
 
     return X, Y
 
