@@ -27,7 +27,7 @@ using Test
     @test f_diff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
 #@test f_diff_expansion_coeffs_interpolation(2,-1) == [1, -1, 0]
     @test f_diff_expansion_coeffs_interpolation(3,-1) == [1, -1, 0, 0]
-    @test f_diff_expansion_coeffs_array_interpolation(2,1) ==  [[1, -2, 1], [1, -1, 0], [1, 0, 0]]
+    @test f_diff_expansion_coeffs_array_interpolation(2,1) == [[1, -2, 1], [1, -1, 0], [1, 0, 0]]
     @test f_diff_expansion_coeffs_extrapolation(5,2) == [1, 2, 3, 4, 5, 6]
     @test f_diff_expansion_weights_extrapolation(5,1) == [-1, 6, -15, 20, -15, 6]
     @test f_diff_expansion_weights(UnitRange(0,5), f_diff_weights_array(5)) == [-5, 29, -69, 85, -55, 15]
