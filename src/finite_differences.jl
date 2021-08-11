@@ -133,9 +133,6 @@ function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
     x < -k ? error("Error: outside interpolation range (x < $(-k))") :
     l = ones(T,k+1)
     x ≠ 0 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : (for i=2:k+1; l[i] = 0 end)
-    #for i=1:k
-    #    l[i+1] = l[i]*(-(x+k)+i-1)/i
-    #end
     return l
 end
 
@@ -253,7 +250,7 @@ end
 # ==============================================================================
 
 @doc raw"""
-    f_diff_function_sequences(f, n::Int, k::Int, μ=0)
+    f_diff_function_sequences(f, k::Int, μ=0)
 
 Finite-difference interpolation sequences of ``k⋅m+1`` function values, where ``m=μ+1``, given in forward
 order including with ``μ`` intermediate points for use in``k^{th}``*-order lagrangian intepolation*
@@ -281,7 +278,7 @@ end
     f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
 
 Weight factors for ``k^{th}``*-order finite-difference expansion* with finite-difference expansion
-coefficients ``l`` on uniform grid of ``(n-1)⋅m+1`` points.
+coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
 #### Example:
 ```
 n = 7; k = 3; m = 1
@@ -364,7 +361,7 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
-for ``k⋅m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
+for ``k*m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
 #### Examples:
 ```
 k = 2; m = 2
