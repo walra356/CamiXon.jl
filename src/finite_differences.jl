@@ -229,15 +229,15 @@ end
 # ==============================================================================
 
 @doc raw"""
-    summation_ranges(n, k, i, m)
+    summation_range(n, k, i, μ)
 
-Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)*m`` as used in
+Summation ranges for interpolation positions ``i = 0,\ 1,\ \ldots,\ (n-1)m`` as used in
 ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points, f[1], ...,f[n].
 #### Examples:
 ```
-n = 7; k = 2; m = 1
-o = [summation_ranges(n,i,k,m) for i=0:(n-1)*m]; println(o)
+n = 7; k = 2; μ = 0
+o = [summation_range(n,i,k,μ) for i=0:(n-1)*m]; println(o)
  UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
 ```
 """
@@ -271,7 +271,7 @@ function f_diff_function_sequences(f, k::Int, μ=0)
 # ================================================================================================
     n = length(f)
     m = μ +1
-    return [f[summation_range(n,i,k,m)] for i=0:(n-1)*m]
+    return [f[summation_range(n,i,k,μ)] for i=0:(n-1)*m]
 end
 
 # ==============================================================================
