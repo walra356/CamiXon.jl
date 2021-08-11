@@ -245,7 +245,7 @@ function summation_range(n::Int, i::Int, k::Int, μ::Int)
 # ================================================================================================
 #   summation range for point position i lagrangian interpolation
 # ================================================================================================
-     0 ≤ i ≤ n ? m = μ + 1 : error("Error: position index i outside index range 0 ≤ i ≤ n")
+     0 ≤ i ≤ n*μ ? m = μ + 1 : error("Error: position index i outside index range 0 ≤ i ≤ n")
      return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
 end
 
