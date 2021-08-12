@@ -141,7 +141,7 @@ end
 
 Summation range for interpolation offset position ``i`` relative to position ``n``
 as used in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
-``f`` tabulated in forward order on a uniform grid of ``n`` points, f[1], ...,f[n].
+``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\  \cdots,\ f[n]``.
 #### Examples:
 ```
 n = 7; k = 2; μ = 0
