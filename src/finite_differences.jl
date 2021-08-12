@@ -167,7 +167,7 @@ Finite-difference summation sequences of function values given in forward
 order for use in``k^{th}``*-order lagrangian interpolation*
 of the anaytic function ``f`` given in forward order at ``n`` points, ``f[1], ...,f[n]``.
 Each sequence consists of ``k⋅m+1`` function values, where ``m=μ+1``, with ``μ``
-the number of intermediate offset positions. 
+the number of intermediate offset positions.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
@@ -190,17 +190,17 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
 
- ``k^{th}``*-order lagrangian-interpolation* with ``i`` intermediate point of the analytic function ``f``
-tabulated in forward order at n points, ``f[1],\ \ldots,\ f[n]``.
+ ``k^{th}``*-order lagrangian interpolation* with ``μ`` intermediate point of the analytic function ``f``
+tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
 domain = 0.0..1.0
-(X,Y) = lagrangian_interpolation(f, domain; k=2, i=1); println((X,Y))
+(X,Y) = lagrangian_interpolation(f, domain; k=2, μ=1); println((X,Y))
  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
-function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
+function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, μ=0)
 # ======================================================================================
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ======================================================================================
@@ -221,11 +221,17 @@ function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float
 end
 
 @doc raw"""
-    lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
+    lagrangian_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, μ=0)
 
-TODO
+ ``k^{th}``*-order lagrangian extrapolation* up to position `n+e` with ``μ``
+intermediate points of the analytic function ``f`` tabulated in forward order
+at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
 #### Example:
 ```
+f = [0.0,1,2,3,4,5,6,7]
+domain = 0.0..1.0
+(X,Y) = lagrangian_extrapolation(f, domain; k=2, e=1, μ=1); println((X,Y))
+ (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
 function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
@@ -236,7 +242,7 @@ function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float
     m = μ + 1
 
     ∇ = f_diff_weights_array(k)
-    l = [f_diff_expansion_coeffs_lagrange(k, x) for x=0:1//m:e]
+    l = [f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
     w1 = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
     w2 = f_diff_function_sequences(f, k, μ)[end]
     ΔX = (domain.right - domain.left)/((n-1)*m)
