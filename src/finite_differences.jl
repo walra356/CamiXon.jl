@@ -135,9 +135,11 @@ end
 @doc raw"""
     summation_range(n, i, k, μ)
 
-Summation range for interpolation position ``i/m``, where ``μ=m-1`` is the number of intermediate points,
+Summation range for interpolation position ``i/m``, with ``m=μ+1``,
 as used in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
-``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``.
+``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
+μ is is the number of intermediate points per point on the grid.
+
 #### Examples:
 ```
 n = 7; k = 2; μ = 0; m = μ + 1
@@ -160,7 +162,7 @@ end
     f_diff_function_sequences(f, k::Int, μ=0)
 
 Finite-difference summation sequences of function values given in forward
-order for use in``k^{th}``*-order lagrangian interpolation*
+order for use in ``k^{th}``*-order lagrangian interpolation*
 of the anaytic function ``f`` given in forward order at ``n`` points, ``f[1], ...,f[n]``.
 Each sequence consists of ``k⋅m+1`` function values, where ``m=μ+1``, with ``μ``
 the number of intermediate offset positions.
