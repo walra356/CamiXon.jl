@@ -135,7 +135,7 @@ end
 @doc raw"""
     summation_range(n, i, k, μ)
 
-Summation range for interpolation offset position ``i`` relative to position ``n⋅m``, ``m = μ + 1``,
+Summation range for interpolation position ``i/m``, where ``μ=m-1`` is the number of intermediate points,
 as used in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``.
 #### Examples:
