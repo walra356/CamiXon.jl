@@ -187,7 +187,7 @@ end
 
 ``k^{th}``*-order lagrangian interpolation* of the analytic function ``f`` tabulated
 in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-m is the interpolation multiplier (``m-1`` is number of intermediate points on the grid).
+``m`` is the multiplier for intermediate positions (positions in between grid positions).
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -218,9 +218,9 @@ end
 @doc raw"""
     lagrangian_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
 
- ``k^{th}``*-order lagrangian extrapolation* up to position `n+e` with ``μ``
-intermediate points of the analytic function ``f`` tabulated in forward order
-at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
+``k^{th}``*-order lagrangian extrapolation* up to position `n+e` of the analytic function
+``f`` tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``;
+``m`` is the multiplier for intermediate positions.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -279,8 +279,9 @@ end
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``*-order lagrangian differentiation* with ``i`` intermediate points of the function ``f``
-tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
+``k^{th}``*-order lagrangian differentiation* of the analytic function ``f``, tabulated
+in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
+``m`` is the multiplier for intermediate positions
 #### Example:
 ```
 f = [0.0,1,2,3,4,5]
