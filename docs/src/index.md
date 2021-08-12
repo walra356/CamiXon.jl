@@ -81,11 +81,11 @@ f_diff_expansion_weights(coeffs, ∇)
 ```
 ### Lagrangian interpolation
 
-Using the finite difference definition we can write the relation between ``f[n]`` and ``f[n]`` in operator form,
+Using the definition of the finite difference we can express the relation between ``f[n]`` and ``f[n]`` in operator form,
 ```math
 f[n]=(1-\nabla)f[n+1].
 ```
-By formal inversionof the operator we findhave
+By formal inversion of the operator we find
 ```math
 f[n+1] = (1 - \nabla)^{-1} f[n] = \sum_{p=0}^{\infty}∇^p f[n],
 ```
