@@ -163,9 +163,11 @@ end
 @doc raw"""
     f_diff_function_sequences(f, k::Int, μ=0)
 
-Finite-difference interpolation sequences of ``k⋅m+1`` function values, where ``m=μ+1``, given in forward
-order including with ``μ`` intermediate points for use in``k^{th}``*-order lagrangian intepolation*
-of the anaytic function ``f`` given in forward order at n points, ``f[1], ...,f[n]``.
+Finite-difference summation sequences of function values given in forward
+order for use in``k^{th}``*-order lagrangian interpolation*
+of the anaytic function ``f`` given in forward order at ``n`` points, ``f[1], ...,f[n]``.
+Each sequence consists of ``k⋅m+1`` function values, where ``m=μ+1``, with ``μ``
+the number of intermediate offset positions. 
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
