@@ -381,6 +381,14 @@ end
 #
 #end
 
+@doc raw"""
+    lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
+
+TODO
+#### Example:
+```
+```
+"""
 function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
 # ======================================================================================
 #   lagrangian (k+1)-point interpolation at μ interpolation points
