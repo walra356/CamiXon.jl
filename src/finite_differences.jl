@@ -177,7 +177,7 @@ function f_diff_function_sequences(f, k::Int, m=1)
 #   finite-difference function values for interpolation range of lagrangian interpolation
 # ================================================================================================
     n = length(f)
-    return [f[summation_range(n,i,k,μ)] for i=0:(n-1)*m]
+    return [f[summation_range(n,i,k,m)] for i=0:(n-1)*m]
 end
 
 # ==============================================================================
