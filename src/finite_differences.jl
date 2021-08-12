@@ -116,13 +116,9 @@ f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
 #### Examples:
 ```
-k=5
-∇ = f_diff_weights_array(k)
-x=1
-l = f_diff_expansion_coeffs_lagrange(k,x)
-r = f_diff_expansion_weights1(l, ∇)
-println(l,r)
- [1, 1, 1, 1, 1, 1][-1, 6, -15, 20, -15, 6]
+k = 5; x = 1
+l = f_diff_expansion_coeffs_lagrange(k,x); println(l)
+ [1, 1, 1, 1, 1, 1]
 ```
 """
 function f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
@@ -137,14 +133,14 @@ end
 # ==============================================================================
 
 @doc raw"""
-    summation_range(n, k, i, μ)
+    summation_range(n, i, k, μ)
 
-Summation range for interpolation offset position ``i`` relative to position ``n``
+Summation range for interpolation offset position ``i`` relative to position ``n⋅m``, ``m = μ + 1``,
 as used in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``.
 #### Examples:
 ```
-n = 7; k = 2; μ = 0
+n = 7; k = 2; μ = 0; m = μ + 1
 o = [summation_range(n,i,k,μ) for i=0:(n-1)*m]; println(o)
  UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
 ```
