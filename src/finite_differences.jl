@@ -428,7 +428,7 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 #   finite difference expansion coeffs for differentiation in interval -k ≤ x ≤ 0
 # ======================================================================================
     a = append!([0.0], [1.0/i for i=1:k])
-    b = f_diff_expansion_coeffs_interpolation(k, x)
+    b = f_diff_expansion_coeffs_lagrange(k, x)
 
     return polynom_multiplication_coeffs(a, b)[1:k+1]
 
