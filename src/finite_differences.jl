@@ -135,10 +135,10 @@ end
 @doc raw"""
     summation_range(n, i, k, μ)
 
-Summation range for interpolation position ``i/m``, with ``m=μ+1``,
-as used in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
-``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-μ is is the number of intermediate points per point on the grid.
+Summation range for interpolation position ``i/(μ+1)`` used in ``k^{th}``*-order
+lagrangian interpolation* of the anaytic function ``f`` tabulated in forward
+order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
+μ is the interpolation constant.
 
 #### Examples:
 ```
@@ -161,11 +161,10 @@ end
 @doc raw"""
     f_diff_function_sequences(f, k::Int, μ=0)
 
-Finite-difference summation sequences of function values given in forward
-order for use in ``k^{th}``*-order lagrangian interpolation*
-of the anaytic function ``f`` given in forward order at ``n`` points, ``f[1], ...,f[n]``.
-Each sequence consists of ``k⋅m+1`` function values, where ``m=μ+1``, with ``μ``
-the number of intermediate offset positions.
+Finite-difference summation sequences of function values given in forward order
+for use in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
+``f`` tabulated in forward order on a regular grid of ``n`` points, ``f[1], ...,f[n]``;
+μ is the interpolation constant. Each sequence consists of ``k⋅m+1`` function values, with ``m=μ+1``.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
@@ -188,8 +187,9 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
 
- ``k^{th}``*-order lagrangian interpolation* with ``μ`` intermediate point of the analytic function ``f``
-tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``.
+``k^{th}``*-order lagrangian interpolation* of the analytic function ``f`` tabulated
+in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
+μ is the interpolation constant (number of intermediate points on the grid).
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -232,7 +232,7 @@ domain = 0.0..1.0
  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
-function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
+function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, μ=0)
 # ======================================================================================
 #   lagrangian (k+1)-point interpolation at μ interpolation points
 # ======================================================================================
@@ -243,8 +243,9 @@ function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float
     l = [f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
     w1 = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
     w2 = f_diff_function_sequences(f, k, μ)[end]
+
     ΔX = (domain.right - domain.left)/((n-1)*m)
-    X = [domain.right + (i-1)*ΔX for i ∈ eachindex(w1)]
+    X = range(domain.right, domain.right + ΔX * m*e, length=m*e+1)
     Y = [w1[i] ⋅ w2 for i ∈ eachindex(w1)]
 
     return X, Y
