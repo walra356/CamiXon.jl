@@ -163,7 +163,7 @@ end
 Finite-difference summation sequences of function values given in forward order
 for use in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
 ``f`` tabulated in forward order on a regular grid of ``n`` points, ``f[1], ...,f[n]``;
-μ is the interpolation constant. Each sequence consists of ``k⋅m+1`` function values, with ``m=μ+1``.
+m is the interpolation multiplier. Each sequence consists of ``k⋅m+1`` function values.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
