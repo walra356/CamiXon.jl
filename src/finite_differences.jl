@@ -109,7 +109,7 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
-at offset position ``x`` with respect to the position ``n``, with ``x\le 0``,
+at offset position ``x`` with respect to the position ``n``. Interpolation corresponds to the interval ``-k\le\ x\le 0``.
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 ```
