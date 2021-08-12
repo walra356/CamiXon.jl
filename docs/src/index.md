@@ -161,7 +161,7 @@ Functions:
 
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
-f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
+# f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
 lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
 ### Adams-Bashford expansion
