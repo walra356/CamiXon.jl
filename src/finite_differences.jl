@@ -70,13 +70,13 @@ Weight vector ``[b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coeff
 ``[a_0^k,\ ,\ldots,\ a_k^k]`` of the ``k^{th}``-order finite-difference expansion,
 
 ```math
-\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{j}^{k}f[n-j]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j],
+\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j],
 ```
 
 where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *forward order*.
 Note the difference in ordering between the finite-difference expansion *coefficients*,
 ``a_{0},\ \ldots,\ a_{k}``, and the finite-difference expansion *weights*, ``b_k^{k},\ \ldots,\ b_0^{k}``.
-Furthermore, the *coefficients*, ``a_j``, are *independent of* ``k``, whereas the *weights*,
+Note further the difference in ``k`` dependence: the *coefficients*, ``a_j``, are *independent of* ``k``, whereas the *weights*,
 ``b_j^k``, are ``k``*-dependent*.
 #### Example:
 ```
