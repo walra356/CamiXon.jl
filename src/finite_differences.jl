@@ -136,129 +136,6 @@ end
 
 # ==============================================================================
 
-
-#@doc raw"""
-#    f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
-#
-#Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-#``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
-#at offset position ``x`` with respect to the position ``n``, with ``-k\le x\le 0``,
-#```math
-#f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
-#```
-#where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
-#### Examples:
-#```
-#k=3
-#∇ = f_diff_weights_array(k)
-#x=-1
-#l = f_diff_expansion_coeffs_interpolation(k,x)
-#r = f_diff_expansion_weights(l, ∇)
-#println(l,r)
-# [1, -1, 0, 0][0, 0, 1, 0]
-#```
-#"""
-#function f_diff_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
-# ======================================================================================
-#   f_difference expansion parameters for the interpolation interval -k ≤ x ≤ 0
-# ======================================================================================
-#    x > 0 ? error("Error: outside interpolation range (x > 0)") :
-#    x < -k ? error("Error: outside interpolation range (x < $(-k))") :
-#    l = ones(T,k+1)
-#    x ≠ 0 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : (for i=2:k+1; l[i] = 0 end)
-#    return l
-#end
-
-# ==============================================================================
-
-#@doc raw"""
-#    f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
-#
-#Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-#``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
-#at offset position ``x`` with respect to the position ``n``, with ``x\le 0``,
-#```math
-#f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
-#```
-#where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
-#### Examples:
-#```
-#k=5
-#∇ = f_diff_weights_array(k)
-#x=1
-#l = f_diff_expansion_coeffs_extrapolation(k,x)
-#r = f_diff_expansion_weights1(l, ∇)
-#println(l,r)
-# [1, 1, 1, 1, 1, 1][-1, 6, -15, 20, -15, 6]
-#```
-#"""
-#function f_diff_expansion_coeffs_extrapolation(k::Int, x::T) where T<:Real
-# ======================================================================================
-#   f_difference expansion coefficients for extrapolation to position n+x
-# ======================================================================================
-#    l = ones(T,k+1)
-#    x < 0 ? error("Error: x < 0 (outside extrapolation range)") :
-#    x ≠ 1 ? (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end) : l
-#    return l
-#end
-
- # ==============================================================================
-
- #@doc raw"""
-#     f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
-#
-# Finite-difference expansion weight vector for
-# ``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
-# at offset position ``x`` with respect to the position ``n``, with ``x\le 0``,
-# ```math
-# f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
-# ```
-# where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
- #### Example:
-# ```
-# k=5
-# ∇ = f_diff_weights_array(k)
-# x=1
-# o = f_diff_expansion_weights_extrapolation(k,x); println(o)
-#  [-1, 6, -15, 20, -15, 6]
-# ```
-# """
-# function f_diff_expansion_weights_extrapolation(k::Int, x::T) where T<:Real
-# ======================================================================================
-#   reversed Adams-Moulton integration coefficients
-# ======================================================================================
-#    ∇ = f_diff_weights_array(k)
-#    b = f_diff_expansion_coeffs_extrapolation(k,x)
-#    s = f_diff_expansion_weights(b, ∇)
-#end
-
-# ==============================================================================
-
-#@doc raw"""
-#    f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
-#
-#Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-#``k^{th}``*-order lagrangian interpolation* of the tabulated analytic function ``f(n+x)``
-#for ``k*m+1`` values of ``x``.
-####
-#```
-#k = 2; m = 2
-#o = f_diff_expansion_coeffs_array_interpolation(k,m); println(o)
-# [[1.0, 0.0, 0.0], [1.0, -0.5, -0.125], [1.0, -1.0, -0.0], [1.0, -1.5, 0.375], [1.0, -2.0, 1.0]]
-#
-#m = 1
-#o = f_diff_expansion_coeffs_array_interpolation(k,m); println(o)
-# [[1, 0, 0], [1, -1, 0], [1, -2, 1]]
-#```
-#"""
-#function f_diff_expansion_coeffs_array_interpolation(k::Int, m::Int)
-#
-#    p = m ≠ 1 ? [i/m-k for i=0:k*m] : [i-k for i=0:k]
-#    return [f_diff_expansion_coeffs_interpolation(k, p[i]) for i ∈ eachindex(p)]
-#end
-
-# ==============================================================================
-
 @doc raw"""
     summation_range(n, k, i, μ)
 
@@ -308,30 +185,6 @@ end
 
 # ==============================================================================
 
-#@doc raw"""
-#    f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
-#
-#Weight factors for ``k^{th}``*-order finite-difference expansion* with finite-difference expansion
-#coefficients ``l`` on uniform grid of ``(n-1)*m+1`` points.
-#### Example:
-#```
-#n = 7; k = 3; m = 1
-#l = f_diff_expansion_coeffs_array_interpolation(k, m)
-#o = f_diff_expansion_weights_array(n, k, m, l); println(o)
-# [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-#```
-#"""
-#function f_diff_expansion_weights_array(n::Int, k::Int, m::Int, l::Vector{Vector{T}}) where T<:Real
-# ================================================================================================
-#   function weights of finite-difference expansion
-# ================================================================================================
-#    ∇ = f_diff_weights_array(k)
-#    w = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
-#    return append!(repeat(w[1:m],n-k-1),w)
-#end
-
-# ==============================================================================
-
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
 
@@ -364,22 +217,6 @@ function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float
     return X, Y
 
 end
-#function lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, μ=0)
-# ======================================================================================
-#   lagrangian (k+1)-point interpolation at i interpolation points
-# ======================================================================================
-#    n = length(f)
-#    m = μ + 1
-#
-#    l = f_diff_expansion_coeffs_array_interpolation(k, m)
-#    w1 = f_diff_expansion_weights_array(n, k, m, l)
-#    w2 = f_diff_function_sequences(f, k, μ)
-#    X = range(domain.left, domain.right, length=(n-1)*m+1)
-#    Y = w1 .⋅ w2
-#
-#    return X, Y
-#
-#end
 
 @doc raw"""
     lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
@@ -436,33 +273,6 @@ end
 
 # ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
 
-#@doc raw"""
-#    f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
-#
-#Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-#``k^{th}``*-order lagrangian differentiation*  of the tabulated analytic function ``f(n+x)``
-#for ``k*m+1`` values of ``x`` in the interval ``[-k,\ \cdots,\ 0]`` and with ``m-1`` intermediate points.
-##### Examples:
-#```
-#k = 2; m = 2
-#o = f_diff_expansion_coeffs_array_differentiation(k,m); println(o)
-# [[0.0, 1.0, 0.5], [0.0, 1.0, 0.0], [0.0, 1.0, -0.5], [0.0, 1.0, -1.0], [0.0, 1.0, -1.5]]
-#
-#m = 1
-#o = f_diff_expansion_coeffs_array_differentiation(k,m); println(o)
-# [[0.0, 1.0, 0.5], [0.0, 1.0, -0.5], [0.0, 1.0, -1.5]]
-#```
-#"""
-#function f_diff_expansion_coeffs_array_differentiation(k::Int, m::Int)
-#
-#    p = m ≠ 1 ? [i/m-k for i=0:k*m] : [i-k for i=0:k]
-#
-#    return [f_diff_expansion_coeffs_differentiation(k, p[i]) for i ∈ eachindex(p)]
-#
-#end
-
-# ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
-
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
 
@@ -495,20 +305,6 @@ function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Flo
     return X, Y
 
 end
-#function lagrangian_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, μ=0)
-# ======================================================================================
-#   lagrangian (k+1)-point differentiation at i interpolation points
-# ======================================================================================
-#    n = length(f)
-#    l = f_diff_expansion_coeffs_array_differentiation(k, m)
-#    w1 = f_diff_expansion_weights_array(n, k, m, l)
-#    w2 = f_diff_function_sequences(f, k, μ)
-#    X = range(domain.left, domain.right, length=(n-1)*m+1)
-#    Y =  (n-1)/(domain.right-domain.left) .* (w1 .⋅ w2)
-#
-#    return X, Y
-#
-#end
 
 # ========================== f_diff_expansion_coeffs_adams_moulton(k) ===========
 

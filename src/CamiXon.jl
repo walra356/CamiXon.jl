@@ -17,22 +17,13 @@ export f_diff_weight
 export f_diff_weights
 export f_diff_weights_array
 export f_diff_expansion_coeffs_lagrange
-#export f_diff_expansion_coeffs_interpolation
-#export f_diff_expansion_coeffs_extrapolation
-#export f_diff_expansion_coeffs_array_interpolation
 export f_diff_expansion_weights
-#export f_diff_expansion_weights_extrapolation
-#export f_diff_expansion_weights_array
 export summation_range
 export f_diff_function_sequences
 export lagrange_interpolation
 export lagrange_extrapolation
-#export lagrangian_interpolation
-#export lagrangian_extrapolation
 export f_diff_expansion_coeffs_differentiation
-#export f_diff_expansion_coeffs_array_differentiation
 export lagrange_differentiation
-#export lagrangian_differentiation
 
 export fits_create
 export fits_read

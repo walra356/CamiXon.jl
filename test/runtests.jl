@@ -27,21 +27,11 @@ using Test
     @test f_diff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
     @test f_diff_expansion_coeffs_lagrange(3,-1) == [1, -1, 0, 0]
     @test f_diff_expansion_coeffs_lagrange(5,2) == [1, 2, 3, 4, 5, 6]
-    #@test f_diff_expansion_coeffs_interpolation(3,-1) == [1, -1, 0, 0]
-    #@test f_diff_expansion_coeffs_extrapolation(5,2) == [1, 2, 3, 4, 5, 6]
-    #@test f_diff_expansion_coeffs_array_interpolation(2,1) == [[1, -2, 1], [1, -1, 0], [1, 0, 0]]
-    #@test f_diff_expansion_weights_extrapolation(5,1) == [-1, 6, -15, 20, -15, 6]
     @test f_diff_expansion_weights(UnitRange(0,5), f_diff_weights_array(5)) == [-5, 29, -69, 85, -55, 15]
-    #@test f_diff_expansion_weights_array(7, 3, 1, [[1, 0, 0], [1, -1, 0], [1, -2, 1]]) == [[0, 0, 1], [0, 0, 1], [0, 0, 1], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
     @test [summation_range(7,i,2,0) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
     @test f_diff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test lagrange_interpolation([0.0,1,2,3,4,5,6], 0.0..1.0; k=2, μ=1) == (0.0:0.08333333333333333:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0])
-    #@test lagrangian_interpolation([0.0,1,2,3,4,5,6], 0.0..1.0; k=2, μ=1) == (0.0:0.08333333333333333:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0])
-    @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
-    #@test f_diff_expansion_coeffs_array_differentiation(2,2) == [[0.0, 1.0, -1.5], [0.0, 1.0, -1.0], [0.0, 1.0, -0.5], [0.0, 1.0, 0.0], [0.0, 1.0, 0.5]]
-    #@test f_diff_expansion_coeffs_array_differentiation(2,1) == [[0.0, 1.0, -1.5], [0.0, 1.0, -0.5], [0.0, 1.0, 0.5]]
-    @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, μ=0) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
-    #@test lagrangian_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, μ=0) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]    @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, μ=0) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test f_diff_expansion_coeffs_adams_moulton(5) == Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
