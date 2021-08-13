@@ -61,7 +61,7 @@ By choosing the order sufficiently high the expansion can be approximated to any
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{p=0}^{k}a_{p}\sum_{j=0}^{p}c_{j}^{i}f[n-j]=\sum_{j=0}^{k}\sum_{p=j}^{k}a_{p}c_{j}^{p}f[n-j]=\sum_{j=0}^{k}b_{j}^{k}f[n-j],
 ```
 
-where the weighted summation is defined by the *weights* ``b_{j}^{k}=\sum_{p=j}^{k}a_{p}c_{j}^{p}$, with $j=0,\ \ldots,\ k``. By a change of dummy index we wrie the summation in *forward order*
+where the weighted summation is defined by the *weights* ``b_{j}^{k}=\sum_{p=j}^{k}a_{p}c_{j}^{p}$, with $j=0,\ \ldots,\ k``. By a change of dummy index we write the summation in *forward order*
 
 ```math
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j].
@@ -106,7 +106,7 @@ where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!`` for ``p>0`` a
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j]= \sum_{j=0}^{k}r_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} l_p(x) c_j^p`` are the  *lagrangian interpolation weights*. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
+where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} l_p(x) c_j^p`` are the  *lagrangian interpolation weights*. These are generated in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
