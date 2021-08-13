@@ -26,9 +26,9 @@ Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order finite 
 f[n-k]\\
 \vdots\\
 f[n]
-\end{array}\right]=\sum_{j=0}^{k}c_{k-j}^{k}f[n-k+j],
+\end{array}\right]=\sum_{j=0}^{k}c_{k-j}^{k}f[n-k+j].
 ```
-for use with the elements of an analytic function, ``f``, tabulated in *forward order*, ``f[n-k], ...,f[n]``  (coefficients in backward order).
+This form is recommended for use with any analytic function, ``f``, tabulated in *forward order*, ``f[n-k], ...,f[n]``  (coefficients in backward order).
 #### Example:
 ```
 k = 3
@@ -108,12 +108,13 @@ end
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-``k^{th}``*-order lagrangian extrapolation* of the tabulated analytic function ``f(n+x)``
-at offset position ``x`` with respect to the position ``n``. Interpolation corresponds to the interval ``-k\le\ x\le 0``.
+``k^{th}``-order lagrangian interpolation of the tabulated analytic function ``f(n+x)``
+at offset position ``x`` with respect to position ``n``,
 ```math
 f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
 ```
-where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
+where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``. Interpolation corresponds to the interval
+``-k\le\ x\le 0``; extrapolation to ``x\ge 0``.
 #### Examples:
 ```
 k = 5; x = 1
@@ -135,10 +136,10 @@ end
 @doc raw"""
     summation_range(n, i, k, m)
 
-Summation range for interpolation position ``0\le i/m \le 1`` used in ``k^{th}``*-order
-lagrangian interpolation* of the anaytic function ``f`` tabulated in forward
+Summation range for interpolation position ``0\le i/m \le 1`` used in ``k^{th}``-order
+lagrangian interpolation of the anaytic function ``f`` tabulated in forward
 order on a uniform grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-m is the interpolation multiplier.
+``m`` is the multiplier defining the interpolation grid size.
 
 #### Examples:
 ```
@@ -161,9 +162,9 @@ end
     f_diff_function_sequences(f, k::Int, m=1)
 
 Finite-difference summation sequences of function values given in forward order
-for use in ``k^{th}``*-order lagrangian interpolation* of the anaytic function
+for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a regular grid of ``n`` points, ``f[1], ...,f[n]``;
-m is the interpolation multiplier. Each sequence consists of ``k⋅m+1`` function values.
+``m`` is the multiplier defining the interpolation grid size. Each sequence consists of ``k⋅m+1`` function values.
 #### Example:
 ```
 f = [0,1,2,3,4,5,6]
@@ -185,9 +186,9 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``*-order lagrangian interpolation* of the analytic function ``f`` tabulated
+``k^{th}``-order lagrangian *interpolation* of the analytic function ``f`` tabulated
 in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-``m`` is the multiplier for intermediate positions (positions in between grid positions).
+``m`` is the multiplier defining the interpolation grid size.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -218,9 +219,9 @@ end
 @doc raw"""
     lagrangian_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
 
-``k^{th}``*-order lagrangian extrapolation* up to position `n+e` of the analytic function
+``k^{th}``-order lagrangian *extrapolation* up to position `n+e` of the analytic function
 ``f`` tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-``m`` is the multiplier for intermediate positions.
+``m`` is the multiplier defining the interpolation grid size.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -254,7 +255,7 @@ end
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
-``k^{th}``*-order lagrangian differentiation* of the tabulated analytic function ``f(n+x)``
+``k^{th}``-order lagrangian *differentiation* of the tabulated analytic function ``f(n+x)``
 at position ``x``.
 #### Example:
 ```
@@ -279,7 +280,7 @@ end
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``*-order lagrangian differentiation* of the analytic function ``f``, tabulated
+``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``, tabulated
 in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
 ``m`` is the multiplier for intermediate positions
 #### Example:
