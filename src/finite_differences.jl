@@ -219,7 +219,7 @@ end
 @doc raw"""
     lagrangian_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
 
-``k^{th}``-order lagrangian *extrapolation* up to position `n+e` of the analytic function
+``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the analytic function
 ``f`` tabulated in forward order at ``n`` points, ``f[1],\ \ldots,\ f[n]``;
 ``m`` is the multiplier defining the interpolation grid size.
 #### Example:
