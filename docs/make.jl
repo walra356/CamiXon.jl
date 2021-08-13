@@ -19,4 +19,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/walra356/CamiXon.jl",
+    devbranch = "main"
 )
