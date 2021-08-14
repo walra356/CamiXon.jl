@@ -24,6 +24,7 @@ export lagrange_interpolation
 export lagrange_extrapolation
 export f_diff_expansion_coeffs_differentiation
 export lagrange_differentiation
+export f_diff_expansion_coeffs_adams_moulton
 
 export fits_create
 export fits_read

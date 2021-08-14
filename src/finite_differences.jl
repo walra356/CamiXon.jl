@@ -6,7 +6,7 @@ Weight coefficient
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
 of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
-#### Example: 
+#### Example:
 ```
 k = 5; j = 3
 f_diff_weight(k, j)
@@ -316,6 +316,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k::Int)
 
+Adams-Moulton finite-difference expansion coefficients (restricted to order k < 18)
 #### Examples:
 ```
 k = 5
@@ -330,24 +331,20 @@ o = convert(Vector{Int},(b .* D)); println(o)
 ```
 """
 function f_diff_expansion_coeffs_adams_moulton(k::Int)
+# =====================================================================================
+#   Adams-Moulton expansion coefficients limited to order k < 18
+# =====================================================================================
+    k > 18 ? throw("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 18)") : false
 
-    k > 17 ? throw("Error: integer overflow in calculating the 18th-order expansion coefficients (k > 17)") : false
+    a = Base.prepend!([1//(i+1) for i=1:k],[0//1])
+    o = Base.zeros(Rational{Int}, k+1); o[1] = 1//1
+    b = Base.copy(o)
 
-    o = ones(Rational,k+1)
-    c = [1//(i+1) for i=1:k]
-    for n=1:k
-        p = CamiXon.integer_partitions(n)
-        a = [1//1 for i ∈ eachindex(p)]
-        for i ∈ eachindex(p)
-            sgn = sign((-1)^length(p[i]))//1
-            a[i] = sgn * permutations_unique_count(p,i)
-            for j ∈ eachindex(p[i])
-                a[i] *= c[p[i][j]]
-            end
-        end
-        o[n+1] = sum(a)
+    for p=1:k
+        b = CamiXon.polynom_multiplication_coeffs(b, a)[1:k+1]
+        Base.isodd(p) ? o = o .- b : o = o .+ b
     end
 
-    return o # Note that D = denominator(gcd(b))
+    return o  # Note that D = denominator(gcd(o))
 
 end
