@@ -146,10 +146,10 @@ Rewriting the r.h.s. as a single summation in powers of ``\nabla`` for given va
 where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion coefficients* for *lagrangian differentiation* at position ``n+x``. These coefficients are determined numerically by polynomial multiplication after adding the ``p=0`` term, ``l_{0}^{\prime}(x)\equiv 0``, to the first sum. The corresponding coefficient vector is generated in *forward order* by the function [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index to reverse the summation from backward to forward order)
 
 ```math
-f[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
+\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k``-point lagrangian differentiation weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
+where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k``-point lagrangian differentiation weights. These are generated in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
 
 Functions:
 

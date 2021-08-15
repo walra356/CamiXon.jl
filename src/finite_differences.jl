@@ -256,7 +256,10 @@ end
 
 Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
 ``k^{th}``-order lagrangian *differentiation* of the tabulated analytic function ``f(n+x)``
-at position ``x``.
+at position ``x``,
+```math
+\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]
+```
 #### Example:
 ```
 k = 2; x = 0
