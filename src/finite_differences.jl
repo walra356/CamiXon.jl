@@ -316,7 +316,11 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k::Int)
 
-Adams-Moulton finite-difference expansion coefficients (restricted to order k < 18)
+Adams-Moulton finite-difference expansion coefficients (restricted to order k < 18),
+
+```math
+-\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
+```
 #### Examples:
 ```
 k = 5
@@ -354,7 +358,11 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_bashford(k::Int)
 
-Adams-Bashford finite-difference-expansion coefficients (restricted to order k < 18)
+Adams-Bashford finite-difference-expansion coefficients ``B_p`` (restricted to order k < 18)
+
+```math
+-\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}+\ \frac{5}{12}+\ \cdots.
+```
 #### Examples:
 ```
 k = 5
