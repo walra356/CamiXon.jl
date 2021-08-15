@@ -169,10 +169,10 @@ lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=
 The *Adams-Bashford integration step* is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}A_p\nabla^p)f[n+1].
+y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}B_p\nabla^p)f[n+1].
 ```
 
-A closed expression for the *Adams-Bashford expansion coefficients*, ``A_k``, is not available. As we already have a finite-difference expansion for the operator ``(1-∇)^{-1}``,
+A closed expression for the *Adams-Bashford expansion coefficients*, ``B_k``, is not available. As we already have a finite-difference expansion for the operator ``(1-∇)^{-1}``,
 
 ```math
 \frac{1}{1-∇}\equiv\sum_{p=0}^{\infty}\nabla^p,
@@ -187,14 +187,16 @@ we ask for the expansion of
 This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `f_diff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford expansion* is obtained as the polynomial product of the two expansions,
 
 ```math
-(\sum_{p=0}^{\infty}A_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
+(\sum_{p=0}^{\infty}B_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
 ```
 
-The coefficients ``A_p`` are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`.
+The coefficients ``B_p`` are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`.
 
 Function:
 
-`coeffs` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
+`coeffs` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``\rightarrow [B_k^k(x),\ ,\ldots,\ B_0^k(x)]``
+
+`adams_bashford_integration_weights` = `f_diff_expansion_weights(coeffs,∇)``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_bashford(k::Int)
