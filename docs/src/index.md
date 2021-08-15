@@ -27,7 +27,7 @@ This is called the finite difference in *backward difference* notation. In this 
 \nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
 ```
 
-The ``k+1`` coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1$ and $c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
+The ``k+1`` coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
 
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
@@ -61,7 +61,7 @@ By choosing the order sufficiently high the expansion can be approximated to any
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{p=0}^{k}a_{p}\sum_{j=0}^{p}c_{j}^{i}f[n-j]=\sum_{j=0}^{k}\sum_{p=j}^{k}a_{p}c_{j}^{p}f[n-j]=\sum_{j=0}^{k}b_{j}^{k}f[n-j],
 ```
 
-where the weighted summation is defined by the *weights* ``b_{j}^{k}=\sum_{p=j}^{k}a_{p}c_{j}^{p}$, with $j=0,\ \ldots,\ k``. By a change of dummy index we write the summation in *forward order*
+where the weighted summation is defined by the *weights* ``b_{j}^{k}=\sum_{p=j}^{k}a_{p}c_{j}^{p}``, with ``j=0,\ \ldots,\ k``. By a change of dummy index we write the summation in *forward order*
 
 ```math
 \sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j].
@@ -161,7 +161,44 @@ Functions:
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
-### Adams-Bashford expansion
+
+### Adams Method
+
+#### Adams-Bashford expansion
+
+The *Adams-Bashford integration step* is given by the expansion
+
+```math
+y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}A_p\nabla^p)f[n+1].
+```
+
+A closed expression for the *Adams-Bashford expansion coefficients*, ``A_k``, is not available. As we already have a finite-difference expansion for the operator ``(1-∇)^{-1}``,
+
+```math
+\frac{1}{1-∇}\equiv\sum_{p=0}^{\infty}\nabla^p,
+```
+
+we ask for the expansion of
+
+```
+math -\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+\cdots)f[n+1]= (\sum_{p=0}^{\infty}b_p\nabla^p)f[n+1].
+```
+
+This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `f_diff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford integration step* is obtained as the polynomial product of the two expansions,
+
+```math
+y[n+1]-y[n] =(\sum_{p=0}^{\infty}A_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}l_p∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
+```
+
+Its coefficients, ``A_p``, are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`.
+
+Function:
+
+`coeffs` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
+
+```@docs
+f_diff_expansion_coeffs_adams_bashford(k::Int)
+```
 
 ### Adams-Moulton expansion
 
@@ -183,15 +220,22 @@ where ``b_0,\ldots,b_k`` are the *Adams-Moulton expansion coefficients*, rationa
 y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
 ```
 
-where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``).
+where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order  𝑘  we obtain (after changing dummy index bring the summation in forward order)
 
-Function:
+```math
+f[n+x] =\sum_{p=0}^{k}b_p\nabla^pf[n]=\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]=\sum_{j=0}^{k} \sum_{p=j}^{k}b_pc_j^p f[n-j]= \sum_{j=0}^{k}a_j^k(x)f[n-j]= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
+```
 
-`coeffs` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow [b_k^k(x),\ ,\ldots,\ b_0^k(x)]``
+where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point Adams_Moulton integration weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with [`∇ = f_diff_weights_array(k)`](@ref).
+
+Functions:
+
+`coeffs` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow ([b_0,\ldots,b_k], D)``
+
+`adams_moulton_integration_coeffs` = []`f_diff_expansion_weights(coeffs,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
-f_diff_expansion_coeffs_adams_bashford(k::Int)
 ```
 
 ## FITS
