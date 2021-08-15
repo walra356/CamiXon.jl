@@ -187,7 +187,7 @@ we ask for the expansion of
 This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `f_diff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford integration step* is obtained as the polynomial product of the two expansions,
 
 ```math
-y[n+1]-y[n] =(\sum_{p=0}^{\infty}A_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}l_p∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
+y[n+1]-y[n] =(\sum_{p=0}^{\infty}A_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
 ```
 
 Its coefficients, ``A_p``, are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`.
