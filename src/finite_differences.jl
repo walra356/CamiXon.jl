@@ -254,7 +254,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` defining
+Finite-difference expansion coefficient vector ``[l_0^{\prime}(x),\ \ldots,\ l_p^{\prime}(x)]`` defining
 ``k^{th}``-order lagrangian *differentiation* of the tabulated analytic function ``f(n+x)``
 at position ``x``,
 ```math
@@ -271,7 +271,7 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 # ======================================================================================
 #   finite difference expansion coeffs for differentiation in interval -k ≤ x ≤ 0
 # ======================================================================================
-    a = append!([0.0], [1.0/i for i=1:k])
+    a = prepend!([1//i for i=1:k],[0//1])
     b = f_diff_expansion_coeffs_lagrange(k, x)
 
     return polynom_multiplication_coeffs(a, b)[1:k+1]
