@@ -220,13 +220,13 @@ where ``b_0,\ldots,b_k`` are the *Adams-Moulton expansion coefficients*, rationa
 y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
 ```
 
-where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order  𝑘  we obtain (after changing dummy index bring the summation in forward order)
+where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
 
 ```math
 f[n+x] =\sum_{p=0}^{k}b_p\nabla^pf[n]=\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}a_j^k(x)f[n-j]= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point Adams_Moulton integration weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with [`∇ = f_diff_weights_array(k)`](@ref).
+where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point Adams_Moulton integration weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ = `[`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
