@@ -111,7 +111,7 @@ Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` de
 ``k^{th}``-order lagrangian interpolation of the tabulated analytic function ``f(n+x)``
 at offset position ``x`` with respect to position ``n``,
 ```math
-f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n],
+(1 - \nabla)^{-x} \equiv \sum_{p=0}^{\infty}l_p(x)∇^p,
 ```
 where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``. Interpolation corresponds to the interval
 ``-k\le\ x\le 0``; extrapolation to ``x\ge 0``.
@@ -319,7 +319,7 @@ end
 Adams-Moulton finite-difference expansion coefficients (restricted to order k < 18),
 
 ```math
--\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
+-\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
 ```
 #### Examples:
 ```
@@ -361,7 +361,7 @@ end
 Adams-Bashford finite-difference-expansion coefficients ``B_p`` (restricted to order k < 18)
 
 ```math
--\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}+\ \frac{5}{12}+\ \cdots.
+-\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ \cdots.
 ```
 #### Examples:
 ```
