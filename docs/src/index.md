@@ -190,7 +190,13 @@ This is known as the *Adams-Moulton expansion*. Its coefficients are calculated 
 (\sum_{p=0}^{\infty}B_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
 ```
 
-The coefficients ``B_p`` are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`.
+The coefficients ``B_p`` are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`. Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
+
+```math
+\sum_{p=0}^{k}B_p\nabla^pf[n]=\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}A_j^k(x)f[n-j]= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
+```
+
+where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point *Adams-Bashford integration weights*.
 
 Function:
 
