@@ -35,6 +35,7 @@ using Test
     @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, m=1) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test f_diff_expansion_coeffs_adams_moulton(5) == Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
+    @test f_diff_expansion_coeffs_adams_bashford(5) == Rational[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]

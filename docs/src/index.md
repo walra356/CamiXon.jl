@@ -191,6 +191,7 @@ Function:
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
+f_diff_expansion_coeffs_adams_bashford(k::Int)
 ```
 
 ## FITS

@@ -334,16 +334,43 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
 # =====================================================================================
 #   Adams-Moulton expansion coefficients limited to order k < 18
 # =====================================================================================
-    k > 18 ? throw("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 18)") : false
+    k < 18 || error("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 17)")
 
     a = Base.prepend!([1//(i+1) for i=1:k],[0//1])
     o = Base.zeros(Rational{Int}, k+1); o[1] = 1//1
     b = Base.copy(o)
 
     for p=1:k
-        b = CamiXon.polynom_multiplication_coeffs(b, a)[1:k+1]
+        b = CamiXon.polynom_multiplication_coeffs(a, b)[1:k+1]
         Base.isodd(p) ? o = o .- b : o = o .+ b
     end
+
+    return o  # Note that D = denominator(gcd(o))
+
+end
+
+# ========================== f_diff_expansion_coeffs_adams_bashford(k) ===========
+
+@doc raw"""
+    f_diff_expansion_coeffs_adams_bashford(k::Int)
+
+Adams-Bashford finite-difference-expansion coefficients (restricted to order k < 18)
+#### Examples:
+```
+k = 5
+o = f_diff_expansion_coeffs_adams_bashford(k::Int); println(o)
+ Rational{Int64}[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
+```
+"""
+function f_diff_expansion_coeffs_adams_bashford(k::Int)
+# =====================================================================================
+#   Adams-Bashford expansion coefficients restricted to order k < 18
+# =====================================================================================
+    k < 18 || error("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 17)")
+
+    a = ones(Int, k+1) #f_diff_expansion_coeffs_lagrange(k,1)
+    b = f_diff_expansion_coeffs_adams_moulton(k)
+    o = polynom_multiplication_coeffs(a, b)[1:k+1]
 
     return o  # Note that D = denominator(gcd(o))
 
