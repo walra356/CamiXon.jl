@@ -111,7 +111,7 @@ Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]`` de
 ``k^{th}``-order lagrangian interpolation of the tabulated analytic function ``f(n+x)``
 at offset position ``x`` with respect to position ``n``,
 ```math
-(1 - \nabla)^{-x} \equiv \sum_{p=0}^{\infty}l_p(x)∇^p,
+f[n+x] = (1 - \nabla)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
 ```
 where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``. Interpolation corresponds to the interval
 ``-k\le\ x\le 0``; extrapolation to ``x\ge 0``.
