@@ -226,7 +226,7 @@ where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D
 f[n+x] =\sum_{p=0}^{k}b_p\nabla^pf[n]=\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}a_j^k(x)f[n-j]= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point Adams_Moulton integration weights. These are generated for use in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ = `[`f_diff_weights_array(k)`](@ref).
+where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-Moulton integration weights*. These are generated in *backward order* by the function [`f_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ = `[`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
