@@ -180,8 +180,8 @@ A closed expression for the *Adams-Bashford expansion coefficients*, ``A_k``, is
 
 we ask for the expansion of
 
-```
-math -\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+\cdots)f[n+1]= (\sum_{p=0}^{\infty}b_p\nabla^p)f[n+1].
+```math
+-\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+\cdots)f[n+1]= (\sum_{p=0}^{\infty}b_p\nabla^p)f[n+1].
 ```
 
 This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `f_diff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford integration step* is obtained as the polynomial product of the two expansions,
