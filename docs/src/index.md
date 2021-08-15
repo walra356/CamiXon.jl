@@ -230,9 +230,9 @@ where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-M
 
 Functions:
 
-`coeffs` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow ([b_0,\ldots,b_k], D)``
+`coeffs` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow [b_0,\ldots,b_k]``
 
-`adams_moulton_integration_coeffs` = [`f_diff_expansion_weights(coeffs,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
+`adams_moulton_integration_weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
