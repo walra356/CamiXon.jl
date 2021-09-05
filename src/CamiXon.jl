@@ -58,6 +58,9 @@ export cast_FORTRAN_datatype
 export find_all
 export find_first
 export find_last
+
+export VectorRational
+export normalize_VectorRational
 export canonical_partitions
 export integer_partitions
 export log10_characteristic_power

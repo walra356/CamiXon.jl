@@ -1,3 +1,50 @@
+
+
+# ...................................................... VectorRational .........................................................
+
+@doc raw"""
+    VectorRational
+
+Object to decompose a vector of rational numbers
+
+The fields are:
+* `.num::Vector{Int}``: vector of normalized numerators
+* `.den::Int`: common denominator
+* `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
+"""
+struct VectorRational
+
+    num::Vector{Int}
+    den::Int
+    val::Vector{Rational{Int64}}
+
+end
+
+# ==================================== analyzeVectorRational(vec) =======================
+
+@doc raw"""
+    normalize_VectorRational(vec::Vector{Rational{Int}})
+
+Decompose vector of rational numbers.
+#### Example:
+```
+v = [2//3,4//5]
+normalize_VectorRational(v)
+ VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
+```
+"""
+function normalize_VectorRational(vec::Vector{Rational{Int}})
+
+    val = gcd(vec)
+    den = val.den
+    num = convert(Vector{Int},(vec .* den))
+
+    return VectorRational(num, den, vec)
+
+end
+
+# ==================================== _canonical_partition(n, m) =======================
+
 function _canonical_partition(n::Int, m::Int)
 
     o = Base.fill(m,Base.cld(n,m))                              # init partition

@@ -323,6 +323,8 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ## Math
 
 ```@docs
+VectorRational
+normalize_VectorRational(vec::Vector{Rational{Int}})
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
