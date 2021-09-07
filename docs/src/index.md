@@ -155,10 +155,13 @@ Functions:
 
 `coeffs` = [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref) ``\rightarrow [l_0^{\prime}(x),\ \ldots,\ l_k^{\prime}(x)]``
 
-`lagrangian differentiation weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
+`Lagrange differentiation weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
+
+`Lagrange differentiation weights` = [`create_lagrange_differentiation_weights(k,x) `](@ref) ``\rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
 
@@ -202,10 +205,11 @@ Function:
 
 `coeffs` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``\rightarrow [B_k^k(x),\ ,\ldots,\ B_0^k(x)]``
 
-`adams_bashford_integration_weights` = `f_diff_expansion_weights(coeffs,∇)``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
+`adams_bashford_integration_weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref) ``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_bashford(k::Int)
+create_adams_moulton_weights(k::Int)
 ```
 
 ### Adams-Moulton expansion
@@ -213,19 +217,19 @@ f_diff_expansion_coeffs_adams_bashford(k::Int)
 The *Adams-Moulton integration* step is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{h \nabla}{ln(1-\nabla)}f[n+1] = h\ ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1].
+y[n+1]-y[n] = -\frac{\nabla}{ln(1-\nabla)}f[n+1] = ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1].
 ```
 
 For the evaluation of the integration step we limit the summation to ``k+1`` terms (order ``k``),
 
 ```math
-y[n+1]-y[n]= h\ (\sum_{p=0}^{k}b_p\nabla^p)f[n+1]+\cdots.
+y[n+1]-y[n]= (\sum_{p=0}^{k}b_p\nabla^p)f[n+1]+\cdots.
 ```
 
 where ``b_0,\ldots,b_k`` are the *Adams-Moulton expansion coefficients*, rational numbers generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
 
 ```math
-y[n+1]-y[n]= \frac{h}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
+y[n+1]-y[n]= \frac{1}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
 ```
 
 where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
@@ -240,10 +244,13 @@ Functions:
 
 `coeffs` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow [b_0,\ldots,b_k]``
 
-`adams_moulton_integration_weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
+`adams_moulton_weights` = [`f_diff_expansion_weights(coeffs,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
+
+`adams_moulton_weights` = [`create_adams_moulton_weights(k)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
+create_adams_moulton_weights(k::Int)
 ```
 
 ## FITS

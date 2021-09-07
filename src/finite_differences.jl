@@ -278,6 +278,65 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
 end
 
+# =================== create_lagrange_differentiation_weights(k, x) ============
+
+@doc raw"""
+    create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
+
+Lagrange k+1 point differentiation weight coefficients, ``s_{k-j}^k(x)``, where ``x`` is the position relative point ``n``.
+
+```math
+\frac{df}{dx}[n+x]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
+```
+#### Example:
+```
+k = 3
+x = 0
+create_lagrange_differentiation_weights(k,x)
+ Rational{Int64}[-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
+```
+"""
+function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
+
+    ∇ = f_diff_weights_array(k)
+    coeffs = f_diff_expansion_coeffs_differentiation(k,-k+x)
+
+    return f_diff_expansion_weights(coeffs,∇)
+
+end
+
+# =============================== create_lagrange_differentiation_matrix(k) ====
+
+@doc raw"""
+    create_lagrange_differentiation_matrix(k::Int)
+
+Finite-difference expansion matrix for ``k+1`` point lagrangian differentiation.
+#### Example:
+```
+k = 3
+create_lagrange_differentiation_matrix(k)
+ 4×4 Matrix{Rational{Int64}}:
+  -11//6   3//1  -3//2   1//3
+   -1//3  -1//2   1//1  -1//6
+    1//6  -1//1   1//2   1//3
+   -1//3   3//2  -3//1  11//6
+```
+"""
+function create_lagrange_differentiation_matrix(k::Int)
+
+    m = Matrix{Rational{Int}}(undef,k+1,k+1)
+
+    ∇ = f_diff_weights_array(k)
+
+    for i=0:k
+        coeffs = f_diff_expansion_coeffs_differentiation(k,-k+i)
+        m[1+i,1:k+1] = f_diff_expansion_weights(coeffs,∇)
+    end
+
+    return m
+
+end
+
 # ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
 
 @doc raw"""
@@ -319,7 +378,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k::Int)
 
-Adams-Moulton finite-difference expansion coefficients (restricted to order k < 18),
+Adams-Moulton finite-difference expansion coefficients (restricted to order ``k < 18``),
 
 ```math
 -\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
@@ -356,7 +415,32 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
 
 end
 
-# ========================== f_diff_expansion_coeffs_adams_bashford(k) ===========
+# ========================== create_adams_moulton_weights(k)====================
+
+@doc raw"""
+    create_adams_moulton_weights(k::Int)
+
+Adams-Moulton ``k+1`` point weight coefficients, ``a_j^k/D``.
+```math
+y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a_{k-j}^kf[n+1-k+j]
+```
+#### Example:
+```
+k=3
+am = create_adams_moulton_weights(k); println(am)
+ Rational{Int64}[1//24, -5//24, 19//24, 3//8]
+```
+"""
+function create_adams_moulton_weights(k::Int)
+
+    ∇ = f_diff_weights_array(k)
+    coeffs = f_diff_expansion_coeffs_adams_moulton(k)
+
+    return f_diff_expansion_weights(coeffs,∇)
+
+end
+
+# ======================== f_diff_expansion_coeffs_adams_bashford(k) ===========
 
 @doc raw"""
     f_diff_expansion_coeffs_adams_bashford(k::Int)
