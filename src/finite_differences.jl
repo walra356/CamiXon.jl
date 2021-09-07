@@ -292,8 +292,7 @@ Lagrange k+1 point differentiation weight coefficients, ``s_{k-j}^k(x)``, where 
 ```
 k = 3
 x = 0
-create_lagrange_differentiation_weights(k,x)
- Rational{Int64}[-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
+ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 ```
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
@@ -310,7 +309,10 @@ end
 @doc raw"""
     create_lagrange_differentiation_matrix(k::Int)
 
-Finite-difference expansion matrix for ``k+1`` point lagrangian differentiation.
+Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k+1`` point lagrangian differentiation,
+```math
+\frac{df}{dx}[n+i]= \sum_{j=0}^{k}m[i,j]f[n-k+j],
+```
 #### Example:
 ```
 k = 3
