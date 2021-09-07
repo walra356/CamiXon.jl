@@ -162,6 +162,7 @@ Functions:
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
+create_lagrange_differentiation_matrix(k::Int)
 lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
 
@@ -209,7 +210,6 @@ Function:
 
 ```@docs
 f_diff_expansion_coeffs_adams_bashford(k::Int)
-create_adams_moulton_weights(k::Int)
 ```
 
 ### Adams-Moulton expansion

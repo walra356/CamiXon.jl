@@ -24,6 +24,7 @@ export lagrange_interpolation
 export lagrange_extrapolation
 export f_diff_expansion_coeffs_differentiation
 export create_lagrange_differentiation_weights
+export create_lagrange_differentiation_matrix
 export lagrange_differentiation
 export f_diff_expansion_coeffs_adams_moulton
 export create_adams_moulton_weights
