@@ -311,7 +311,7 @@ end
 
 Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k+1`` point lagrangian differentiation,
 ```math
-\frac{df}{dx}[n+i]= \sum_{j=0}^{k}m[i,j]f[n-k+j],
+\frac{dy}{dx}[i]= \sum_{j=0}^{k}m[i,j]y[j],
 ```
 #### Example:
 ```
