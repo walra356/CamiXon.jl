@@ -426,10 +426,8 @@ end
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a_{k-j}^kf[n+1-k+j]
 ```
-The weights are stored in order of use in the summation:
-```math
-weights = [am_k^k,\ \cdots,\ am_0^k]
-```
+The weights are stored in reversed order ``[a_k^k,\ \cdots,\ a_0^k]``
+(the order of use in the summation).
 #### Example:
 ```
 k=3
