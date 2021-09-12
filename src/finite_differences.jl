@@ -422,11 +422,11 @@ end
 @doc raw"""
     create_adams_moulton_weights(k::Int)
 
-``(k+1)``-point Adams-Moulton weight coefficients, ``a_j^k/D``.
+``(k+1)``-point Adams-Moulton weight coefficients.
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a_{k-j}^kf[n+1-k+j]
 ```
-The weights are stored in reversed order ``[a_k^k,\ \cdots,\ a_0^k]``
+The weights are stored in reversed order ``[a_k^k/D,\ \cdots,\ a_0^k/D]``
 (the order of use in the summation).
 #### Example:
 ```
