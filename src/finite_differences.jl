@@ -386,8 +386,8 @@ end
 -\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
 ```
 ```
-The weights are stored in *forward order* ``[b_0^k,\ \cdots,\ b_k^k]``,
-the order of use in the summation.
+The weights are stored in *forward* order: ``[b_0^k,\ \cdots,\ b_k^k]`` -
+order of use in summation.
 #### Examples:
 ```
 k = 5
@@ -429,8 +429,8 @@ end
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a_{k-j}^kf[n+1-k+j]
 ```
-The weights are stored in *reversed* order ``[a_k^k/D,\ \cdots,\ a_0^k/D]``,
-the order of use in the summation.
+The weights are stored in *reversed* order: ``[a_k^k/D,\ \cdots,\ a_0^k/D]`` -
+order of use in summation.
 #### Example:
 ```
 k=3
@@ -458,8 +458,8 @@ end
 -\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ \cdots.
 ```
 ```
-The weights are stored in *forward order* ``[B_0^k,\ \cdots,\ B_k^k]``,
-the order of use in the summation.
+The weights are stored in *forward* order: ``[B_0^k,\ \cdots,\ B_k^k]`` -
+order of use in summation.
 #### Examples:
 ```
 k = 5
