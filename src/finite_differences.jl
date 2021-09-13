@@ -26,9 +26,10 @@ Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order finite 
 f[n-k]\\
 \vdots\\
 f[n]
-\end{array}\right]=\sum_{j=0}^{k}c_{k-j}^{k}f[n-k+j].
+\end{array}\right]=\sum_{j=0}^{k}c^k[j]f[n-k+j],
 ```
-This form is recommended for use with any analytic function, ``f``, tabulated in *forward order*, ``f[n-k], ...,f[n]``  (coefficients in backward order).
+where ``c^k[j] ≡ c_{k-j}^{k}``.
+This form is designed for use with *analytic$ functions, ``f``, tabulated in *forward* order, ``f[n-k], ...,f[n]``.
 #### Example:
 ```
 k = 3
@@ -47,7 +48,8 @@ f_diff_weights(k::Int) = [f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of weight vectors ``[c_k^k,\ \ldots,\ c_0^k]``  defining the finite difference operators ``\nabla^0,\ \ldots,\ \nabla^k``.
+Collection of weight vectors, ``c^0,\ \ldots,\ c^k``, defining the finite difference operators ``\nabla^0,\ \ldots,\ \nabla^k``
+under the convention ``c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k])``.
 #### Example:
 ```
 kmax = 3
@@ -66,14 +68,14 @@ f_diff_weights_array(kmax::Int) = [f_diff_weights(k)  for k=0:kmax]
 @doc raw"""
     f_diff_expansion_weights(a, ∇)
 
-Weight vector ``[b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coefficients
+Weight vector ``b^k ≡ [b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the expansion coefficients
 ``[a_0^k,\ ,\ldots,\ a_k^k]`` of the ``k^{th}``-order finite-difference expansion,
 
 ```math
-\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b_{k-j}^{k}f[n-k+j],
+\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b^k[j]f[n-k+j],
 ```
 
-where ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *forward order*.
+where ``b^k[j] \equiv b_{k-j}^k`` and ``f[n-k], ...,f[n]`` are elements of the analytic function ``f`` tabulated in *forward* order.
 Note the difference in ordering between the finite-difference expansion *coefficients*,
 ``a_{0},\ \ldots,\ a_{k}``, and the finite-difference expansion *weights*, ``b_k^{k},\ \ldots,\ b_0^{k}``.
 Note further the difference in ``k`` dependence: the *weights*,
@@ -283,11 +285,12 @@ end
 @doc raw"""
     create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-Lagrange k+1 point differentiation weight coefficients, ``s_{k-j}^k(x)``, where ``x`` is the position relative point ``n``.
+``k^{th}``-order Lagrange differentiation weights vector, ``s^k(x) ≡ [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``, where ``x`` is the position relative point ``n``.
 
 ```math
 \frac{df}{dx}[n+x]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
 ```
+where ``s^k_x[j] ≡ s_{k-j}(x)^k``.
 #### Example:
 ```
 k = 3
@@ -309,7 +312,7 @@ end
 @doc raw"""
     create_lagrange_differentiation_matrix(k::Int)
 
-Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k+1`` point lagrangian differentiation,
+Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k^{th}``-order lagrangian differentiation,
 ```math
 \frac{dy}{dx}[i]= \sum_{j=0}^{k}m[i,j]y[j],
 ```
@@ -380,11 +383,10 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k::Int)
 
-``(k+1)``-point Adams-Moulton expansion coefficients (restricted to order ``k < 18``),
+``k^{th}``-order Adams-Moulton expansion coefficients (restricted to order ``k < 18``),
 
 ```math
 -\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
-```
 ```
 The weights are stored in *forward* order: ``[b_0^k,\ \cdots,\ b_k^k]`` -
 order of use in summation.
@@ -425,12 +427,12 @@ end
 @doc raw"""
     create_adams_moulton_weights(k::Int)
 
-``(k+1)``-point Adams-Moulton weight coefficients.
+``k^{th}``-order Adams-Moulton weights vector (restricted to order ``k < 18``),
 ```math
-y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a_{k-j}^kf[n+1-k+j]
+y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
-The weights are stored in *reversed* order: ``[a_k^k/D,\ \cdots,\ a_0^k/D]`` -
-order of use in summation.
+The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]`` under the convention
+``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton divisor.
 #### Example:
 ```
 k=3
