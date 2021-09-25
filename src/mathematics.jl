@@ -313,7 +313,7 @@ end
 
 Coefficient vector ``c=[c_0 +\ \ldots,\ c_d]`` defining the polynomial of degree ``d``,
 ```math
-    p(c,x)=c_0 + c_1*x +\ \cdots,\c_n*x^d.
+    p(c,x)=c_0 + c_1*x +\ \cdots+c_n*x^d.
 ```
 ### Examples:
 ```
