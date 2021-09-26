@@ -276,7 +276,7 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
     a = prepend!([1//i for i=1:k],[0//1])
     b = f_diff_expansion_coeffs_lagrange(k, x)
 
-    return polynom_multiplication_coeffs(a, b)[1:k+1]
+    return polynom_product(a, b)[1:k+1]
 
 end
 
@@ -414,7 +414,7 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
     b = Base.copy(o)
 
     for p=1:k
-        b = CamiXon.polynom_multiplication_coeffs(a, b)[1:k+1]
+        b = CamiXon.polynom_product(a, b)[1:k+1]
         Base.isodd(p) ? o = o .- b : o = o .+ b
     end
 
@@ -477,7 +477,7 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int)
 
     a = ones(Int, k+1) #f_diff_expansion_coeffs_lagrange(k,1)
     b = f_diff_expansion_coeffs_adams_moulton(k)
-    o = polynom_multiplication_coeffs(a, b)[1:k+1]
+    o = polynom_product(a, b)[1:k+1]
 
     return o  # Note that D = denominator(gcd(o))
 

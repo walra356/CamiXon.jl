@@ -72,7 +72,7 @@ export polynom
 export polynom_derivative
 export polynom_derivatives
 export polynom_primitive
-export polynom_multiplication_coeffs
+export polynom_product
 export permutations_unique_count
 export f_diff_expansion_coeffs_adams_moulton
 

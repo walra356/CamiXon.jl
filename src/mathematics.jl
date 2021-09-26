@@ -403,10 +403,10 @@ function polynom_primitive(coeffs::Vector{<:Number})
 
 end
 
-# ==================================== polynom_multiplication_coeffs(a, b) ============================================================
+# ==================================== polynom_product(a, b) ============================================================
 
 @doc raw"""
-    polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
+    polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
 Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` of the polynomial of degree ``m+n``
 ```math
@@ -422,7 +422,7 @@ o = polynomial_multiplication_coeffs(a, b); println(o)
  [1, 0, -1]
 ```
 """
-function polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
+function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
     n = length(a)
     m = length(b)
