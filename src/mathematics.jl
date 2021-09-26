@@ -314,7 +314,7 @@ end
 Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the coefficient
 vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
 ```math
-    p(c,x)=c_0 + c_1 x + \cdots c_d x^d.
+    p(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
 ### Examples:
 ```
@@ -344,7 +344,7 @@ end
 Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
-    p'(c,x)=c_1 + c_2 x + \cdots c_d x^{d-1},
+    p'(c,x)=c_1 + c_2 x + \cdots + c_d x^{d-1},
 ```
 ### Examples:
 ```
@@ -420,7 +420,7 @@ end
 
 Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` of the polynomial of degree ``m+n``
 ```math
-    p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x +\ \cdots\ a_n b_m x^{n+m},
+    p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m},
 ```
 given by the product of two polynomials, of degree ``n`` and ``m``, defined by the
 coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_m]``.
