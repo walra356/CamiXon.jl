@@ -342,12 +342,12 @@ end
     polynom_derivative(coeffs)
 
 Vector representation of the first derivatives of the polynomial of degree ``d`` represented by the
-coefficient vector coeffs``=[c_0 +\ \ldots,\ c_d]``.
+coefficient vector coeffs ``=[c_0,\ \ldots,\ c_d]``.
 
 ### Examples:
 ```
-p=[1,1,1,1,1]                                   # vector representation of polynomial p (degree d=4)
-o = polynom_derivative(p); println(o)           # derivatives 1, ..., 5 of polynomial p
+p=[1,1,1,1,1]                           # vector representation of polynomial p (degree d=4)
+o = polynom_derivative(p); println(o)   # derivatives 1,... 5 of polynomial p
  [1, 2, 3, 4]
 ```
 """
@@ -366,12 +366,12 @@ end
     polynom_derivatives(coeffs[,deriv=0])
 
 Vector representation of derivatives of the polynomial of degree ``d`` represented by the
-coefficient vector coeffs``=[c_0 +\ \ldots,\ c_d]``.
+coefficient vector coeffs ``=[c_0,\ \ldots,\ c_d]``.
 
 ### Examples:
 ```
-p=[1,1,1,1,1]                                    # vector representation of polynomial p (degree d=4)
-o = polynom_derivatives(p); println(o)           # derivatives 1, ..., 5 of polynomial p
+p=[1,1,1,1,1]                            # vector representation of polynomial p (degree d=4)
+o = polynom_derivatives(p); println(o)           # derivatives 1,... 5 of polynomial p
  [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
 o = polynom_derivatives(p; deriv=2); println(o)  # second derivative of polynomial p
  [2, 6, 12]
