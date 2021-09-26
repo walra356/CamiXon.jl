@@ -69,6 +69,8 @@ export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
 export polynom
+export polynom_derivative
+export polynom_derivatives
 export polynom_deriv_coeffs
 export polynom_multiplication_coeffs
 export permutations_unique_count

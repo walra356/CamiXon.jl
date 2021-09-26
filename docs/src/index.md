@@ -349,6 +349,8 @@ log10_characteristic_power(x)
 log10_mantissa(x)
 polynom_deriv_coeffs(c,deriv=0)
 polynom(c::Vector{T}, x::T) where T<:Real
+polynom_derivative(coeffs::Vector{<:Number})
+polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
 polynom_multiplication_coeffs(a::Vector{<:Number}, b::Vector{<:Number})
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 ```

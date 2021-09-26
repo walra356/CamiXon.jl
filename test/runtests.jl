@@ -51,7 +51,9 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test polynom_deriv_coeffs([1.0 for i=1:6],2) == [-0.0, 0.0, 2.0, 6.0, 12.0, 20.0]
-    @test polynom([1.0 for i=1:6],2.0) == 63.0
+    @test polynom(ones(6),2.0) == 63.0
+    @test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
+    @test polynom_derivatives([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
     @test polynom_multiplication_coeffs([1,1],[1,- 1]) == [1, 0, -1]
     @test polynom_multiplication_coeffs([1,1],[1,- 1,2]) == [1, 0, 1, 2]
     @test polynom_multiplication_coeffs([1,- 1,2],[1,1]) == [1, 0, 1, 2]

@@ -309,21 +309,18 @@ end
 # ==================================== polynom(c,x) ============================================================
 
 @doc raw"""
-    polynom(c,x)
+    polynom(coeffs,x)
 
-Coefficient vector ``c=[c_0 +\ \ldots,\ c_d]`` defining the polynomial of degree ``d``,
+Method to evaluate the polynomial ``f(x)=polynom(coeffs,x)`` defined by the vector
+``coeffs=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
 ```math
     p(c,x)=c_0 + c_1 x +\ \cdots+c_n x^d.
 ```
 ### Examples:
 ```
-d = 5
-c = [1.0 for i=1:d+1]
-c = polynom_deriv_coeffs(c)          # default is simple
-println(c)
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-f(x) = polynom(c,x)
-println([f(1.0),f(2.0)])             # values of polynomial for x = 1.0 and x = 2.0
+coeffs = ones(6)             # for polynomial of degree 5 with unit coefficients
+f(x) = polynom(coeffs,x)
+println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
  [6.0, 63.0]
 ```
 """
@@ -336,6 +333,68 @@ function polynom(c::Vector{T}, x::T) where T<:Real
     end
 
     return LinearAlgebra.dot(c, X)
+
+end
+
+# ==================================== polynom_derivative(coeffs) ==============
+
+@doc raw"""
+    polynom_derivative(coeffs)
+
+Vector representation of the first derivatives of the polynomial of degree ``d`` represented by the
+coefficient vector coeffs``=[c_0 +\ \ldots,\ c_d]``.
+
+### Examples:
+```
+p=[1,1,1,1,1]                                   # vector representation of polynomial p (degree d=4)
+o = polynom_derivative(p); println(o)           # derivatives 1, ..., 5 of polynomial p
+ [1, 2, 3, 4]
+```
+"""
+function polynom_derivative(coeffs::Vector{<:Number})
+
+    k = length(coeffs)
+    k > 1 || return [0]
+
+    return coeffs[2:end] .* Base.OneTo(k-1)
+
+end
+
+# =============================== polynom_derivative(coeffs[,deriv=0]) =========
+
+@doc raw"""
+    polynom_derivatives(coeffs[,deriv=0])
+
+Vector representation of derivatives of the polynomial of degree ``d`` represented by the
+coefficient vector coeffs``=[c_0 +\ \ldots,\ c_d]``.
+
+### Examples:
+```
+p=[1,1,1,1,1]                                    # vector representation of polynomial p (degree d=4)
+o = polynom_derivatives(p); println(o)           # derivatives 1, ..., 5 of polynomial p
+ [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
+o = polynom_derivatives(p; deriv=2); println(o)  # second derivative of polynomial p
+ [2, 6, 12]
+```
+"""
+function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
+
+    deriv < 0 && error("jwError: negative derivative not defined")
+
+    k = deriv > 0 ? deriv+1 : length(coeffs)
+
+    coeffs = polynom_derivative(coeffs)
+
+    deriv ≠ 1 ? o = [coeffs] : return coeffs
+
+    for i=2:k-1
+        coeffs = polynom_derivative(coeffs)
+        push!(o,coeffs)
+    end
+
+    deriv == 0 ? push!(o,[0]) : return o[deriv]
+
+    return o
 
 end
 
