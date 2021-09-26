@@ -349,9 +349,13 @@ coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 
 ### Examples:
 ```
-p=[1,1,1,1,1]                           # vector representation of polynomial p (degree d=4)
-o = polynom_derivative(p); println(o)   # derivatives 1,... 5 of polynomial p
- [1, 2, 3, 4]
+p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
+polynom_derivative(p)                       # (first) derivative of polynomial p
+4-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 4
 ```
 """
 function polynom_derivative(coeffs::Vector{<:Number})
@@ -366,18 +370,26 @@ end
 # =============================== polynom_derivative(coeffs[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(coeffs[,deriv=0])
+    polynom_derivatives(c[,deriv=0])
 
-Vector representation of derivatives of the polynomial of degree ``d`` represented by the
-coefficient vector coeffs ``=[c_0,\ \ldots,\ c_d]``.
+Vector representation of derivatives of the polynomial of degree ``d``, represented by the
+coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 
 ### Examples:
 ```
-p=[1,1,1,1,1]                            # vector representation of polynomial p (degree d=4)
-o = polynom_derivatives(p); println(o)           # derivatives 1,... 5 of polynomial p
- [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
-o = polynom_derivatives(p; deriv=2); println(o)  # second derivative of polynomial p
+p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
+polynom_derivatives(p)                       # `all' derivatives of polynomial p
+5-element Vector{Vector{Int64}}:
+ [1, 2, 3, 4]
  [2, 6, 12]
+ [6, 24]
+ [24]
+ [0]
+polynom_derivatives(p; deriv=2)              # second derivative of polynomial p
+3-element Vector{Int64}:
+  2
+  6
+ 12
 ```
 """
 function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
