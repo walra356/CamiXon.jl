@@ -311,8 +311,8 @@ end
 @doc raw"""
     polynom(coeffs,x)
 
-Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the vector
-``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
+Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the coefficient
+vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
 ```math
     p(c,x)=c_0 + c_1 x +\ \cdots+c_n x^d.
 ```
@@ -339,10 +339,13 @@ end
 # ==================================== polynom_derivative(coeffs) ==============
 
 @doc raw"""
-    polynom_derivative(coeffs)
+    polynom_derivative(c)
 
-Vector representation of the first derivatives of the polynomial of degree ``d`` represented by the
-coefficient vector coeffs ``=[c_0,\ \ldots,\ c_d]``.
+Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
+coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+```math
+    p^\{prime}(c,x)=c_1 x + c_2 x^2 +\ \cdots\ c_n x^{n-1},
+```
 
 ### Examples:
 ```
