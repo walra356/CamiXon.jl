@@ -324,7 +324,7 @@ println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
  [6.0, 63.0]
 ```
 """
-function polynom(c::Vector{T}, x::T) where T<:Real
+function polynom(c::Vector{T}, x::T) where T<:Number
 
     X = ones(T,length(c))
 
@@ -344,7 +344,7 @@ end
 Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
-    p'(c,x)=c_1 + c_2 x + \cdots + c_d x^{d-1},
+    p'(c,x)=c_1 + 2 c_2 x + \cdots + d c_d x^{d-1},
 ```
 ### Examples:
 ```
@@ -410,6 +410,40 @@ function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
     deriv == 0 ? push!(o,[0]) : return o[deriv]
 
     return o
+
+end
+
+# ==================================== polynom_primitive(c) ====================
+
+@doc raw"""
+    polynom_primitive(c)
+
+Vector representation of the primitive of the polynomial of degree ``d``, represented by the
+coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+```math
+    P(c,x)=c_int +c_0 x + \frac{1}{2} c_1 x^2 + \frac{1}{3} c_2 x^3 + \cdots + \frac{1}{n} c_d x^{d+1},
+```
+The constant of integration is set to zero, ``c_int = 0``.
+### Examples:
+```
+p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
+polynom_primitive(p)
+6-element Vector{Rational{Int64}}:
+ 0//1
+ 1//1
+ 1//2
+ 1//3
+ 1//4
+ 1//5
+```
+"""
+function polynom_primitive(coeffs::Vector{<:Number})
+
+    d = [1//p for p ∈ eachindex(coeffs)]
+
+    coeffs = coeffs .* d
+
+    return pushfirst!(coeffs,0)      # constant of integration equal to zero
 
 end
 
