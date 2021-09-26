@@ -314,7 +314,7 @@ end
 Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the coefficient
 vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
 ```math
-    p(c,x)=c_0 + c_1 x +\ \cdots+c_n x^d.
+    p(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
 ### Examples:
 ```
@@ -344,9 +344,8 @@ end
 Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
-    p^\{prime}(c,x)=c_1 + c_2 x + \cdots + c_d x^{n-1},
+    p'(c,x)=c_1 + c_2 x + \cdots + c_d x^{d-1},
 ```
-
 ### Examples:
 ```
 p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
@@ -385,6 +384,7 @@ polynom_derivatives(p)                       # `all' derivatives of polynomial p
  [6, 24]
  [24]
  [0]
+
 polynom_derivatives(p; deriv=2)              # second derivative of polynomial p
 3-element Vector{Int64}:
   2
