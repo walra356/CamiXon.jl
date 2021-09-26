@@ -422,9 +422,9 @@ end
 Vector representation of the primitive of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
-    P(c,x)=c_int +c_0 x + \frac{1}{2} c_1 x^2 + \frac{1}{3} c_2 x^3 + \cdots + \frac{1}{n} c_d x^{d+1},
+    P(c,x)=c_{int} +c_0 x + \frac{1}{2} c_1 x^2 + \frac{1}{3} c_2 x^3 + \cdots + \frac{1}{d+1} c_d x^{d+1},
 ```
-The constant of integration is set to zero, ``c_int = 0``.
+The constant of integration is set to zero, ``c_{int} = 0``.
 ### Examples:
 ```
 p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
