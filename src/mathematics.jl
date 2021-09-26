@@ -295,7 +295,7 @@ end
 # ==================================== polynom_derivative(coeffs) ==============
 
 @doc raw"""
-    polynom_derivative(c)
+    polynom_derivative(coeffs)
 
 Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
@@ -325,7 +325,7 @@ end
 # =============================== polynom_derivative(coeffs[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(c[,deriv=0])
+    polynom_derivatives(coeffs[,deriv=0])
 
 Vector representation of derivatives of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
@@ -372,7 +372,7 @@ end
 # ==================================== polynom_primitive(c) ====================
 
 @doc raw"""
-    polynom_primitive(c)
+    polynom_primitive(coeffs)
 
 Vector representation of the primitive of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
