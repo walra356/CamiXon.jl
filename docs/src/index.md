@@ -348,7 +348,7 @@ integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
 polynom_deriv_coeffs(c,deriv=0)
-polynom(c::Vector{T}, x::T) where T<:Number
+polynom(coeffs::Vector{T}, x::T) where T<:Number
 polynom_derivative(coeffs::Vector{<:Number})
 polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
 polynom_primitive(coeffs::Vector{<:Number})

@@ -324,15 +324,16 @@ println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
  [6.0, 63.0]
 ```
 """
-function polynom(c::Vector{T}, x::T) where T<:Number
+function polynom(coeffs::Vector{T}, x::T) where T<:Number
 
-    X = ones(T,length(c))
+    k = length(coeffs)
+    X = ones(T,k)
 
-    for i=2:length(c)
+    for i=2:k
         X[i] = X[i-1] * x
     end
 
-    return LinearAlgebra.dot(c, X)
+    return LinearAlgebra.dot(coeffs, X)
 
 end
 
