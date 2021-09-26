@@ -344,7 +344,7 @@ end
 Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
 coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
-    p^\{prime}(c,x)=c_1 x + c_2 x^2 +\ \cdots\ c_n x^{n-1},
+    p^\{prime}(c,x)=c_1 + c_2 x + \cdots + c_d x^{n-1},
 ```
 
 ### Examples:
