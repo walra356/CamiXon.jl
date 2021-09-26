@@ -261,51 +261,6 @@ log10_mantissa.([3,30,300])
 """
 log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 
-# ==================================== polynom_deriv_coeffs(c,deriv) ============================================================
-
-function _polynom_deriv_multipliers(c,deriv)
-
-    d = Base.OneTo(length(c))
-
-    for i=1:deriv
-        c = c .* (d .- i)
-    end
-
-    return c
-
-end
-
-@doc raw"""
-    polynom_deriv_coeffs(c[,deriv=0])
-
-Coefficient vector defining the derivative `deriv` of the polynomial ``p(c,d)``, of degree ``d``,
-defined by the coefficient vector c``=[c_0 +\ \ldots,\ c_d]``.
-
-### Examples:
-```
-d = 5
-c = [1.0 for i=1:d+1]
-polynom_deriv_coeffs(c)                # default is direct copy of `c`
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-polynom_deriv_coeffs(c,1)              # coefficients of 1st derivative of `polynom(c,x)`
- [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
-polynom_deriv_coeffs(c,2)              # coefficients of 2nd derivative of `polynom(c,x)`
- [-0.0, 0.0, 2.0, 6.0, 12.0, 20.0]
-polynom_deriv_coeffs(c,5)              # coefficients of 5th derivative of `polynom(c,x)`
- [0.0, -0.0, 0.0, -0.0, 0.0, 120.0]
-polynom_deriv_coeffs(c,6)              # coefficients of 6th derivative of `polynom(c,x)`
- [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-```
-"""
-function polynom_deriv_coeffs(c,deriv=0)
-
-    deriv < 0 && error("Error: negative derivative not defined")
-    deriv < length(c) || return Base.zeros(length(c))
-
-    return [_polynom_deriv_multipliers(c, i-1) for i ∈ eachindex(c)][deriv+1]
-
-end
-
 # ==================================== polynom(c,x) ============================================================
 
 @doc raw"""
