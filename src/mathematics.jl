@@ -311,8 +311,8 @@ end
 @doc raw"""
     polynom(coeffs,x)
 
-Method to evaluate the polynomial ``f(x)=polynom(coeffs,x)`` defined by the vector
-``coeffs=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
+Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the vector
+``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
 ```math
     p(c,x)=c_0 + c_1 x +\ \cdots+c_n x^d.
 ```
