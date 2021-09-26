@@ -281,8 +281,8 @@ println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
 """
 function polynom(coeffs::Vector{T}, x::T) where T<:Number
 
-    k = length(coeffs)
-    X = ones(T,k)
+    k = Base.length(coeffs)
+    X = Base.ones(T,k)
 
     for i=2:k
         X[i] = X[i-1] * x
@@ -315,7 +315,7 @@ polynom_derivative(p)                       # (first) derivative of polynomial p
 """
 function polynom_derivative(coeffs::Vector{<:Number})
 
-    k = length(coeffs)
+    k = Base.length(coeffs)
     k > 1 || return [0]
 
     return coeffs[2:end] .* Base.OneTo(k-1)
@@ -352,18 +352,18 @@ function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
 
     deriv < 0 && error("jwError: negative derivative not defined")
 
-    k = deriv > 0 ? deriv+1 : length(coeffs)
+    k = deriv > 0 ? deriv+1 : Base.length(coeffs)
 
-    coeffs = polynom_derivative(coeffs)
+    coeffs = CamiXon.polynom_derivative(coeffs)
 
     deriv ≠ 1 ? o = [coeffs] : return coeffs
 
     for i=2:k-1
         coeffs = polynom_derivative(coeffs)
-        push!(o,coeffs)
+        Base.push!(o,coeffs)
     end
 
-    deriv == 0 ? push!(o,[0]) : return o[deriv]
+    deriv == 0 ? Base.push!(o,[0]) : return o[deriv]
 
     return o
 
@@ -395,11 +395,11 @@ polynom_primitive(p)
 """
 function polynom_primitive(coeffs::Vector{<:Number})
 
-    d = [1//p for p ∈ eachindex(coeffs)]
+    d = [1//p for p ∈ Base.eachindex(coeffs)]
 
     coeffs = coeffs .* d
 
-    return pushfirst!(coeffs,0)      # constant of integration equal to zero
+    return Base.pushfirst!(coeffs,0)      # constant of integration equal to zero
 
 end
 
@@ -408,11 +408,11 @@ end
 @doc raw"""
     polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
-Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` of the polynomial of degree ``m+n``
+Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` representing the polynomial of degree ``m+n``
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m},
 ```
-given by the product of two polynomials, of degree ``n`` and ``m``, defined by the
+given by the product of two polynomials, of degree ``n`` and ``m``, represented by the
 coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_m]``.
 ####
 ```
@@ -424,17 +424,17 @@ o = polynomial_multiplication_coeffs(a, b); println(o)
 """
 function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
-    n = length(a)
-    m = length(b)
+    n = Base.length(a)
+    m = Base.length(b)
 
     if m ≥ n
-        o = [sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:n-1]
-        if m≠n append!(o,[sum(a[n-i]*b[1+i+j] for i=0:n-1) for j=1:m-n]) end
-        append!(o,[sum(a[n-i]*b[1+i+j+m-n] for i=0:n-1-j) for j=1:n-1])
+        o = [Base.sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:n-1]
+        if m≠n Base.append!(o,[Base.sum(a[n-i]*b[1+i+j] for i=0:n-1) for j=1:m-n]) end
+        Base.append!(o,[Base.sum(a[n-i]*b[1+i+j+m-n] for i=0:n-1-j) for j=1:n-1])
     else
-        o = [sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:m-1]
-        if m≠n append!(o,[sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:n-m]) end
-        append!(o,[sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:m-1])
+        o = [Base.sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:m-1]
+        if m≠n Base.append!(o,[Base.sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:n-m]) end
+        Base.append!(o,[Base.sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:m-1])
     end
 
     return o
@@ -456,11 +456,11 @@ permutations_unique_count(p,2)
 """
 function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 
-    o = factorial(length(p[i]))
-    d = Dict([(n,count(x->x==n,p[i])) for n ∈ unique(p[i])])
+    o = Base.factorial(Base.length(p[i]))
+    d = Base.Dict([(n,Base.count(x->x==n,p[i])) for n ∈ Base.unique(p[i])])
 
-    for j ∈ eachindex(unique(p[i]))
-        o = o ÷ factorial(d[unique(p[i])[j]])
+    for j ∈ Base.eachindex(Base.unique(p[i]))
+        o = o ÷ Base.factorial(d[Base.unique(p[i])[j]])
     end
 
     return o
