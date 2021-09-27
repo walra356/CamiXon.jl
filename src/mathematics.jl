@@ -301,10 +301,9 @@ Vector representation of the first derivative of the polynomial `coords`,
 ```math
     p'(c,x)=c_1 + 2 c_2 x + \cdots + d c_d x^{d-1},
 ```
-Polynomials are represented by a vector in a vector space of dimension ``d+1``,
-where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
-the polynomial.
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
 ### Examples:
 ```
 coords=[1,1,1,1,1]                 # vector representation of polynomial of degree d=4
@@ -332,10 +331,9 @@ end
 
 Vector representation of derivatives of the polynomial `coords`.
 
-Polynomials are represented by a vector in a vector space of dimension ``d+1``,
-where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
-the polynomial.
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
 
 `deriv`: derivative of choice; `default`: collection of all (nontrivial) derivatives.
 
@@ -386,10 +384,9 @@ end
 Vector representation of the polynomial `coords` raised to the power `p` and
 resulting in a polynomial in a vector space of dimension ``p d + 1``.
 
-Polynomials are represented by a vector in a vector space of dimension ``d+1``,
-where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
-the polynomial.
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
 ### Examples:
 ```
 coords=[1,1,1]             # vector representation of polynomial of degree ``d=2``
@@ -463,10 +460,9 @@ corresponding to a polynomial of degree ``d=m+n``,
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m}.
 ```
-Polynomials are represented by a vector in a vector space of dimension ``d+1``,
-where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
-the polynomial.
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
 ####
 ```
 a = [1,1]
