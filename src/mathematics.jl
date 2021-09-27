@@ -441,6 +441,44 @@ function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
 end
 
+# ==================================== polynom_power(coeffs, p) ================
+
+@doc raw"""
+    polynom_power(coeffs, p)
+
+The polynomial `coeffs` raised to the power `p`.
+In this notation `coeffs` represents a polynomial of degree ``d``, defined by the
+coefficient vector ``c=[c_0,\ \ldots,\ c_d]``. The result is a single polynomial represented
+by a coefficient vector of dimension ``p * d + 1``.
+### Examples:
+```
+coeffs=[1,1,1]                   # vector representation of polynomial of degree d=2
+polynom_power(coeffs,2)
+5-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 2
+ 1
+```
+"""
+function polynom_power(coeffs::Vector{<:Number}, power::Int)
+
+    power >= 0 || error("jwError: negative powers not allowed")
+    power == 2 && return polynom_product(coeffs, coeffs)
+    power == 1 && return coeffs
+    power == 0 && return [1]
+
+    o = polynom_product(coeffs, coeffs)
+
+    for i=1:power-2
+        o = polynom_product(o, coeffs)
+    end
+
+    return o
+
+end
+
 # ==================================== permutations_unique_count(p, i) =======================
 
 @doc raw"""
