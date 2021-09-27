@@ -460,7 +460,7 @@ end
     polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
 Vector representation of the product of two polynomials, ``a`` and ``b`` which
-is a polynomial in a vector space of dimension ``p d + 1``. ``d=m+n``,
+is a polynomial in a vector space of dimension ``d=m+n``,
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m}.
 ```
