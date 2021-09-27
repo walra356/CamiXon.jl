@@ -266,8 +266,8 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 @doc raw"""
     polynom(coeffs,x)
 
-Method to evaluate the polynomial ``f(x)=polynom(c,x)`` defined by the coefficient
-vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the degree of the polynomial,
+Method to evaluate the functiom ``f(x)=polynom(c,x)``, where
+``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
 ```math
     p(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
@@ -297,8 +297,8 @@ end
 @doc raw"""
     polynom_derivative(coeffs)
 
-Vector representation of the first derivative of the polynomial of degree ``d``, represented by the
-coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+Vector representation of the first derivative of the polynomial `coeffs` of degree ``d``,
+represented by the coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
 ```math
     p'(c,x)=c_1 + 2 c_2 x + \cdots + d c_d x^{d-1},
 ```
@@ -325,15 +325,17 @@ end
 # =============================== polynom_derivative(coeffs[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(coeffs[,deriv=0])
+    polynom_derivatives(coords[,deriv=0])
 
 Vector representation of derivatives of the polynomial of degree ``d``, represented by the
-coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+vector `coords=[c_0,\ \ldots,\ c_d]`.
+`deriv`: derivative of choice
+`default`: collection of all nontrivial derivatives (1, 2, ..., d+1)
 
 ### Examples:
 ```
-p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
-polynom_derivatives(p)                       # `all' derivatives of polynomial p
+coeffs=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
+polynom_derivatives(coeffs)                       # `all' derivatives of polynomial p
 5-element Vector{Vector{Int64}}:
  [1, 2, 3, 4]
  [2, 6, 12]
