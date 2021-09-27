@@ -416,6 +416,41 @@ function polynom_power(coords::Vector{<:Number}, power::Int)
 
 end
 
+# ==================================== polynom_powers(coords, pmax) ============
+
+@doc raw"""
+    polynom_powers(coords, pmax)
+
+The polynomial `coords` raised to the powers 1,...,pmax  which
+results in a collection of polynomials in vector spaces of dimension ``d+1`` tot ``p d + 1``.
+
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
+### Examples:
+```
+coords=[1,1,1]                   # vector representation of polynomial of degree d=2
+polynom_powers(coords,3)
+3-element Vector{Vector{Int64}}:
+ [1, 1, 1]
+ [1, 2, 3, 2, 1]
+ [1, 3, 6, 7, 6, 3, 1]
+```
+"""
+function polynom_powers(coords::Vector{<:Number}, pmax::Int)
+
+    pmax > 0 || error("jwError: minimum power included is unity")
+
+    o = [coords]
+
+    for i=1:pmax-1
+        push!(o,polynom_product(o[end], coords))
+    end
+
+    return o
+
+end
+
 # ==================================== polynom_primitive(coords) ====================
 
 @doc raw"""

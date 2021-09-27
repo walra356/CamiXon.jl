@@ -351,6 +351,7 @@ polynom(coords::Vector{T}, x::T) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
 polynom_power(coords::Vector{<:Number}, power::Int)
+polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
