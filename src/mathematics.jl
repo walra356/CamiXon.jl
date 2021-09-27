@@ -332,7 +332,7 @@ end
 
 Vector representation of derivatives of the polynomial `coords`.
 
-Polynomials are represented by a vector in a vector space of dimension d+1,
+Polynomials are represented by a vector in a vector space of dimension ``d+1``,
 where ``d`` is the polynomial degree. The polynomial is specified by the
 coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
 the polynomial.
@@ -458,15 +458,15 @@ end
 @doc raw"""
     polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
-Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` representing the polynomial of degree ``d=m+n``
+Vector representation of the product of two polynomials, ``a`` and ``b``, and
+corresponding to a polynomial of degree ``d=m+n``,
 ```math
-    p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m},
+    p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m}.
 ```
-given by the product of two polynomials, of degree ``n`` and ``m``.
-
 Polynomials are represented by a vector in a vector space of dimension ``d+1``,
 where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
+the polynomial.
 ####
 ```
 a = [1,1]
