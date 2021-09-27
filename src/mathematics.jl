@@ -381,8 +381,8 @@ end
 @doc raw"""
     polynom_power(coords, p)
 
-Vector representation of the polynomial `coords` raised to the power `p` and
-resulting in a polynomial in a vector space of dimension ``p d + 1``.
+Vector representation of the polynomial `coords` raised to the power `p` which
+results in a polynomial in a vector space of dimension ``p d + 1``.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
 The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
@@ -421,12 +421,16 @@ end
 @doc raw"""
     polynom_primitive(coords)
 
-Vector representation of the primitive of the polynomial `coords`, represented by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the polynomial degree,
+Vector representation of the primitive of the polynomial `coords` which is a
+polynomial in a vector space of dimension ``p d + 1``.
 ```math
     P(c,x)=c_{int} +c_0 x + \frac{1}{2} c_1 x^2 + \frac{1}{3} c_2 x^3 + \cdots + \frac{1}{d+1} c_d x^{d+1},
 ```
 The constant of integration is set to zero, ``c_{int} = 0``.
+
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
 ### Examples:
 ```
 coords=[1,1,1,1,1]         # vector representation of polynomial of degree ``d=4``
@@ -455,8 +459,8 @@ end
 @doc raw"""
     polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
-Vector representation of the product of two polynomials, ``a`` and ``b``, and
-corresponding to a polynomial of degree ``d=m+n``,
+Vector representation of the product of two polynomials, ``a`` and ``b`` which
+is a polynomial in a vector space of dimension ``p d + 1``. ``d=m+n``,
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m}.
 ```
