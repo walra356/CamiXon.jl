@@ -264,7 +264,7 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 # ==================================== polynom(c,x) ============================================================
 
 @doc raw"""
-    polynom(coeffs,x)
+    polynom(coords,x)
 
 Method to evaluate the functiom ``f(x)=polynom(c,x)``, where
 ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
@@ -273,35 +273,37 @@ Method to evaluate the functiom ``f(x)=polynom(c,x)``, where
 ```
 ### Examples:
 ```
-coeffs = ones(6)             # for polynomial of degree 5 with unit coefficients
-f(x) = polynom(coeffs,x)
+coords = ones(6)             # for polynomial of degree 5 with unit coefficients
+f(x) = polynom(coords,x)
 println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
  [6.0, 63.0]
 ```
 """
-function polynom(coeffs::Vector{T}, x::T) where T<:Number
+function polynom(coords::Vector{T}, x::T) where T<:Number
 
-    k = Base.length(coeffs)
+    k = Base.length(coords)
     X = Base.ones(T,k)
 
     for i=2:k
         X[i] = X[i-1] * x
     end
 
-    return LinearAlgebra.dot(coeffs, X)
+    return LinearAlgebra.dot(coords, X)
 
 end
 
-# ==================================== polynom_derivative(coeffs) ==============
+# ==================================== polynom_derivative(coords) ==============
 
 @doc raw"""
-    polynom_derivative(coeffs)
+    polynom_derivative(coords)
 
-Vector representation of the first derivative of the polynomial `coeffs` of degree ``d``,
-represented by the coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+Vector representation of the first derivative of the polynomial `coords`,
 ```math
     p'(c,x)=c_1 + 2 c_2 x + \cdots + d c_d x^{d-1},
 ```
+Polynomials are represented by a vector in a vector space of dimension d+1,
+where ``d`` is the polynomial degree. The polynomial is specified by the
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
 ### Examples:
 ```
 p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
@@ -313,32 +315,32 @@ polynom_derivative(p)                       # (first) derivative of polynomial p
  4
 ```
 """
-function polynom_derivative(coeffs::Vector{<:Number})
+function polynom_derivative(coords::Vector{<:Number})
 
-    k = Base.length(coeffs)
+    k = Base.length(coords)
     k > 1 || return [0]
 
-    return coeffs[2:end] .* Base.OneTo(k-1)
+    return coords[2:end] .* Base.OneTo(k-1)
 
 end
 
-# =============================== polynom_derivative(coeffs[,deriv=0]) =========
+# =============================== polynom_derivative(coords[,deriv=0]) =========
 
 @doc raw"""
     polynom_derivatives(coords[,deriv=0])
 
-Collection of derivatives of the polynomial `coords`.
+Vector representation of derivatives of the polynomial `coords`.
 
 Polynomials are represented by a vector in a vector space of dimension d+1,
 where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinate vector ``c=[c_0,\ \ldots,\ c_d]``.
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
 
-`deriv`: derivative of choice; `default`: collection of all nontrivial derivatives (1, 2, ..., d+1).
+`deriv`: derivative of choice; `default`: collection of all (nontrivial) derivatives.
 
 ### Examples:
 ```
-coeffs=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
-polynom_derivatives(coeffs)                       # `all' derivatives of polynomial p
+coords=[1,1,1,1,1]            # vector representation of a polynomial of degree ``d=4``
+polynom_derivatives(coords)   # `all' (nontrivial) derivatives of polynomial coords
 5-element Vector{Vector{Int64}}:
  [1, 2, 3, 4]
  [2, 6, 12]
@@ -353,19 +355,19 @@ polynom_derivatives(p; deriv=2)              # second derivative of polynomial p
  12
 ```
 """
-function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
+function polynom_derivatives(coords::Vector{<:Number}; deriv=0)
 
     deriv < 0 && error("jwError: negative derivative not defined")
 
-    k = deriv > 0 ? deriv+1 : Base.length(coeffs)
+    k = deriv > 0 ? deriv+1 : Base.length(coords)
 
-    coeffs = CamiXon.polynom_derivative(coeffs)
+    coords = CamiXon.polynom_derivative(coords)
 
-    deriv ≠ 1 ? o = [coeffs] : return coeffs
+    deriv ≠ 1 ? o = [coords] : return coords
 
     for i=2:k-1
-        coeffs = polynom_derivative(coeffs)
-        Base.push!(o,coeffs)
+        coords = polynom_derivative(coords)
+        Base.push!(o,coords)
     end
 
     deriv == 0 ? Base.push!(o,[0]) : return o[deriv]
@@ -374,21 +376,21 @@ function polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
 
 end
 
-# ==================================== polynom_primitive(c) ====================
+# ==================================== polynom_primitive(coords) ====================
 
 @doc raw"""
-    polynom_primitive(coeffs)
+    polynom_primitive(coords)
 
-Vector representation of the primitive of the polynomial of degree ``d``, represented by the
-coefficient vector ``c=[c_0,\ \ldots,\ c_d]``.
+Vector representation of the primitive of the polynomial `coords`, represented by the
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the polynomial degree,
 ```math
     P(c,x)=c_{int} +c_0 x + \frac{1}{2} c_1 x^2 + \frac{1}{3} c_2 x^3 + \cdots + \frac{1}{d+1} c_d x^{d+1},
 ```
 The constant of integration is set to zero, ``c_{int} = 0``.
 ### Examples:
 ```
-p=[1,1,1,1,1]               # vector representation of polynomial p (degree d=4)
-polynom_primitive(p)
+coords=[1,1,1,1,1]         # vector representation of polynomial of degree ``d=4``
+polynom_primitive(coords)
 6-element Vector{Rational{Int64}}:
  0//1
  1//1
@@ -398,13 +400,13 @@ polynom_primitive(p)
  1//5
 ```
 """
-function polynom_primitive(coeffs::Vector{<:Number})
+function polynom_primitive(coords::Vector{<:Number})
 
-    d = [1//p for p ∈ Base.eachindex(coeffs)]
+    d = [1//p for p ∈ Base.eachindex(coords)]
 
-    coeffs = coeffs .* d
+    coords = coords .* d
 
-    return Base.pushfirst!(coeffs,0)      # constant of integration equal to zero
+    return Base.pushfirst!(coords,0)      # constant of integration equal to zero
 
 end
 
@@ -413,17 +415,20 @@ end
 @doc raw"""
     polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
-Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` representing the polynomial of degree ``m+n``
+Coefficient vector ``c=[c_0,\ \ldots,\ c_{n+m}]`` representing the polynomial of degree ``d=m+n``
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m},
 ```
-given by the product of two polynomials, of degree ``n`` and ``m``, represented by the
-coefficient vectors ``a=[a_0,\ \ldots,\ a_n]`` and  ``b=[b_0,\ \ldots,\ b_m]``.
+given by the product of two polynomials, of degree ``n`` and ``m``.
+
+Polynomials are represented by a vector in a vector space of dimension ``d+1``,
+where ``d`` is the polynomial degree. The polynomial is specified by the
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
 ####
 ```
 a = [1,1]
 b = [1,- 1]
-o = polynomial_multiplication_coeffs(a, b); println(o)
+o = polynomial_product(a, b); println(o)
  [1, 0, -1]
 ```
 """
@@ -446,19 +451,19 @@ function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 
 end
 
-# ==================================== polynom_power(coeffs, p) ================
+# ==================================== polynom_power(coords, p) ================
 
 @doc raw"""
-    polynom_power(coeffs, p)
+    polynom_power(coords, p)
 
-The polynomial `coeffs` raised to the power `p`.
-In this notation `coeffs` represents a polynomial of degree ``d``, defined by the
-coefficient vector ``c=[c_0,\ \ldots,\ c_d]``. The result is a single polynomial represented
-by a coefficient vector of dimension ``p * d + 1``.
+Vector representation of the polynomial `coords` raised to the power `p`.
+In this notation `coords` represents a polynomial of degree ``d``, defined by the
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]``. The result is a polynomial in a
+vector space of dimension ``p d + 1``.
 ### Examples:
 ```
-coeffs=[1,1,1]                   # vector representation of polynomial of degree d=2
-polynom_power(coeffs,2)
+coords=[1,1,1]             # vector representation of polynomial of degree ``d=2``
+polynom_power(coords,2)
 5-element Vector{Int64}:
  1
  2
@@ -467,17 +472,17 @@ polynom_power(coeffs,2)
  1
 ```
 """
-function polynom_power(coeffs::Vector{<:Number}, power::Int)
+function polynom_power(coords::Vector{<:Number}, power::Int)
 
     power >= 0 || error("jwError: negative powers not allowed")
-    power == 2 && return polynom_product(coeffs, coeffs)
-    power == 1 && return coeffs
+    power == 2 && return polynom_product(coords, coords)
+    power == 1 && return coords
     power == 0 && return [1]
 
-    o = polynom_product(coeffs, coeffs)
+    o = polynom_product(coords, coords)
 
     for i=1:power-2
-        o = polynom_product(o, coeffs)
+        o = polynom_product(o, coords)
     end
 
     return o
