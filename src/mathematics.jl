@@ -303,7 +303,8 @@ Vector representation of the first derivative of the polynomial `coords`,
 ```
 Polynomials are represented by a vector in a vector space of dimension ``d+1``,
 where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
+the polynomial.
 ### Examples:
 ```
 coords=[1,1,1,1,1]                 # vector representation of polynomial of degree d=4
@@ -333,7 +334,8 @@ Vector representation of derivatives of the polynomial `coords`.
 
 Polynomials are represented by a vector in a vector space of dimension d+1,
 where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
+the polynomial.
 
 `deriv`: derivative of choice; `default`: collection of all (nontrivial) derivatives.
 
@@ -386,7 +388,8 @@ resulting in a polynomial in a vector space of dimension ``p d + 1``.
 
 Polynomials are represented by a vector in a vector space of dimension ``d+1``,
 where ``d`` is the polynomial degree. The polynomial is specified by the
-coordinates vector ``c=[c_0,\ \ldots,\ c_d]``.
+coordinates vector ``c=[c_0,\ \ldots,\ c_d]`` consisting of the coefficients of
+the polynomial.
 ### Examples:
 ```
 coords=[1,1,1]             # vector representation of polynomial of degree ``d=2``
