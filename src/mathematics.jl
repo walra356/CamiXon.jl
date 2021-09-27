@@ -327,10 +327,11 @@ end
 @doc raw"""
     polynom_derivatives(coords[,deriv=0])
 
-Vector representation of derivatives of the polynomial of degree ``d``, represented by the
-vector `coords=[c_0,\ \ldots,\ c_d]`.
+Vector representation of derivatives of the polynomial `coords`.
+
+`coords`: coordinate vector, ``c=[c_0,\ \ldots,\ c_d]``, where ``d`` is the polynomial degree
 `deriv`: derivative of choice
-`default`: collection of all nontrivial derivatives (1, 2, ..., d+1)
+`default`: collection of all nontrivial derivatives ``(1, 2, ..., d+1)``
 
 ### Examples:
 ```
