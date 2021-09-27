@@ -350,6 +350,7 @@ log10_mantissa(x)
 polynom(coeffs::Vector{T}, x::T) where T<:Number
 polynom_derivative(coeffs::Vector{<:Number})
 polynom_derivatives(coeffs::Vector{<:Number}; deriv=0)
+polynom_power(coeffs::Vector{<:Number}, power::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)

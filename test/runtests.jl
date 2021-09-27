@@ -53,6 +53,7 @@ using Test
     @test polynom(ones(6),2.0) == 63.0
     @test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
     @test polynom_derivatives([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
+    @test polynom_power([1,1,1],2) == [1, 2, 3, 2, 1]
     @test polynom_primitive([1,1,1,1,1]) == Rational{Int64}[0//1, 1//1, 1//2, 1//3, 1//4, 1//5]
     @test polynom_product([1,1],[1,- 1]) == [1, 0, -1]
     @test polynom_product([1,1],[1,- 1,2]) == [1, 0, 1, 2]
