@@ -583,18 +583,19 @@ end
 @doc raw"""
     polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
 
-Vector representation of the product of two polynomials, ``a`` (degree=``n``) and ``b`` (degree=``m``), with ``m≤n``
-truncated at degee=``m`` is a polynomial in a vector space of dimension ``d=m+1``. If ``p`` is the `polynom_product,
-the polynom_product_expansion is ``p[1:p+1]``
+Vector representation of the product of two polynomials, ``a`` (of degree``=n``) and ``b`` (of degree``=m``), with ``m≤n``
+truncated at degee=``m`` is a polynomial in a vector space of dimension ``d=m+1``. If ``p`` is the `polynom_product`,
+the `polynom_product_expansion` is ``p[1:p+1]``
 ####
 ```
 a = [1,-1,1]
-b = [1,1,-1]
+b = [1,1,-1,1,1,1]
 o = polynom_product(a, b); println(o)
- [1, 0, -1, 2, -1]
+ [1, 0, -1, 3, -1, 1, 0, 1]
 
-o = polynom_product_expansion(a, b, 3); println(o)
- [1, 0, -1]
+o = expand_product(a, b, 4); println(o)
+ [1, 0, -1, 3, -1]
+
 ```
 """
 function polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
