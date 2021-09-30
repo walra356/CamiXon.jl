@@ -60,7 +60,7 @@ using Test
     @test polynom_product([1,1],[1,- 1]) == [1, 0, -1]
     @test polynom_product([1,1],[1,- 1,2]) == [1, 0, 1, 2]
     @test polynom_product([1,- 1,2],[1,1]) == [1, 0, 1, 2]
-    @test polynom_product_expansion(a, b, 5) == [1, 0, -1, 3, -1, 1]
+    @test polynom_product_expansion([1,-1,1],[1,1,-1,1,1,1], 5) == [1, 0, -1, 3, -1, 1]
     @test permutations_unique_count([[1,2,3],[2,3,1,4,3]],2) == 60
     @test normalize_VectorRational([2//3,4//5]).num == [10,12]
     @test edges(1:5,2.5,2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
