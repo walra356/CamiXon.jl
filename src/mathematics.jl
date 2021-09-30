@@ -43,6 +43,55 @@ function normalize_VectorRational(vec::Vector{Rational{Int}})
 
 end
 
+# ====================================
+
+@doc raw"""
+    bernoulli_numbers(nmax)
+
+Bernoulli numbers ``B_0`` to ``B_{nmax}`` caculated by repetative use of the recurrence relation
+```math
+    B_n = - \frac{1}{n+1}\sum_{k=0}{n-1}frac{(n+1)!}{k!(n+1-k)}
+``
+Special numbers: ``B_0=1,\ B_1=-1/2`` and ``B_{2n+1}=0`` for ``n>1``.
+### Examples:
+```
+bernoulli_numbers(10)
+11-element Vector{Rational{Int64}}:
+  1//1
+ -1//2
+  1//6
+  0//1
+ -1//30
+  0//1
+  1//42
+  0//1
+ -1//30
+  0//1
+  5//66
+```
+"""
+function bernoulli_numbers(nmax::Int)
+
+    B = nmax < 36 ? zeros(Rational{Int},nmax+1) : zeros(Rational{BigInt},nmax+1)
+
+    B[1] = 1//1
+    B[2] = -1//2
+
+    for m = 3:nmax+1
+        B[m] = 0//1
+        if isodd(m)
+            b = 1//m
+            for j = 1:m-1
+                B[m] -= b * B[j]
+                b *= (m+1-j) // j      # binomial coefficients
+            end
+        end
+    end
+
+    return B
+
+end
+
 # ==================================== _canonical_partition(n, m) =======================
 
 function _canonical_partition(n::Int, m::Int)

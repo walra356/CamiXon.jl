@@ -62,6 +62,7 @@ export find_all
 export find_first
 export find_last
 
+export bernoulli_numbers
 export VectorRational
 export normalize_VectorRational
 export canonical_partitions
