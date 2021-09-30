@@ -52,7 +52,7 @@ Bernoulli numbers ``B_0,\ \cdots,\ B_{nmax}`` calculated by repetative use of th
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}
 ```
-Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for} n>1)``.
+Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``.
 ### Examples:
 ```
 bernoulli_numbers(10)
