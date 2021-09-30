@@ -48,7 +48,7 @@ end
 @doc raw"""
     bernoulli_numbers(nmax)
 
-Bernoulli numbers ``B_0`` to ``B_{nmax}`` caculated by repetative use of the recurrence relation
+Bernoulli numbers ``B_0,\ \cdots,\ B_{nmax}`` caculated by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}
 ```
