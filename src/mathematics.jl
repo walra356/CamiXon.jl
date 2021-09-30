@@ -43,7 +43,7 @@ function normalize_VectorRational(vec::Vector{Rational{Int}})
 
 end
 
-# ====================================
+# ==================================== bernoulli_numbers(nmax) =================
 
 @doc raw"""
     bernoulli_numbers(nmax)
@@ -572,6 +572,50 @@ function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
         o = [Base.sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:m-1]
         if m≠n Base.append!(o,[Base.sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:n-m]) end
         Base.append!(o,[Base.sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:m-1])
+    end
+
+    return o
+
+end
+
+# ==================================== polynom_product_expansion(a, b, p) ============================================================
+
+@doc raw"""
+    polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+
+Vector representation of the product of two polynomials, ``a`` (degree=``n``) and ``b`` (degree=``m``), with ``m≤n``
+truncated at degee=``m`` is a polynomial in a vector space of dimension ``d=m+1``. If ``p`` is the `polynom_product,
+the polynom_product_expansion is ``p[1:p+1]``
+####
+```
+a = [1,-1,1]
+b = [1,1,-1]
+o = polynom_product(a, b); println(o)
+ [1, 0, -1, 2, -1]
+
+o = polynom_product_expansion(a, b, 3); println(o)
+ [1, 0, -1]
+```
+"""
+function polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+
+    n = Base.length(a)
+    m = Base.length(b)
+
+    if m ≥ n
+        o = [Base.sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:min(n-1,p)]
+        p+1 == length(o) && return o
+        if m≠n Base.append!(o,[Base.sum(a[n-i]*b[1+i+j] for i=0:n-1) for j=1:min(m-n,p-n+1)]) end
+        p+1 == length(o) && return o
+        Base.append!(o,[Base.sum(a[n-i]*b[1+i+j+m-n] for i=0:n-1-j) for j=1:min(n-1,p-m+1)])
+        p+1 == length(o) && return o
+    else
+        o = [Base.sum(b[1+j-i]*a[1+i] for i=0:j) for j=0:min(m-1,p)]
+        p+1 == length(o) && return o
+        Base.append!(o,[Base.sum(b[m-i]*a[1+i+j] for i=0:m-1) for j=1:min(n-m,p-m+1)])
+        p+1 == length(o) && return o
+        Base.append!(o,[Base.sum(b[m-i]*a[1+i+j+n-m] for i=0:m-1-j) for j=1:min(m-1,p-n+1)])
+        p+1 == length(o) && return o
     end
 
     return o

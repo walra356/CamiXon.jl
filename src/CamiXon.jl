@@ -74,6 +74,7 @@ export polynom_derivative
 export polynom_derivatives
 export polynom_primitive
 export polynom_product
+export polynom_product_expansion
 export polynom_power
 export polynom_powers
 export permutations_unique_count

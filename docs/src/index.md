@@ -342,12 +342,11 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 
 ```@docs
 bernoulli_numbers(nmax::Int)
-VectorRational
-normalize_VectorRational(vec::Vector{Rational{Int}})
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
+permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 polynom(coords::Vector{T}, x::T) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
@@ -355,7 +354,9 @@ polynom_power(coords::Vector{<:Number}, power::Int)
 polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
-permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+VectorRational
+normalize_VectorRational(vec::Vector{Rational{Int}})
 ```
 
 ## Index
