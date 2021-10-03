@@ -69,6 +69,8 @@ export canonical_partitions
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
+export pascal_triangle
+export pascal_next
 export polynom
 export polynom_derivative
 export polynom_derivatives

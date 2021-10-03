@@ -1,48 +1,3 @@
-
-
-# ...................................................... VectorRational .........................................................
-
-@doc raw"""
-    VectorRational
-
-Object to decompose a vector of rational numbers
-
-The fields are:
-* `.num::Vector{Int}``: vector of normalized numerators
-* `.den::Int`: common denominator
-* `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
-"""
-struct VectorRational
-
-    num::Vector{Int}
-    den::Int
-    val::Vector{Rational{Int64}}
-
-end
-
-# ==================================== analyzeVectorRational(vec) =======================
-
-@doc raw"""
-    normalize_VectorRational(vec::Vector{Rational{Int}})
-
-Decompose vector of rational numbers.
-#### Example:
-```
-v = [2//3,4//5]
-normalize_VectorRational(v)
- VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
-```
-"""
-function normalize_VectorRational(vec::Vector{Rational{Int}})
-
-    val = gcd(vec)
-    den = val.den
-    num = convert(Vector{Int},(vec .* den))
-
-    return VectorRational(num, den, vec)
-
-end
-
 # ==================================== bernoulli_numbers(nmax) =================
 
 @doc raw"""
@@ -80,12 +35,14 @@ function bernoulli_numbers(nmax::Int)
     for m = 3:nmax+1
         B[m] = 0//1
         if isodd(m)
-            b = 1//m
+            b = 1
             for j = 1:m-1
-                B[m] -= b * B[j]
-                b *= (m+1-j) // j      # binomial coefficients
+                B[m] -= B[j] * b
+                b *= m+1-j    # binomial coefficients
+                b = b÷j
             end
         end
+        B[m] = B[m] // m
     end
 
     return B
@@ -309,6 +266,94 @@ log10_mantissa.([3,30,300])
 ```
 """
 log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
+
+# ==================================== pascal_triangle(nmax)  ============
+
+@doc raw"""
+    pascal_triangle(nmax)
+
+Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,\ \cdots,\nmax``
+### Example:
+```
+pascal_triangle(5)
+6-element Vector{Vector{Int64}}:
+ [1]
+ [1, 1]
+ [1, 2, 1]
+ [1, 3, 3, 1]
+ [1, 4, 6, 4, 1]
+ [1, 5, 10, 10, 5, 1]
+```
+"""
+function pascal_triangle(nmax::Int)
+
+    nmax < 0 && error("jwError: nmax must be a non-negative integer")
+
+    o = [ones(Int,n+1) for n=0:nmax]
+
+    for n=2:nmax
+        for k=1:n÷2
+            o[n+1][k+1] = o[n][k+1] + o[n][k]
+            o[n+1][n+1-k] = o[n+1][k+1]
+        end
+    end
+
+    return o
+
+end
+
+# ==================================== pascal_next(nmax)  ============
+
+@doc raw"""
+    pascal_next(nmax)
+
+Next row of Pascal triangle
+### Example:
+```
+a = [1, 4, 6, 4, 1]
+pascal_next(a)
+ [1, 5, 10, 10, 5, 1]
+```
+"""
+function pascal_next(a::Vector{Int})
+
+    n = length(a) + 1
+    o = ones(Int,n)
+
+    for k=1:n÷2
+        o[k+1] = a[k+1] + a[k]
+        o[n-k] = o[k+1]
+    end
+
+    return o
+
+end
+
+# ==================================== permutations_unique_count(p, i) =======================
+
+@doc raw"""
+    permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+
+Number of unique permutations of the subarray ``p[i]``.
+#### Example:
+```
+p = [[1,2,3],[2,3,1,4,3]]
+permutations_unique_count(p,2)
+ 60
+```
+"""
+function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+
+    o = Base.factorial(Base.length(p[i]))
+    d = Base.Dict([(n,Base.count(x->x==n,p[i])) for n ∈ Base.unique(p[i])])
+
+    for j ∈ Base.eachindex(Base.unique(p[i]))
+        o = o ÷ Base.factorial(d[Base.unique(p[i])[j]])
+    end
+
+    return o
+
+end
 
 # ==================================== polynom(c,x) ============================================================
 
@@ -623,28 +668,45 @@ function polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::
 
 end
 
-# ==================================== permutations_unique_count(p, i) =======================
+# ...................................................... VectorRational .........................................................
 
 @doc raw"""
-    permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+    VectorRational
 
-Number of unique permutations of the subarray ``p[i]``.
+Object to decompose a vector of rational numbers
+
+The fields are:
+* `.num::Vector{Int}``: vector of normalized numerators
+* `.den::Int`: common denominator
+* `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
+"""
+struct VectorRational
+
+    num::Vector{Int}
+    den::Int
+    val::Vector{Rational{Int64}}
+
+end
+
+# ==================================== analyzeVectorRational(vec) =======================
+
+@doc raw"""
+    normalize_VectorRational(vec::Vector{Rational{Int}})
+
+Decompose vector of rational numbers.
 #### Example:
 ```
-p = [[1,2,3],[2,3,1,4,3]]
-permutations_unique_count(p,2)
- 60
+v = [2//3,4//5]
+normalize_VectorRational(v)
+ VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
 ```
 """
-function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+function normalize_VectorRational(vec::Vector{Rational{Int}})
 
-    o = Base.factorial(Base.length(p[i]))
-    d = Base.Dict([(n,Base.count(x->x==n,p[i])) for n ∈ Base.unique(p[i])])
+    val = gcd(vec)
+    den = val.den
+    num = convert(Vector{Int},(vec .* den))
 
-    for j ∈ Base.eachindex(Base.unique(p[i]))
-        o = o ÷ Base.factorial(d[Base.unique(p[i])[j]])
-    end
-
-    return o
+    return VectorRational(num, den, vec)
 
 end

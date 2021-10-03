@@ -51,6 +51,8 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test bernoulli_numbers(10) == Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1, 5//66]
+    @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
+    @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
     @test polynom(ones(6),2.0) == 63.0
     @test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
     @test polynom_derivatives([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]

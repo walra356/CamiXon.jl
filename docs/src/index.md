@@ -347,6 +347,8 @@ integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+pascal_triangle(nmax::Int)
+pascal_next(a::Vector{Int})
 polynom(coords::Vector{T}, x::T) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)

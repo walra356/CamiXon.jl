@@ -383,7 +383,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k::Int)
 
-``k^{th}``-order Adams-Moulton expansion coefficients (restricted to order ``k < 18``),
+``k^{th}``-order Adams-Moulton expansion coefficients,
 
 ```math
 -\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
@@ -405,20 +405,22 @@ o = convert(Vector{Int},(b .* D)); println(o)
 """
 function f_diff_expansion_coeffs_adams_moulton(k::Int)
 # =====================================================================================
-#   Adams-Moulton expansion coefficients limited to order k < 18
+#   Adams-Moulton expansion coefficients
 # =====================================================================================
-    k < 18 || error("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 17)")
+    o = k < 18 ? zeros(Rational{Int},k+1) : zeros(Rational{BigInt},k+1)
+    s = k < 18 ? 0//1 : big(0//1)
 
-    a = Base.prepend!([1//(i+1) for i=1:k],[0//1])
-    o = Base.zeros(Rational{Int}, k+1); o[1] = 1//1
+    o[1] = 1//1
+
     b = Base.copy(o)
+    a = Base.append!([s],[1//(i+1) for i=1:k])
 
     for p=1:k
-        b = CamiXon.polynom_product(a, b)[1:k+1]
+        b = CamiXon.polynom_product_expansion(a, b, k)
         Base.isodd(p) ? o = o .- b : o = o .+ b
     end
 
-    return o  # Note that D = denominator(gcd(o))
+    return o  # Note that D = devisor(gcd(o))
 
 end
 
@@ -454,7 +456,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_adams_bashford(k::Int)
 
-``(k+1)``-point Adams-Bashford expansion coefficients ``B_p`` (restricted to order k < 18)
+``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
 ```math
 -\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ \cdots.
@@ -471,13 +473,12 @@ o = f_diff_expansion_coeffs_adams_bashford(k::Int); println(o)
 """
 function f_diff_expansion_coeffs_adams_bashford(k::Int)
 # =====================================================================================
-#   Adams-Bashford expansion coefficients restricted to order k < 18
+#   Adams-Bashford expansion coefficients
 # =====================================================================================
-    k < 18 || error("Error: integer overflow in calculating the 19th-order expansion coefficients (k > 17)")
+    a = k < 18 ? ones(Rational{Int},k+1) : ones(Rational{BigInt},k+1)
 
-    a = ones(Int, k+1) #f_diff_expansion_coeffs_lagrange(k,1)
     b = f_diff_expansion_coeffs_adams_moulton(k)
-    o = polynom_product(a, b)[1:k+1]
+    o = polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
 
