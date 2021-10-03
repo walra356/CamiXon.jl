@@ -272,7 +272,7 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 @doc raw"""
     pascal_triangle(nmax)
 
-Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,\ \cdots,\nmax``
+Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,\ \cdots,\ nmax``
 ### Example:
 ```
 pascal_triangle(5)
