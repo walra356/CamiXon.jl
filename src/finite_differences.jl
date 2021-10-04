@@ -428,7 +428,7 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
     o = zeros(Rational{T},k+1)
-    s::Rational{T} = 1//1
+    s::Rational{T} = 0//1
 
     o[1] = 1//1
 
