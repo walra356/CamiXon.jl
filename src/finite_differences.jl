@@ -381,7 +381,7 @@ end
 
 
 @doc raw"""
-    f_diff_expansion_coeffs_adams_moulton(k [,T=Int])
+    f_diff_expansion_coeffs_adams_moulton(k [, T=Int])
 
 ``k^{th}``-order Adams-Moulton expansion coefficients,
 
@@ -447,9 +447,9 @@ end
 # ========================== create_adams_moulton_weights(k)====================
 
 @doc raw"""
-    create_adams_moulton_weights(k::Int)
+    create_adams_moulton_weights(k [, T=Int])
 
-``k^{th}``-order Adams-Moulton weights vector (restricted to order ``k < 18``),
+``k^{th}``-order Adams-Moulton weights vector,
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
