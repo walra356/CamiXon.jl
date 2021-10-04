@@ -82,7 +82,7 @@ Sum of powers of natural numbers ``1,\ \cdots,\ k`` in vector representation
 ```math
     F(n)=\frac{1}{p+1}\sum_{j=0}^{p}{\binom {p+1}{j}}B_{j}n^{p+1-j},
 ```
-where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers.
+where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}`` (rather than ``B_1=-\frac{1}{2}``).
 ### Examples:
 ```
 faulhaber_polynom(5)
@@ -132,13 +132,16 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ k``.
 ```math
-    F(n)=\sum_{k=0}^{n-1}k^{p},
+    F(n)=\sum_{k=0}^{n-1}k^{p}.
 ```
-where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}`` (rather than ``B_1=-\frac{1}{2}``).
+
 ### Examples:
 ```
-faulhaber_summation(3,5)
- 276
+faulhaber_summation(5,1)
+ 15
+
+faulhaber_summation(3,60; T=BigInt)
+  42391158276369125018901280178
 ```
 """
 function faulhaber_summation(n::Int, p::Int; T=Int)
