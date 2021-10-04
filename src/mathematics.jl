@@ -96,20 +96,6 @@ faulhaber_polynom(5)
   1//6
 ```
 """
-function faulhaber_polynom(p::Int)
-
-    p > 0 || return 0
-
-    P = pascal_triangle(p+1)[end][1:end-1]
-    B = bernoulli_numbers(p); B[2]=-B[2]
-
-    F = (B .* P)  // (p+1)
-
-    F = append!(F,0//1)   # add polynomial constant (zero in this case)
-
-    return reverse(F)     # reverse to standard order
-
-end
 function faulhaber_polynom(p::Int; T=Int)
 
     p > 0 || return 0
@@ -124,12 +110,63 @@ function faulhaber_polynom(p::Int; T=Int)
     return reverse(F)     # reverse to standard order
 
 end
+function faulhaber_polynom(p::Int)
 
+    p > 0 || return 0
 
+    P = pascal_triangle(p+1)[end][1:end-1]
+    B = bernoulli_numbers(p); B[2]=-B[2]
 
+    F = (B .* P)  // (p+1)
 
+    F = append!(F,0//1)   # add polynomial constant (zero in this case)
 
+    return reverse(F)     # reverse to standard order
 
+end
+
+# =================================== faulhaber_summation(n,p;T) ===============
+
+@doc raw"""
+    faulhaber_summation(n, p [, T=Int])
+
+Sum of powers of natural numbers ``1,\ \cdots,\ k``.
+```math
+    \sum_{k=0}^{n-1}k^{p},
+```
+where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}.
+### Examples:
+```
+faulhaber_summation(3,5)
+ 276
+```
+"""
+function faulhaber_summation(n::Int, p::Int; T=Int)
+
+    F = faulhaber_polynom(p; T)
+    o = 0
+    for k=1:p+1
+        for i=1:k
+            F[k+1] *= n
+        end
+        o += F[k+1]
+    end
+
+    denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+
+    return numerator(o)
+
+end
+function faulhaber_summation(n::Int, p::Int)
+
+    F = faulhaber_polynom(p)
+    o = sum([F[k+1]*n^k for k=1:p+1])
+
+    denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+
+    return numerator(o)
+
+end
 
 # ==================================== _canonical_partition(n, m) =======================
 
