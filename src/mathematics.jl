@@ -72,6 +72,56 @@ function bernoulli_numbers(nmax::Int; T=Int)
 
 end
 
+
+# ==================================== faulhaber_polynom(p) ====================
+
+@doc raw"""
+    faulhaber_polynom(p [, T=Int])
+
+Sum of powers of natural numbers ``1,\ \cdots,\ k``.
+```math
+    \sum_{k=0}^{n-1}k^{p}=\frac{1}{p+1}\sum_{k=0}^{p}{\binom {p+1}{k}}B_{k}^{p+1-k},
+```
+where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers.
+### Examples:
+```
+```
+"""
+function faulhaber_polynom(p::Int)
+
+    p > 0 || return 0
+
+    P = pascal_triangle(p+1)[end][1:end-1]
+    B = bernoulli_numbers(p); B[2]=-B[2]
+
+    F = (B .* P)  // (p+1)
+
+    F = append!(F,0//1)   # add polynomial constant (zero in this case)
+
+    return reverse(F)     # reverse to standard order
+
+end
+function faulhaber_polynom(p::Int; T=Int)
+
+    p > 0 || return 0
+
+    P = pascal_triangle(p+1; T)[end][1:end-1]
+    B = bernoulli_numbers(p; T); B[2]=-B[2]
+
+    F = (B .* P)  // (p+1)
+
+    F = append!(F,0//1)   # add polynomial constant (zero in this case)
+
+    return reverse(F)     # reverse to standard order
+
+end
+
+
+
+
+
+
+
 # ==================================== _canonical_partition(n, m) =======================
 
 function _canonical_partition(n::Int, m::Int)
@@ -293,7 +343,7 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 # ==================================== pascal_triangle(nmax)  ============
 
 @doc raw"""
-    pascal_triangle(nmax)
+    pascal_triangle(nmax [, T=Int])
 
 Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,\ \cdots,\ nmax``
 ### Example:
@@ -313,6 +363,22 @@ function pascal_triangle(nmax::Int)
     nmax < 0 && error("jwError: nmax must be a non-negative integer")
 
     o = [ones(Int,n+1) for n=0:nmax]
+
+    for n=2:nmax
+        for k=1:n÷2
+            o[n+1][k+1] = o[n][k+1] + o[n][k]
+            o[n+1][n+1-k] = o[n+1][k+1]
+        end
+    end
+
+    return o
+
+end
+function pascal_triangle(nmax::Int; T=Int)
+
+    nmax < 0 && error("jwError: nmax must be a non-negative integer")
+
+    o = [ones(T,n+1) for n=0:nmax]
 
     for n=2:nmax
         for k=1:n÷2

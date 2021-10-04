@@ -66,6 +66,7 @@ export bernoulli_numbers
 export VectorRational
 export normalize_VectorRational
 export canonical_partitions
+export faulhaber_polynom
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa

@@ -343,6 +343,7 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```@docs
 bernoulli_numbers(nmax::Int)
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
+faulhaber_polynom(p::Int)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
