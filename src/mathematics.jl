@@ -1,7 +1,7 @@
 # ==================================== bernoulli_numbers(nmax) =================
 
 @doc raw"""
-    bernoulli_numbers(nmax)
+    bernoulli_numbers(nmax [, T=Int])
 
 Bernoulli numbers ``B_0,\ \cdots,\ B_{nmax}`` calculated by repetative use of the recurrence relation
 ```math
@@ -27,7 +27,30 @@ bernoulli_numbers(10)
 """
 function bernoulli_numbers(nmax::Int)
 
-    B = nmax < 36 ? zeros(Rational{Int},nmax+1) : zeros(Rational{BigInt},nmax+1)
+    B = zeros(Rational{Int},nmax+1)
+
+    B[1] = 1//1
+    B[2] = -1//2
+
+    for m = 3:nmax+1
+        B[m] = 0//1
+        if isodd(m)
+            b = 1
+            for j = 1:m-1
+                B[m] -= B[j] * b
+                b *= m+1-j    # binomial coefficients
+                b = b÷j
+            end
+        end
+        B[m] = B[m] // m
+    end
+
+    return B
+
+end
+function bernoulli_numbers(nmax::Int; T=Int)
+
+    B = zeros(Rational{T},nmax+1)
 
     B[1] = 1//1
     B[2] = -1//2

@@ -381,7 +381,7 @@ end
 
 
 @doc raw"""
-    f_diff_expansion_coeffs_adams_moulton(k::Int)
+    f_diff_expansion_coeffs_adams_moulton(k [,T=Int])
 
 ``k^{th}``-order Adams-Moulton expansion coefficients,
 
@@ -407,7 +407,27 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
 # =====================================================================================
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
-    o = k < 18 ? zeros(Rational{Int},k+1) : zeros(Rational{BigInt},k+1)
+    o = zeros(Rational{Int},k+1)
+    s = k < 18 ? 0//1 : big(0//1)
+
+    o[1] = 1//1
+
+    b = Base.copy(o)
+    a = Base.append!([s],[1//(i+1) for i=1:k])
+
+    for p=1:k
+        b = CamiXon.polynom_product_expansion(a, b, k)
+        Base.isodd(p) ? o = o .- b : o = o .+ b
+    end
+
+    return o  # Note that D = devisor(gcd(o))
+
+end
+function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
+# =====================================================================================
+#   Adams-Moulton expansion coefficients
+# =====================================================================================
+    o = zeros(Rational{T},k+1)
     s = k < 18 ? 0//1 : big(0//1)
 
     o[1] = 1//1
@@ -454,7 +474,7 @@ end
 # ======================== f_diff_expansion_coeffs_adams_bashford(k) ===========
 
 @doc raw"""
-    f_diff_expansion_coeffs_adams_bashford(k::Int)
+    f_diff_expansion_coeffs_adams_bashford(k [, T=Int])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
@@ -475,7 +495,19 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int)
 # =====================================================================================
 #   Adams-Bashford expansion coefficients
 # =====================================================================================
-    a = k < 18 ? ones(Rational{Int},k+1) : ones(Rational{BigInt},k+1)
+    a = ones(Rational{Int},k+1)
+
+    b = f_diff_expansion_coeffs_adams_moulton(k)
+    o = polynom_product_expansion(a, b, k)
+
+    return o  # Note that D = denominator(gcd(o))
+
+end
+function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
+# =====================================================================================
+#   Adams-Bashford expansion coefficients
+# =====================================================================================
+    a = ones(Rational{T},k+1)
 
     b = f_diff_expansion_coeffs_adams_moulton(k)
     o = polynom_product_expansion(a, b, k)
