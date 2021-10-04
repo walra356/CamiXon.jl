@@ -132,9 +132,9 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ k``.
 ```math
-    \sum_{k=0}^{n-1}k^{p},
+    F(n)=\sum_{k=0}^{n-1}k^{p},
 ```
-where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}.
+where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}`` rather than ``B_1=\frac{1}{2}``.
 ### Examples:
 ```
 faulhaber_summation(3,5)
