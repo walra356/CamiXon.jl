@@ -132,7 +132,7 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ k``.
 ```math
-    F(n)=\sum_{k=1}^{n}k^{p}.
+    F(n,p)=\sum_{k=1}^{n}k^{p}.
 ```
 
 ### Examples:
