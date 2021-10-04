@@ -276,7 +276,7 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
     a = prepend!([1//i for i=1:k],[0//1])
     b = f_diff_expansion_coeffs_lagrange(k, x)
 
-    return polynom_product(a, b)[1:k+1]
+    return polynom_product_expansion(a, b, k)
 
 end
 
@@ -408,7 +408,7 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
     o = zeros(Rational{Int},k+1)
-    s = k < 18 ? 0//1 : big(0//1)
+    s = 0//1
 
     o[1] = 1//1
 
@@ -428,7 +428,7 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
     o = zeros(Rational{T},k+1)
-    s = k < 18 ? 0//1 : big(0//1)
+    s::Rational{T} = 1//1
 
     o[1] = 1//1
 
@@ -466,6 +466,14 @@ function create_adams_moulton_weights(k::Int)
 
     ∇ = f_diff_weights_array(k)
     coeffs = f_diff_expansion_coeffs_adams_moulton(k)
+
+    return f_diff_expansion_weights(coeffs,∇)
+
+end
+function create_adams_moulton_weights(k::Int; T=Int)
+
+    ∇ = f_diff_weights_array(k)
+    coeffs = f_diff_expansion_coeffs_adams_moulton(k; T)
 
     return f_diff_expansion_weights(coeffs,∇)
 
@@ -509,7 +517,7 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
 # =====================================================================================
     a = ones(Rational{T},k+1)
 
-    b = f_diff_expansion_coeffs_adams_moulton(k)
+    b = f_diff_expansion_coeffs_adams_moulton(k; T)
     o = polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
