@@ -78,9 +78,9 @@ end
 @doc raw"""
     faulhaber_polynom(p [, T=Int])
 
-Sum of powers of natural numbers ``1,\ \cdots,\ k``.
+Sum of powers of natural numbers ``1,\ \cdots,\ k`` in vector representation
 ```math
-    \sum_{k=0}^{n-1}k^{p}=\frac{1}{p+1}\sum_{k=0}^{p}{\binom {p+1}{k}}B_{k}^{p+1-k},
+    F(n)=\frac{1}{p+1}\sum_{j=0}^{p}{\binom {p+1}{j}}B_{j}n^{p+1-j},
 ```
 where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers.
 ### Examples:
