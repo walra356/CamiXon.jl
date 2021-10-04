@@ -85,6 +85,15 @@ Sum of powers of natural numbers ``1,\ \cdots,\ k`` in vector representation
 where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers.
 ### Examples:
 ```
+faulhaber_polynom(5)
+7-element Vector{Rational{Int64}}:
+  0//1
+  0//1
+ -1//12
+  0//1
+  5//12
+  1//2
+  1//6
 ```
 """
 function faulhaber_polynom(p::Int)
