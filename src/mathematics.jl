@@ -143,7 +143,7 @@ faulhaber_summation(3,5)
 """
 function faulhaber_summation(n::Int, p::Int; T=Int)
 
-    F = faulhaber_polynom(p; T)
+    F = CamiXon.faulhaber_polynom(p; T)
     o = 0
     for k=1:p+1
         for i=1:k
@@ -152,19 +152,19 @@ function faulhaber_summation(n::Int, p::Int; T=Int)
         o += F[k+1]
     end
 
-    denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+    Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
 
-    return numerator(o)
+    return Base.numerator(o)
 
 end
 function faulhaber_summation(n::Int, p::Int)
 
-    F = faulhaber_polynom(p)
-    o = sum([F[k+1]*n^k for k=1:p+1])
+    F = CamiXon.faulhaber_polynom(p)
+    o = Base.sum([F[k+1]*n^k for k=1:p+1])
 
-    denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+    Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
 
-    return numerator(o)
+    return Base.numerator(o)
 
 end
 
@@ -404,11 +404,11 @@ pascal_triangle(5)
  [1, 5, 10, 10, 5, 1]
 ```
 """
-function pascal_triangle(nmax::Int)
+function pascal_triangle(nmax::Int; T=Int)
 
     nmax < 0 && error("jwError: nmax must be a non-negative integer")
 
-    o = [ones(Int,n+1) for n=0:nmax]
+    o = [Base.ones(T,n+1) for n=0:nmax]
 
     for n=2:nmax
         for k=1:n÷2
@@ -420,11 +420,11 @@ function pascal_triangle(nmax::Int)
     return o
 
 end
-function pascal_triangle(nmax::Int; T=Int)
+function pascal_triangle(nmax::Int)
 
     nmax < 0 && error("jwError: nmax must be a non-negative integer")
 
-    o = [ones(T,n+1) for n=0:nmax]
+    o = [Base.ones(Int,n+1) for n=0:nmax]
 
     for n=2:nmax
         for k=1:n÷2
@@ -452,8 +452,8 @@ pascal_next(a)
 """
 function pascal_next(a::Vector{Int})
 
-    n = length(a) + 1
-    o = ones(Int,n)
+    n = Base.length(a) + 1
+    o = Base.ones(Int,n)
 
     for k=1:n÷2
         o[k+1] = a[k+1] + a[k]
@@ -635,10 +635,10 @@ function polynom_power(coords::Vector{<:Number}, power::Int)
     power == 1 && return coords
     power == 0 && return [1]
 
-    o = polynom_product(coords, coords)
+    o = CamiXon.polynom_product(coords, coords)
 
     for i=1:power-2
-        o = polynom_product(o, coords)
+        o = CamiXon.polynom_product(o, coords)
     end
 
     return o
@@ -673,7 +673,7 @@ function polynom_powers(coords::Vector{<:Number}, pmax::Int)
     o = [coords]
 
     for i=1:pmax-1
-        push!(o,polynom_product(o[end], coords))
+        Base.push!(o,CamiXon.polynom_product(o[end], coords))
     end
 
     return o
@@ -838,10 +838,10 @@ normalize_VectorRational(v)
 """
 function normalize_VectorRational(vec::Vector{Rational{Int}})
 
-    val = gcd(vec)
+    val = Base.gcd(vec)
     den = val.den
-    num = convert(Vector{Int},(vec .* den))
+    num = Base.convert(Vector{Int},(vec .* den))
 
-    return VectorRational(num, den, vec)
+    return CamiXon.VectorRational(num, den, vec)
 
 end

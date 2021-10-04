@@ -13,7 +13,7 @@ f_diff_weight(k, j)
  -10
 ```
 """
-f_diff_weight(k::Int, j::Int) = iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
+f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
 
 # ==============================================================================
 
@@ -41,7 +41,7 @@ f_diff_weights(k)
  -1
 ```
 """
-f_diff_weights(k::Int) = [f_diff_weight(k, k-j) for j=0:k]
+f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 
 # ==============================================================================
 
@@ -61,7 +61,7 @@ kmax = 3
  [-1, 3, -3, 1]
 ```
 """
-f_diff_weights_array(kmax::Int) = [f_diff_weights(k)  for k=0:kmax]
+f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 
 # ==============================================================================
 
@@ -99,9 +99,9 @@ function f_diff_expansion_weights(coeffs, ∇)
 # ======================================================================================
 #   function weights of finite-difference summation
 # ======================================================================================
-    k = length(coeffs)-1
+    k = Base.length(coeffs)-1
     #return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
-    return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+    return [Base.sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================
@@ -128,7 +128,7 @@ function f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 # ======================================================================================
 #   f_difference expansion coefficients for lagrange interpolation for position n+x
 # ======================================================================================
-    l = ones(T,k+1)
+    l = Base.ones(T,k+1)
     x == 1 ? l : x ==0 ? (for i=2:k+1; l[i] = 0 end) : (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end)
     return l
 end
@@ -179,8 +179,8 @@ function f_diff_function_sequences(f, k::Int, m=1)
 # ================================================================================================
 #   finite-difference function values for interpolation range of lagrangian interpolation
 # ================================================================================================
-    n = length(f)
-    return [f[summation_range(n,i,k,m)] for i=0:(n-1)*m]
+    n = Base.length(f)
+    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:(n-1)*m]
 end
 
 # ==============================================================================
@@ -205,14 +205,14 @@ function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float
 # ======================================================================================
     n = length(f)
 
-    ∇ = f_diff_weights_array(k)
-    l = [f_diff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
-    w1 = append!(repeat(w[1:m],n-k-1),w)
-    w2 = f_diff_function_sequences(f, k, m)
+    ∇ = CamiXon.f_diff_weights_array(k)
+    l = [CamiXon.f_diff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
+    w = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
+    w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
+    w2 = CamiXon.f_diff_function_sequences(f, k, m)
 
-    X = range(domain.left, domain.right, length=(n-1)*m+1)
-    Y = [w1[i] ⋅ w2[i] for i ∈ eachindex(w1)]
+    X = Base.range(domain.left, domain.right, length=(n-1)*m+1)
+    Y = [w1[i] ⋅ w2[i] for i ∈ Base.eachindex(w1)]
 
     return X, Y
 
@@ -236,16 +236,16 @@ function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float
 # ======================================================================================
 #   lagrangian (k+1)-point interpolation at μ interpolation points
 # ======================================================================================
-    n = length(f)
+    n = Base.length(f)
 
-    ∇ = f_diff_weights_array(k)
-    l = [f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
-    w2 = f_diff_function_sequences(f, k, m)[end]
+    ∇ = CamiXon.f_diff_weights_array(k)
+    l = [CamiXon.f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
+    w1 = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w2 = CamiXon.f_diff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
-    X = range(domain.right, domain.right + ΔX * m*e, length=m*e+1)
-    Y = [w1[i] ⋅ w2 for i ∈ eachindex(w1)]
+    X = Base.range(domain.right, domain.right + ΔX * m*e, length=m*e+1)
+    Y = [w1[i] ⋅ w2 for i ∈ Base.eachindex(w1)]
 
     return X, Y
 
@@ -273,10 +273,10 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 # ======================================================================================
 #   finite difference expansion coeffs for differentiation in interval -k ≤ x ≤ 0
 # ======================================================================================
-    a = prepend!([1//i for i=1:k],[0//1])
-    b = f_diff_expansion_coeffs_lagrange(k, x)
+    a = Base.prepend!([1//i for i=1:k],[0//1])
+    b = CamiXon.f_diff_expansion_coeffs_lagrange(k, x)
 
-    return polynom_product_expansion(a, b, k)
+    return CamiXon.polynom_product_expansion(a, b, k)
 
 end
 
@@ -300,10 +300,10 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-    ∇ = f_diff_weights_array(k)
-    coeffs = f_diff_expansion_coeffs_differentiation(k,-k+x)
+    ∇ = CamiXon.f_diff_weights_array(k)
+    coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+x)
 
-    return f_diff_expansion_weights(coeffs,∇)
+    return CamiXon.f_diff_expansion_weights(coeffs,∇)
 
 end
 
@@ -331,11 +331,11 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
-    ∇ = f_diff_weights_array(k)
+    ∇ = CamiXon.f_diff_weights_array(k)
 
     for i=0:k
-        coeffs = f_diff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = f_diff_expansion_weights(coeffs,∇)
+        coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+i)
+        m[1+i,1:k+1] = CamiXon.f_diff_expansion_weights(coeffs,∇)
     end
 
     return m
@@ -362,16 +362,16 @@ function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Flo
 # ======================================================================================
 #   lagrangian (k+1)-point differentiation at i interpolation points
 # ======================================================================================
-    n = length(f)
+    n = Base.length(f)
 
-    ∇ = f_diff_weights_array(k)
-    l = [f_diff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
-    w1 = append!(repeat(w[1:m],n-k-1),w)
-    w2 = f_diff_function_sequences(f, k, m)
+    ∇ = CamiXon.f_diff_weights_array(k)
+    l = [CamiXon.f_diff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
+    w = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w1 = Base.append!(repeat(w[1:m],n-k-1),w)
+    w2 = CamiXon.f_diff_function_sequences(f, k, m)
 
-    X = range(domain.left, domain.right, length=(n-1)*m+1)
-    Y = (n-1)/(domain.right-domain.left) .*  [w1[i] ⋅ w2[i] for i ∈ eachindex(w1)]
+    X = Base.range(domain.left, domain.right, length=(n-1)*m+1)
+    Y = (n-1)/(domain.right-domain.left) .*  [w1[i] ⋅ w2[i] for i ∈ Base.eachindex(w1)]
 
     return X, Y
 
@@ -403,12 +403,12 @@ o = convert(Vector{Int},(b .* D)); println(o)
  [1440, -720, -120, -60, -38, -27]
 ```
 """
-function f_diff_expansion_coeffs_adams_moulton(k::Int)
+function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
 # =====================================================================================
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
-    o = zeros(Rational{Int},k+1)
-    s = 0//1
+    o = Base.zeros(Rational{T},k+1)
+    s::Rational{T} = 0//1
 
     o[1] = 1//1
 
@@ -423,12 +423,12 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int)
     return o  # Note that D = devisor(gcd(o))
 
 end
-function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
+function f_diff_expansion_coeffs_adams_moulton(k::Int)
 # =====================================================================================
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
-    o = zeros(Rational{T},k+1)
-    s::Rational{T} = 0//1
+    o = Base.zeros(Rational{Int},k+1)
+    s = 0//1
 
     o[1] = 1//1
 
@@ -462,20 +462,20 @@ am = create_adams_moulton_weights(k); println(am)
  Rational{Int64}[1//24, -5//24, 19//24, 3//8]
 ```
 """
-function create_adams_moulton_weights(k::Int)
-
-    ∇ = f_diff_weights_array(k)
-    coeffs = f_diff_expansion_coeffs_adams_moulton(k)
-
-    return f_diff_expansion_weights(coeffs,∇)
-
-end
 function create_adams_moulton_weights(k::Int; T=Int)
 
     ∇ = f_diff_weights_array(k)
     coeffs = f_diff_expansion_coeffs_adams_moulton(k; T)
 
     return f_diff_expansion_weights(coeffs,∇)
+
+end
+function create_adams_moulton_weights(k::Int)
+
+    ∇ = CamiXon.f_diff_weights_array(k)
+    coeffs = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
+
+    return CamiXon.f_diff_expansion_weights(coeffs,∇)
 
 end
 
@@ -499,26 +499,26 @@ o = f_diff_expansion_coeffs_adams_bashford(k::Int); println(o)
  Rational{Int64}[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
 ```
 """
-function f_diff_expansion_coeffs_adams_bashford(k::Int)
-# =====================================================================================
-#   Adams-Bashford expansion coefficients
-# =====================================================================================
-    a = ones(Rational{Int},k+1)
-
-    b = f_diff_expansion_coeffs_adams_moulton(k)
-    o = polynom_product_expansion(a, b, k)
-
-    return o  # Note that D = denominator(gcd(o))
-
-end
 function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
 # =====================================================================================
 #   Adams-Bashford expansion coefficients
 # =====================================================================================
-    a = ones(Rational{T},k+1)
+    a = Base.ones(Rational{T},k+1)
 
-    b = f_diff_expansion_coeffs_adams_moulton(k; T)
-    o = polynom_product_expansion(a, b, k)
+    b = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
+    o = CamiXon.polynom_product_expansion(a, b, k)
+
+    return o  # Note that D = denominator(gcd(o))
+
+end
+function f_diff_expansion_coeffs_adams_bashford(k::Int)
+# =====================================================================================
+#   Adams-Bashford expansion coefficients
+# =====================================================================================
+    a = Base.ones(Rational{Int},k+1)
+
+    b = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
+    o = CamiXon.polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
 
