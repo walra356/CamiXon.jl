@@ -68,6 +68,7 @@ export normalize_VectorRational
 export canonical_partitions
 export faulhaber_polynom
 export faulhaber_summation
+export harmonic_number
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa

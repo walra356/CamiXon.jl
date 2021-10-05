@@ -53,6 +53,8 @@ using Test
     @test bernoulli_numbers(10) == [1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1, 5//66]
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
+    @test harmonic_number(12) == 86021//27720
+    @test harmonic_number(12, 3) == 25535765062457//21300003648000
     @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
     @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
     @test polynom(ones(6),2.0) == 63.0
