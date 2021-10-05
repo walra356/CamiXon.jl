@@ -34,8 +34,8 @@ using Test
     @test lagrange_extrapolation([0.0,1,2,3,4,5,6,7], 0.0..1.0; k=2, e=1, m=2) == (1.0:0.07142857142857142:1.1428571428571428, [7.0, 7.5, 8.0])
     @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, m=1) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
-    @test create_lagrange_differentiation_weights(8,0) == Rational{Int64}[-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
-    @test create_lagrange_differentiation_matrix(3) == Rational{Int64}[-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
+    @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
+    @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
     @test create_adams_moulton_weights(3) == [1//24, -5//24, 19//24, 3//8]
     @test f_diff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
     @test f_diff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
@@ -60,7 +60,7 @@ using Test
     @test polynom_derivatives([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
     @test polynom_power([1,1,1],2) == [1, 2, 3, 2, 1]
     @test polynom_powers([1,1,1],3) == [[1, 1, 1], [1, 2, 3, 2, 1], [1, 3, 6, 7, 6, 3, 1]]
-    @test polynom_primitive([1,1,1,1,1]) == Rational{Int64}[0//1, 1//1, 1//2, 1//3, 1//4, 1//5]
+    @test polynom_primitive([1,1,1,1,1]) == [0//1, 1//1, 1//2, 1//3, 1//4, 1//5]
     @test polynom_product([1,1],[1,- 1]) == [1, 0, -1]
     @test polynom_product([1,1],[1,- 1,2]) == [1, 0, 1, 2]
     @test polynom_product([1,- 1,2],[1,1]) == [1, 0, 1, 2]
