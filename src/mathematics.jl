@@ -736,7 +736,7 @@ is a polynomial in a vector space of dimension ``d=m+n``,
 ```math
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + \cdots + a_n b_m x^{n+m}.
 ```
-Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``
 The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
 consisting of the polynomial coefficients.
 ####
