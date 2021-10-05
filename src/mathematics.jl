@@ -76,7 +76,7 @@ Polynomial of degree ``k`` with polynomial constant equal to zero,
     F(p)=\frac{1}{k}\sum_{j=0}^{k-1}{\binom {k}{j}}B_{j}n^{k-j},
 ```
 where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}`` (rather than ``B_1=-\frac{1}{2}``).
-### Examples:
+### Example:
 ```
 faulhaber_polynom(6)
 7-element Vector{Rational{Int64}}:
