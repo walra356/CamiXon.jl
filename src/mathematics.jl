@@ -27,11 +27,11 @@ bernoulli_numbers(10)
 """
 function bernoulli_numbers(nmax::Int; T=Int)
 
-    B = ones(Rational{T},nmax+1)
+    B = Base.ones(Rational{T},nmax+1)
 
     for m = 2:nmax+1
         B[m] = m > 2 ? 0//1 : -1
-        if isodd(m)
+        if Base.isodd(m)
             b = 1
             for j = 1:m-1
                 B[m] -= B[j] * b
@@ -47,11 +47,11 @@ function bernoulli_numbers(nmax::Int; T=Int)
 end
 function bernoulli_numbers(nmax::Int)    # short argument for performance
 
-    B = ones(Rational{Int},nmax+1)
+    B = Base.ones(Rational{Int},nmax+1)
 
     for m = 2:nmax+1
         B[m] = m > 2 ? 0//1 : -1
-        if isodd(m)
+        if Base.isodd(m)
             b = 1
             for j = 1:m-1
                 B[m] -= B[j] * b
