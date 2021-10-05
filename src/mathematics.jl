@@ -25,44 +25,18 @@ bernoulli_numbers(10)
   5//66
 ```
 """
-function bernoulli_numbers(nmax::Int)
-
-    B = zeros(Rational{Int},nmax+1)
-
-    B[1] = 1//1
-    B[2] = -1//2
-
-    for m = 3:nmax+1
-        B[m] = 0//1
-        if isodd(m)
-            b = 1
-            for j = 1:m-1
-                B[m] -= B[j] * b
-                b *= m+1-j    # binomial coefficients
-                b = b÷j
-            end
-        end
-        B[m] = B[m] // m
-    end
-
-    return B
-
-end
 function bernoulli_numbers(nmax::Int; T=Int)
 
-    B = zeros(Rational{T},nmax+1)
+    B = ones(Rational{T},nmax+1)
 
-    B[1] = 1//1
-    B[2] = -1//2
-
-    for m = 3:nmax+1
-        B[m] = 0//1
+    for m = 2:nmax+1
+        B[m] = m > 2 ? 0//1 : -1
         if isodd(m)
             b = 1
             for j = 1:m-1
                 B[m] -= B[j] * b
-                b *= m+1-j    # binomial coefficients
-                b = b÷j
+                b *= m+1-j
+                b = b÷j      # binomial coefficients are integers
             end
         end
         B[m] = B[m] // m
@@ -71,21 +45,40 @@ function bernoulli_numbers(nmax::Int; T=Int)
     return B
 
 end
+function bernoulli_numbers(nmax::Int)    # short argument for performance
 
+    B = ones(Rational{Int},nmax+1)
+
+    for m = 2:nmax+1
+        B[m] = m > 2 ? 0//1 : -1
+        if isodd(m)
+            b = 1
+            for j = 1:m-1
+                B[m] -= B[j] * b
+                b *= m+1-j
+                b = b÷j      # binomial coefficients are integers
+            end
+        end
+        B[m] = B[m] // m
+    end
+
+    return B
+
+end
 
 # ==================================== faulhaber_polynom(p) ====================
 
 @doc raw"""
-    faulhaber_polynom(p [, T=Int])
+    faulhaber_polynom(k [, T=Int])
 
-Sum of powers of natural numbers ``1,\ \cdots,\ k`` in vector representation
+Polynomial of degree ``k`` with polynomial constant equal to zero,
 ```math
-    F(p)=\frac{1}{p+1}\sum_{j=0}^{p}{\binom {p+1}{j}}B_{j}n^{p+1-j},
+    F(p)=\frac{1}{k}\sum_{j=0}^{k-1}{\binom {k}{j}}B_{j}n^{k-j},
 ```
 where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers, with ``B_1=+\frac{1}{2}`` (rather than ``B_1=-\frac{1}{2}``).
 ### Examples:
 ```
-faulhaber_polynom(5)
+faulhaber_polynom(6)
 7-element Vector{Rational{Int64}}:
   0//1
   0//1
@@ -96,32 +89,34 @@ faulhaber_polynom(5)
   1//6
 ```
 """
-function faulhaber_polynom(p::Int; T=Int)
+function faulhaber_polynom(k::Int; T=Int)
 
-    p > 0 || return 0
+    k < 1 && return 0
+    k > 1 || return 1//1
 
-    P = pascal_triangle(p+1; T)[end][1:end-1]
-    B = bernoulli_numbers(p; T); B[2]=-B[2]
+    P = CamiXon.pascal_triangle(k; T)[end][1:end-1]
+    B = CamiXon.bernoulli_numbers(k-1; T); B[2]=-B[2]
 
-    F = (B .* P)  // (p+1)
+    F = (B .* P)  // k
 
-    F = append!(F,0//1)   # add polynomial constant (zero in this case)
+    F = Base.append!(F,0//1)   # add polynomial constant (zero in this case)
 
-    return reverse(F)     # reverse to standard order
+    return Base.reverse(F)     # reverse to standard order
 
 end
-function faulhaber_polynom(p::Int)
+function faulhaber_polynom(k::Int)    # short argument for performance
 
-    p > 0 || return 0
+    k < 1 && return 0
+    k > 1 || return 1//1
 
-    P = pascal_triangle(p+1)[end][1:end-1]
-    B = bernoulli_numbers(p); B[2]=-B[2]
+    P = CamiXon.pascal_triangle(k)[end][1:end-1]
+    B = CamiXon.bernoulli_numbers(k-1); B[2]=-B[2]
 
-    F = (B .* P)  // (p+1)
+    F = (B .* P)  // k
 
-    F = append!(F,0//1)   # add polynomial constant (zero in this case)
+    F = Base.append!(F,0//1)   # add polynomial constant (zero in this case)
 
-    return reverse(F)     # reverse to standard order
+    return Base.reverse(F)     # reverse to standard order
 
 end
 
@@ -146,11 +141,13 @@ faulhaber_summation(3,60; T=BigInt)
 """
 function faulhaber_summation(n::Int, p::Int; T=Int)
 
-    F = CamiXon.faulhaber_polynom(p; T)
+    n ≠ 0 || return nothing
+
+    F = CamiXon.faulhaber_polynom(p+1; T)
     o = 0
     for k=1:p+1
         for i=1:k
-            F[k+1] *= n
+            F[k+1] *= n # avoid n^k in o = Base.sum([F[k+1]*n^k for k=1:p+1])
         end
         o += F[k+1]
     end
@@ -160,10 +157,18 @@ function faulhaber_summation(n::Int, p::Int; T=Int)
     return Base.numerator(o)
 
 end
-function faulhaber_summation(n::Int, p::Int)
+function faulhaber_summation(n::Int, p::Int)    # short argument for performance
 
-    F = CamiXon.faulhaber_polynom(p)
-    o = Base.sum([F[k+1]*n^k for k=1:p+1])
+    n ≠ 0 || return nothing
+
+    F = CamiXon.faulhaber_polynom(p+1)
+    o = 0
+    for k=1:p+1
+        for i=1:k
+            F[k+1] *= n # avoid n^k in o = Base.sum([F[k+1]*n^k for k=1:p+1])
+        end
+        o += F[k+1]
+    end
 
     Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
 
