@@ -45,7 +45,7 @@ function bernoulli_numbers(nmax::Int; T=Int)
     return B
 
 end
-function bernoulli_numbers(nmax::Int)    # short argument for performance
+function bernoulli_numbers(nmax::Int)           # short argument for performance
 
     B = Base.ones(Rational{Int},nmax+1)
 
