@@ -73,9 +73,9 @@ end
 
 Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
-    F(p,n)=\frac{1}{p}\sum_{j=1}^{p}{\binom {p}{p-j}}B_{p-j}n^{j}.
+    F(n,p)=\frac{1}{p}\sum_{j=1}^{p}{\binom {p}{p-j}}B_{p-j}n^{j}.
 ```
-``F(p,n)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_p]`` is the coefficient vector, with
+``F(n,p)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_p]`` is the coefficient vector, with
 ```math
     c_0=0,\ c_j=\frac{1}{p}{\binom {p}{p-j}}B_{p-j},
 ```
@@ -132,9 +132,9 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ n``,
 ```math
-    \sum_{k=1}^{n}k^{p}=F(p+1,n).
+    \sum_{k=1}^{n}k^{p}=F(n,p+1).
 ```
-where ``F(p+1,n)`` is the Faulhamer polynomial of degree ``p+1``.
+where ``F(n,p)`` is the Faulhamer polynomial of degree ``p``.
 ### Examples:
 ```
 faulhaber_summation(5,1)
