@@ -80,7 +80,7 @@ with coefficients
 ```math
     c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j},
 ```
-with ``j∈{1,\ldots,\k}``. The constants ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers
+with ``j∈{1,\ldots,\ k}``. The constants ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers
 (but with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
