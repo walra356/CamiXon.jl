@@ -80,7 +80,7 @@ with coefficients
 ```math
     c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j},
 ```
-with ``j∈\{ 1,\ldots,\ k\}``. The constants ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers
+with ``j∈\{ 1,\ldots,\ k\}``. The ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers
 (but with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
@@ -135,7 +135,7 @@ Sum of powers of natural numbers ``1,\ \cdots,\ k``,
 ```math
     \sum_{k=1}^{n}k^{p}=F(p+1,n).
 ```
-where ``F(n,p+1)`` is the Faulhamer polynomial of degree ``p+1``.
+where ``F(p+1,n)`` is the Faulhamer polynomial of degree ``p+1``.
 ### Examples:
 ```
 faulhaber_summation(5,1)
