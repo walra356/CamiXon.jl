@@ -181,6 +181,54 @@ function faulhaber_summation(n::Int, p::Int)    # short argument for performance
 
 end
 
+# =================================== harmonic number(n;T) ===============
+
+@doc raw"""
+    harmonic_number(n [, T=Int])
+
+Sum of the reciprocals of the first ``n`` natural numbers
+```math
+    H_n=\sum_{k=1}^{n}\frac{1}{k}.
+```
+### Examples:
+```
+harmonic_number(12)
+ 86021//27720
+
+harmonic_number(60; T=BigInt)
+ 15117092380124150817026911//3230237388259077233637600
+
+harmonic_number(12) == harmonic_number(12, 1)
+ true
+```
+"""
+function harmonic_number(n::Int; T=Int)
+
+    n ≠ 0 || return nothing
+
+    o::Base.Rational{T} = 0//1
+    for j=1:n
+        o += 1//j
+    end
+
+    return o
+
+end
+function harmonic_number(n::Int)
+
+    n ≠ 0 || return nothing
+
+    o = 0//1
+    for j=1:n
+        o += 1//j
+    end
+
+    return o
+
+end
+
+
+
 # =================================== harmonic number(n, p;T) ===============
 
 @doc raw"""
@@ -257,52 +305,6 @@ function harmonic_number(n::Int, p::Int)
         end
         Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
         o = Base.numerator(o)
-    end
-
-    return o
-
-end
-
-# =================================== harmonic number(n;T) ===============
-
-@doc raw"""
-    harmonic_number(n [, T=Int])
-
-Sum of the reciprocals of the first ``n`` natural numbers
-```math
-    H_n=\sum_{k=1}^{n}\frac{1}{k}.
-```
-### Examples:
-```
-harmonic_number(12)
- 86021//27720
-
-harmonic_number(60; T=BigInt)
- 15117092380124150817026911//3230237388259077233637600
-
-harmonic_number(12) == harmonic_number(12, 1)
- true
-```
-"""
-function harmonic_number(n::Int; T=Int)
-
-    n ≠ 0 || return nothing
-
-    o::Base.Rational{T} = 0//1
-    for j=1:n
-        o += 1//j
-    end
-
-    return o
-
-end
-function harmonic_number(n::Int)
-
-    n ≠ 0 || return nothing
-
-    o = 0//1
-    for j=1:n
-        o += 1//j
     end
 
     return o
