@@ -69,7 +69,7 @@ end
 # ==================================== faulhaber_polynom(p) ====================
 
 @doc raw"""
-    faulhaber_polynom(k [, T=Int])
+    faulhaber_polynom(p [, T=Int])
 
 Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
@@ -132,7 +132,7 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ n``,
 ```math
-    \sum_{k=1}^{n}k^{p}=F(n,p+1).
+    FS(n,p)=\sum_{k=1}^{n}k^{p}=F(n,p+1).
 ```
 where ``F(n,p)`` is the Faulhamer polynomial of degree ``p``.
 ### Examples:
