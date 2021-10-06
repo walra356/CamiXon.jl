@@ -133,6 +133,8 @@ end
 Sum of powers of natural numbers ``1,\ \cdots,\ k``,
 ```math
     \sum_{k=1}^{n}k^{p}=F(n,p+1).
+```
+where ``F(n,p+1)`` is the Faulhamer polynomial of degree ``p+1``.
 ### Examples:
 ```
 faulhaber_summation(5,1)
