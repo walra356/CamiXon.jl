@@ -71,15 +71,15 @@ end
 @doc raw"""
     faulhaber_polynom(k [, T=Int])
 
-Vector representation of the Faulhaber polynomial of degree ``k``,
+Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
-    F(k,n)=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
+    F(p,n)=\frac{1}{p}\sum_{k=1}^{p}{\binom {p}{p-j}}B_{p-k}n^{k}.
 ```
-``F(n,k)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_k]`` is the coefficient vector, with
+``F(p,n)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_p]`` is the coefficient vector, with
 ```math
-    c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j},
+    c_0=0,\ c_k=\frac{1}{p}{\binom {p}{p-k}}B_{p-k},
 ```
-with ``j∈\{ 1,\ldots,\ k\}``. The ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers
+with ``k∈\{ 1,\ldots,\ p\}``. The ``B_0,\ \cdots,\ B_{p-1}`` are Bernoulli numbers
 (but with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
