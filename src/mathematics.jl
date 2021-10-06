@@ -125,9 +125,9 @@ end
 @doc raw"""
     faulhaber_summation(n, p [, T=Int])
 
-Sum of powers of natural numbers ``1,\ \cdots,\ k``.
+Sum of powers of natural numbers ``1,\ \cdots,\ k``,
 ```math
-    F(n,p)=\sum_{k=1}^{n}k^{p}.
+    \sum_{k=1}^{n}k^{p}=F(n,p+1).
 ```
 
 ### Examples:
