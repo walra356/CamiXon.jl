@@ -73,13 +73,13 @@ end
 
 Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
-    F(p,n)=\frac{1}{p}\sum_{k=1}^{p}{\binom {p}{p-j}}B_{p-k}n^{k}.
+    F(p,n)=\frac{1}{p}\sum_{j=1}^{p}{\binom {p}{p-j}}B_{p-j}n^{j}.
 ```
 ``F(p,n)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_p]`` is the coefficient vector, with
 ```math
-    c_0=0,\ c_k=\frac{1}{p}{\binom {p}{p-k}}B_{p-k},
+    c_0=0,\ c_j=\frac{1}{p}{\binom {p}{p-j}}B_{p-j},
 ```
-with ``k∈\{ 1,\ldots,\ p\}``. The ``B_0,\ \cdots,\ B_{p-1}`` are Bernoulli numbers
+with ``j∈\{ 1,\ldots,\ p\}``. The ``B_0,\ \cdots,\ B_{p-1}`` are Bernoulli numbers
 (but with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
@@ -130,7 +130,7 @@ end
 @doc raw"""
     faulhaber_summation(n, p [, T=Int])
 
-Sum of powers of natural numbers ``1,\ \cdots,\ k``,
+Sum of powers of natural numbers ``1,\ \cdots,\ n``,
 ```math
     \sum_{k=1}^{n}k^{p}=F(p+1,n).
 ```
