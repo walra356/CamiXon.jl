@@ -71,7 +71,7 @@ end
 @doc raw"""
     faulhaber_polynom(k [, T=Int])
 
-Vector representation of the Faulhaber polynomial
+Vector representation of the Faulhaber polynomial of degree ``k``,
 ```math
     F(n,k)=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
 ```
@@ -80,7 +80,7 @@ with
 ```math
     c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j}.
 ```
-where ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
+with ``B_0,\ \cdots,\ B_{k-1}`` Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
 faulhaber_polynom(6)
@@ -132,12 +132,7 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ k``,
 ```math
-    \sum_{k=1}^{n}k^{p}=F(n,p+1),
-```
-where
-```math
-    F(n,p+1)=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
-```
+    \sum_{k=1}^{n}k^{p}=F(n,p+1).
 ### Examples:
 ```
 faulhaber_summation(5,1)
