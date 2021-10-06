@@ -74,9 +74,9 @@ end
 `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_k]`` is the vector representation of a polynomial of degree ``k``
 with coefficients
 ```math
-    c_j=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
+    c_0=0\ \ \ \ \rm{with}\ \ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j}.
 ```
-Here ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
+Here ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
 faulhaber_polynom(6)
@@ -128,9 +128,12 @@ end
 
 Sum of powers of natural numbers ``1,\ \cdots,\ k``,
 ```math
-    \sum_{k=1}^{n}k^{p}=F(n,p+1).
+    \sum_{k=1}^{n}k^{p}=F(n,p+1),
 ```
-
+where
+```math
+    F(n,p+1)=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
+```
 ### Examples:
 ```
 faulhaber_summation(5,1)
