@@ -76,11 +76,11 @@ Vector representation of the Faulhaber polynomial of degree ``k``,
     F(n,k)=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
 ```
 ``F(n,k)=`` `polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_k]`` is the coefficient vector
-with
+with coefficients
 ```math
-    c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j}.
+    c_0=0,\ c_j=\frac{1}{k}{\binom {k}{k-j}}B_{k-j},
 ```
-with ``B_0,\ \cdots,\ B_{k-1}`` Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
+for ``j=1,\ldots,\ k``; ``B_0,\ \cdots,\ B_{k-1}`` are Bernoulli numbers (but with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
 faulhaber_polynom(6)
