@@ -71,12 +71,12 @@ end
 @doc raw"""
     faulhaber_polynom(k [, T=Int])
 
-`polynom(c,n), where ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``
+`polynom(c,n)``, where ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``
 with coefficients
 ```math
-    c_k=\frac{1}{d}\sum_{k=0}^{d-1}{\binom {d}{j}}B_{k-j}n^{j}.
+    c_k=\frac{1}{d}\sum_{k=0}^{d-1}{\binom {d}{d-k}}B_{d-k}n^{k}.
 ```
-Here ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``B_1=-\frac{1}{2}``).
+Here ``B_0,\ \cdots,\ B_d`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``-\frac{1}{2}``).
 ### Example:
 ```
 faulhaber_polynom(6)
