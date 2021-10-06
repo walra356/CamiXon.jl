@@ -71,7 +71,7 @@ end
 @doc raw"""
     faulhaber_polynom(k [, T=Int])
 
-`polynom(c,n)``, where ``c=[c_0,\ \ldots,\ c_k]`` is the vector representation of a polynomial of degree ``k``
+`polynom(c,n)`, where ``c=[c_0,\ \ldots,\ c_k]`` is the vector representation of a polynomial of degree ``k``
 with coefficients
 ```math
     c_j=\frac{1}{k}\sum_{j=1}^{k}{\binom {k}{k-j}}B_{k-j}n^{j}.
