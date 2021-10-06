@@ -188,7 +188,7 @@ end
 
 Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
-    H_{n,p}=\sum_{k=1}^{n}\frac{1}{k}^p.
+    H_{n,p}=\sum_{k=1}^{n}\frac{1}{k^p}.
 ```
 ### Examples:
 ```
