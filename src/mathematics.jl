@@ -71,9 +71,9 @@ end
 @doc raw"""
     faulhaber_polynom(k [, T=Int])
 
-Polynomial of degree ``k`` with polynomial constant equal to zero,
+Vector representation of polynomial of degree ``k`` with polynomial constants
 ```math
-    F(n,k)=\frac{1}{k}\sum_{j=0}^{k-1}{\binom {k}{j}}B_{j}n^{k-j},
+    c_k=\frac{1}{d}\sum_{k=0}^{d-1}{\binom {d}{j}}B_{k-j}n^{j},
 ```
 where ``B_0,\ \cdots,\ B_k`` are Bernoulli numbers (with ``B_1=+\frac{1}{2}`` rather than ``B_1=-\frac{1}{2}``).
 ### Example:
@@ -263,7 +263,7 @@ end
 @doc raw"""
     harmonic_number(n [, T=Int])
 
-Sum of the reciprocals of the first ``n natural`` numbers
+Sum of the reciprocals of the first ``n`` natural numbers
 ```math
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
 ```
