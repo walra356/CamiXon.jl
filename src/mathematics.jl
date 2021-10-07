@@ -45,7 +45,7 @@ function bernoulli_numbers(nmax::Int; T=Int)
     return B
 
 end
-function bernoulli_numbers(nmax::Int)           # short argument for performance
+function bernoulli_numbers(nmax::Int)       # short argument: better performance
 
     B = Base.ones(Rational{Int},nmax+1)
 
@@ -109,7 +109,7 @@ function faulhaber_polynom(k::Int; T=Int)
     return Base.reverse(F)     # reverse to standard order
 
 end
-function faulhaber_polynom(k::Int)    # short argument for performance
+function faulhaber_polynom(k::Int)       # short argument: better performance
 
     k < 1 && return 0
     k > 1 || return 1//1
@@ -162,9 +162,9 @@ function faulhaber_summation(n::Int, p::Int; T=Int)
     return Base.numerator(o)
 
 end
-function faulhaber_summation(n::Int, p::Int)    # short argument for performance
+function faulhaber_summation(n::Int, p::Int)   # short argument: better performance
 
-    n ≠ 0 || return nothing
+    n ≠ 0 || return 0
 
     F = CamiXon.faulhaber_polynom(p+1)
     o = 0
@@ -204,7 +204,7 @@ harmonic_number(12) == harmonic_number(12, 1)
 """
 function harmonic_number(n::Int; T=Int)
 
-    n ≠ 0 || return nothing
+    n ≠ 0 || return 0
 
     o::Base.Rational{T} = 0//1
     for j=1:n
@@ -214,9 +214,9 @@ function harmonic_number(n::Int; T=Int)
     return o
 
 end
-function harmonic_number(n::Int)
+function harmonic_number(n::Int)            # short argument: better performance
 
-    n ≠ 0 || return nothing
+    n ≠ 0 || return 0
 
     o = 0//1
     for j=1:n
@@ -252,7 +252,7 @@ harmonic_number(12, -3) == faulhaber_summation(12, 3)
 """
 function harmonic_number(n::Int, p::Int; T=Int)
 
-    n ≠ 0 || return nothing
+    n ≠ 0 || return 0
 
     if p > 0
         o::Base.Rational{T} = 0//1
@@ -280,9 +280,9 @@ function harmonic_number(n::Int, p::Int; T=Int)
     return o
 
 end
-function harmonic_number(n::Int, p::Int)
+function harmonic_number(n::Int, p::Int)    # short argument: better performance
 
-    n ≠ 0 || return nothing
+    n ≠ 0 || return 0
 
     if p > 0
         o = 0//1

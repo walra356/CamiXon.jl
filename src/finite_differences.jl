@@ -423,7 +423,7 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
     return o  # Note that D = devisor(gcd(o))
 
 end
-function f_diff_expansion_coeffs_adams_moulton(k::Int)
+function f_diff_expansion_coeffs_adams_moulton(k::Int) # short argument: better performance
 # =====================================================================================
 #   Adams-Moulton expansion coefficients
 # =====================================================================================
@@ -464,13 +464,13 @@ am = create_adams_moulton_weights(k); println(am)
 """
 function create_adams_moulton_weights(k::Int; T=Int)
 
-    ∇ = f_diff_weights_array(k)
+    ∇ = CamiXon.f_diff_weights_array(k)
     coeffs = f_diff_expansion_coeffs_adams_moulton(k; T)
 
-    return f_diff_expansion_weights(coeffs,∇)
+    return CamiXon.f_diff_expansion_weights(coeffs,∇)
 
 end
-function create_adams_moulton_weights(k::Int)
+function create_adams_moulton_weights(k::Int) # short argument: better performance
 
     ∇ = CamiXon.f_diff_weights_array(k)
     coeffs = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
@@ -488,7 +488,6 @@ end
 
 ```math
 -\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ \cdots.
-```
 ```
 The weights are stored in *forward* order: ``[B_0^k,\ \cdots,\ B_k^k]`` -
 order of use in summation.
@@ -511,15 +510,70 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
     return o  # Note that D = denominator(gcd(o))
 
 end
-function f_diff_expansion_coeffs_adams_bashford(k::Int)
-# =====================================================================================
-#   Adams-Bashford expansion coefficients
-# =====================================================================================
+function f_diff_expansion_coeffs_adams_bashford(k::Int) # short argument: better performance
+
     a = Base.ones(Rational{Int},k+1)
 
     b = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
     o = CamiXon.polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
+
+end
+
+# ======================== trapezoidal_weights(k) ===================================
+
+@doc raw"""
+    trapezoidal_weights(k)
+
+Weight coefficients ``a_1,\cdots,a_k`` of trapeziodal rule optimized for functions of polynomial form,
+```math
+    ∫_0^n dx f(x)=a_1(f_0+f_n+\cdots+a_k(f_{k-1}+f_{n-k+1})+(f_k+\cdots+f_{n-k}).
+```
+The rule is exact for polynonials of degree ``0,\ 1,\cdots,\ k-1``. For `k=1` the rule reduces to the ordinary trapezoidal rule.
+#### Examples::
+```
+k = 1
+b = trapezoidal_weights(k); println(b)
+ [1//2]
+
+k = 5
+b = trapezoidal_weights(k); println(b)
+ [95//288, 317//240, 23//30, 793//720, 157//160]
+
+D = denominator(gcd(b)); println(D)
+ 1440
+
+o = convert(Vector{Int},(b .* D)); println(o)
+ [475, 1902, 1104, 1586, 1413]
+```
+"""
+function trapezoidal_weights(k)
+# =====================================================================================
+# trapezoidal_weights(k)
+# =====================================================================================
+    l = k - 1
+    σ = Matrix{Int}(undef,k,l+1)
+
+    for i=0:k-1
+        σ[i+1,:] = CamiXon.polynom_power([i,-1],l)      # corresponds to coeffs a0,...,ak
+        σ[i+1,1] = σ[i+1,1] + i^l                       # correction of coeff a0
+    end
+
+    F = CamiXon.faulhaber_polynom(l+1)
+    s = [CamiXon.polynom_power([-k,1],p) for p=0:l+1] .* F
+    s[1][1] = -CamiXon.faulhaber_summation(k-1,l)//1
+
+    c = [Base.sum([s[p+1][i+1] for p=i:l+1]) for i=0:l+1][1:end-1]
+
+    σ = Base.inv(Base.transpose(σ))
+
+    o = -σ * c  # solving matrix equation results in trapezoidal_weights as real numbers
+
+    a = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
+    D = Base.denominator(Base.gcd(a))      # trapezoidal_weights divisor == Adams-Moulton devisor
+    o = round.(Int,o* D) // D              # convert to Rational{Int}
+
+    return o                                # Note that D = denominator(gcd(o))
 
 end
