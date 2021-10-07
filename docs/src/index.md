@@ -177,6 +177,12 @@ create_lagrange_differentiation_matrix(k::Int)
 lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
 
+### Integration
+
+```@docs
+trapezoidal_weights(k)
+```
+
 ### Adams Method
 
 #### Adams-Bashford expansion

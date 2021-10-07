@@ -29,6 +29,7 @@ export lagrange_differentiation
 export f_diff_expansion_coeffs_adams_moulton
 export create_adams_moulton_weights
 export f_diff_expansion_coeffs_adams_bashford
+export trapezoidal_weights
 
 export fits_create
 export fits_read
@@ -83,7 +84,6 @@ export polynom_product_expansion
 export polynom_power
 export polynom_powers
 export permutations_unique_count
-export f_diff_expansion_coeffs_adams_moulton
 
 include("fits_pointers.jl")
 include("read_io.jl")
