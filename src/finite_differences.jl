@@ -583,7 +583,7 @@ end
 @doc raw"""
     trapezoidal_integration(f, domain [; k=5])
 
-Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the domain ``x0..x1`` using the optimized
+Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the domain ``a..b`` using the optimized
 trapeziodal rule of order ``k``,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
