@@ -526,11 +526,11 @@ end
 @doc raw"""
     trapezoidal_weights(k)
 
-Weight coefficients ``a_1,\cdots,\ a_k`` of trapeziodal rule optimized for functions of polynomial form,
+Weight coefficients ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule optimized for functions of polynomial form,
 ```math
     ∫_0^n dx f(x)=a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
+The rule is exact for polynonials of degree ``d∈\{0,\ 1,\cdots,\ k-1\}``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
 #### Examples::
 ```
 k = 1
