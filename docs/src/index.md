@@ -181,6 +181,7 @@ lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=
 
 ```@docs
 trapezoidal_weights(k)
+trapezoidal_integration(f, domain; k=5)
 ```
 
 ### Adams Method

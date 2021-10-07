@@ -30,6 +30,7 @@ export f_diff_expansion_coeffs_adams_moulton
 export create_adams_moulton_weights
 export f_diff_expansion_coeffs_adams_bashford
 export trapezoidal_weights
+export trapezoidal_integration
 
 export fits_create
 export fits_read

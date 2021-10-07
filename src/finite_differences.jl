@@ -577,3 +577,43 @@ function trapezoidal_weights(k)
     return o                                # Note that D = denominator(gcd(o))
 
 end
+
+# ======================== trapezoidal_integration(f, domain; k=5) ===================================
+
+@doc raw"""
+    trapezoidal_integration(f, domain [; k=5])
+
+Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the domain ``x0..x1`` using the optimized
+trapeziodal rule of order ``k``,
+```math
+    ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
+```
+The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
+#### Examples::
+```
+p = 3
+c = [1 for i=0:p]
+pol = ImmutablePolynomial(c,:z)
+Ipol =integrate(pol)
+n = 10
+
+domain = 0.0..5.0
+x = collect(range(domain, n))
+f = pol.(x .-2.5)
+
+a = trapezoidal_integration(f, domain; k=3); println(a)
+15.41666666666667
+b = Ipol(2.5)-Ipol(-2.5); println(a)
+15.41666666666667
+```
+"""
+function trapezoidal_integration(f, domain; k=5)
+
+    n = Base.length(f)
+    w = trapezoidal_weights(k)
+    a = ones(n); a[1:k] = w; a[end-k+1:end] = reverse(w)
+
+    o = (f ⋅ a) * (domain.right-domain.left)/(n-1)
+
+    return o
+end
