@@ -192,8 +192,8 @@ Sum of the reciprocals of the first ``n`` natural numbers
 ```
 ### Examples:
 ```
-harmonic_number(12)
- 86021//27720
+o = [harmonic_number(i) for i=1:10]; println(o)
+ [1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140, 761//280, 7129//2520, 7381//2520]
 
 harmonic_number(60; T=BigInt)
  15117092380124150817026911//3230237388259077233637600
