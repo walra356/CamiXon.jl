@@ -4,6 +4,7 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
+    @test createAtom("Hydrogen","1H",1,0,1.0,1//2,5.59) == Atom("Hydrogen", "1H", 1, 0, 1.0, 1//2, 5.59)
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
