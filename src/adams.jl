@@ -1,6 +1,5 @@
 # ========================== f_diff_expansion_coeffs_adams_moulton(k) ===========
 
-
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k [, T=Int])
 
@@ -86,7 +85,7 @@ am = create_adams_moulton_weights(k); println(am)
 function create_adams_moulton_weights(k::Int; T=Int)
 
     ∇ = CamiXon.f_diff_weights_array(k)
-    coeffs = f_diff_expansion_coeffs_adams_moulton(k; T)
+    coeffs = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
 
     return CamiXon.f_diff_expansion_weights(coeffs,∇)
 

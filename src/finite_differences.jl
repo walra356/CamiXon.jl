@@ -439,39 +439,43 @@ end
 # ======================== trapezoidal_integration(f, domain; k=5) =============
 
 @doc raw"""
-    trapezoidal_integration(f, domain [; k=5])
+    trapezoidal_integration(f, domain, weights)
 
-Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the domain ``a..b`` using the optimized
-trapeziodal rule of order ``k``,
+Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the `domain` ``a..b`` using the optimized
+trapezoidal rule with endpoint correction by the weightsvector `weights`,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
+The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
+ordinary trapezoidal rule (weights = [1/2]).
 #### Examples::
 ```
 p = 3
 c = [1 for i=0:p]
 pol = ImmutablePolynomial(c,:z)
-Ipol =integrate(pol)
+Ipol = integrate(pol)
 n = 10
 
 domain = 0.0..5.0
 x = collect(range(domain, n))
 f = pol.(x .-2.5)
 
-a = trapezoidal_integration(f, domain; k=3); println(a)
-15.41666666666667
-b = Ipol(2.5)-Ipol(-2.5); println(a)
-15.41666666666667
+w3 = trapezoidal_weights(3)
+trapezoidal_integration(f, domain, w3)
+ 15.416666666666673
+
+Ipol(2.5)-Ipol(-2.5)
+ 15.41666666666666
 ```
 """
-function trapezoidal_integration(f, domain; k=5)
+function trapezoidal_integration(f, domain, weights)
 
     n = Base.length(f)
-    w = CamiXon.trapezoidal_weights(k)
-    a = Base.ones(n); a[1:k] = w; a[end-k+1:end] = Base.reverse(w)
-
-    o = (f ⋅ a) * (domain.right-domain.left)/(n-1)
+    k = Base.length(weights)
+    s = (domain.right-domain.left)/(n-1)
+    a = Base.ones(n); a[1:k] = weights; a[end-k+1:end] = Base.reverse(weights)
+    o = (f ⋅ a) * s
 
     return o
+
 end

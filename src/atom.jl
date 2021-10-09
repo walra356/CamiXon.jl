@@ -3,9 +3,9 @@
 @doc raw"""
     Atom(name, symbol, Z, I, Q, M, I, gI)
 
-Struct `Atom` with fields `name` (::String; name of element), `symbol` (::String; symbol of element),
-`Z` (::Int; atomic number), `Q` (::Int; ionic charge in a.u.), `M` (::Float6; nuclear mass in amu),
-`I` (::Rational{Int}, nuclear spin), `gI` (::Float64; nuclear g-factor).
+Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
+`Z::Int` (atomic number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
+`I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor)
 #### Examples:
 ```
 hydrogen = createAtom("Hydrogen","1H",1,0,1.00782503223,1//2,5.585694713)
@@ -33,9 +33,9 @@ end
 @doc raw"""
     createAtom(name, symbol, Z, Q, M, I, gI)
 
-Create Atom with `name` (::String; name of element), `symbol` (::String; symbol of element),
-`Z` (::Int; atomic number), `Q` (::Int; ionic charge in a.u.), `M` (::Float6; nuclear mass in amu),
-`I` (::Rational{Int}, nuclear spin), `gI` (::Float64; nuclear g-factor).
+Create Atom Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
+`Z::Int` (atomic number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
+`I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor).
 #### Examples:
 ```
 createAtom("Hydrogen","1H",1,0,1.00782503223,1//2,5.585694713)
