@@ -5,6 +5,9 @@ using IntervalSets
 #using LaTeXStrings
 using LinearAlgebra
 
+export Atom
+export createAtom
+
 export FITS_HDU
 export FITS_header
 export FITS_data
@@ -86,6 +89,8 @@ export polynom_power
 export polynom_powers
 export permutations_unique_count
 
+include("adams.jl")
+include("atom.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")

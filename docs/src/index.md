@@ -11,6 +11,14 @@ A package for image analysis of backscattered light
 
 ```@contents
 ```
+
+## Atomic properties
+
+```@docs
+Atom
+createAtom(name::String, symbol::String, Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+```
+
 ## Finite-difference methods
 
 ### Finite differences
