@@ -404,7 +404,7 @@ o = convert(Vector{Int},(b .* D)); println(o)
  [475, 1902, 1104, 1586, 1413]
 ```
 """
-function trapezoidal_weights1(k; rationalize=false)
+function trapezoidal_weights(k; rationalize=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false)
 # ==============================================================================
