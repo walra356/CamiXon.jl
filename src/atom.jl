@@ -110,6 +110,7 @@ Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fi
 #### Examples:
 ```
 term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
+ Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 
 notation = term_H1I.notation
 n = term_H1I.n
