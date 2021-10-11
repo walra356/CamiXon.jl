@@ -53,7 +53,7 @@ end
 # ======================== sub(i) ==============================================
 
 @doc raw"""
-    sup(i)
+    sub(i)
 
 Subscript notation for integers and rational numbers
 #### Examples:
@@ -83,7 +83,7 @@ frac(-5//2)
  "-⁵/₂"
 ```
 """
-function sup_sub(i::Rational{Int})
+function frac(i::Rational{Int})
 
     sgn = i < 0 ? "-" : ""
 
