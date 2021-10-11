@@ -7,6 +7,8 @@ using LinearAlgebra
 
 export Atom
 export createAtom
+export Term
+export createTerm
 
 export FITS_HDU
 export FITS_header

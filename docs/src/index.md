@@ -17,6 +17,8 @@ A package for image analysis of backscattered light
 ```@docs
 Atom
 createAtom(name::String, symbol::String, Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+Term
+createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 ```
 
 ## Finite-difference methods

@@ -4,7 +4,10 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    @test createAtom("Hydrogen","1H",1,0,1.0,1//2,5.59) == Atom("Hydrogen", "1H", 1, 0, 1.0, 1//2, 5.59)
+    @test Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.0026, 1//2, 0.0) == Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.0026, 1//2, 0.0)
+    @test createAtom(1,0,1.008,1//2,5.59; out=false) == Atom("Hydrogen", "¹H", 1, 0, 1.008, 1//2, 5.59)
+    @test Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
+    @test createTerm(1,0,1//2,0,1//2) == Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
