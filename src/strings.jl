@@ -35,8 +35,8 @@ end
 Superscript notation for integers and Rational{Int}
 #### Examples:
 ```
-sup(-5//2)
- "⁻⁵ᐟ²"
+sup(3) * 'P'
+ "³P"
 ```
 """
 function sup(i::T) where T<:Real
@@ -58,8 +58,8 @@ end
 Subscript notation for integers and rational numbers
 #### Examples:
 ```
-sub(-5//2)
- "₋₅⸝₂"
+'D' * sub(5//2)
+ "D₅⸝₂"
 ```
 """
 function sub(i::T) where T<:Real
