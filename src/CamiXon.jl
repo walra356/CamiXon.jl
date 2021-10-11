@@ -95,6 +95,7 @@ export polynom_power
 export polynom_powers
 export permutations_unique_count
 
+include("strings.jl")
 include("adams.jl")
 include("atom.jl")
 include("fits_pointers.jl")
