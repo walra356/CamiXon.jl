@@ -23,6 +23,7 @@ frac(i::Rational{Int})
 ## Atomic properties
 
 ```@docs
+mendeleev(Z::Int)
 Atom
 createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
 Term

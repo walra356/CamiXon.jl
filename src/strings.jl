@@ -32,7 +32,7 @@ end
 @doc raw"""
     sup(i)
 
-Superscript notation for integers and Rational{Int}
+Superscript notation for integers and rational numbers
 #### Examples:
 ```
 sup(3) * 'P'
