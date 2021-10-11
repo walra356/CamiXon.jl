@@ -5,6 +5,10 @@ using IntervalSets
 #using LaTeXStrings
 using LinearAlgebra
 
+export sup
+export sub
+export frac
+
 export Atom
 export createAtom
 export Term

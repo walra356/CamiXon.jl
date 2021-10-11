@@ -12,6 +12,14 @@ A package for image analysis of backscattered light
 ```@contents
 ```
 
+## Strings
+```@docs
+sup(i::T) where T<:Real
+sub(i::T) where T<:Real
+frac(i::Rational{Int})
+```
+
+
 ## Atomic properties
 
 ```@docs
