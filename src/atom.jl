@@ -93,11 +93,13 @@ function createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
     name = Q ≠ 0 ? (name * " ion") : name
     symbol = sup(Int(round(M))) * symbol * strQ
 
+    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $g")
+
     return Atom(name, symbol, Z, Q, M, I, gI)
 
 end
 
-# ======================== Term(n, ℓ, S, L, J) ===========
+# ======================== Term(note, n, ℓ, S, L, J) ===========
 
 @doc raw"""
     Term(note::String, n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
@@ -143,16 +145,17 @@ Specify Term Type of *one* valence electron in the *Term notatation* with fields
 #### Examples:
 ```
 term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
+ Term created: 1s ²S₁⸝₂, n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 
-notation = term_H1I.notation
+note = term_H1I.note
 n = term_H1I.n
 ℓ = term_H1I.ℓ
 S = term_H1I.S
 L = term_H1I.L
 J = term_H1I.J
-println("notation = $(notation), n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
- notation = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+println("note = $(note), n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+ note = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
 ```
 """
 function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
@@ -164,7 +167,7 @@ function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
     ℓ < n || return error("jwError: ℓ < n rule not satisfied")
     abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
 
-    println("Create term $(note); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+    println("Term created: $(note); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
 
     return Term(note, n, ℓ, S, L, J)
 
