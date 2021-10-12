@@ -25,9 +25,12 @@ frac(i::Rational{Int})
 ```@docs
 mendeleev(Z::Int)
 Atom
-createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 Term
-createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
+createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
+gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
+Grid
+createGrid(N::Int; h=0.01, r0=0.001)
 ```
 
 ## Finite-difference methods

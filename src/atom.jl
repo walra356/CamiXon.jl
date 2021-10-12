@@ -34,14 +34,14 @@ end
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
 @doc raw"""
-    Atom(name, symbol, Z, I, Q, M, I, gI)
+    Atom(name::String, symbol::String, Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
 Type to specify the *atomic species* with fields `name::String` (name of element),
 `symbol::String` (symbol of element), `Z::Int` (atomic number),
 `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
-`I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor)
+`I::Rational{Int}` (nuclear spin as integer or rational number), `gI::Float64` (nuclear g-factor)
 
-name: the type `Atom` is best created by the function `createAtom`.
+Note: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
 ```
 Hydrogen = Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
@@ -63,18 +63,18 @@ struct Atom              # atomic properties
     Z::Int               # Z: atomic number
     Q::Int               # Q: ionic charge (a.u.)
     M::Float64           # M: nuclear mass (amu)
-    I::Rational{Int}     # I: nuclear spin
+    I::Real              # I: nuclear spin as integer or rational number
     gI::Float64          # gI nucear g-number
 end
 
 # ======================== createAtom(Z, Q, M, I, gI) ===========
 
 @doc raw"""
-    createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+    createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
 Create Atom Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
 `Z::Int` (atomic number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
-`I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor).
+`I::Real` (nuclear spin as integer or rational number), `gI::Float64` (nuclear g-factor).
 #### Examples:
 ```
 createAtom(1,0,1.00782503223,1//2,5.585694713)
@@ -86,7 +86,9 @@ createAtom(2,1,4.00260325413,1//2,0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+function createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
+
+    S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
@@ -105,15 +107,16 @@ end
 # ======================== Term(name, n, ℓ, S, L, J) ===========
 
 @doc raw"""
-    Term(name::String, n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
+    Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
 Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fields
 `name::String`, `n::Int` (principal quantum number),
 `ℓ::Int` (orbital angular momentum valence electron),
-`S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
-`J::Rational` (total electronic angular momentum).
+`S::Real` (total electron spin as integer or rational number),
+`L::Int` (total orbital angular momentum),
+`J::Real` (total electronic angular momentum as integer or rational number).
 
-name: the type `Term` is best created by the function `createTerm`.
+Note: the type `Term` is best created by the function `createTerm`.
 #### Examples:
 ```
 Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
@@ -133,17 +136,17 @@ struct Term
     name::String         # LS term notation
     n::Int               # principal quantum number
     ℓ::Int               # orbital angular momentum valence electron
-    S::Rational          # total electron spin
+    S::Real              # total electron spin as integer or rational number
     L::Int               # total orbital angular momentum
-    J::Rational          # total electronic angular momentum
+    J::Real              # total electronic angular momentum as integer or rational number
 end
 
 # ======================== createTerm(n, ℓ, S, L, J) ===========
 
 @doc raw"""
-    createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
+    createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
-Specify Term Type of *one* valence electron in the *Term notatation* with fields
+Specify Term Type in the *Term notatation* with fields
 `n::Int` (principal quantum number), `ℓ::Int` (orbital angular momentum valence electron),
 `S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
 `J::Rational` (total electronic angular momentum).
@@ -154,7 +157,10 @@ term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 ```
 """
-function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
+function createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
+
+    S = typeof(S) ∈ [Float16,Float32,Float64] ? rationalize(S) : S
+    J = typeof(J) ∈ [Float16,Float32,Float64] ? rationalize(J) : J
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
@@ -166,5 +172,75 @@ function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
     println("Term created: $(name); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
 
     return Term(name, n, ℓ, S, L, J)
+
+end
+
+# ======================== Grid(N, h, r0, r, r′) ===============
+
+@doc raw"""
+    Grid(N::Int, h::Float64, r0::Float64, r::Vector{Float64}, r′::Vector{Float64})
+
+Type to specify the `Grid` on which the atomic wavefunction is defined, with fields `N::Int` (number of grid points),
+`h::Float64` (step size on uniform grid), `r0::Float64` (scale factor for physical grid in a.u.),
+`r::Vector{Float64}` (tabulated grid function), r′::Vector{Float64} (tabulated derivative of grid function).
+
+Note: the type `Grid` is created by the function `createGrid` which serves to tabulate the grid functions.
+"""
+struct Grid
+    N::Int               # number of grid points
+    h::Float64           # stepsize on uniform grid
+    r0::Float64          # scale factor for physical grid in a.u.
+    r::Vector{Float64}   # tabulated grid function
+    r′::Vector{Float64}  # tabulated derivative of grid function
+end
+
+# ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
+
+@doc raw"""
+    gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
+
+Transformation from the uniform grid (used for finite-difference calculus) and the nonuniform physical grid,
+```math
+    f[t,h,r0]=r_0[t+\frac{1}{2!}t^2+\frac{1}{3!}t^3+\frac{1}{4!}t^4+\frac{1}{5!}t^5+\frac{1}{6!}t^6]
+```
+```math
+    f′[t,h,r0]=f[t,h,r0;deriv=1]=r_0h[1+t+\frac{1}{2!}t^2+\frac{1}{3!}t^3+\frac{1}{4!}t^4+\frac{1}{5!}t^5],
+```
+where ``t=(n-1)h``.
+"""
+function gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
+# =================================================================
+# my grid function - exponential at small r and algebraic a large r
+# gridfunction(n::Int; r0=grid.r0) = r0*(exp((n-1) * h)-1.0) # gridfunction used by Walter Johnson type
+# =================================================================
+
+    deriv < pmax || return 0.0
+
+    t = (n-1) * h
+    o = deriv > 0 ? 1.0 : 0.0
+    v = 1.0
+
+    for p=1:(pmax-deriv)
+        v = v * t / p
+        o = o + v
+    end
+
+    return deriv > 0 ? o * r0 * h : o * r0
+
+end
+
+# ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
+
+@doc raw"""
+    createGrid(N::Int; h=0.01, r0=0.001) 
+
+Tabulate the gridfunction an an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
+"""
+function createGrid(N::Int; h=0.01, r0=0.001)
+
+    r = [gridfunction(n, h, r0) for n=1:N]
+    r′= [gridfunction(n, h ,r0; deriv=1) for n=1:N]
+
+    return Grid(N, h, r0, r, r′)
 
 end
