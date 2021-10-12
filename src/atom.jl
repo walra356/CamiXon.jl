@@ -41,7 +41,7 @@ Type to specify the *atomic species* with fields `name::String` (name of element
 `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
 `I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor)
 
-Note: the type `Atom` is best created by the function `createAtom`.
+name: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
 ```
 Hydrogen = Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
@@ -87,35 +87,35 @@ createAtom(2,1,4.00260325413,1//2,0.0)
 ```
 """
 
-# ======================== Term(note, n, ℓ, S, L, J) ===========
+# ======================== Term(name, n, ℓ, S, L, J) ===========
 
 @doc raw"""
-    Term(note::String, n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
+    Term(name::String, n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 
 Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fields
-`note::String`, `n::Int` (principal quantum number),
+`name::String`, `n::Int` (principal quantum number),
 `ℓ::Int` (orbital angular momentum valence electron),
 `S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
 `J::Rational` (total electronic angular momentum).
 
-Note: the type `Term` is best created by the function `createTerm`.
+name: the type `Term` is best created by the function `createTerm`.
 #### Examples:
 ```
 Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 
-note = Term_H1I.note
+name = Term_H1I.name
 n = Term_H1I.n
 ℓ = Term_H1I.ℓ
 S = Term_H1I.S
 L = Term_H1I.L
 J = Term_H1I.J
-println("note = $(note, n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
- note = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+println("name = $(name, n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+ name = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
 ```
 """
 struct Term
-    note::String         # LS term notation
+    name::String         # LS term notation
     n::Int               # principal quantum number
     ℓ::Int               # orbital angular momentum valence electron
     S::Rational          # total electron spin
@@ -143,13 +143,13 @@ function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
-    note = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
+    name = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
 
     ℓ < n || return error("jwError: ℓ < n rule not satisfied")
     abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
 
-    println("Term created: $(note); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+    println("Term created: $(name); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
 
-    return Term(note, n, ℓ, S, L, J)
+    return Term(name, n, ℓ, S, L, J)
 
 end
