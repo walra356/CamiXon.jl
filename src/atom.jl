@@ -100,10 +100,10 @@ end
 # ======================== Term(n, ℓ, S, L, J) ===========
 
 @doc raw"""
-    Term(n, ℓ, S, L, J)
+    Term(note::String, n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 
 Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fields
-`notation::String`, `n::Int` (principal quantum number),
+`note::String`, `n::Int` (principal quantum number),
 `ℓ::Int` (orbital angular momentum valence electron),
 `S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
 `J::Rational` (total electronic angular momentum).
@@ -112,18 +112,18 @@ Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fi
 term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 
-notation = term_H1I.notation
+note = term_H1I.note
 n = term_H1I.n
 ℓ = term_H1I.ℓ
 S = term_H1I.S
 L = term_H1I.L
 J = term_H1I.J
-println("notation = $(notation), n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
- notation = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+println("note = $(note, n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+ note = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
 ```
 """
 struct Term
-    notation::String     # LS term
+    note::String         # LS term notation
     n::Int               # principal quantum number
     ℓ::Int               # orbital angular momentum valence electron
     S::Rational          # total electron spin
@@ -134,7 +134,7 @@ end
 # ======================== createTerm(n, ℓ, S, L, J) ===========
 
 @doc raw"""
-    createTerm(n, ℓ, S, L, J)
+    createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 
 Specify Term Type of *one* valence electron in the *Term notatation* with fields
 `n::Int` (principal quantum number), `ℓ::Int` (orbital angular momentum valence electron),
@@ -159,11 +159,13 @@ function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
-    notation = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
+    note = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
 
     ℓ < n || return error("jwError: ℓ < n rule not satisfied")
-    abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) rule not satisfied")
+    abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
 
-    return Term(notation, n, ℓ, S, L, J)
+    println("Create term $(note); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+
+    return Term(note, n, ℓ, S, L, J)
 
 end
