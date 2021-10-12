@@ -40,19 +40,20 @@ Type to specify the *atomic species* with fields `name::String` (name of element
 `symbol::String` (symbol of element), `Z::Int` (atomic number),
 `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
 `I::Rational{Int}` (nuclear spin), `gI::Float64` (nuclear g-factor)
+
+Note: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
 ```
-hydrogen = createAtom(1,0,1.00782503223,1//2,5.585694713)
- Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
+Hydrogen = Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
 
-name = hydrogen.name
-symbol = hydrogen.symbol
-Z = hydrogen.Z
-Q = hydrogen.Q
-M = hydrogen.M
-I = hydrogen.I
-g = hydrogen.gI
-println("name = $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $g")
+name = Hydrogen.name
+symbol = Hydrogen.symbol
+Z = Hydrogen.Z
+Q = Hydrogen.Q
+M = Hydrogen.M
+I = Hydrogen.I
+gI = Hydrogen.gI
+println("name = $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $gI")
  name = Hydrogen, symbol = ¹H, Z = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
 ```
 """
@@ -77,27 +78,14 @@ Create Atom Type with fields `name::String` (name of element), `symbol::String` 
 #### Examples:
 ```
 createAtom(1,0,1.00782503223,1//2,5.585694713)
+ Atom created: Hydrogen, symbol = ¹H, Z = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
  Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
 
 createAtom(2,1,4.00260325413,1//2,0.0)
+ Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
  Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
-
-    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
-    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
-
-    (name,symbol) = mendeleev(Z)
-
-    name = Q ≠ 0 ? (name * " ion") : name
-    symbol = sup(Int(round(M))) * symbol * strQ
-
-    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $g")
-
-    return Atom(name, symbol, Z, Q, M, I, gI)
-
-end
 
 # ======================== Term(note, n, ℓ, S, L, J) ===========
 
@@ -109,17 +97,19 @@ Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fi
 `ℓ::Int` (orbital angular momentum valence electron),
 `S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
 `J::Rational` (total electronic angular momentum).
+
+Note: the type `Term` is best created by the function `createTerm`.
 #### Examples:
 ```
-term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
+Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
 
-note = term_H1I.note
-n = term_H1I.n
-ℓ = term_H1I.ℓ
-S = term_H1I.S
-L = term_H1I.L
-J = term_H1I.J
+note = Term_H1I.note
+n = Term_H1I.n
+ℓ = Term_H1I.ℓ
+S = Term_H1I.S
+L = Term_H1I.L
+J = Term_H1I.J
 println("note = $(note, n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
  note = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
 ```
@@ -147,15 +137,6 @@ Specify Term Type of *one* valence electron in the *Term notatation* with fields
 term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
  Term created: 1s ²S₁⸝₂, n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
  Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
-
-note = term_H1I.note
-n = term_H1I.n
-ℓ = term_H1I.ℓ
-S = term_H1I.S
-L = term_H1I.L
-J = term_H1I.J
-println("note = $(note), n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
- note = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
 ```
 """
 function createTerm(n::Int, ℓ::Int, S::Rational, L::Int, J::Rational)
