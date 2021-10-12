@@ -70,7 +70,7 @@ end
 # ======================== createAtom(Z, Q, M, I, gI) ===========
 
 @doc raw"""
-    createAtom(Z, Q, M, I, gI)
+    createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
 
 Create Atom Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
 `Z::Int` (atomic number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
