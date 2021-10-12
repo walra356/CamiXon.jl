@@ -86,6 +86,21 @@ createAtom(2,1,4.00260325413,1//2,0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
+function createAtom(Z::Int, Q::Int, M::Float64, I::Rational{Int}, gI::Float64)
+
+    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
+    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+
+    (name,symbol) = mendeleev(Z)
+
+    name = Q ≠ 0 ? (name * " ion") : name
+    symbol = sup(Int(round(M))) * symbol * strQ
+
+    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $gI")
+
+    return Atom(name, symbol, Z, Q, M, I, gI)
+
+end
 
 # ======================== Term(name, n, ℓ, S, L, J) ===========
 
