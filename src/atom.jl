@@ -236,12 +236,14 @@ end
 
 Tabulate the gridfunction for an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
 ####Example:
+```
 grid = createGrid(3; h=0.01, r0=0.001)
 grid.r
 3-element Vector{Float64}:
  0.0
  1.0050167084168057e-5
  2.020134002675555e-5
+ ```
 """
 function createGrid(N::Int; h=0.01, r0=0.001)
 
