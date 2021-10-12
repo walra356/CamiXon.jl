@@ -235,7 +235,7 @@ end
     createGrid(N::Int; h=0.01, r0=0.001)
 
 Tabulate the gridfunction for an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
-####Example:
+#### Example:
 ```
 grid = createGrid(3; h=0.01, r0=0.001)
 grid.r
