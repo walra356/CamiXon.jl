@@ -204,7 +204,7 @@ Transformation from the uniform grid (used for finite-difference calculus) and t
     f[t,h,r0]=r_0[t+\frac{1}{2!}t^2+\frac{1}{3!}t^3+\frac{1}{4!}t^4+\frac{1}{5!}t^5+\frac{1}{6!}t^6]
 ```
 ```math
-    f′[t,h,r0]=f[t,h,r0;deriv=1]=r_0h[1+t+\frac{1}{2!}t^2+\frac{1}{3!}t^3+\frac{1}{4!}t^4+\frac{1}{5!}t^5],
+    f^{′}[t,h,r0]=f[t,h,r_0;deriv=1]=r_0h[1+t+\frac{1}{2!}t^2+\frac{1}{3!}t^3+\frac{1}{4!}t^4+\frac{1}{5!}t^5],
 ```
 where ``t=(n-1)h``.
 """
@@ -229,12 +229,19 @@ function gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
 
 end
 
-# ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
+# ======================== createGrid(N; h=0.01, r0=0.001)   ===============
 
 @doc raw"""
-    createGrid(N::Int; h=0.01, r0=0.001) 
+    createGrid(N::Int; h=0.01, r0=0.001)
 
-Tabulate the gridfunction an an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
+Tabulate the gridfunction for an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
+####Example:
+grid = createGrid(3; h=0.01, r0=0.001)
+grid.r
+3-element Vector{Float64}:
+ 0.0
+ 1.0050167084168057e-5
+ 2.020134002675555e-5
 """
 function createGrid(N::Int; h=0.01, r0=0.001)
 
