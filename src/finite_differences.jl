@@ -377,34 +377,30 @@ function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Flo
 
 end
 
-# ======================== trapezoidal_weights(k; rationalize=false) ===================================
+# ======================== trapezoidal_weights(k; rationalize=false, devisor=false) ===================================
 
 @doc raw"""
-    trapezoidal_weights(k [; rationalize=false])
+    trapezoidal_weights(k;;Int [; rationalize=false [, devisor=false]])
 
 Weight coefficient vector ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule optimized for functions of polynomial form,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
-#### Examples::
+The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
+ordinary trapezoidal rule. By default the output is in Float64, optionally the output is rational, with or without
+separating the gcd devisor
+#### Example::
 ```
-k = 1
-b = trapezoidal_weights(k; rationalize=true); println(b)
- [1//2]
-
-k = 5
-b = trapezoidal_weights(k; rationalize=true); println(b)
- [95//288, 317//240, 23//30, 793//720, 157//160]
-
-D = denominator(gcd(b)); println(D)
- 1440
-
-o = convert(Vector{Int},(b .* D)); println(o)
- [475, 1902, 1104, 1586, 1413]
+[trapezoidal_weights(k; rationalize=true, devisor=true) for k=1:2:9]
+5-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
+ (1, 2, [1])
+ (3, 24, [9, 28, 23])
+ (5, 1440, [475, 1902, 1104, 1586, 1413])
+ (7, 120960, [36799, 176648, 54851, 177984, 89437, 130936, 119585])
+ (9, 7257600, [2082753, 11532470, 261166, 16263486, -1020160, 12489922, 5095890, 7783754, 7200319])
 ```
 """
-function trapezoidal_weights(k; rationalize=false)
+function trapezoidal_weights(k; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false)
 # ==============================================================================
@@ -429,11 +425,8 @@ function trapezoidal_weights(k; rationalize=false)
     if rationalize
         a = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
         D = Base.denominator(Base.gcd(a))       # trapezoidal_weights divisor == Adams-Moulton devisor
-        o = round.(Int, o* D) // D              # convert to Rational{Int}
+        o = devisor ? (k, D, round.(Int, o* D)) : round.(Int, o* D) // D              # convert to Rational{Int}
     end
-
-    return o                                # Note that D = denominator(gcd(o))
-
 end
 
 # ======================== trapezoidal_integration(f, domain; k=5) =============
