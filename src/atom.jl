@@ -265,13 +265,8 @@ Coupling matrix for a set of two coupled differential equations,
 ```math
     \frac{dy}{dn}[n]=G[n]\thinspace y[n]\equiv f[n],
 ```
-where
-```math
-    \binom{P}{Q}\ \ \ \ \mathrm{and\,\,} G=\left(\begin{array}{cc}
-0 & b\\
-c & 0
-\end{array}\right),
-```
+where ``y=\binom{P}{Q}\ \ \ \ \mathrm{and\,\,}
+    G=\left(\begin{array}{cc} 0 & b\\ c & 0 \end{array}\right),``
 """
 function matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
 # ==============================================================================
