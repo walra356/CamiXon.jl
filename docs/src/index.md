@@ -202,7 +202,7 @@ lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=
 ### Integration
 
 ```@docs
-trapezoidal_weights(k; rationalize=false)
+trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 trapezoidal_integration(f, domain, weights)
 ```
 
@@ -290,7 +290,7 @@ Functions:
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
-create_adams_moulton_weights(k::Int)
+create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
 ## FITS
