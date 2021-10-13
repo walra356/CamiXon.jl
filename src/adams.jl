@@ -74,7 +74,9 @@ end
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
 The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]`` under the convention
-``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton divisor.
+``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the Adams-Moulton weight coefficients and ``D`` the
+corresponding Adams-Moulton divisor. By default the output is in Float64,
+optionally the output is rational, with or without specification of the gcd devisor.
 #### Example:
 ```
 [create_adams_moulton_weights(k::Int; rationalize=true, devisor=true, T=Int) for k=1:8]
@@ -98,7 +100,7 @@ function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, 
 
     if rationalize
         D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor
-        o = devisor ? (k, D, Base.round.(Int, o * D)) : o
+        o = devisor ? (k, D, Base.round.(T, o * D)) : o
     else
         o = Base.convert(Vector{Float64},o)
     end
