@@ -253,3 +253,48 @@ function createGrid(N::Int; h=0.01, r0=0.001)
     return Grid(N, h, r0, r, r′)
 
 end
+
+
+
+# ============================== matG(n, Etot, atom, grid, scr) ================
+
+@doc raw"""
+    matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
+
+Coupling matrix for a set of two coupled differential equations,
+```math
+    \frac{dy}{dn}[n]=G[n]\thinspace y[n]\equiv f[n],
+```
+where
+```math
+    \binom{P}{Q}\ \ \ \ \mathrm{and\,\,} G=\left(\begin{array}{cc}
+0 & b\\
+c & 0
+\end{array}\right),
+```
+"""
+function matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
+# ==============================================================================
+# matG - coupling matrix - Johnson (2.54)
+# ==============================================================================
+    G = [0.0 1.0; 0.0 0.0]
+
+    Z = atom.Z
+    ℓ = term.ℓ
+    r = grid.r[n+1]
+    r′= grid.r′[n+1]
+    s = scr[n+1]
+
+    a = 0.0
+    b = 1.0
+    c = fGc(n, r, E, Z, ℓ, s)
+    d = 0.0
+
+    G[1,1] = a
+    G[1,2] = b * r′
+    G[2,1] = c * r′
+    G[2,2] = d
+
+    return G
+
+end
