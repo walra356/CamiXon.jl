@@ -17,6 +17,7 @@ export createTerm
 export Grid
 export gridfunction
 export createGrid
+export matG
 
 export FITS_HDU
 export FITS_header
