@@ -380,15 +380,15 @@ end
 # ======================== trapezoidal_weights(k; rationalize=false, devisor=false) ===================================
 
 @doc raw"""
-    trapezoidal_weights(k;;Int [; rationalize=false [, devisor=false]])
+    trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
 
 Weight coefficient vector ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule optimized for functions of polynomial form,
 ```math
-    ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
+    ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}),
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
-ordinary trapezoidal rule. By default the output is in Float64, optionally the output is rational, with or without
-separating the gcd devisor
+where ``k`` is *odd*. The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``.
+For ``k=1`` the rule reduces to the ordinary trapezoidal rule. By default the output is in Float64,
+optionally the output is rational, with or without specification of the gcd devisor.
 #### Example::
 ```
 [trapezoidal_weights(k; rationalize=true, devisor=true) for k=1:2:9]
@@ -400,10 +400,12 @@ separating the gcd devisor
  (9, 7257600, [2082753, 11532470, 261166, 16263486, -1020160, 12489922, 5095890, 7783754, 7200319])
 ```
 """
-function trapezoidal_weights(k; rationalize=false, devisor=false)
+function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false)
 # ==============================================================================
+    isodd(k) || return error("jwError: method requires odd k")
+
     l = k - 1
     σ = Matrix{Int}(undef,k,l+1)
 
