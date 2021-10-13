@@ -67,7 +67,7 @@ end
 # ========================== create_adams_moulton_weights(k)====================
 
 @doc raw"""
-    create_adams_moulton_weights(k [, T=Int])
+    create_adams_moulton_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
 
 ``k^{th}``-order Adams-Moulton weights vector,
 ```math
@@ -77,25 +77,33 @@ The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]`` 
 ``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton divisor.
 #### Example:
 ```
-k=3
-am = create_adams_moulton_weights(k); println(am)
- Rational{Int64}[1//24, -5//24, 19//24, 3//8]
+[create_adams_moulton_weights(k::Int; rationalize=true, devisor=true, T=Int) for k=1:8]
+8-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
+ (1, 2, [1, 1])
+ (2, 12, [-1, 8, 5])
+ (3, 24, [1, -5, 19, 9])
+ (4, 720, [-19, 106, -264, 646, 251])
+ (5, 1440, [27, -173, 482, -798, 1427, 475])
+ (6, 60480, [-863, 6312, -20211, 37504, -46461, 65112, 19087])
+ (7, 120960, [1375, -11351, 41499, -88547, 123133, -121797, 139849, 36799])
+ (8, 3628800, [-33953, 312874, -1291214, 3146338, -5033120, 5595358, -4604594, 4467094, 1070017])
 ```
 """
-function create_adams_moulton_weights(k::Int; T=Int)
+function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
     ∇ = CamiXon.f_diff_weights_array(k)
     coeffs = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
 
-    return CamiXon.f_diff_expansion_weights(coeffs,∇)
+    o = CamiXon.f_diff_expansion_weights(coeffs,∇)
 
-end
-function create_adams_moulton_weights(k::Int) # short argument: better performance
+    if rationalize
+        D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor
+        o = devisor ? (k, D, round.(Int, o * D)) : o        
+    else
+        o = convert(Vector{Float64},o)
+    end
 
-    ∇ = CamiXon.f_diff_weights_array(k)
-    coeffs = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
-
-    return CamiXon.f_diff_expansion_weights(coeffs,∇)
+    return o
 
 end
 
