@@ -404,10 +404,10 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false)
 # ==============================================================================
-    isodd(k) || return error("jwError: method requires odd k")
+    Base.isodd(k) || return error("jwError: method requires odd k")
 
     l = k - 1
-    σ = Matrix{Int}(undef,k,l+1)
+    σ = Base.Matrix{Int}(undef,k,l+1)
 
     for i=0:k-1
         σ[i+1,:] = CamiXon.polynom_power([i,-1],l)      # corresponds to coeffs a0,...,ak
@@ -427,8 +427,11 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
     if rationalize
         a = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
         D = Base.denominator(Base.gcd(a))       # trapezoidal_weights divisor == Adams-Moulton devisor
-        o = devisor ? (k, D, round.(Int, o* D)) : round.(Int, o* D) // D              # convert to Rational{Int}
+        o = devisor ? (k, D, Base.round.(Int, o* D)) : Base.round.(Int, o* D) // D              # convert to Rational{Int}
     end
+
+    return o
+
 end
 
 # ======================== trapezoidal_integration(f, domain; k=5) =============
