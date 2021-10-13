@@ -150,32 +150,3 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int) # short argument: better
     return o  # Note that D = denominator(gcd(o))
 
 end
-
-# ============================== matG(n, Etot, atom, grid, scr) ================
-
-
-function matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
-# ==============================================================================
-# matG - coupling matrix - Johnson (2.54)
-# ==============================================================================
-    G = [0.0 1.0; 0.0 0.0]
-
-    Z = atom.Z
-    ℓ = term.ℓ
-    r = grid.r[n+1]
-    r′= grid.r′[n+1]
-    s = scr[n+1]
-
-    a = 0.0
-    b = 1.0
-    c = fGc(n, r, E, Z, ℓ, s)
-    d = 0.0
-
-    G[1,1] = a
-    G[1,2] = b * r′
-    G[2,1] = c * r′
-    G[2,2] = d
-
-    return G
-
-end
