@@ -98,9 +98,9 @@ function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, 
 
     if rationalize
         D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor
-        o = devisor ? (k, D, round.(Int, o * D)) : o        
+        o = devisor ? (k, D, Base.round.(Int, o * D)) : o
     else
-        o = convert(Vector{Float64},o)
+        o = Base.convert(Vector{Float64},o)
     end
 
     return o
