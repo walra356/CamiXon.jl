@@ -120,13 +120,3 @@ function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
     return o  # Note that D = denominator(gcd(o))
 
 end
-function f_diff_expansion_coeffs_adams_bashford(k::Int) # short argument: better performance
-
-    a = Base.ones(Rational{Int},k+1)
-
-    b = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
-    o = CamiXon.polynom_product_expansion(a, b, k)
-
-    return o  # Note that D = denominator(gcd(o))
-
-end
