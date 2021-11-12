@@ -194,7 +194,7 @@ struct Grid
     r::Vector{Float64}   # tabulated grid function
     r′::Vector{Float64}  # tabulated derivative of grid function
     k::Int               # Adams-Moulton order
-    am::Vector{Float}    # Adams-Moulton weight coefficients
+    am::Vector{Float64}    # Adams-Moulton weight coefficients
 end
 
 # ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
