@@ -188,13 +188,13 @@ Type to specify the `Grid` on which the atomic wavefunction is defined, with fie
 Note: the type `Grid` is created by the function `createGrid` which serves to tabulate the grid functions.
 """
 struct Grid
-    N::Int               # number of grid points
-    h::Float64           # stepsize on uniform grid
-    r0::Float64          # scale factor for physical grid in a.u.
-    r::Vector{Float64}   # tabulated grid function
-    r′::Vector{Float64}  # tabulated derivative of grid function
-    k::Int               # Adams-Moulton order
-    am::Vector{Float64}    # Adams-Moulton weight coefficients
+    N::Int                # number of grid points
+    h::Float64            # stepsize on uniform grid
+    r0::Float64           # scale factor for physical grid in a.u.
+    r::Vector{Float64}    # tabulated grid function
+    r′::Vector{Float64}   # tabulated derivative of grid function
+    k::Int                # Adams-Moulton order
+    am::Vector{Float64}   # Adams-Moulton weight coefficients
 end
 
 # ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
