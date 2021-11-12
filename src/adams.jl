@@ -43,26 +43,6 @@ function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
     return o  # Note that D = devisor(gcd(o))
 
 end
-function f_diff_expansion_coeffs_adams_moulton(k::Int) # short argument: better performance
-# =====================================================================================
-#   Adams-Moulton expansion coefficients
-# =====================================================================================
-    o = Base.zeros(Rational{Int},k+1)
-    s = 0//1
-
-    o[1] = 1//1
-
-    b = Base.copy(o)
-    a = Base.append!([s],[1//(i+1) for i=1:k])
-
-    for p=1:k
-        b = CamiXon.polynom_product_expansion(a, b, k)
-        Base.isodd(p) ? o = o .- b : o = o .+ b
-    end
-
-    return o  # Note that D = devisor(gcd(o))
-
-end
 
 # ========================== create_adams_moulton_weights(k)====================
 
