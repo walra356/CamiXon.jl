@@ -30,7 +30,7 @@ Term
 createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
 Grid
-createGrid(N::Int; h=0.01, r0=0.001)
+createGrid(N::Int; h=0.01, r0=0.001, k=8)
 ```
 
 ## Finite-difference methods

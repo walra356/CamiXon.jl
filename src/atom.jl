@@ -175,10 +175,10 @@ function createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
 end
 
-# ======================== Grid(N, h, r0, r, r′) ===============
+# ======================== Grid(N, h, r0, r, r′ , k, am) ===============
 
 @doc raw"""
-    Grid(N::Int, h::Float64, r0::Float64, r::Vector{Float64}, r′::Vector{Float64})
+    Grid(N::Int, h::Float64, r0::Float64, r::Vector{Float64}, r′::Vector{Float64}, k::Int, am::Vector{Float})
 
 Type to specify the `Grid` on which the atomic wavefunction is defined, with fields `N::Int` (number of grid points),
 `h::Float64` (step size on uniform grid), `r0::Float64` (scale factor for physical grid in a.u.),
