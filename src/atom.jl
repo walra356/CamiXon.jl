@@ -182,7 +182,8 @@ end
 
 Type to specify the `Grid` on which the atomic wavefunction is defined, with fields `N::Int` (number of grid points),
 `h::Float64` (step size on uniform grid), `r0::Float64` (scale factor for physical grid in a.u.),
-`r::Vector{Float64}` (tabulated grid function), r′::Vector{Float64} (tabulated derivative of grid function).
+`r::Vector{Float64}` (tabulated grid function), r′::Vector{Float64} (tabulated derivative of grid function),
+k::Int (Adams-Moulton order), am::Vector{Float}.
 
 Note: the type `Grid` is created by the function `createGrid` which serves to tabulate the grid functions.
 """
@@ -192,6 +193,8 @@ struct Grid
     r0::Float64          # scale factor for physical grid in a.u.
     r::Vector{Float64}   # tabulated grid function
     r′::Vector{Float64}  # tabulated derivative of grid function
+    k::Int               # Adams-Moulton order
+    am::Vector{Float}    # Adams-Moulton weight coefficients
 end
 
 # ======================== gridfunction(n, h, r0; pmax=6, deriv=0)  ===============
@@ -232,7 +235,7 @@ end
 # ======================== createGrid(N; h=0.01, r0=0.001)   ===============
 
 @doc raw"""
-    createGrid(N::Int; h=0.01, r0=0.001)
+    createGrid(N::Int; h=0.01, r0=0.001, k=8)
 
 Tabulate the gridfunction for an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
 #### Example:
@@ -245,12 +248,13 @@ grid.r
  2.020134002675555e-5
 ```
 """
-function createGrid(N::Int; h=0.01, r0=0.001)
+function createGrid(N::Int; h=0.01, r0=0.001, k=8)
 
     r = [gridfunction(n, h, r0) for n=1:N]
     r′= [gridfunction(n, h ,r0; deriv=1) for n=1:N]
+    am = create_adams_moulton_weights(k)
 
-    return Grid(N, h, r0, r, r′)
+    return Grid(N, h, r0, r, r′, k, am)
 
 end
 
@@ -266,7 +270,7 @@ Coupling matrix for a set of two coupled differential equations,
     \frac{dy}{dn}[n]=G[n]\thinspace y[n]\equiv f[n],
 ```
 where ``y=\left(\begin{array}{cc} P\\ Q  \end{array}\right)`` and
-``G=\left(\begin{array}{cc} 0 & b\\ c & 0 \end{array}\right),``
+``G=\left(\begin{array}{cc} 0 & b[n]\\ c[n] & 0 \end{array}\right)``
 """
 function matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
 # ==============================================================================
