@@ -182,8 +182,8 @@ end
 
 Type to specify the `Grid` on which the atomic wavefunction is defined, with fields `N::Int` (number of grid points),
 `h::Float64` (step size on uniform grid), `r0::Float64` (scale factor for physical grid in a.u.),
-`r::Vector{Float64}` (tabulated grid function), r′::Vector{Float64} (tabulated derivative of grid function),
-k::Int (Adams-Moulton order), am::Vector{Float}.
+`r::Vector{Float64}` (tabulated grid function), `r′::Vector{Float64}`` (tabulated derivative of grid function),
+`k::Int` (Adams-Moulton order), am::Vector{Float}.
 
 Note: the type `Grid` is created by the function `createGrid` which serves to tabulate the grid functions.
 """
@@ -240,7 +240,7 @@ end
 Tabulate the gridfunction for an array of `N` points with uniform grid spacing `h` and physical scale factor `r0`.
 #### Example:
 ```
-grid = createGrid(3; h=0.01, r0=0.001)
+grid = createGrid(3; h=0.01, r0=0.001, k=8)
 grid.r
 3-element Vector{Float64}:
  0.0
