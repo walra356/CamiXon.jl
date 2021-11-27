@@ -402,23 +402,23 @@ optionally the output is rational, with or without specification of the gcd devi
 """
 function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
-# trapezoidal_weights(k; rationalize=false)
+# trapezoidal_weights(k; rationalize=false, devisor=false)
 # ==============================================================================
     Base.isodd(k) || return error("jwError: method requires odd k")
 
     l = k - 1
-    σ = Base.Matrix{Int}(undef,k,l+1)
+    σ = Base.Matrix{Int}(undef,k,k)
 
     for i=0:k-1
         σ[i+1,:] = CamiXon.polynom_power([i,-1],l)      # corresponds to coeffs a0,...,ak
         σ[i+1,1] = σ[i+1,1] + i^l                       # correction of coeff a0
     end
 
-    F = CamiXon.faulhaber_polynom(l+1)
-    s = [CamiXon.polynom_power([-k,1],p) for p=0:l+1] .* F
+    F = CamiXon.faulhaber_polynom(k)
+    s = [CamiXon.polynom_power([-k,1],p) for p=0:k] .* F
     s[1][1] = -CamiXon.faulhaber_summation(k-1,l)//1
 
-    c = [Base.sum([s[p+1][i+1] for p=i:l+1]) for i=0:l+1][1:end-1]
+    c = [Base.sum([s[p+1][i+1] for p=i:k]) for i=0:k][1:end-1]
 
     σ = Base.inv(Base.transpose(σ))
 
