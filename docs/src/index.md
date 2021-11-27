@@ -28,9 +28,6 @@ Atom
 createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 Term
 createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
-gridfunction(n::Int, h::Float64, r0::Float64; pmax=6, deriv=0)
-Grid
-createGrid(N::Int; h=0.01, r0=0.001, k=8)
 ```
 
 ## Finite-difference methods
@@ -291,7 +288,6 @@ Functions:
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
-matG(n::Int, E::Float64, atom::Atom, grid::Grid, scr::Vector{Float64})
 ```
 
 ## FITS
