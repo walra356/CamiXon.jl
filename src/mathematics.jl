@@ -699,7 +699,7 @@ end
 # =============================== polynom_derivative(coords[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(coords[,deriv=0])
+    polynom_derivatives(coords[;deriv=0])
 
 Vector representation of derivatives of the polynomial `coords`.
 
