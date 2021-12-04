@@ -86,9 +86,10 @@ export log10_characteristic_power
 export log10_mantissa
 export pascal_triangle
 export pascal_next
-export polynom
+export polynomial
 export polynom_derivative
 export polynom_derivatives
+export polynom_derivatives_all
 export polynom_primitive
 export polynom_product
 export polynom_product_expansion

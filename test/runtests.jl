@@ -67,9 +67,10 @@ using Test
     @test harmonic_number(12, 3) == 25535765062457//21300003648000
     @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
     @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
-    @test polynom(ones(6),2.0) == 63.0
+    @test polynomial([1,1,1,1,1,1],1; deriv=-1) == 49//20
     @test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
-    @test polynom_derivatives([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24], [0]]
+    @test polynom_derivatives([1,1,1,1,1]; deriv=2) == [2, 6, 12]
+    @test polynom_derivatives_all([1,1,1,1,1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24]]
     @test polynom_power([1,1,1],2) == [1, 2, 3, 2, 1]
     @test polynom_powers([1,1,1],3) == [[1, 1, 1], [1, 2, 3, 2, 1], [1, 3, 6, 7, 6, 3, 1]]
     @test polynom_primitive([1,1,1,1,1]) == [0//1, 1//1, 1//2, 1//3, 1//4, 1//5]

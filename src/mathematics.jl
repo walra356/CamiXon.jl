@@ -75,7 +75,7 @@ Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
     F(n,p)=\frac{1}{p}\sum_{j=1}^{p}{\binom {p}{p-j}}B_{p-j}n^{j}.
 ```
-``F(n,p)=`` `polynom(c,n)`, where ``c=[c_0,\cdots,\ c_p]`` is the coefficient vector, with
+``F(n,p)=`` `polynomial(c,n)`, where ``c=[c_0,\cdots,\ c_p]`` is the coefficient vector, with
 ```math
     c_0=0,\ c_j=\frac{1}{p}{\binom {p}{p-j}}B_{p-j},
 ```
@@ -633,25 +633,36 @@ function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 
 end
 
-# ==================================== polynom(c,x) ============================================================
+# ==================================== polynomial(c,x;deriv) ============================================================
 
 @doc raw"""
-    polynom(coords,x)
+    polynomial(coords::Vector{T}, x::T[; deriv=0]) where T<:Number
 
-Method to evaluate the function ``f(x)=polynom(c,x)``, where
+Method to evaluate the function ``f(x)=polynomial(c,x)``, where
 ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
 ```math
-    p(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
+    polynomial(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
 ### Examples:
 ```
-coords = ones(6)             # for polynomial of degree 5 with unit coefficients
-f(x) = polynom(coords,x)
-println([f(1.0),f(2.0)])     # values of polynomial for x = 1.0 and x = 2.0
- [6.0, 63.0]
+coords = ones(Int,6)             # for polynomial of degree 5 with unit coefficients
+f0(x) = polynomial(coords,x)             # default
+fd(x) = polynomial(coords,x; deriv=1)    # first derivative
+fp(x) = polynomial(coords,x; deriv=-1)   # primitive (with zero integration constant)
+f0(1)
+ 6
+
+fd(1)
+ 15
+
+fp(1)
+ 49//20
 ```
 """
-function polynom(coords::Vector{T}, x::T) where T<:Number
+function polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
+
+    coords = deriv == 0 ? coords : deriv ≥ Base.length(coords) ? 0 :
+    deriv == -1 ? polynom_primitive(coords) : polynom_derivatives1(coords; deriv)
 
     k = Base.length(coords)
     X = Base.ones(T,k)
@@ -699,7 +710,7 @@ end
 # =============================== polynom_derivative(coords[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(coords[;deriv=0])
+    polynom_derivatives(coords::Vector{<:Number}[;deriv=0])
 
 Vector representation of derivatives of the polynomial `coords`.
 
@@ -707,20 +718,20 @@ Polynomials of degree ``d`` are represented by a vector in a vector space of dim
 The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
 consisting of the polynomial coefficients.
 
-`deriv`: derivative of choice; `default`: collection of all (nontrivial) derivatives.
+`deriv`: derivative of choice; `default`: `coords` remains unchanged.
 
 ### Examples:
 ```
 coords=[1,1,1,1,1]               # vector representation of a polynomial of degree d=4
-polynom_derivatives(coords)      # `all' (nontrivial) derivatives of polynomial `coords`
+polynom_derivatives(coords)      # default no (zero) derivative of polynomial `coords`
 5-element Vector{Vector{Int64}}:
- [1, 2, 3, 4]
- [2, 6, 12]
- [6, 24]
- [24]
- [0]
+ 1
+ 1
+ 1
+ 1
+ 1
 
-polynom_derivatives(coords; deriv=2)          # second derivative of polynomial `coords`
+polynom_derivatives(coords; deriv=2)        # second derivative of polynomial `coords`
 3-element Vector{Int64}:
   2
   6
@@ -731,23 +742,52 @@ function polynom_derivatives(coords::Vector{<:Number}; deriv=0)
 
     deriv < 0 && error("jwError: negative derivative not defined")
 
-    k = deriv > 0 ? deriv+1 : Base.length(coords)
+    for k=1:deriv
+        coords = CamiXon.polynom_derivative(coords)
+    end
+
+    return coords
+
+end
+
+# =============================== polynom_derivative_all(coords) =========
+
+@doc raw"""
+    polynom_derivatives_all(coords::Vector{<:Number})
+
+Vector representation of all nontrivial derivatives of the polynomial `coords`.
+
+Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots,\ c_d]``
+consisting of the polynomial coefficients.
+
+### Examples:
+```
+coords=[1,1,1,1,1]               # vector representation of a polynomial of degree d=4
+polynom_derivatives_all(coords)      # `all' (nontrivial) derivatives of polynomial `coords`
+5-element Vector{Vector{Int64}}:
+ [1, 2, 3, 4]
+ [2, 6, 12]
+ [6, 24]
+ [24]
+```
+"""
+function polynom_derivatives_all(coords::Vector{<:Number})
+
+    k = Base.length(coords)
 
     coords = CamiXon.polynom_derivative(coords)
 
-    deriv ≠ 1 ? o = [coords] : return coords
+    o = [coords]
 
     for i=2:k-1
         coords = polynom_derivative(coords)
         Base.push!(o,coords)
     end
 
-    deriv == 0 ? Base.push!(o,[0]) : return o[deriv]
-
     return o
 
 end
-
 # ==================================== polynom_power(coords, p) ================
 
 @doc raw"""
