@@ -662,7 +662,7 @@ fp(1)
 function polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
 
     coords = deriv == 0 ? coords : deriv ≥ Base.length(coords) ? 0 :
-    deriv == -1 ? polynom_primitive(coords) : polynom_derivatives1(coords; deriv)
+    deriv == -1 ? polynom_primitive(coords) : polynom_derivatives(coords; deriv)
 
     k = Base.length(coords)
     X = Base.ones(T,k)
