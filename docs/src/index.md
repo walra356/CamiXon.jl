@@ -27,7 +27,7 @@ Atom
 createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 Term
 createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
-bohrformula(atom::Atom, term::Term)
+bohrformula(Z::Int, n::Int)
 mendeleev(Z::Int)
 ```
 

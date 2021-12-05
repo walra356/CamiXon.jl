@@ -1,62 +1,3 @@
-# ======================== bohrformula(atom, term) =============================
-
-@doc raw"""
-    bohrformula(atom::Atom, term::Term)
-
-Hydrogenic `term` energy (in Hartree a.u.) for the atom `atom`.
-```math
-    E = - frac{Z^2}{2n^2},
-```
-where ``Z = atom.Z`` and ``n = term.n``.
-#### Example:
-```
-mendeleev(11)
- ("Sodium", "Na")
-```
-"""
-function bohrformula(atom::Atom, term::Term)
-# ==============================================================================
-# hydrogenic energy levels
-# ==============================================================================
-    Z = atom.Z
-    n = term.n
-    return -1/2*(Z/n)^2
-
-end
-
-# ======================== mendeleev(Z) ========================================
-
-@doc raw"""
-    mendeleev(Z::Int)
-
-The properties `name` and `symbol` of the *element* with *atomic number* `Z`.
-#### Example:
-```
-mendeleev(11)
- ("Sodium", "Na")
-```
-"""
-function mendeleev(Z::Int)
-
-    0 < Z < 45 || return error("jwError: element not inplemeted")
-
-    element = Dict(1 => ("Hydrogen", "H"), 2 => ("Helium", "He"),
-    3 => ("Lithium", "Li"), 4 => ("Beryllium", "Be"), 5 => ("Boron", "B"), 6 => ("Carbon", "C"),
-    7 => ("Oxygen", "O"), 8 => ("Nitrogen", "N"), 9 => ("Fluorine", "F"), 10 => ("Neon", "Ne"),
-    11 => ("Sodium", "Na"), 12 => ("Magnesium", "Mg"), 13 => ("Aluminium", "Al"), 14 => ("Silicon", "Si"),
-    15 => ("Phosphorus", "P"), 16 => ("Sulphor", "S"), 17 => ("Chlorine", "Cl"), 18 => ("Argon", "Ar"),
-    19 => ("Potassium", "K"), 20 => ("Calcium", "Ca"), 21 => ("Scandium", "Sc"), 22 => ("Titanium", "Ti"),
-    23 => ("Vanadium", "Va"), 24 => ("Chromium", "Cr"), 25 => ("Manganese", "Cl"),26 => ("Iron", "Fe"),
-    27 => ("Cobalt", "Co"), 28 => ("Nickel", "Ni"), 29 => ("Copper", "Cu"), 30 => ("Zinc", "Zn"),
-    31 => ("Gallium", "Ga"), 32 => ("Germanium", "Ge"), 33 => ("Arsenic", "As"), 34 => ("Selenium", "Se"),
-    35 => ("Bromine", "Br"), 36 => ("Krypton", "Mg"),
-    37 => ("Rubidium", "Rb"), 38 => ("Strontium", "Sr"), 39 => ("Yttrium", "Y"), 40 => ("Zirconium", "Zr"),
-    41 => ("Niobium", "Nb"), 42 => ("Molybdenium", "Mo"), 43 => ("Technetium", "Tc"), 44 => ("Ruthenium", "Ru"))
-
-    return (name,symbol) = get(element,Z,nothing)
-
-end
-
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
 @doc raw"""
@@ -198,5 +139,57 @@ function createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
     println("Term created: $(name); n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
 
     return Term(name, n, ℓ, S, L, J)
+
+end
+
+# ======================== bohrformula(atom, term) =============================
+
+@doc raw"""
+    bohrformula(Z::Int, n::Int)
+
+Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and *principal quantum number* `n`.
+```math
+    E = - frac{Z^2}{2n^2}
+```
+#### Example:
+```
+Z = 2
+n = 4
+bohrformula(Z, n)
+ -0.125
+```
+"""
+bohrformula(Z::Int, n::Int) = -1/2*(Z/n)^2end
+
+# ======================== mendeleev(Z) ========================================
+
+@doc raw"""
+    mendeleev(Z::Int)
+
+The properties `name` and `symbol` of the *element* with *atomic number* `Z`.
+#### Example:
+```
+mendeleev(11)
+ ("Sodium", "Na")
+```
+"""
+function mendeleev(Z::Int)
+
+    0 < Z < 45 || return error("jwError: element not inplemeted")
+
+    element = Dict(1 => ("Hydrogen", "H"), 2 => ("Helium", "He"),
+    3 => ("Lithium", "Li"), 4 => ("Beryllium", "Be"), 5 => ("Boron", "B"), 6 => ("Carbon", "C"),
+    7 => ("Oxygen", "O"), 8 => ("Nitrogen", "N"), 9 => ("Fluorine", "F"), 10 => ("Neon", "Ne"),
+    11 => ("Sodium", "Na"), 12 => ("Magnesium", "Mg"), 13 => ("Aluminium", "Al"), 14 => ("Silicon", "Si"),
+    15 => ("Phosphorus", "P"), 16 => ("Sulphor", "S"), 17 => ("Chlorine", "Cl"), 18 => ("Argon", "Ar"),
+    19 => ("Potassium", "K"), 20 => ("Calcium", "Ca"), 21 => ("Scandium", "Sc"), 22 => ("Titanium", "Ti"),
+    23 => ("Vanadium", "Va"), 24 => ("Chromium", "Cr"), 25 => ("Manganese", "Cl"),26 => ("Iron", "Fe"),
+    27 => ("Cobalt", "Co"), 28 => ("Nickel", "Ni"), 29 => ("Copper", "Cu"), 30 => ("Zinc", "Zn"),
+    31 => ("Gallium", "Ga"), 32 => ("Germanium", "Ge"), 33 => ("Arsenic", "As"), 34 => ("Selenium", "Se"),
+    35 => ("Bromine", "Br"), 36 => ("Krypton", "Mg"),
+    37 => ("Rubidium", "Rb"), 38 => ("Strontium", "Sr"), 39 => ("Yttrium", "Y"), 40 => ("Zirconium", "Zr"),
+    41 => ("Niobium", "Nb"), 42 => ("Molybdenium", "Mo"), 43 => ("Technetium", "Tc"), 44 => ("Ruthenium", "Ru"))
+
+    return (name,symbol) = get(element,Z,nothing)
 
 end
