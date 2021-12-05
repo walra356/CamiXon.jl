@@ -1,3 +1,29 @@
+# ======================== bohrformula(atom, term) =============================
+
+@doc raw"""
+    bohrformula(atom::Atom, term::Term)
+
+Hydrogenic `term` energy (in Hartree a.u.) for the atom `atom`.
+```math
+    E = - frac{Z^2}{2n^2},
+```
+where ``Z = atom.Z`` and ``n = term.n``.
+#### Example:
+```
+mendeleev(11)
+ ("Sodium", "Na")
+```
+"""
+function bohrformula(atom::Atom, term::Term)
+# ==============================================================================
+# hydrogenic energy levels
+# ==============================================================================
+    Z = atom.Z
+    n = term.n
+    return -1/2*(Z/n)^2
+
+end
+
 # ======================== mendeleev(Z) ========================================
 
 @doc raw"""
