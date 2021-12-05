@@ -149,13 +149,13 @@ end
 
 Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and *principal quantum number* `n`.
 ```math
-    E = - frac{Z^2}{2n^2}
+    E_n = - \frac{Z^2}{2n^2}  
 ```
 #### Example:
 ```
 Z = 2
 n = 4
-bohrformula(Z, n)
+bohrformula(Z,n)
  -0.125
 ```
 """
