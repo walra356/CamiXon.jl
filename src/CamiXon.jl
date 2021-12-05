@@ -9,6 +9,7 @@ export sup
 export sub
 export frac
 
+export bohrformula
 export mendeleev
 export Atom
 export createAtom
