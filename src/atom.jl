@@ -77,7 +77,7 @@ end
 Type Term (for specification of the atomic *fine-structure Term*):
 `name`: name
    `n`: principal quantum number
-   `n'`: radial quantum number (number of nodes in wavefunction)
+   `n1`: radial quantum number (number of nodes in wavefunction)
    `ℓ`: orbital angular momentum valence electron
    `S`: total electron spin in units of ħ
    `L`: total orbital angular momentum in units of ħ
@@ -93,7 +93,7 @@ Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 struct Term
     name::String         # LS term notation
     n::Int               # principal quantum number
-    n'::Int              # radial quantum number (number of nodes)
+    n1::Int              # radial quantum number (number of nodes)
     ℓ::Int               # orbital angular momentum valence electron
     S::Real              # total electron spin as integer or rational number
     L::Int               # total orbital angular momentum
@@ -128,11 +128,11 @@ function createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
     ℓ < n || return error("jwError: ℓ < n rule not satisfied")
     abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
 
-    n' = n - ℓ - 1
+    n1 = n - ℓ - 1
 
-    println("Term created: $(name); n = $n,  n' = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+    println("Term created: $(name); n = $n,  n1 = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
 
-    return Term(name, n, n', ℓ, S, L, J)
+    return Term(name, n, n1, ℓ, S, L, J)
 
 end
 
