@@ -1,37 +1,35 @@
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
 @doc raw"""
-    Atom(name::String, symbol::String, Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
+    Atom(name::String, symbol::String, Z::Int, Zc::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
-Type to specify the *atomic species* with fields `name::String` (name of element),
-`symbol::String` (symbol of element), `Z::Int` (atomic number),
-`Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
-`I::Rational{Int}` (nuclear spin as integer or rational number), `gI::Float64` (nuclear g-factor)
+Type Atom:
+  `name`:  name of element
+`symbol`:  symbol of element
+     `Z`:  atomic number
+    `Zc`:  Rydberg charge in a.u.
+     `Q`:  ionic charge in a.u.
+     `M`:  nuclear mass in amu
+     `I`:  nuclear spin in units of ħ
+    `gI`:  nuclear g-factor
 
 Note: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
 ```
-Hydrogen = Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
-
-name = Hydrogen.name
-symbol = Hydrogen.symbol
-Z = Hydrogen.Z
-Q = Hydrogen.Q
-M = Hydrogen.M
-I = Hydrogen.I
-gI = Hydrogen.gI
-println("name = $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $gI")
- name = Hydrogen, symbol = ¹H, Z = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
+atom = Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
+atom
+ Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 ```
 """
 struct Atom              # atomic properties
     name::String         # name of element
     symbol::String       # atomic symbol
-    Z::Int               # Z: atomic number
-    Q::Int               # Q: ionic charge (a.u.)
-    M::Float64           # M: nuclear mass (amu)
-    I::Real              # I: nuclear spin as integer or rational number
-    gI::Float64          # gI nucear g-number
+    Z::Int               # atomic number
+    Zc::Int              # Rydberg charge
+    Q::Int               # ionic charge (a.u.)
+    M::Float64           # nuclear mass (amu)
+    I::Real              # nuclear spin as integer or rational number
+    gI::Float64          # nucear g-factor
 end
 
 # ======================== createAtom(Z, Q, M, I, gI) ===========
@@ -67,7 +65,7 @@ function createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
     println("Atom created: $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $gI")
 
-    return Atom(name, symbol, Z, Q, M, I, gI)
+    return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
 end
 
@@ -76,32 +74,26 @@ end
 @doc raw"""
     Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
-Type to specify the *fine-structure Term* in *Russell-Saunders notation* with fields
-`name::String`, `n::Int` (principal quantum number),
-`ℓ::Int` (orbital angular momentum valence electron),
-`S::Real` (total electron spin as integer or rational number),
-`L::Int` (total orbital angular momentum),
-`J::Real` (total electronic angular momentum as integer or rational number).
+Type Term (for specification of the atomic *fine-structure Term*):
+`name`: name
+   `n`: principal quantum number
+   `n'`: radial quantum number (number of nodes in wavefunction)
+   `ℓ`: orbital angular momentum valence electron
+   `S`: total electron spin in units of ħ
+   `L`: total orbital angular momentum in units of ħ
+   `J`: total electronic angular momentum in units of ħ
 
 Note: the type `Term` is best created by the function `createTerm`.
 #### Examples:
 ```
-Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
- Term("1s ²S₁⸝₂", 1, 0, 1//2, 0, 1//2)
-
-name = Term_H1I.name
-n = Term_H1I.n
-ℓ = Term_H1I.ℓ
-S = Term_H1I.S
-L = Term_H1I.L
-J = Term_H1I.J
-println("name = $(name, n = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
- name = "1s ²S₁⸝₂", n = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
+ Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
 struct Term
     name::String         # LS term notation
     n::Int               # principal quantum number
+    n'::Int              # radial quantum number (number of nodes)
     ℓ::Int               # orbital angular momentum valence electron
     S::Real              # total electron spin as integer or rational number
     L::Int               # total orbital angular momentum
@@ -149,7 +141,7 @@ end
 
 Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and *principal quantum number* `n`.
 ```math
-    E_n = - \frac{Z^2}{2n^2}  
+    E_n = - \frac{Z^2}{2n^2}
 ```
 #### Example:
 ```
