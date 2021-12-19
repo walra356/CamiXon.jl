@@ -3,15 +3,15 @@
 @doc raw"""
     Atom(name::String, symbol::String, Z::Int, Zc::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
-Type Atom:
-  `name`:  name of element
-`symbol`:  symbol of element
-     `Z`:  atomic number
-    `Zc`:  Rydberg charge in a.u.
-     `Q`:  ionic charge in a.u.
-     `M`:  nuclear mass in amu
-     `I`:  nuclear spin in units of ħ
-    `gI`:  nuclear g-factor
+Type with fields:
+*  `name`:  name of element
+*`symbol`:  symbol of element
+*     `Z`:  atomic number
+*    `Zc`:  Rydberg charge in a.u.
+*     `Q`:  ionic charge in a.u.
+*     `M`:  nuclear mass in amu
+*     `I`:  nuclear spin in units of ħ
+*    `gI`:  nuclear g-factor
 
 Note: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
@@ -76,14 +76,14 @@ end
 @doc raw"""
     Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
-Type Term (for specification of the atomic *fine-structure Term*):
-`name`: name
-   `n`: principal quantum number
-   `n1`: radial quantum number (number of nodes in wavefunction)
-   `ℓ`: orbital angular momentum valence electron
-   `S`: total electron spin in units of ħ
-   `L`: total orbital angular momentum in units of ħ
-   `J`: total electronic angular momentum in units of ħ
+Type for specification of the atomic *fine-structure Term* with fields:
+*`name`: name
+*   `n`: principal quantum number
+*  `n′`: radial quantum number (number of nodes in wavefunction)
+*   `ℓ`: orbital angular momentum valence electron
+*   `S`: total electron spin in units of ħ
+*   `L`: total orbital angular momentum in units of ħ
+*   `J`: total electronic angular momentum in units of ħ
 
 Note: the type `Term` is best created by the function `createTerm`.
 #### Examples:
@@ -95,7 +95,7 @@ Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 struct Term
     name::String         # LS term notation
     n::Int               # principal quantum number
-    n1::Int              # radial quantum number (number of nodes)
+    n′::Int              # radial quantum number (number of nodes)
     ℓ::Int               # orbital angular momentum valence electron
     S::Real              # total electron spin as integer or rational number
     L::Int               # total orbital angular momentum
@@ -107,14 +107,14 @@ end
 @doc raw"""
     createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
-Specify Term Type in the *Term notatation* with fields
+Specify Term Type in the *Term notatation* with fields:
 `n::Int` (principal quantum number), `ℓ::Int` (orbital angular momentum valence electron),
 `S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
 `J::Rational` (total electronic angular momentum).
 #### Examples:
 ```
 term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
- Term created: 1s ²S₁⸝₂, n = 1, n' = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+ Term created: 1s ²S₁⸝₂, n = 1, n′ = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
  Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
@@ -130,11 +130,11 @@ function createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
     ℓ < n || return error("jwError: ℓ < n rule not satisfied")
     abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
 
-    n1 = n - ℓ - 1
+    n′ = n - ℓ - 1
 
-    println("Term created: $(name); n = $n,  n1 = $n, ℓ = $ℓ, S = $S, L = $L, J = $J")
+    println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
 
-    return Term(name, n, n1, ℓ, S, L, J)
+    return Term(name, n, n′, ℓ, S, L, J)
 
 end
 
