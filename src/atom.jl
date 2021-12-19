@@ -47,8 +47,8 @@ createAtom(1,0,1.00782503223,1//2,5.585694713)
  Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
 createAtom(2,1,4.00260325413,1//2,0.0)
- Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Zc = 3, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
- Atom("Helium ion", "⁴Heᐩ", 2, 3, 1, 4.00260325413, 1//2, 0.0)
+ Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
+ Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
 function createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
@@ -77,13 +77,13 @@ end
     Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
 Type for specification of the atomic *fine-structure Term* with fields:
-*`name`: name
-*   `n`: principal quantum number
-*  `n′`: radial quantum number (number of nodes in wavefunction)
-*   `ℓ`: orbital angular momentum valence electron
-*   `S`: total electron spin in units of ħ
-*   `L`: total orbital angular momentum in units of ħ
-*   `J`: total electronic angular momentum in units of ħ
+* `name`: name
+* `n`: principal quantum number
+* `n′`: radial quantum number (number of nodes in wavefunction)
+* `ℓ`: orbital angular momentum valence electron
+* `S`: total electron spin in units of ħ
+* `L`: total orbital angular momentum in units of ħ
+* `J`: total electronic angular momentum in units of ħ
 
 Note: the type `Term` is best created by the function `createTerm`.
 #### Examples:
