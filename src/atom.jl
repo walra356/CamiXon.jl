@@ -4,14 +4,14 @@
     Atom(name::String, symbol::String, Z::Int, Zc::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
 Type with fields:
-*  `name`:  name of element
-*`symbol`:  symbol of element
-*     `Z`:  atomic number
-*    `Zc`:  Rydberg charge in a.u.
-*     `Q`:  ionic charge in a.u.
-*     `M`:  nuclear mass in amu
-*     `I`:  nuclear spin in units of ħ
-*    `gI`:  nuclear g-factor
+* `name`:  name of element
+* `symbol`:  symbol of element
+* `Z`:  atomic number
+* `Zc`:  Rydberg charge in a.u.
+* `Q`:  ionic charge in a.u.
+* `M`:  nuclear mass in amu
+* `I`:  nuclear spin in units of ħ
+* `gI`:  nuclear g-factor
 
 Note: the type `Atom` is best created by the function `createAtom`.
 #### Examples:
