@@ -38,17 +38,17 @@ end
     createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
 Create Atom Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
-`Z::Int` (atomic number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
+`Z::Int` (atomic number), `Zc::Int` (radial quantum number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
 `I::Real` (nuclear spin as integer or rational number), `gI::Float64` (nuclear g-factor).
 #### Examples:
 ```
 createAtom(1,0,1.00782503223,1//2,5.585694713)
- Atom created: Hydrogen, symbol = ¹H, Z = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
- Atom("Hydrogen", "¹H", 1, 0, 1.00782503223, 1//2, 5.585694713)
+ Atom created: Hydrogen, symbol = ¹H, Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
+ Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
 createAtom(2,1,4.00260325413,1//2,0.0)
- Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
- Atom("Helium ion", "⁴Heᐩ", 2, 1, 4.00260325413, 1//2, 0.0)
+ Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Zc = 3, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
+ Atom("Helium ion", "⁴Heᐩ", 2, 3, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
 function createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
@@ -63,7 +63,9 @@ function createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
     name = Q ≠ 0 ? (name * " ion") : name
     symbol = sup(Int(round(M))) * symbol * strQ
 
-    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Q = $Q, M = $M, I = $I, gI = $gI")
+    Zc = 1 + Q
+
+    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI")
 
     return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
