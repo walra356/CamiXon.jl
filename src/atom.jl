@@ -1,7 +1,7 @@
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
 @doc raw"""
-    Atom(name::String, symbol::String, Z::Int, Zc::Int, Q::Int, M::Float64, I::Real, gI::Float64)
+    Atom(name::String, symbol::String, Z::Int,Zc::Int,Q::Int,M::Float64,I::Real,gI::Float64)
 
 Type with fields:
 * `name`:  name of element
