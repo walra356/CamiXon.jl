@@ -13,13 +13,7 @@ Type with fields:
 * `I`:  nuclear spin in units of ħ
 * `gI`:  nuclear g-factor
 
-Note: the type `Atom` is best created by the function `createAtom`.
-#### Examples:
-```
-atom = Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
-atom
- Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
-```
+The type `Atom` is best created by the function `createAtom`.
 """
 struct Atom              # atomic properties
     name::String         # name of element
@@ -85,12 +79,7 @@ Type for specification of the atomic *fine-structure Term* with fields:
 * `L`: total orbital angular momentum in units of ħ
 * `J`: total electronic angular momentum in units of ħ
 
-Note: the type `Term` is best created by the function `createTerm`.
-#### Examples:
-```
-Term_H1I = Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
- Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
-```
+The type `Term` is best created by the function `createTerm`.
 """
 struct Term
     name::String         # LS term notation
