@@ -103,7 +103,7 @@ Specify Term Type in the *Term notatation* with fields:
 #### Examples:
 ```
 term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
- Term created: 1s ²S₁⸝₂, n = 1, n′ = 1, ℓ = 0, S = 1//2, L = 0, J = 1//2
+ Term created: 1s ²S₁⸝₂, n = 1, n′ = 0, ℓ = 0, S = 1//2, L = 0, J = 1//2
  Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
