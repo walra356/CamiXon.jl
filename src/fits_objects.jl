@@ -20,28 +20,6 @@ struct FITS_name
 
 end
 
-# ........................................... FITS_HDU{T,V}data object ..........................................................
-
-"""
-    FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where {T=FITS_header, V=FITS_data}
-
-Object to hold a single "Header-Data Unit" (HDU).
-
-The fields are
-* `  .filename`:  name of the corresponding FITS file
-* `  .hduindex`:  identifier (a file may contain more than one HDU)
-* `    .header`:  the header object
-* `.dataobject`:  the data object
-"""
-struct FITS_HDU{T,V} where {T=FITS_header, V=FITS_data}
-
-    filename::String
-    hduindex::Int
-    header::T
-    dataobject::V
-
-end
-
 """
     FITS_header(hduindex, records, keys, values, comments, dict, maps)
 
@@ -86,6 +64,8 @@ struct FITS_data
 
 end
 
+# ........................................... FITS_table Object ..........................................................
+
 """
     FITS_table(hduindex::Int, rows::Array{String,1})
 
@@ -99,5 +79,27 @@ struct FITS_table
 
     hduindex::Int
     rows::Array{String,1}
+
+end
+
+# ........................................... FITS_HDU{T,V}data object ..........................................................
+
+"""
+    FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where {T=FITS_header, V=FITS_data}
+
+Object to hold a single "Header-Data Unit" (HDU).
+
+The fields are
+* `  .filename`:  name of the corresponding FITS file
+* `  .hduindex`:  identifier (a file may contain more than one HDU)
+* `    .header`:  the header object
+* `.dataobject`:  the data object
+"""
+struct FITS_HDU{T,V} where {T=FITS_header, V=FITS_data}
+
+    filename::String
+    hduindex::Int
+    header::T
+    dataobject::V
 
 end
