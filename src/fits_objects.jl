@@ -95,11 +95,11 @@ The fields are
 * `    .header`:  the header object
 * `.dataobject`:  the data object
 """
-struct FITS_HDU{T,V} where {T=FITS_header, V=FITS_data}
+struct FITS_HDU{T,V}
 
     filename::String
     hduindex::Int
-    header::T
-    dataobject::V
+    header::FITS_header
+    dataobject::FITS_data
 
 end
