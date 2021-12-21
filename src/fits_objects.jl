@@ -6,10 +6,10 @@
 FITS object to decompose the names of .fits files.
 
 The fields are:
-* `     .name`:  for 'p#.fits' this is 'p#.fits'
-* `   .prefix`:  for 'p#.fits' this is 'p'
-* `.numerator`:  for 'p#.fits' this is '#', a serial number (e.g., '3') or a range (e.g., '3-7')
-* `.extension`:  for 'p#.fits' this is '.fits'.
+* `     .name::String`:  for 'p#.fits' this is 'p#.fits'
+* `   .prefix::String`:  for 'p#.fits' this is 'p'
+* `.numerator::String`:  for 'p#.fits' this is '#', a serial number (e.g., '3') or a range (e.g., '3-7')
+* `.extension::String`:  for 'p#.fits' this is '.fits'.
 """
 struct FITS_name
 
@@ -72,8 +72,8 @@ end
 Object to hold the data of a `TABLE HDU` (a `FITS_HDU` for ASCII tables). It contains the data in the form of records (rows) of ASCII strings.
 
 The fields are:
-* `.hduindex`:  identifier (a file may contain more than one HDU)
-* `    .rows`:  the table formated as an array of rows of ASCII strings
+* `        .hduindex::Int`:  identifier (a file may contain more than one HDU)
+* `.rows::Array{String,1}`:  the table formated as an array of rows of ASCII strings
 """
 struct FITS_table
 
@@ -90,16 +90,16 @@ end
 Object to hold a single "Header-Data Unit" (HDU).
 
 The fields are
-* `  .filename`:  name of the corresponding FITS file
-* `  .hduindex`:  identifier (a file may contain more than one HDU)
-* `    .header`:  the header object
-* `.dataobject`:  the data object
+* .filename::String`:  name of the corresponding FITS file
+* `  .hduindex::Int`:  identifier (a file may contain more than one HDU)
+* `      .header::T`:  the header object where T=FITS_header
+* `  .dataobject::V`:  the data object where V=FITS_data
 """
 struct FITS_HDU{T,V}
 
     filename::String
     hduindex::Int
-    header::FITS_header
-    dataobject::FITS_data
+    header::T        #FITS_header
+    dataobject::V    #FITS_data
 
 end

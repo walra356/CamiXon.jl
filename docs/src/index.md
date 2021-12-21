@@ -304,7 +304,7 @@ By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objec
 ### FITS - Types
 
 ```@docs
-FITS_HDU
+FITS_HDU{T,V}
 FITS_header
 FITS_data
 FITS_table
