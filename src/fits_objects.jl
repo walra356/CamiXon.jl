@@ -1,7 +1,7 @@
 # ...................................................... FITS objects .........................................................
 
 """
-    FITS_name(name::String, prefix::String, numerator::String, extension::String)
+    FITS_name
 
 FITS object to decompose the names of .fits files.
 
@@ -21,7 +21,7 @@ struct FITS_name
 end
 
 """
-    FITS_header(hduindex, records, keys, values, comments, dict, maps)
+    FITS_header
 
 Object to hold the header information of a `FITS_HDU`.
 
@@ -47,7 +47,7 @@ struct FITS_header
 end
 
 """
-    FITS_data(hduindex::Int, hdutype::String, data::Any)
+    FITS_data
 
 Object to hold the data of the `FITS_HDU` of given `hduindex` and `hdutype`.
 
@@ -67,7 +67,7 @@ end
 # ........................................... FITS_table Object ..........................................................
 
 """
-    FITS_table(hduindex::Int, rows::Array{String,1})
+    FITS_table
 
 Object to hold the data of a `TABLE HDU` (a `FITS_HDU` for ASCII tables). It contains the data in the form of records (rows) of ASCII strings.
 
@@ -85,7 +85,7 @@ end
 # ........................................... FITS_HDU{T,V}data object ..........................................................
 
 """
-    FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where {T=FITS_header, V=FITS_data}
+    FITS_HDU{T,V}
 
 Object to hold a single "Header-Data Unit" (HDU).
 
