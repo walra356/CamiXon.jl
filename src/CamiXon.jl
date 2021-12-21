@@ -16,7 +16,7 @@ export createAtom
 export Term
 export createTerm
 
-export FITS_HDU{T,V}
+export FITS_HDU
 export FITS_header
 export FITS_data
 export FITS_table
