@@ -21,7 +21,7 @@ struct FITS_name
 end
 
 """
-    FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where T,V = FITS_header, FITS_data
+    FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where {T::FITS_header, V::FITS_data}
 
 Object to hold a single "Header-Data Unit" (HDU).
 
@@ -31,7 +31,7 @@ The fields are
 * `    .header`:  the header object
 * `.dataobject`:  the data object
 """
-struct FITS_HDU{T,V} where T = FITS_header, where V = FITS_data
+struct FITS_HDU{T,V} where {T::FITS_header, V::FITS_data}
 
     filename::String
     hduindex::Int
