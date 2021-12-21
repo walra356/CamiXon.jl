@@ -304,7 +304,7 @@ By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objec
 ### FITS - Types
 
 ```@docs
-FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V) where {T=FITS_header, V=FITS_data}
+FITS_HDU{T,V}(filename::String, hduindex::Int, header::T, dataobject::V)
 FITS_header(hduindex, records, keys, values, comments, dict, maps)
 FITS_data(hduindex::Int, hdutype::String, data::Any)
 FITS_table(hduindex::Int, rows::Array{String,1})
