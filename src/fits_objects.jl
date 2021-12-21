@@ -31,7 +31,7 @@ The fields are
 * `    .header`:  the header object
 * `.dataobject`:  the data object
 """
-struct FITS_HDU{T,V} where T,V = FITS_header, FITS_data
+struct FITS_HDU{T,V} where {T,V} = {FITS_header, FITS_data}
 
     filename::String
     hduindex::Int
