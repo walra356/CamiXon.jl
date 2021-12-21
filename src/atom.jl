@@ -4,14 +4,14 @@
     Atom(name::String, symbol::String, Z::Int,Zc::Int,Q::Int,M::Float64,I::Real,gI::Float64)
 
 Type with fields:
-* `name`:  name of element
-* `symbol`:  symbol of element
-* `Z`:  atomic number
-* `Zc`:  Rydberg charge in a.u.
-* `Q`:  ionic charge in a.u.
-* `M`:  nuclear mass in amu
-* `I`:  nuclear spin in units of ħ
-* `gI`:  nuclear g-factor
+* `  .name`:  name of element
+* `.symbol`:  symbol of element
+* `     .Z`:  atomic number
+* `    .Zc`:  Rydberg charge in a.u.
+* `     .Q`:  ionic charge in a.u.
+* `     .M`:  nuclear mass in amu
+* `     .I`:  nuclear spin in units of ħ
+* `    .gI`:  nuclear g-factor
 
 The type `Atom` is best created by the function `createAtom`.
 """
@@ -31,9 +31,15 @@ end
 @doc raw"""
     createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
 
-Create Atom Type with fields `name::String` (name of element), `symbol::String` (symbol of element),
-`Z::Int` (atomic number), `Zc::Int` (radial quantum number), `Q::Int` (ionic charge in a.u.), `M::Float6` (nuclear mass in amu),
-`I::Real` (nuclear spin as integer or rational number), `gI::Float64` (nuclear g-factor).
+Create Atom Type with fields
+* `  .name`:  name of element
+* `.symbol`:  symbol of element
+* `     .Z`:  atomic number
+* `    .Zc`:  Rydberg charge in a.u.
+* `     .Q`:  ionic charge in a.u.
+* `     .M`:  nuclear mass in amu
+* `     .I`:  nuclear spin in units of ħ
+* `    .gI`:  nuclear g-factor
 #### Examples:
 ```
 createAtom(1,0,1.00782503223,1//2,5.585694713)
@@ -72,12 +78,12 @@ end
 
 Type for specification of the atomic *fine-structure Term* with fields:
 * `name`: name
-* `n`: principal quantum number
-* `n′`: radial quantum number (number of nodes in wavefunction)
-* `ℓ`: orbital angular momentum valence electron
-* `S`: total electron spin in units of ħ
-* `L`: total orbital angular momentum in units of ħ
-* `J`: total electronic angular momentum in units of ħ
+* ` .n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+* ` .S`:  total electron spin in units of ħ
+* ` .L`:  total orbital angular momentum in units of ħ
+* ` .J`:  total electronic angular momentum in units of ħ
 
 The type `Term` is best created by the function `createTerm`.
 """
@@ -97,9 +103,11 @@ end
     createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
 Specify Term Type in the *Term notatation* with fields:
-`n::Int` (principal quantum number), `ℓ::Int` (orbital angular momentum valence electron),
-`S::Rational` (total electron spin), `L::Int` (total orbital angular momentum),
-`J::Rational` (total electronic angular momentum).
+* `.n`: principal quantum number
+* `.ℓ`: orbital angular momentum valence electron
+* `.S`: total electron spin
+* `.L`: total orbital angular momentum
+* `.J`: total electronic angular momentum
 #### Examples:
 ```
 term_H1I = createTerm(1, 0, 1//2, 0, 1//2)
