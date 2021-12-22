@@ -44,11 +44,11 @@ Create Atom with fields
 #### Examples:
 ```
 createAtom(1; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
- Atom created: Hydrogen, symbol = ¹H, Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713
+ Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
  Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
-createAtom(2;  Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
- Atom created: Helium ion, symbol = ⁴Heᐩ, Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0
+createAtom1(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
+ Atom created: Helium ion - ⁴Heᐩ (Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
@@ -63,16 +63,17 @@ function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
     (name,symbol) = mendeleev(Z)
 
 
-    name = Q ≠ 0 ? (name * " ion") : (name * " atom")
+    name = Q ≠ 0 ? (name * " ion") : name
     symbol = sup(Int(round(M))) * symbol * strQ
 
     Zc = 1 + Q
 
-    println("created $(name): $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI)")
+    println("Atom created: $(name) - $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI)")
 
     return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
 end
+
 
 
 # ======================== Orbit(name, n, n′, ℓ, up) ===========
