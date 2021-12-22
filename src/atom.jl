@@ -26,10 +26,11 @@ struct Atom              # atomic properties
     gI::Float64          # nucear g-factor
 end
 
-# ======== createAtom(Z::Int; Q=0, M=1.00782503223, I=1//2, gI=5.585694713) ===========
+
+# ======== createAtomcreateAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5) ===========
 
 """
-    createAtom(Z::Int; Q=0, M=1.0078, I=1//2, gI=5.5857)
+    createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
 
 Create Atom with fields
 * `  .name`:  name of element
@@ -51,7 +52,7 @@ createAtom(2;  Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function createAtom(Z::Int; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
+function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
 
     S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
@@ -70,6 +71,115 @@ function createAtom(Z::Int; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
     return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
 end
+
+
+# ======================== Orbital(name, n, n′, ℓ, up) ===========
+
+"""
+    Orbital
+
+Type for specification of *atomic spinorbitals* with fields:
+* `.name`: name
+* `.n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+
+The type `Orbital` is best created by the function `createOrbital`.
+"""
+struct Orbital
+    name::String         # LS term notation
+    n::Int               # principal quantum number
+    n′::Int              # radial quantum number (number of nodes)
+    ℓ::Int               # orbital angular momentum valence electron
+end
+
+
+# ======================== createOrbital(n::Int, ℓ::Int) ===========
+
+"""
+    createOrbital(n::Int, ℓ::Int)
+
+Specify `Orbital` with fields:
+* `.name`: name
+* ` .n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+* `.ms`:  spin magnetic quantum number
+#### Examples:
+```
+s1s = createOrbital(1,0)
+ Orbital created: 1s (n = 1, n′ = 0, ℓ = 0)
+ Orbital("1s", 1, 0, 0)
+```
+"""
+function createOrbital(n::Int, ℓ::Int)
+
+    strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
+
+    name = string(n) * strL[ℓ + 1]
+
+    ℓ < n || return error("Error: ℓ < n rule not satisfied")
+
+    n′ = n - ℓ - 1
+
+    println("Orbital created: $(name) (n = $n, n′ = $(n′), ℓ = $ℓ)")
+
+    return Orbital(name, n, n′, ℓ)
+
+end
+
+# ======================== SpinOrbital(name, n, n′, ℓ, ms) ===========
+
+"""
+    SpinOrbital
+
+Type for specification of *atomic spinorbitals* with fields:
+* `.name`: name
+* ` .n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+* `.ms`:  spin magnetic quantum number
+
+The type `Orbital` is best created by the function `createOrbital`.
+"""
+struct SpinOrbital
+    name::String         # LS term notation
+    n::Int               # principal quantum number
+    n′::Int              # radial quantum number (number of nodes)
+    ℓ::Int               # orbital angular momentum valence electron
+    ms::Rational{Int}    # spin magnetic quantum number
+end
+
+
+# ======================== createSpinOrbital(o::Orbital; up=true) ===========
+
+"""
+    createSpinOrbital(o::Orbital [; up=true])
+
+Specify `SpinOrbital` with fields:
+* `.name`: name
+* `   .n`: principal quantum number
+* `  .n′`: radial quantum number (number of nodes in radial wavefunction)
+* `   .ℓ`: orbital angular momentum valence electron
+* `  .ms`: spin magnetic quantum number
+#### Examples:
+```
+o1s = createOrbital(1,0)
+s1s = createSpinOrbital(o1s)
+  SpinOrbital created: 1s↑ (n = 1, n′ = 0, ℓ = 0, ms = 1//2)
+  SpinOrbital("1s↑", 1, 0, 0, 1//2)
+```
+"""
+function createSpinOrbital(o::Orbital; up=true)
+
+    name = o.name * string(up ? :↑ : :↓)
+
+    println("SpinOrbital created: $(name) (n = $(o.n), n′ = $(o.n′), ℓ = $(o.ℓ), ms = $(up ? 1//2 : -1//2))")
+
+    return SpinOrbital(name, o.n, o.n′, o.ℓ, (up ? 1//2 : -1//2))
+
+end
+
 
 # ======================== Term(name, n, ℓ, S, L, J) ===========
 

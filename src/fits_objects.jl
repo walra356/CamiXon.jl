@@ -6,10 +6,10 @@
 Object to hold a single "Header-Data Unit" (HDU).
 
 The fields are
-* ``.filename::String`:  name of the corresponding FITS file
-* `  .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `      .header::T`:  the header object where T=FITS_header
-* `  .dataobject::V`:  the data object where V=FITS_data
+* `.filename::String`:  name of the corresponding FITS file
+* `   .hduindex::Int`:  identifier (a file may contain more than one HDU)
+* `       .header::T`:  the header object where T=FITS_header
+* `   .dataobject::V`:  the data object where V=FITS_data
 """
 struct FITS_HDU{T,V}
 
