@@ -1,6 +1,6 @@
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
-@doc raw"""
+"""
     Atom(name::String, symbol::String, Z::Int,Zc::Int,Q::Int,M::Float64,I::Real,gI::Float64)
 
 Type with fields:
@@ -28,7 +28,7 @@ end
 
 # ======== createAtom(Z::Int; Q=0, M=1.00782503223, I=1//2, gI=5.585694713) ===========
 
-@doc raw"""
+"""
     createAtom(Z::Int; Q=0, M=1.0078, I=1//2, gI=5.5857)
 
 Create Atom with fields
@@ -73,10 +73,10 @@ end
 
 # ======================== Term(name, n, ℓ, S, L, J) ===========
 
-@doc raw"""
+"""
     Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
 
-Type for specification of the atomic *fine-structure Term* with fields:
+Type for specification of atomic *fine-structure Terms* with fields:
 * `name`: name
 * ` .n`:  principal quantum number
 * `.n′`:  radial quantum number (number of nodes in wavefunction)
@@ -99,7 +99,7 @@ end
 
 # ======================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
 
-@doc raw"""
+"""
     createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
 
 Specify Term in the *Term notatation* with fields:
@@ -125,8 +125,8 @@ function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
 
     name = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
 
-    ℓ < n || return error("jwError: ℓ < n rule not satisfied")
-    abs(L-S) ≤ J ≤ (L+S)  || return error("jwError: Δ(LSJ) condition not satisfied")
+    ℓ < n || return error("Error: ℓ < n rule not satisfied")
+    abs(L-S) ≤ J ≤ (L+S)  || return error("Error: Δ(LSJ) condition not satisfied")
 
     n′ = n - ℓ - 1
 
@@ -169,7 +169,7 @@ mendeleev(11)
 """
 function mendeleev(Z::Int)
 
-    0 < Z < 45 || return error("jwError: element not inplemeted")
+    0 < Z < 45 || return error("Error: element not ot to be inplemeted")
 
     element = Dict(1 => ("Hydrogen", "H"), 2 => ("Helium", "He"),
     3 => ("Lithium", "Li"), 4 => ("Beryllium", "Be"), 5 => ("Boron", "B"), 6 => ("Carbon", "C"),

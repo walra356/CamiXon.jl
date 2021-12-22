@@ -1,4 +1,26 @@
-# ...................................................... FITS objects .........................................................
+# ...................................................... FITS_HDU Objects .........................................................
+
+"""
+    FITS_HDU{T,V}
+
+Object to hold a single "Header-Data Unit" (HDU).
+
+The fields are
+* ``.filename::String`:  name of the corresponding FITS file
+* `  .hduindex::Int`:  identifier (a file may contain more than one HDU)
+* `      .header::T`:  the header object where T=FITS_header
+* `  .dataobject::V`:  the data object where V=FITS_data
+"""
+struct FITS_HDU{T,V}
+
+    filename::String
+    hduindex::Int
+    header::T        #FITS_header
+    dataobject::V    #FITS_data
+
+end
+
+# ........................................... FITS_name Object..........................................................
 
 """
     FITS_name
@@ -19,6 +41,8 @@ struct FITS_name
     extension::String
 
 end
+
+# ........................................... FITS_header Object..........................................................
 
 """
     FITS_header
@@ -45,6 +69,8 @@ struct FITS_header
     maps::Dict{String,Int}
 
 end
+
+# ........................................... FITS_data Object ...................................................
 
 """
     FITS_data
@@ -79,27 +105,5 @@ struct FITS_table
 
     hduindex::Int
     rows::Array{String,1}
-
-end
-
-# ........................................... FITS_HDU{T,V}data object ..........................................................
-
-"""
-    FITS_HDU{T,V}
-
-Object to hold a single "Header-Data Unit" (HDU).
-
-The fields are
-* .filename::String`:  name of the corresponding FITS file
-* `  .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `      .header::T`:  the header object where T=FITS_header
-* `  .dataobject::V`:  the data object where V=FITS_data
-"""
-struct FITS_HDU{T,V}
-
-    filename::String
-    hduindex::Int
-    header::T        #FITS_header
-    dataobject::V    #FITS_data
 
 end
