@@ -25,10 +25,10 @@ frac(i::Rational{Int})
 ```@docs
 Atom
 createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
-Orbital
-createOrbital(n::Int, ℓ::Int)
-SpinOrbital
-createSpinOrbital(o::Orbital; up=true)
+Orbit
+createOrbit(n::Int, ℓ::Int)
+SpinOrbit
+createSpinOrbit(o::Orbit; up=true)
 Term
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
 bohrformula(Z::Int, n::Int)

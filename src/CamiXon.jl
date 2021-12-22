@@ -13,10 +13,10 @@ export bohrformula
 export mendeleev
 export Atom
 export createAtom
-export Orbital
-export createOrbital
-export SpinOrbital
-export createSpinOrbital
+export Orbit
+export createOrbit
+export SpinOrbit
+export createSpinOrbit
 export Term
 export createTerm
 
