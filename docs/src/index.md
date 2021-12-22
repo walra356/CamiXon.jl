@@ -24,9 +24,9 @@ frac(i::Rational{Int})
 
 ```@docs
 Atom
-createAtom(Z::Int, Q::Int, M::Float64, I::Real, gI::Float64)
+createAtom(Z::Int; Q=0, M=1.0078, I=1//2, gI=5.5857)
 Term
-createTerm(n::Int, ℓ::Int, S::Real, L::Int, J::Real)
+createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
 bohrformula(Z::Int, n::Int)
 mendeleev(Z::Int)
 ```
