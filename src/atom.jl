@@ -58,15 +58,17 @@ function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+    strT = Q ≠ 0 ? " ion" : " atom"
 
     (name,symbol) = mendeleev(Z)
 
-    name = Q ≠ 0 ? (name * " ion") : name
+
+    name = Q ≠ 0 ? (name * " ion") : (name * " atom")
     symbol = sup(Int(round(M))) * symbol * strQ
 
     Zc = 1 + Q
 
-    println("Atom created: $(name), symbol = $(symbol), Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI")
+    println("created $(name): $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI)")
 
     return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
