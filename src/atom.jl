@@ -47,7 +47,7 @@ createAtom(1; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
  Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
-createAtom1(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
+createAtom(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
  Atom created: Helium ion - ⁴Heᐩ (Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
