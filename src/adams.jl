@@ -1,7 +1,7 @@
 # ========================== f_diff_expansion_coeffs_adams_moulton(k) ===========
 
 @doc raw"""
-    f_diff_expansion_coeffs_adams_moulton(k [, T=Int])
+    f_diff_expansion_coeffs_adams_moulton(k [; T=Int])
 
 ``k^{th}``-order Adams-Moulton expansion coefficients,
 
@@ -92,7 +92,7 @@ end
 # ======================== f_diff_expansion_coeffs_adams_bashford(k) ===========
 
 @doc raw"""
-    f_diff_expansion_coeffs_adams_bashford(k [, T=Int])
+    f_diff_expansion_coeffs_adams_bashford(k [; T=Int])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
