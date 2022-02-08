@@ -59,7 +59,7 @@ corresponding Adams-Moulton divisor. By default the output is in Float64,
 optionally the output is rational, with or without specification of the gcd devisor.
 #### Example:
 ```
-[create_adams_moulton_weights(k::Int; rationalize=true, devisor=true, T=Int) for k=1:8]
+[create_adams_moulton_weights(k; rationalize=true, devisor=true, T=Int) for k=1:8]
 8-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
  (1, 2, [1, 1])
  (2, 12, [-1, 8, 5])
@@ -104,7 +104,7 @@ order of use in summation.
 #### Examples:
 ```
 k = 5
-o = f_diff_expansion_coeffs_adams_bashford(k::Int); println(o)
+o = f_diff_expansion_coeffs_adams_bashford(k); println(o)
  Rational{Int64}[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
 ```
 """
