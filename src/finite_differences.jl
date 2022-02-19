@@ -404,7 +404,7 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false, devisor=false)
 # ==============================================================================
-    Base.isodd(k) || return error("jwError: method requires odd k")
+    Base.isodd(k) ? true : (k=k+1; println("Warning: k = $(k-1) → $(k) (trapezoidal rule requires odd k)"))
 
     l = k - 1
     σ = Base.Matrix{Int}(undef,k,k)
