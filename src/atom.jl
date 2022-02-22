@@ -266,7 +266,7 @@ bohrformula(Z,n)
  -0.125
 ```
 """
-bohrformula(Z::Int, n::Int) = -1/2*(Z/n)^2
+bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2
 
 # ======================== mendeleev(Z) ========================================
 
