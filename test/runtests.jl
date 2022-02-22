@@ -7,7 +7,7 @@ using Test
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
-    @test bohrformula(2, 4) == -0.125
+    @test bohrformula(2, 4) == -1//8
     @test mendeleev(11) == ("Sodium", "Na")
     @test Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0) == Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0)
     @test createAtom(1; Q=0, M=1.008, I=1//2, gI=5.59) == Atom("Hydrogen", "¹H", 1, 1, 0, 1.008, 1//2, 5.59)
