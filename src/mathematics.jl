@@ -903,7 +903,7 @@ end
 # ==================================== polynom_product(a, b) ============================================================
 
 @doc raw"""
-    polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
+    polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Number, V<:Number}
 
 Vector representation of the product of two polynomials, ``a`` and ``b`` which
 is a polynomial in a vector space of dimension ``d=m+n``,
@@ -928,10 +928,12 @@ consisting of the polynomial coefficients.
  [1, 0, 1, 2]
 ```
 """
-function polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
+function polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Number, V<:Number}
 
     n = Base.length(a)
     m = Base.length(b)
+
+    a,b = promote(a,b)
 
     if m ≥ n
         o = [Base.sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:n-1]
