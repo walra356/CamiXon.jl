@@ -960,7 +960,7 @@ o = expand_product(a, b, 4); println(o)
 
 ```
 """
-function polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+function polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
 
     n = Base.length(a)
     m = Base.length(b)
@@ -982,6 +982,65 @@ function polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::
     end
 
     return o
+
+end
+
+# ...................... texp(x, p) .........................................
+
+function _texp_int(x, p::Int)
+
+    o = y = typeof(x)(1)
+
+    x ≠ 0 || return o
+
+    for n=1:p
+        y *= x//n
+        o += y
+    end
+
+    return o
+
+end
+
+function _texp_real(x, p::Int)
+
+    o = y = typeof(x)(1)
+
+    x ≠ 0.0 || return o
+
+    for n=1:p
+        y *= x/n
+        o += y
+    end
+
+    return o
+
+end
+
+@doc raw"""
+    texp(x::T, a::T, p::Int) where T <: Real
+
+Taylor expansion of exp(x) about ``x = a`` up to order p.
+```math
+    \mathsf{texp}(x,a,p) = 1 + (x-a) + \frac{1}{2}(x-a)^2 + \cdots + \frac{1}{p!}(x-a)^p.
+```
+### Examples:
+```
+p = 5
+texp(1.0, 0.0, 5)
+ 2.7166666666666663
+
+texp(1, 0, 5)
+ 163//60
+```
+"""
+function texp(x::T, a::T, p::Int) where T <: Real
+
+    x = x - a
+
+    V = typeof(x)
+
+    return  V <: Rational ? _texp_int(x, p) : V <: Integer ? _texp_int(x, p) : _texp_real(x, p)
 
 end
 
