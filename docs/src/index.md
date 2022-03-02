@@ -393,6 +393,7 @@ polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
 polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+texp(x::T, a::T, p::Int) where T <: Real
 VectorRational
 normalize_VectorRational(vec::Vector{Rational{Int}})
 ```

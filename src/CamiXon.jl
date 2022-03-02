@@ -101,6 +101,7 @@ export polynom_product_expansion
 export polynom_power
 export polynom_powers
 export permutations_unique_count
+export texp
 
 include("strings.jl")
 include("adams.jl")

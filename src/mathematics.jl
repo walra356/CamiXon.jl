@@ -641,7 +641,7 @@ end
 Method to evaluate the function ``f(x)=polynomial(c,x)``, where
 ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
 ```math
-    polynomial(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
+    \mathsf{polynomial}(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
 ### Examples:
 ```
