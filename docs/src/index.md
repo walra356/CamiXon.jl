@@ -391,8 +391,8 @@ polynom_derivatives_all(coords::Vector{<:Number})
 polynom_power(coords::Vector{<:Number}, power::Int)
 polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
-polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
-polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
+polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
 texp(x::T, a::T, p::Int) where T <: Real
 VectorRational
 normalize_VectorRational(vec::Vector{Rational{Int}})

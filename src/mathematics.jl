@@ -921,7 +921,7 @@ o = polynomial_product(a, b); println(o)
  [1, 0, -1]
 ```
 """
-function polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
+function polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
 
     n = Base.length(a)
     m = Base.length(b)
