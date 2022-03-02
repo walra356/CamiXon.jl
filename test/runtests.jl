@@ -88,6 +88,9 @@ using Test
     @test stepedges([4,2,6]) == [0, 4, 6, 12]
     @test select125([1,2,4,6,8,10,13,16,18,20,40,60,80,100]) == [2, 6, 10, 16, 20, 60, 100]
     @test step125.([5,10,21.3,50,100.1]) == [1, 2, 5, 10, 20]
+    @test texp(1.0, 0.0, 5) == 2.7166666666666663
+    @test texp(1, 0, 5) == 163//60
+    @test texp(1//1, 0//1, 5) == 163//60
     #@test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits"
     #@test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
