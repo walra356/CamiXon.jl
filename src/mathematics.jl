@@ -915,10 +915,17 @@ The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ \ldots
 consisting of the polynomial coefficients.
 ####
 ```
-a = [1,1]
-b = [1,- 1]
-o = polynomial_product(a, b); println(o)
- [1, 0, -1]
+[polynom_product1([1.0,1],[1,-1,2])]
+ [1.0, 0.0, 1.0, 2.0]
+
+[polynom_product1([1//1,1],[1,-1,2])]
+ [1//1, 0//1, 1//1, 2//1]
+
+[polynom_product([1,1],[1,- 1,2])]
+ [1, 0, 1, 2]
+
+[polynom_product([1,- 1,2],[1,1])]
+ [1, 0, 1, 2]
 ```
 """
 function polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number

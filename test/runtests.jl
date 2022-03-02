@@ -76,9 +76,9 @@ using Test
     @test polynom_power([1,1,1],2) == [1, 2, 3, 2, 1]
     @test polynom_powers([1,1,1],3) == [[1, 1, 1], [1, 2, 3, 2, 1], [1, 3, 6, 7, 6, 3, 1]]
     @test polynom_primitive([1,1,1,1,1]) == [0//1, 1//1, 1//2, 1//3, 1//4, 1//5]
-    @test polynom_product([1,1],[1,- 1]) == [1, 0, -1]
+    @test polynom_product([1.0,-1],[1,2,-3]) == [1.0, 1.0, -5.0, 3.0]
+    @test polynom_product([1//2,-1],[1,2,-3]) == [1//2, 0//1, -7//2, 3//1]
     @test polynom_product([1,1],[1,- 1,2]) == [1, 0, 1, 2]
-    @test polynom_product([1,- 1,2],[1,1]) == [1, 0, 1, 2]
     @test polynom_product_expansion([1,-1,1],[1,1,-1,1,1,1], 5) == [1, 0, -1, 3, -1, 1]
     @test permutations_unique_count([[1,2,3],[2,3,1,4,3]],2) == 60
     @test normalize_VectorRational([2//3,4//5]).num == [10,12]
