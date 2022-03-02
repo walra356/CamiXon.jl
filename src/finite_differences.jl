@@ -276,6 +276,8 @@ function f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
     a = Base.prepend!([1//i for i=1:k],[0//1])
     b = CamiXon.f_diff_expansion_coeffs_lagrange(k, x)
 
+    a,b = promote(a,b)
+
     return CamiXon.polynom_product_expansion(a, b, k)
 
 end
