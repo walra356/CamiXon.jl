@@ -903,7 +903,7 @@ end
 # ==================================== polynom_product(a, b) ============================================================
 
 @doc raw"""
-    polynom_product(a::Vector{<:Number}, b::Vector{<:Number})
+    polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
 
 Vector representation of the product of two polynomials, ``a`` and ``b`` which
 is a polynomial in a vector space of dimension ``d=m+n``,
@@ -943,7 +943,7 @@ end
 # ==================================== polynom_product_expansion(a, b, p) ============================================================
 
 @doc raw"""
-    polynom_product_expansion(a::Vector{<:Number}, b::Vector{<:Number}, p::Int)
+    polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
 
 Vector representation of the product of two polynomials, ``a`` (of degree ``n``) and ``b`` (of degree ``m``), with ``m≤n``
 truncated at the order ``p`` is a polynomial in a vector space of dimension ``d=p+1``. If ``ab`` is the `polynom_product`,
