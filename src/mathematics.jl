@@ -638,14 +638,14 @@ end
 @doc raw"""
     polynomial(coords::Vector{T}, x::T[; deriv=0]) where T<:Number
 
-Method to evaluate the function ``f(x)=polynomial(c,x)``, where
+Method to evaluate the function ``f(x)=\text{polynomial}(c,x)``, where
 ``c=[c_0,\ \ldots,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
 ```math
-    \mathsf{polynomial}(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
+    \text{polynomial}(c,x)=c_0 + c_1 x + \cdots + c_d x^d.
 ```
 ### Examples:
 ```
-coords = ones(Int,6)             # for polynomial of degree 5 with unit coefficients
+coords = ones(Int,6)                     # for polynomial of degree 5 with unit coefficients
 f0(x) = polynomial(coords,x)             # default
 fd(x) = polynomial(coords,x; deriv=1)    # first derivative
 fp(x) = polynomial(coords,x; deriv=-1)   # primitive (with zero integration constant)
