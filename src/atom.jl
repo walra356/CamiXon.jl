@@ -119,7 +119,7 @@ function createOrbit(n::Int, ℓ::Int)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
-    name = ℓ > 15 ? "(n=$(n),ℓ=$(ℓ))" : string(n) * strL[ℓ + 1]
+    name = ℓ > 15 ? "[n=$(n), ℓ=$(ℓ)]" : string(n) * strL[ℓ + 1]
 
     ℓ < n || return error("Error: ℓ < n rule not satisfied")
 
