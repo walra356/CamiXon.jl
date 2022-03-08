@@ -933,7 +933,7 @@ function polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Number, V<:Number
     n = Base.length(a)
     m = Base.length(b)
 
-    a,b = promote(a,b)
+    a,b = Base.promote(a,b)
 
     if m ≥ n
         o = [Base.sum(a[1+j-i]*b[1+i] for i=0:j) for j=0:n-1]
