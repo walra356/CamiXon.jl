@@ -294,7 +294,12 @@ Functions:
 f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
+## Grid
 
+```@docs
+gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+createGrid(ID::Int, T::Type, N::Int; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7)
+```
 ## FITS
 
 FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.

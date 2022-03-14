@@ -47,6 +47,9 @@ export f_diff_expansion_coeffs_adams_bashford
 export trapezoidal_weights
 export trapezoidal_integration
 
+export gridfunction
+export createGrid
+
 export fits_create
 export fits_read
 export fits_extend
@@ -106,6 +109,7 @@ export texp
 include("strings.jl")
 include("adams.jl")
 include("atom.jl")
+include("grid.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
