@@ -96,6 +96,19 @@ end
 
 # ==================== myconvert(T::Type, val::V) ==============================
 
+@doc raw"""
+    myconvert(T::Type, val::V) where V <: Number
+
+Conversion including BigFloat and BigInt
+#### Examples:
+```
+convert(BigInt,1//3)
+ InexactError: BigInt(1//3)
+
+myconvert(BigInt, 1//3)
+ 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
+```
+"""
 function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
 # ================================================================================
 # myconvert(T::Type, val::V) # generalization of convert to include BigFloat

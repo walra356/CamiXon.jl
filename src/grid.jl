@@ -164,6 +164,8 @@ Create the Grid object
 `ID = 4`: polynomial grid
 #### Examples:
 ```
+h = 0.1
+r0 = 1.0
 grid = createGrid(1, 4, Float64; h, r0)                 # linear grid
 grid.r
  [0.0, 0.1, 0.2, 0.30000000000000004]
