@@ -47,6 +47,7 @@ export f_diff_expansion_coeffs_adams_bashford
 export trapezoidal_weights
 export trapezoidal_integration
 
+export Grid
 export gridfunction
 export createGrid
 
