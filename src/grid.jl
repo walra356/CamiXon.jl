@@ -121,19 +121,19 @@ end
 #### Examples:
 ```
 h = 0.1
-r = [gridfunction(1, n-1, h) for n=1:5]                               # linear
+r = [gridfunction(1, n-1, h) for n=1:5]                       # linear
  [0.0, 0.1, 0.2, 0.30000000000000004, 0.4]
 
-r′= [gridfunction(1, n-1, h; deriv=1) for n=1:5]                      # linear (first derivative)
+r′= [gridfunction(1, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
  [0.1, 0.1, 0.1, 0.1, 0.1]
 
-r = [gridfunction(3, n-1, h; p = 1) for n=1:5]                        # quasi exponential (degree p=1)
+r = [gridfunction(3, n-1, h; p = 1) for n=1:5]  # quasi exponential (degree p=1)
  [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
 
-r = [gridfunction(2, n-1, h) for n=1:5]                               # exponential
+r = [gridfunction(2, n-1, h) for n=1:5]                            # exponential
  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032, 0.49182469764127035]
 
-r = [gridfunction(3, n-1, h; p = 4) for n=1:5]                        # quasi exponential (degree p=4)
+r = [gridfunction(3, n-1, h; p = 4) for n=1:5]  # quasi exponential (degree p=4)
  [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375, 0.49173333333333336]
 
 r = [gridfunction(4, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial (degree p=4)
@@ -154,7 +154,7 @@ end
 # ====== createGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
 @doc raw"""
-    createGrid(ID::Int, T::Type, N::Int; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7)
+    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7)
 
 Create the Grid object
 
@@ -164,17 +164,17 @@ Create the Grid object
 `ID = 4`: polynomial grid
 #### Examples:
 ```
-grid = createGrid(1, 4, Float64; h, r0)                          # linear grid
+grid = createGrid(1, 4, Float64; h, r0)                 # linear grid
 grid.r
  [0.0, 0.1, 0.2, 0.30000000000000004]
 grid.r′
  [0.1, 0.1, 0.1, 0.1]
 
-grid = createGrid(2, 4, Float64; h, r0)                          # exponential grid
+grid = createGrid(2, 4, Float64; h, r0)                 # exponential grid
 grid.r
  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
 
-grid = createGrid(3, 4, Float64; p = 4, h, r0)                   # quasi-exponential grid
+grid = createGrid(3, 4, Float64; p = 4, h, r0)          # quasi-exponential grid
 grid.r
  [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
 
