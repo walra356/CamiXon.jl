@@ -8,6 +8,7 @@ using LinearAlgebra
 export sup
 export sub
 export frac
+export myconvert
 
 export bohrformula
 export mendeleev

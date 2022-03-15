@@ -18,6 +18,7 @@ A package for image analysis of backscattered light
 sup(i::T) where T<:Real
 sub(i::T) where T<:Real
 frac(i::Rational{Int})
+myconvert(T::Type, val::V) where V <: Number
 ```
 
 ## Atomic properties
