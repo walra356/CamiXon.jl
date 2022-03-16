@@ -257,3 +257,8 @@ function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}
     return LinearAlgebra.dot(f .* r′, w)
 
 end
+function grid_trapezoidal_integral(f::Vector{T}, itr::UnitRange, grid::Grid{T}) where T<:Real
+
+    return grid_trapezoidal_integral(f, itr[1], itr[2], grid)
+
+end

@@ -51,6 +51,7 @@ export trapezoidal_integration
 export Grid
 export gridfunction
 export createGrid
+export grid_trapezoidal_integral
 
 export fits_create
 export fits_read

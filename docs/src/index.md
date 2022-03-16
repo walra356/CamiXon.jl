@@ -25,13 +25,13 @@ myconvert(T::Type, val::V) where V <: Number
 
 ```@docs
 Atom
-createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
+createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 Orbit
-createOrbit(n::Int, ℓ::Int)
+createOrbit(n::Int, ℓ::Int; msg=true)
 SpinOrbit
-createSpinOrbit(o::Orbit; up=true)
+createSpinOrbit(o::Orbit; up=true, msg=true)
 Term
-createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
+createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 bohrformula(Z::Int, n::Int)
 mendeleev(Z::Int)
 ```
@@ -309,7 +309,8 @@ The `Def` object serves to define the problem to be solved and to contain the so
 ```@docs
 Grid{T}
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7)
+createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 
 ## FITS
