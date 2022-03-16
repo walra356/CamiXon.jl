@@ -94,7 +94,7 @@ function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
     str_Rmax = repr(Rmax, context=:compact => true)
-    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " (a.u.), " "Ntot = $N, "
+    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
