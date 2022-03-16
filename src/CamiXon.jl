@@ -54,7 +54,7 @@ export createGrid
 export grid_trapezoidal_integral
 
 export Def
-export createGrid
+export createDef
 
 export fits_create
 export fits_read
