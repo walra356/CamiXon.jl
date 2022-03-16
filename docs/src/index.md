@@ -295,13 +295,23 @@ Functions:
 f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
-## Grid
+
+## Schrödinger
+
+This section contains the principal Types and Methods for solving the radial Schrödinger equation on a non-uniform allowing for screening of the nuclear charge.
+
+### Grid and Def
+
+The `Grid` object is the backbone for the numerical procedure on a non-uniform grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete functions of `N` elements representing the grid function and its derivative.
+
+The `Def` object serves to define the problem to be solved and to contain the solution as a discrete function of `N` elements in the field `def.Z`.
 
 ```@docs
 Grid{T}
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
 createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7)
 ```
+
 ## FITS
 
 FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.

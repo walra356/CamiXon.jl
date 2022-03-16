@@ -30,7 +30,7 @@ end
 # ======== createAtomcreateAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5) ===========
 
 """
-    createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
+    createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
 Create Atom with fields
 * `  .name`:  name of element
@@ -52,7 +52,7 @@ createAtom(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
+function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
     S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
@@ -68,7 +68,7 @@ function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5)
 
     Zc = 1 + Q
 
-    println("Atom created: $(name) - $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI)")
+    msg && println("Atom created: $(name) - $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q, M = $M, I = $I, gI = $gI)")
 
     return Atom(name, symbol, Z, Zc, Q, M, I, gI)
 
@@ -100,7 +100,7 @@ end
 # ======================== createOrbital(n::Int, ℓ::Int) ===========
 
 """
-    createOrbit(n::Int, ℓ::Int)
+    createOrbit(n::Int, ℓ::Int; msg=true)
 
 Specify `Orbit` with fields:
 * `.name`: name
@@ -115,7 +115,7 @@ createOrbit(1,0)
  Orbit("1s", 1, 0, 0)
 ```
 """
-function createOrbit(n::Int, ℓ::Int)
+function createOrbit(n::Int, ℓ::Int; msg=true)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
@@ -125,7 +125,7 @@ function createOrbit(n::Int, ℓ::Int)
 
     n′ = n - ℓ - 1
 
-    println("Orbit created: $(name) - (n = $n, n′ = $(n′), ℓ = $ℓ)")
+    msg && println("Orbit created: $(name) - (n = $n, n′ = $(n′), ℓ = $ℓ)")
 
     return Orbit(name, n, n′, ℓ)
 
@@ -157,7 +157,7 @@ end
 # ======================== createSpinOrbit(o::Orbital; up=true) ===========
 
 """
-    createSpinOrbital(o::Orbit [; up=true])
+    createSpinOrbital(o::Orbit; up=true, msg=true)
 
 Specify `SpinOrbit` with fields:
 * `.name`: name
@@ -173,11 +173,11 @@ createSpinOrbit(s1s; up=true)
   SpinOrbit("1s↑", 1, 0, 0, 1//2)
 ```
 """
-function createSpinOrbit(o::Orbit; up=true)
+function createSpinOrbit(o::Orbit; up=true, msg=true)
 
     name = o.name * string(up ? :↑ : :↓)
 
-    println("SpinOrbit created: $(name) (n = $(o.n), n′ = $(o.n′), ℓ = $(o.ℓ), ms = $(up ? 1//2 : -1//2))")
+    msg && println("SpinOrbit created: $(name) (n = $(o.n), n′ = $(o.n′), ℓ = $(o.ℓ), ms = $(up ? 1//2 : -1//2))")
 
     return SpinOrbit(name, o.n, o.n′, o.ℓ, (up ? 1//2 : -1//2))
 
@@ -213,7 +213,7 @@ end
 # ======================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
 
 """
-    createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
+    createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 Specify Term in the *Term notatation* with fields:
 * `.n`: principal quantum number
@@ -229,7 +229,7 @@ term_H1I = createTerm(1; ℓ=0, S=1//2, L=0, J=1//2)
  Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
-function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
+function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
     S = typeof(S) ∈ [Float16,Float32,Float64] ? rationalize(S) : S
     J = typeof(J) ∈ [Float16,Float32,Float64] ? rationalize(J) : J
@@ -243,7 +243,7 @@ function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2)
 
     n′ = n - ℓ - 1
 
-    println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
+    msg = println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
 
     return Term(name, n, n′, ℓ, S, L, J)
 

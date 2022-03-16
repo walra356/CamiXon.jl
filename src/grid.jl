@@ -85,10 +85,16 @@ end
 
 function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
 
+    Rmax = ID == 1 ? r0 * _linear_gridfunction(N, h) :
+           ID == 2 ? r0 * _walterjohnson(N, h) :
+           ID == 3 ? r0 * _jw_gridfunction(N, h; p) :
+           ID == 4 ? r0 * polynomial(coords, h*N)  : ""
+
     name = gridname(ID::Int)
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
-    strA = "create $(name) Grid: $(mytype), Ntot = $N, "
+    str_Rmax = repr(Rmax, context=:compact => true)
+    strA = "create $(name) Grid: $(mytype), Ntot = $N, " * str_Rmax * " a.u., "
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "h = " * str_h * ", r0 = " * str_r0
@@ -98,6 +104,7 @@ function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]
     return error("Error: unknown grid type")
 
 end
+
 
 @doc raw"""
     gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
@@ -154,7 +161,7 @@ end
 # ====== createGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
 @doc raw"""
-    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7)
+    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7, msg=true))
 
 Create the Grid object
 
@@ -185,7 +192,7 @@ grid.r
   [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
 ```
 """
-function createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7)
+function createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 # ================================================================================
 #  createGrid: creates the grid object
 # ================================================================================
@@ -198,8 +205,55 @@ function createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     r = r0 * [gridfunction(ID, n-1, h; p=p, coords) for n=1:N]
     r′= r0 * [gridfunction(ID, n-1, h; p=p, coords, deriv=1) for n=1:N]
 
-    println(gridspecs(ID, N, T, h, r0; p, coords))
+    msg && println(gridspecs(ID, N, T, h, r0; p, coords))
 
     return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
+
+end
+
+
+# =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
+
+@doc raw"""
+    grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+
+Generalized trapezoidal integral with endpoint correction on `epn = grid.epn points.
+#### Examples:
+```
+χ1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
+N = 1000
+grid = createGrid(2, N, Float64; h=0.01, r0=0.05, epn=7)
+r = grid.r
+χ2 = [χ1s(r[n])^2 for n=1:N]
+norm = grid_trapezoidal_integral(χ2, 1, N, grid)
+ create exponential Grid: Float64, Ntot = 1000, h = 0.01, r0 = 0.05
+ 1.0
+```
+"""
+function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+# ==============================================================================
+#  trapezoidal integral over the grid indices [n1:n2] with 1 ≤ n1,n2 ≤ N
+# ==============================================================================
+    f = f[n1:n2]
+    r′= grid.r′[n1:n2]
+    n = n2 - n1 + 1
+
+    n > 1 || return 0
+
+    epn = grid.epn   # endpoint number
+    epw = grid.epw   # endpoint weights array
+
+    if n ≥ 2epn
+        epi = epn÷2+1        # index endpoint weights
+    else
+        epn = Base.isodd(n÷2) ? (n÷2) : n÷2-1              # endpoint number
+        epi = Base.isodd(n÷2) ? (n÷2)÷2+1 : (n÷2-1)÷2+1    # index endpoint weights
+    end
+
+    w = Base.ones(T,n)
+    w[1:epn] = epw[epi]
+    w[end-epn+1:end] = Base.reverse(epw[epi])
+
+    return LinearAlgebra.dot(f .* r′, w)
 
 end
