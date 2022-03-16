@@ -51,15 +51,15 @@ using Test
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
     @test f_diff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
     @test f_diff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
-    @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] == [0.0, 0.1, 0.2, 0.30000000000000004, 0.4]
+    @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] == [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
     @test [gridfunction(1, n-1, 0.1) for n=1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
     @test [gridfunction(2, n-1, 0.1; p = 4) for n=1:4] == [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
     @test [gridfunction(3, n-1, 0.1; coords=[0,1,1/2,1/6,1/24]) for n=1:3] == [0.0, 0.10517083333333334, 0.2214]
-    @test createGrid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [0.0, 0.1, 0.2]
+    @test createGrid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10000000000000009, 0.19999999999999996]
     @test createGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517091807564771, 0.22140275816016985]
     @test createGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test createGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
-    @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, createGrid(1, 5, Float64; msg=false)) == 0.008
+    @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, createGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]
