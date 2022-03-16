@@ -220,12 +220,11 @@ end
 Generalized trapezoidal integral with endpoint correction on `epn = grid.epn points.
 #### Examples:
 ```
-χ1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
-N = 1000
-grid = createGrid(2, N, Float64; h=0.01, r0=0.05, epn=7)
+f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
+grid = createGrid(2, 1000, Float64; h=0.01, r0=0.05, epn=7)
 r = grid.r
-χ2 = [χ1s(r[n])^2 for n=1:N]
-norm = grid_trapezoidal_integral(χ2, 1, N, grid)
+f2 = [f1s(r[n])^2 for n=1:N]
+norm = grid_trapezoidal_integral(f2, 1, N, grid)
  create exponential Grid: Float64, Ntot = 1000, h = 0.01, r0 = 0.05
  1.0
 ```
