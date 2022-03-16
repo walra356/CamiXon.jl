@@ -296,21 +296,28 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
-## Schrödinger
+## Solving the radial wave equation for atoms
 
 This section contains the principal Types and Methods for solving the radial Schrödinger equation on a non-uniform allowing for screening of the nuclear charge.
 
-### Grid and Def
+### Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete functions of `N` elements representing the grid function and its derivative.
-
-The `Def` object serves to define the problem to be solved and to contain the solution as a discrete function of `N` elements in the field `def.Z`.
 
 ```@docs
 Grid{T}
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
 createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+```
+
+### Def
+
+The `Def` object serves to define the problem to be solved and to contain in the field `def.Z` the solution as a discrete function of `N` elements.
+
+```@docs
+Def{T}
+createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 ```
 
 ## FITS
