@@ -1,6 +1,6 @@
 # ======================== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
 
-"""
+@doc raw"""
     Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
 
 Type with fields:
@@ -184,7 +184,7 @@ end
 
 # ....................... autoRmax(atom, orbit) ................................
 
-"""
+@doc raw"""
     autoRmax(atom::Atom, orbit::Orbit)
 
 Discretization range in atomic units (rule of thumb value)
@@ -214,7 +214,7 @@ end
 
 # .......................... autoNtot(orbit) ...................................
 
-"""
+@doc raw"""
     autoNtot(orbit::Orbit)
 
 Total number of gridpoints (rule of thumb value)
@@ -242,7 +242,7 @@ end
 
 # .................... autoPrecision(Rmax, orbit) ..............................
 
-"""
+@doc raw"""
     autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 
 Floating point precision (rule of thumb value)
@@ -273,7 +273,7 @@ end
 
 # ...................... autoSteps(Ntot, Rmax) .................................
 
-"""
+@doc raw"""
     autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
 Step size parameter (h) and range parameter (r0) (rule of thumb values).
@@ -299,7 +299,7 @@ end
 
 # =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
 
-"""
+@doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
 Generalized trapezoidal integral with endpoint correction on `epn = grid.epn points.
