@@ -180,6 +180,7 @@ Create the Grid object
 `ID = 1`: exponential grid,
 `ID = 2`: quasi-exponential grid,
 `ID = 3`: polynomial grid
+`ID = 4`: linear grid
 #### Examples:
 ```
 h = 0.1
@@ -314,7 +315,7 @@ end
 # ...................... autoSteps(Ntot, Rmax) .................................
 
 """
-    autoSteps(ID::Int, Ntot::Int, Rmax::T [; p=5, coords=[0,1]]) where T<:Real
+    autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
 Step size parameter (h) and range parameter (r0) (rule of thumb values).
 ### Example:
