@@ -51,7 +51,7 @@ using Test
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
     @test f_diff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
     @test f_diff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
-    @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] == [0.0, 0.1, 0.2, 0.3, 0.4]
+    @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] ==  [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
     @test [gridfunction(1, n-1, 0.1) for n=1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
     @test [gridfunction(2, n-1, 0.1; p = 4) for n=1:4] == [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
     @test [gridfunction(3, n-1, 0.1; coords=[0,1,1/2,1/6,1/24]) for n=1:3] == [0.0, 0.10517083333333334, 0.2214]
