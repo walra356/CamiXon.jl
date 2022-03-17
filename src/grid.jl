@@ -34,22 +34,10 @@ end
 
 # ======================== gridfunction(n, h; deriv=0) =========================
 
-function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
-# =================================================================
-#  linear_gridfunction(n, h) = n * h
-# =================================================================
-    deriv ≥ 0 || return T(0)
-
-    f = deriv > 0 ? h : h * n
-
-    return f
-
-end
-
 function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
-# =================================================================
-#  gridfunction(n, h) = (exp((n-1) * h)-1.0) # gridfunction used by Walter Johnson
-# =================================================================
+# ==============================================================================
+#  gridfunction(n, h) = (exp((n-1) * h)-1.0) # gridfunction from Walter Johnson
+# ==============================================================================
     deriv ≥ 0 || return 0.0
 
     f = deriv > 0 ? h^(deriv)*exp(n*h) : exp(n*h)-1
@@ -58,11 +46,14 @@ function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
 
 end
 
+# ..............................................................................
+
 function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
-# ===============================================================================
+# ==============================================================================
 # jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential texp()
-# ===============================================================================
-    p-deriv ≥ 0 || return T(0)
+# ==============================================================================
+    deriv ≥ 0 || return T(0)
+    deriv ≤ p || return T(0)
 
     nul = T(0)
 
@@ -72,7 +63,27 @@ function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
 
 end
 
+# ..............................................................................
+
+function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
+# ==============================================================================
+#  linear_gridfunction(n, h; deriv) = n * h
+# ==============================================================================
+    deriv ≥ 0 || return T(0)
+    deriv ≤ 1 || return T(0)
+
+    f = deriv > 0 ? h : h * n
+
+    return f
+
+end
+
+# ..............................................................................
+
 function gridname(ID::Int)
+# ==============================================================================
+#  Name used for `Grid` of given `grid.ID`
+# ==============================================================================
 
     ID == 1 && return "exponential"
     ID == 2 && return "quasi-exponential"
@@ -83,11 +94,14 @@ function gridname(ID::Int)
 
 end
 
+# ..............................................................................
+
 function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
-           ID == 3 ? r0 * polynomial(coords, h*N)  : ""
+           ID == 3 ? r0 * polynomial(coords, h*N)  :
+           ID == 4 ? r0 * _linear_gridfunction(N, h) : error("Error: unknown grid type")
 
     ID = ID ≠ 2 ? ID : p == 1 ? 4 : 2
     name = gridname(ID::Int)
@@ -105,6 +119,7 @@ function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]
 
 end
 
+# ..............................................................................
 
 @doc raw"""
     gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
@@ -121,15 +136,13 @@ end
 ```math
     f[n] = c_1h(n-1) + c_2(h(n-1))^2 + \cdots + c_p(h(n-1))^p
 ```
+* `ID = 4`: linear grid function,
+```math
+    f[n] = (n-1) * h
+```
 #### Examples:
 ```
 h = 0.1
-r = [gridfunction(2, n-1, h; p = 1) for n=1:5]  # quasi exponential (degree p=1)
- [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
-
-r′= [gridfunction(2, n-1, h; p = 1, deriv=1) for n=1:5]     # linear (first derivative)
-  [0.1, 0.1, 0.1, 0.1, 0.1]
-
 r = [gridfunction(1, n-1, h) for n=1:5]                            # exponential
  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032, 0.49182469764127035]
 
@@ -138,6 +151,12 @@ r = [gridfunction(2, n-1, h; p = 4) for n=1:5]  # quasi exponential (degree p=4)
 
 r = [gridfunction(3, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial (degree p=4)
  [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001, 0.49173333333333336]
+
+r = [gridfunction(4, n-1, h) for n=1:5]              # linear
+  [0.0, 0.1, 0.2, 0.3, 0.4]
+
+r′= [gridfunction(4, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
+   [0.1, 0.1, 0.1, 0.1, 0.1]
 ```
 """
 function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
@@ -145,6 +164,7 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
     ID == 1 && return _walterjohnson(n, h; deriv)
     ID == 2 && return _jw_gridfunction(n, h; deriv, p)
     ID == 3 && return polynomial(coords, h*n; deriv)
+    ID == 4 && return _linear_gridfunction(n, h; deriv)
 
     return error("Error: unknown gridfunction")
 
@@ -164,12 +184,6 @@ Create the Grid object
 ```
 h = 0.1
 r0 = 1.0
-grid = createGrid(2, 4, Float64; p=1, h, r0)                 # linear grid
-grid.r
- [0.0, 0.1, 0.2, 0.30000000000000004]
-grid.r′
- [0.1, 0.1, 0.1, 0.1]
-
 grid = createGrid(1, 4, Float64; h, r0)                 # exponential grid
 grid.r
  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
@@ -180,7 +194,13 @@ grid.r
 
 grid = createGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0)  # polynomial grid
 grid.r
-  [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
+ [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
+
+grid = createGrid(4, 4, Float64; h, r0)                 # linear grid
+grid.r
+ [0.0, 0.1, 0.2, 0.3]
+grid.r′
+ [0.1, 0.1, 0.1, 0.1]
 ```
 """
 function createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
@@ -205,11 +225,11 @@ end
 
 # =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
 
-@doc raw"""
+"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
 Generalized trapezoidal integral with endpoint correction on `epn = grid.epn points.
-#### Examples:
+#### Example:
 ```
 f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
 N = 1000
