@@ -4,7 +4,7 @@
     Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, k, am, matLD)
 
 Type with fields:
-* `    .T`::Type                gridType
+* `    .T`::Type--------------- gridType
 * ` .atom`::Atom                atom object
 * `.orbit`::Orbit               orbit object
 * `  .pot`::Vector{T}           tabulated potential function
