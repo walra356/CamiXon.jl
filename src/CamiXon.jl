@@ -51,6 +51,10 @@ export trapezoidal_integration
 export Grid
 export gridfunction
 export createGrid
+export autoRmax
+export autoNtot
+export autoPrecision
+export autoSteps
 export grid_trapezoidal_integral
 
 export Def

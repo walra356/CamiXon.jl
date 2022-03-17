@@ -306,8 +306,12 @@ The `Grid` object is the backbone for the numerical procedure on a non-uniform g
 
 ```@docs
 Grid{T}
-gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+gridfunction(ID::Int, n::Int, h::T [; p=5, coords=[0,1], deriv=0]) where T <: Real
+createGrid(ID::Int, N::Int, T::Type [; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true])
+autoRmax(atom::Atom, orbit::Orbit)
+autoNtot(orbit::Orbit)
+autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+autoSteps(ID::Int, Ntot::Int, Rmax::T [; p=5, coords=[0,1]]) where T<:Real
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 
