@@ -1,6 +1,6 @@
 # ======================== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
 
-@doc raw"""
+"""
     Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
 
 Type with fields:
@@ -172,8 +172,8 @@ end
 
 # ====== createGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
-@doc raw"""
-    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7, msg=true))
+"""
+    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 
 Create the Grid object
 
