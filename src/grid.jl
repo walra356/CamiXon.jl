@@ -80,47 +80,6 @@ end
 
 # ..............................................................................
 
-function gridname(ID::Int)
-# ==============================================================================
-#  Name used for `Grid` of given `grid.ID`
-# ==============================================================================
-
-    ID == 1 && return "exponential"
-    ID == 2 && return "quasi-exponential"
-    ID == 3 && return "polynomial"
-    ID == 4 && return "linear"
-
-    return error("Error: unknown grid name")
-
-end
-
-# ..............................................................................
-
-function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
-
-    Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
-           ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
-           ID == 3 ? r0 * polynomial(coords, h*N)  :
-           ID == 4 ? r0 * _linear_gridfunction(N, h) : error("Error: unknown grid type")
-
-    ID = ID ≠ 2 ? ID : p == 1 ? 4 : 2
-    name = gridname(ID::Int)
-    str_h = repr(h, context=:compact => true)
-    str_r0 = repr(r0, context=:compact => true)
-    str_Rmax = repr(Rmax, context=:compact => true)
-    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
-
-    ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
-    ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
-    ID == 3 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
-    ID == 4 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
-
-    return error("Error: unknown grid type")
-
-end
-
-# ..............................................................................
-
 @doc raw"""
     gridfunction(ID::Int, n::Int, h::T [; p=5, coords=[0,1], deriv=0]) where T <: Real
 
