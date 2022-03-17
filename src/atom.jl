@@ -243,7 +243,7 @@ function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
     n′ = n - ℓ - 1
 
-    msg = println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
+    msg && println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
 
     return Term(name, n, n′, ℓ, S, L, J)
 
