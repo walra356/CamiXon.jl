@@ -187,3 +187,62 @@ function myconvert(T::Type, val::V) where V <: Number        #### moet verplaats
     return o
 
 end
+
+# =============== convertUnits(val; unitIn="kHz", unitOut="MHz") ===============
+
+"""
+    convertUnits(val; unitIn="kHz", unitOut="MHz")
+
+Unit conversion between μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz, Hartree, Rydberg, Joule, and eV
+#### Example:
+```
+convertUnits(1; unitIn="Hz", unitOut="Joule")
+ 6.62607015e-34
+```
+"""
+function convertUnits(val; unitIn="Hartree", unitOut="Hz") 
+# ==============================================================================
+#  convertUnits(val; unitIn="kHz", unitOut="MHz")
+# ==============================================================================
+    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
+
+    unitIn  ∈ U || error("Error: conversion not implemented")
+    unitOut ∈ U || error("Error: conversion not implemented")
+
+    N = length(U)
+    H = 0.15198298460570
+    J = 6.62607015e-19
+    V = 4.135667696
+
+    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21/H 2e+21/H 1e21/J 1e21/V;
+        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18/H 2e+18/H 1e18/J 1e18/V;
+        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15/H 2e+15/H 1e15/J 1e15/V;
+        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12/H 2e+12/H 1e12/J 1e12/V;
+        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9/H 2e+9/H 1e9/J 1e9/V;
+        1 1 1 1 1 1 1e3 1e6 1e9 1e+6/H 2e+6/H 1e6/J 1e6/V;
+        1 1 1 1 1 1 1 1e3 1e6 1e3/H 2e+3/H 1e3/J 1e3/V;
+        1 1 1 1 1 1 1 1 1e3 1/H 2/H 1/J 1/V;
+        1 1 1 1 1 1 1 1 1 1e-3/H 2e-3/H 1e-3/J 1e-3/V;
+        1 1 1 1 1 1 1 1 1 1 0.5 2.2937122783963e17 1/27.211386245988;
+        1 1 1 1 1 1 1 1 1 1 1 2*2.2937122783963e17 2/27.211386245988;
+        1 1 1 1 1 1 1 1 1 1 1 1 1/6.241509074e18;
+        1 1 1 1 1 1 1 1 1 1 1 1 1]
+
+    for i=1:N
+        for j=i:N
+           M[j,i] = 1/M[i,j]
+        end
+    end
+
+    id = findfirst(x -> x==unitIn, U)
+
+    v = zeros(Float64,N)
+    v[id] = val
+
+    w = M * v
+
+    id = findfirst(x -> x==unitOut, U)
+
+    return w[id]
+
+end

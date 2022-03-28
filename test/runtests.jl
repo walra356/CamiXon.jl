@@ -64,9 +64,9 @@ using Test
     @test createGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517091807564771, 0.22140275816016985]
     @test createGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test createGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
-    @test autoRmax(Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713), Orbit("1s", 1, 0, 0)) == 63.0
-    @test autoNtot(Orbit("1s", 1, 0, 0)) == 100
-    @test autoPrecision(100, Orbit("1s", 1, 0, 0)) == Float64
+    @test autoRmax(atom, orbit) == 63.0
+    @test autoNtot(orbit) == 100
+    @test autoPrecision(100, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, createGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
@@ -109,6 +109,7 @@ using Test
     @test texp(1.0, 0.0, 5) == 2.7166666666666663
     @test texp(1, 0, 5) == 163//60
     @test texp(1//1, 0//1, 5) == 163//60
+    @test convertUnits(1; unitIn="Hz", unitOut="Joule") == 6.62607015e-34
     #@test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits"
     #@test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"

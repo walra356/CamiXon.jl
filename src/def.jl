@@ -11,7 +11,7 @@ Type with fields:
 * `.nodes`:number of nodes
 
 Mutable struct to hold special grid indices as well as the number of nodes
-### Example:
+#### Examples:
 ```
 pos = Pos(1,2,3,4,5,6)
 pos.Nctp

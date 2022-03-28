@@ -92,6 +92,7 @@ export cast_FORTRAN_datatype
 export find_all
 export find_first
 export find_last
+export convertUnits
 
 export bernoulli_numbers
 export VectorRational

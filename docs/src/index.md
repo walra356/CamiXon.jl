@@ -295,8 +295,7 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
-## Grid, Def and solving the radial Schr
-
+## Grid and Def (solving the 1D Schrödinger equation)
 This section contains the principal Types and Methods for solving the radial Schrödinger equation on a non-uniform allowing for screening of the nuclear charge.
 
 ### Grid
@@ -397,6 +396,7 @@ find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 myconvert(T::Type, val::V) where V <: Number
+convertUnits(val; unitIn="Hartree", unitOut="Hz")
 ```
 
 ## Math
