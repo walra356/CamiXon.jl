@@ -295,7 +295,7 @@ function strFrequency(f::Frequency)
 
 end
 
-# ========================== frequencyUnits(f) ===================================
+# ========================== frequencyUnits(f) =================================
 
 """
     frequencyUnits(val; unitIn="Hartree")
@@ -330,5 +330,50 @@ function frequencyUnits(val; unitIn="Hartree")
     f = convertUnits(val; unitIn, unitOut)
 
     return Frequency(f, unitOut)
+
+end
+
+# ============ calibrationReport(E, Ecal; unitIn="Hartree") ====================
+
+"""
+    calibrationReport(E, Ecal; unitIn="Hartree")
+
+Comparison of energy E with calibration value Ecal
+#### Example:
+```
+calibrationReport(1.1, 1.0; unitIn="Hartree")
+ calibration report:
+ absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
+ relative accuracy: ΔE/E = 0.0909091
+ Ecal = 1.0 Hartree
+ E = 1.100000000000000000000000000000000000000000000000000000000000000000000000000003 Hartree
+ input number type: Float64
+```
+"""
+function calibrationReport(E, Ecal; unitIn="Hartree")
+
+    T = typeof(E)
+
+    V = BigFloat
+
+    E = myconvert(V, E)
+    Ecal = myconvert(V, Ecal)
+
+    ΔE = abs(E-Ecal)
+    ΔErel = ΔE/E
+
+    Δf = frequencyUnits(ΔE; unitIn="Hartree")
+    strΔf = strFrequency(Δf)
+    strΔE = repr(ΔE, context=:compact => true)
+    strΔErel = repr(ΔErel, context=:compact => true)
+
+    msg = "calibration report:\n"
+    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * " (" * strΔf * ")\n"
+    msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
+    msg *= "Ecal = $(Ecal) " * unitIn * "\n"
+    msg *= "E = $E " * unitIn * "\n"
+    msg *= "input number type: $(T)"
+
+    return println(msg)
 
 end

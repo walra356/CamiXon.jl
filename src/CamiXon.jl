@@ -96,6 +96,7 @@ export convertUnits
 export Frequency
 export strFrequency
 export frequencyUnits
+export calibrationReport
 
 export bernoulli_numbers
 export VectorRational

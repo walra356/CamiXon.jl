@@ -400,6 +400,7 @@ convertUnits(val; unitIn="Hartree", unitOut="Hz")
 Frequency
 strFrequency(f::Frequency)
 frequencyUnits(val; unitIn="Hartree")
+calibrationReport(E, Ecal; unitIn="Hartree")
 ```
 
 ## Math
