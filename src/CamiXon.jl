@@ -93,6 +93,9 @@ export find_all
 export find_first
 export find_last
 export convertUnits
+export Frequency
+export strFrequency
+export frequencyUnits
 
 export bernoulli_numbers
 export VectorRational

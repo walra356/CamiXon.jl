@@ -194,13 +194,14 @@ end
     convertUnits(val; unitIn="kHz", unitOut="MHz")
 
 Unit conversion between μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz, Hartree, Rydberg, Joule, and eV
+see also frequencyUnits(val; unitIn="Hartree")
 #### Example:
 ```
 convertUnits(1; unitIn="Hz", unitOut="Joule")
  6.62607015e-34
 ```
 """
-function convertUnits(val; unitIn="Hartree", unitOut="Hz") 
+function convertUnits(val; unitIn="Hartree", unitOut="Hz")
 # ==============================================================================
 #  convertUnits(val; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
@@ -244,5 +245,90 @@ function convertUnits(val; unitIn="Hartree", unitOut="Hz")
     id = findfirst(x -> x==unitOut, U)
 
     return w[id]
+
+end
+
+# ============================== Frequency =====================================
+
+"""
+    Frequency(val::Real, unit::String)
+
+Type with fields:
+* ` .val`: frequency value
+* `.unit`: frequency unit
+
+Frequency object
+#### Example:
+```
+f = Frequency(1, "Hz")
+f.val
+ 1
+
+f.unit
+ "Hz"
+```
+"""
+struct Frequency
+    val::Real
+    unit::String
+end
+
+# ========================== strFrequency(f) ===================================
+
+"""
+    strFrequency(f::Frequency)
+
+String for frequency object
+#### Example:
+```
+f = Frequency(1, "Hz")
+strFrequency(f)
+ "1 Hz"
+```
+"""
+function strFrequency(f::Frequency)
+
+    strval = repr(f.val, context=:compact => true)
+    strunit = " " * f.unit
+
+    return strval * strunit
+
+end
+
+# ========================== frequencyUnits(f) ===================================
+
+"""
+    frequencyUnits(val; unitIn="Hartree")
+
+Energy in frequency units - see also: convertUnits(val; unitIn="Hartree", unitOut="Hz")
+#### Example:
+```
+f = frequencyUnits(1; unitIn="Hartree")
+ Frequency(6.57968392050182, "PHz")
+
+strFrequency(f)
+ "6.57968 PHz"
+```
+"""
+function frequencyUnits(val; unitIn="Hartree")
+
+    U = ["Hartree"]
+
+    unitIn ∈ U || error("Error: conversion not implemented")
+
+    mul = 0.6579683920502001
+
+    unitOut = mul * 1e3 < val ? "EHz" :
+        mul * 1e-0  ≤ val < mul * 1e3   ? "PHz" :
+        mul * 1e-3  ≤ val < mul ? "THz" :
+        mul * 1e-7  ≤ val < mul * 1e-3  ? "GHz" :
+        mul * 1e-10 ≤ val < mul * 1e-7  ? "MHz" :
+        mul * 1e-13 ≤ val < mul * 1e-10 ? "kHz" :
+        mul * 1e-16 ≤ val < mul * 1e-13 ? "Hz"  :
+        mul * 1e-19 ≤ val < mul * 1e-16 ? "mHz" : "μHz"
+
+    f = convertUnits(val; unitIn, unitOut)
+
+    return Frequency(f, unitOut)
 
 end
