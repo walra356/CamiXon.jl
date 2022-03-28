@@ -320,6 +320,7 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 The `Def` object serves to define the problem to be solved and to contain in the field `def.Z` the solution as a discrete function of `N` elements.
 
 ```@docs
+Pos
 Def{T}
 createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 ```

@@ -57,6 +57,7 @@ export autoPrecision
 export autoSteps
 export grid_trapezoidal_integral
 
+export Pos
 export Def
 export createDef
 
