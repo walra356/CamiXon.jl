@@ -15,8 +15,6 @@ using Test
     @test createAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H",1,1,0,1.008,1//2,5.59)
     # @test createDef(autoGrid(atom, orbit; msg=false), atom, orbit).atom == Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59)
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
-    # @test createAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H", 1, 1, 0, 1.008, 1//2, 5.59)
-    # @test createSpinOrbit(createOrbit(1,0; msg=false); msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
     @test createTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]

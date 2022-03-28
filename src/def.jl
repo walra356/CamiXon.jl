@@ -45,7 +45,7 @@ Type with fields:
 * `   .o1`::Vector{Matrix{T}}   vector of zero-filled matrices
 * `   .o2`::Vector{Matrix{T}}   vector of zero-filled matrices
 * `   .o3`::Vector{Matrix{T}}   vector of unit-filled matrices
-* `  .pos`::Pos                 pos object for Nmin, Na, Nctp, Nb, N and nodes
+* `  .pos`::Pos                 object containing Nmin, Na, Nctp, Nb, N and nodes
 * `    .k`::Int                 Adams-Moulton order
 * `   .am`::Vector{T}           Adams-Moulton weight coefficients
 * `.matLD`::Matrix{T}           Lagrangian differentiation matrix
@@ -61,7 +61,7 @@ struct Def{T}
     o1::Vector{Matrix{T}}   # vector of zero-filled matrices
     o2::Vector{Matrix{T}}   # vector of zero-filled matrices
     o3::Vector{Matrix{T}}   # vector of unit-filled matrices
-    pos::Vector{Int}        # position indices of 4 grid points [N, Na, Nb, Nctp]
+    pos::Pos                # object containing Nmin, Na, Nctp, Nb, N and nodes
     k::Int                  # Adams-Moulton order
     am::Vector{T}           # Adams-Moulton weight coefficients
     matLD::Matrix{T}        # Lagrangian differentiation matrix
