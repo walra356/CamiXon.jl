@@ -3,12 +3,12 @@
     Pos(Nmin::Int, Na::Int, Nctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
-* ` .Nmin`:grid index of (screened) potential minimum
-* `   .Na`:grid index of last leading point
-* ` .Nctp`:grid index of classical turning point
-* `   .Nb`:grid index first trailing point
-* `    .N`:grid index last point
-* `.nodes`:number of nodes
+* ` .Nmin`: grid index of (screened) potential minimum
+* `   .Na`: grid index of last leading point
+* ` .Nctp`: grid index of classical turning point
+* `   .Nb`: grid index first trailing point
+* `    .N`: grid index last point
+* `.nodes`: number of nodes
 
 Mutable struct to hold special grid indices as well as the number of nodes
 #### Examples:
