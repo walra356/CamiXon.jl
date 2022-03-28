@@ -173,7 +173,7 @@ end
 # ====== createGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
 """
-    createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+    createGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 
 Create the Grid object
 
@@ -229,16 +229,7 @@ end
     autoRmax(atom::Atom, orbit::Orbit)
 
 Discretization range in atomic units (rule of thumb value)
-### Example:
-```
-atom = createAtom(1)
-orbit = createOrbit(1,0)
-autoRmax(atom, orbit)
- Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.0, I = 1//2, gI = 5.5)
- Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
 
- 63.0
-```
 """
 function autoRmax(atom::Atom, orbit::Orbit)
 # ==============================================================================
