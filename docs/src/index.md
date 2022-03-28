@@ -18,7 +18,6 @@ A package for image analysis of backscattered light
 sup(i::T) where T<:Real
 sub(i::T) where T<:Real
 frac(i::Rational{Int})
-myconvert(T::Type, val::V) where V <: Number
 ```
 
 ## Atomic properties
@@ -296,7 +295,7 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
-## Solving the radial wave equation for atoms
+## Grid, Def and solving the radial Schr
 
 This section contains the principal Types and Methods for solving the radial Schrödinger equation on a non-uniform allowing for screening of the nuclear charge.
 
@@ -391,12 +390,13 @@ stepedges(x::Vector{T} where T<:Real)
 edges(px, Δx=1.0, x0=0.0)
 ```
 
-## Search algorithms
+## Search and conversion tools
 
 ```@docs
 find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
+myconvert(T::Type, val::V) where V <: Number
 ```
 
 ## Math

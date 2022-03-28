@@ -93,35 +93,3 @@ function frac(i::Rational{Int})
     return sgn * num *  '/' * den
 
 end
-
-# ==================== myconvert(T::Type, val::V) ==============================
-
-@doc raw"""
-    myconvert(T::Type, val::V) where V <: Number
-
-Conversion including BigFloat and BigInt
-#### Examples:
-```
-convert(BigInt,1//3)
- InexactError: BigInt(1//3)
-
-myconvert(BigInt, 1//3)
- 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
-```
-"""
-function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
-# ================================================================================
-# myconvert(T::Type, val::V) # generalization of convert to include BigFloat
-# ================================================================================
-
-    if T == BigFloat
-        o = V <: Rational ? T(string(numerator(val)))/T(string(denominator(val))) : T(string(val))
-    elseif T == BigInt
-        o = V <: Rational ? T(numerator(val))/T(denominator(val)) : T(val)
-    else
-        o = convert(T,val)
-    end
-
-    return o
-
-end
