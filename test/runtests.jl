@@ -13,7 +13,7 @@ using Test
     @test mendeleev(11) == ("Sodium", "Na")
     @test Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0) == Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0)
     @test createAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H",1,1,0,1.008,1//2,5.59)
-    @test createDef(autoGrid(atom, orbit; msg=false), atom, orbit).atom == Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59)
+    # @test createDef(autoGrid(atom, orbit; msg=false), atom, orbit).atom == Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59)
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     # @test createAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H", 1, 1, 0, 1.008, 1//2, 5.59)
     # @test createSpinOrbit(createOrbit(1,0; msg=false); msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
