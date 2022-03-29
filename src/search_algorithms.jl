@@ -201,8 +201,7 @@ Value object
 #### Example:
 ```
 f = Value(1,"Hz")
-str = "$(f.val) $(f.unit)"
- "1 Hz"
+ Value(1, "Hz")
 ```
 """
 struct Value
