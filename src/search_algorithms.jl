@@ -188,105 +188,42 @@ function myconvert(T::Type, val::V) where V <: Number        #### moet verplaats
 
 end
 
-# =============== convertUnits(val; unitIn="kHz", unitOut="MHz") ===============
+# ============================== Value(val, unit) =====================================
 
 """
-    convertUnits(val; unitIn="kHz", unitOut="MHz")
-
-Unit conversion between μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz, Hartree, Rydberg, Joule, and eV
-see also frequencyUnits(val; unitIn="Hartree")
-#### Example:
-```
-convertUnits(1; unitIn="Hz", unitOut="Joule")
- 6.62607015e-34
-```
-"""
-function convertUnits(val; unitIn="Hartree", unitOut="Hz")
-# ==============================================================================
-#  convertUnits(val; unitIn="kHz", unitOut="MHz")
-# ==============================================================================
-    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
-
-    unitIn  ∈ U || error("Error: conversion not implemented")
-    unitOut ∈ U || error("Error: conversion not implemented")
-
-    N = length(U)
-    H = 0.15198298460570
-    J = 6.62607015e-19
-    V = 4.135667696
-
-    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21/H 2e+21/H 1e21/J 1e21/V;
-        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18/H 2e+18/H 1e18/J 1e18/V;
-        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15/H 2e+15/H 1e15/J 1e15/V;
-        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12/H 2e+12/H 1e12/J 1e12/V;
-        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9/H 2e+9/H 1e9/J 1e9/V;
-        1 1 1 1 1 1 1e3 1e6 1e9 1e+6/H 2e+6/H 1e6/J 1e6/V;
-        1 1 1 1 1 1 1 1e3 1e6 1e3/H 2e+3/H 1e3/J 1e3/V;
-        1 1 1 1 1 1 1 1 1e3 1/H 2/H 1/J 1/V;
-        1 1 1 1 1 1 1 1 1 1e-3/H 2e-3/H 1e-3/J 1e-3/V;
-        1 1 1 1 1 1 1 1 1 1 0.5 2.2937122783963e17 1/27.211386245988;
-        1 1 1 1 1 1 1 1 1 1 1 2*2.2937122783963e17 2/27.211386245988;
-        1 1 1 1 1 1 1 1 1 1 1 1 1/6.241509074e18;
-        1 1 1 1 1 1 1 1 1 1 1 1 1]
-
-    for i=1:N
-        for j=i:N
-           M[j,i] = 1/M[i,j]
-        end
-    end
-
-    id = findfirst(x -> x==unitIn, U)
-
-    v = zeros(Float64,N)
-    v[id] = val
-
-    w = M * v
-
-    id = findfirst(x -> x==unitOut, U)
-
-    return w[id]
-
-end
-
-# ============================== Frequency =====================================
-
-"""
-    Frequency(val::Real, unit::String)
+    Value(val::Real, unit::String)
 
 Type with fields:
-* ` .val`: frequency value
-* `.unit`: frequency unit
+* ` .val`: numerical value
+* `.unit`: unit specifier
 
-Frequency object
+Value object
 #### Example:
 ```
-f = Frequency(1, "Hz")
-f.val
- 1
-
-f.unit
- "Hz"
-```
-"""
-struct Frequency
-    val::Real
-    unit::String
-end
-
-# ========================== strFrequency(f) ===================================
-
-"""
-    strFrequency(f::Frequency)
-
-String for frequency object
-#### Example:
-```
-f = Frequency(1, "Hz")
-strFrequency(f)
+f = Value(1,"Hz")
+str = "$(f.val) $(f.unit)"
  "1 Hz"
 ```
 """
-function strFrequency(f::Frequency)
+struct Value
+    val::Number
+    unit::String
+end
+
+# ========================== strValue(val) ===================================
+
+"""
+    strValue(f::Value)
+
+String expression for Value object
+#### Example:
+```
+f = Value(1,"Hz")
+strValue(f)
+ "1 Hz"
+```
+"""
+function strValue(f::Value)
 
     strval = repr(f.val, context=:compact => true)
     strunit = " " * f.unit
@@ -295,41 +232,83 @@ function strFrequency(f::Frequency)
 
 end
 
-# ========================== frequencyUnits(f) =================================
+# =============== convertUnits(val; unitIn="kHz", unitOut="xHz") ===============
 
 """
-    frequencyUnits(val; unitIn="Hartree")
+    convertUnits(val; unitIn="kHz", unitOut="xHz")
 
-Energy in frequency units - see also: convertUnits(val; unitIn="Hartree", unitOut="Hz")
+Unit conversion between μHz, ..., EHz, Hartree, Rydberg, Joule, and eV
+default input: Hartree
+default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
-f = frequencyUnits(1; unitIn="Hartree")
- Frequency(6.57968392050182, "PHz")
+convertUnits(1; unitIn="Hz", unitOut="Joule")
+ 6.62607015e-34
 
-strFrequency(f)
+convertUnits(1; unitIn="Hartree", unitOut="Hz")
+ Value(6.57968392050182e15, "Hz")
+
+f = convertUnits(1) # default input (Hartree) and output (xHz)
+strf = strValue(f)
  "6.57968 PHz"
 ```
 """
-function frequencyUnits(val; unitIn="Hartree")
+function convertUnits(val; unitIn="Hartree", unitOut="xHz")
+# ==============================================================================
+#  convertUnits(val; unitIn="kHz", unitOut="MHz")
+# ==============================================================================
+    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
 
-    U = ["Hartree"]
+    unitIn ∈ U || error("Error: unitIn ∉ {μHz, ..., EHz, Hartree, Rydberg, Joule, eV}")
 
-    unitIn ∈ U || error("Error: conversion not implemented")
+    N = length(U)
 
-    mul = 0.6579683920502001
+    H = 0.15198298460570
+    J = 6.62607015e-19
+    V = 4.135667696
 
-    unitOut = mul * 1e3 < val ? "EHz" :
-        mul * 1e-0  ≤ val < mul * 1e3   ? "PHz" :
-        mul * 1e-3  ≤ val < mul ? "THz" :
-        mul * 1e-7  ≤ val < mul * 1e-3  ? "GHz" :
-        mul * 1e-10 ≤ val < mul * 1e-7  ? "MHz" :
-        mul * 1e-13 ≤ val < mul * 1e-10 ? "kHz" :
-        mul * 1e-16 ≤ val < mul * 1e-13 ? "Hz"  :
-        mul * 1e-19 ≤ val < mul * 1e-16 ? "mHz" : "μHz"
+    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21/H 0.5e+21/H 1e21/J 1e21/V;
+        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18/H 0.5e+18/H 1e18/J 1e18/V;
+        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15/H 0.5e+15/H 1e15/J 1e15/V;
+        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12/H 0.5e+12/H 1e12/J 1e12/V;
+        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9/H 0.5e+9/H 1e9/J 1e9/V;
+        1 1 1 1 1 1 1e3 1e6 1e9 1e+6/H 0.5e+6/H 1e6/J 1e6/V;
+        1 1 1 1 1 1 1 1e3 1e6 1e3/H 0.5e+3/H 1e3/J 1e3/V;
+        1 1 1 1 1 1 1 1 1e3 1/H 0.5/H 1/J 1/V;
+        1 1 1 1 1 1 1 1 1 1e-3/H 0.5e-3/H 1e-3/J 1e-3/V;
+        1 1 1 1 1 1 1 1 1 1 0.5 2.2937122783963e17 1/27.211386245988;
+        1 1 1 1 1 1 1 1 1 1 1 2*2.2937122783963e17 2/27.211386245988;
+        1 1 1 1 1 1 1 1 1 1 1 1 1/6.241509074e18;
+        1 1 1 1 1 1 1 1 1 1 1 1 1]
 
-    f = convertUnits(val; unitIn, unitOut)
+    for i=1:N
+        for j=i:N
+            M[j,i] = 1/M[i,j]
+        end
+    end
 
-    return Frequency(f, unitOut)
+    v = zeros(Float64,N)
+    i = findfirst(x -> x==unitIn, U)
+    v[i] = val
+    w = M * v
+
+    if unitOut == "xHz"
+        i = findfirst(x -> x=="Hz", U)
+        unitOut = 1e18 ≤  w[i] ? "EHz" :
+                  1e15 ≤  w[i] < 1e18 ? "PHz" :
+                  1e12 ≤  w[i] < 1e15 ? "THz" :
+                  1e9  ≤  w[i] < 1e12 ? "GHz" :
+                  1e6  ≤  w[i] < 1e9  ? "MHz" :
+                  1e3  ≤  w[i] < 1e6  ? "kHz" :
+                  1e0  ≤  w[i] < 1e3  ? "Hz"  :
+                  1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
+    else
+        unitOut ∈ U || error("Error: unitOut ∉ {μHz, ..., EHz, Hartree, Rydberg, Joule, eV}")
+    end
+
+    i = findfirst(x -> x==unitOut, U)
+
+    return Value(w[i],unitOut)
 
 end
 
@@ -339,6 +318,7 @@ end
     calibrationReport(E, Ecal; unitIn="Hartree")
 
 Comparison of energy E with calibration value Ecal
+default input: Hartree
 #### Example:
 ```
 calibrationReport(1.1, 1.0; unitIn="Hartree")
@@ -362,8 +342,8 @@ function calibrationReport(E, Ecal; unitIn="Hartree")
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
 
-    Δf = frequencyUnits(ΔE; unitIn="Hartree")
-    strΔf = strFrequency(Δf)
+    Δf = convertUnits(ΔE)
+    strΔf = strValue(Δf)
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 

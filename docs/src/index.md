@@ -396,10 +396,9 @@ find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 myconvert(T::Type, val::V) where V <: Number
+Value
+strValue(f::Value)
 convertUnits(val; unitIn="Hartree", unitOut="Hz")
-Frequency
-strFrequency(f::Frequency)
-frequencyUnits(val; unitIn="Hartree")
 calibrationReport(E, Ecal; unitIn="Hartree")
 ```
 

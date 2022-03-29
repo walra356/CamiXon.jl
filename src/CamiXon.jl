@@ -93,9 +93,8 @@ export find_all
 export find_first
 export find_last
 export convertUnits
-export Frequency
-export strFrequency
-export frequencyUnits
+export Value
+export strValue
 export calibrationReport
 
 export bernoulli_numbers

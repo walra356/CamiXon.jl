@@ -107,9 +107,9 @@ using Test
     @test texp(1.0, 0.0, 5) == 2.7166666666666663
     @test texp(1, 0, 5) == 163//60
     @test texp(1//1, 0//1, 5) == 163//60
-    @test convertUnits(1; unitIn="Hz", unitOut="Joule") == 6.62607015e-34
-    @test strFrequency(Frequency(1,"Hz")) == "1 Hz"
-    @test frequencyUnits(1; unitIn="Hartree") == Frequency(6.57968392050182, "PHz")
+    @test convertUnits(1; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
+    @test convertUnits(1) == Value(6.57968392050182, "PHz")
+    @test strValue(Value(1,"Hz")) == "1 Hz"
     #@test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits"
     #@test fits_copy("T01.fits","T01a.fits";protect=false) == "T01.fits was saved as T01a.fits"
