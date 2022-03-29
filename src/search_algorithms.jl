@@ -237,7 +237,9 @@ end
     convertUnits(val; unitIn="kHz", unitOut="xHz")
 
 Unit conversion between μHz, ..., EHz, Hartree, Rydberg, Joule, and eV
+
 default input: Hartree
+
 default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
@@ -317,6 +319,7 @@ end
     calibrationReport(E, Ecal; unitIn="Hartree")
 
 Comparison of energy E with calibration value Ecal
+
 default input: Hartree
 #### Example:
 ```
