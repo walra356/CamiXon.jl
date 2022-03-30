@@ -144,7 +144,7 @@ codata.c.symbol * " = " strValue(codata.c)
 """
 function createCodata(year::Int)
 
-    year == "2018" || error("Error: codata$(year) not implemented")
+    year == 2018 || error("Error: codata$(year) not implemented")
 
     ∆νCs = Value(9192631770, "Hz", sup(133)*"Cs hyperfine transition frequency", "∆νCs")
        c = Value(299792458, "m s"*sup(-1), "speed of light in vacuum", "c")
