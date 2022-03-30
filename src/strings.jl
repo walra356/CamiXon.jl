@@ -111,7 +111,7 @@ function sub(str::String)
         c[i] ∈ U || error("Error: subscript $(S[i]) not part of Unicode")
     end
 
-    return subscript(str::String)
+    return _subscript(str::String)
 
 end
 
