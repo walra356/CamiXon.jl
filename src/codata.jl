@@ -33,7 +33,7 @@ end
 # ============================== Value(val, unit) =====================================
 
 """
-    Value(val::Real, unit::String, name::String)
+    Value(val::Real, unit::String, name::String, name::String)
 
 Type with fields:
 * ` .val`: numerical value
@@ -85,25 +85,25 @@ end
 """
     Codata
 
-* '∆νCs': Cs hyperfine transition frequency
-* '   c': speed of light in vacuum
-* '   h': Planck constant
-* '   ħ': Planck constant (reduced)
-* '   e': elementary charge
-* '  kB': Boltzmann constant
-* '  NA': Avogadro constant
-* ' Kcd': Luminous efficacy
-* '  me': electron rest mass
-* '  R∞': Rydberg constant
-* '  Ry': Rydberg frequency
-* '  Eh': Hartree a.u.
-* '   α': fine-structure constant
-* '  μ0': magnetic permitivity of vacuum
-* '  ε0': electric permitivity of vacuum
-* '  KJ': Josephson constant
-* '  RK': Von Klitzing constant
-* '   R': Molar gas constant
-* 'matE': unit conversion matrix
+* `.∆νCs`: Cs hyperfine transition frequency
+* `   .c`: speed of light in vacuum
+* `   .h`: Planck constant
+* `   .ħ`: Planck constant (reduced)
+* `   .e`: elementary charge
+* `  .kB`: Boltzmann constant
+* `  .NA`: Avogadro constant
+* ` .Kcd`: Luminous efficacy
+* `  .me`: electron rest mass
+* `  .R∞`: Rydberg constant
+* `  .Ry`: Rydberg frequency
+* `  .Eh`: Hartree a.u.
+* `   .α`: fine-structure constant
+* `  .μ0`: magnetic permitivity of vacuum
+* `  .ε0`: electric permitivity of vacuum
+* `  .KJ`: Josephson constant
+* `  .RK`: Von Klitzing constant
+* `   .R`: Molar gas constant
+* `.matE': unit conversion matrix
 
 Codata object
 """
