@@ -27,6 +27,7 @@ myconvert(T::Type, val::V) where V <: Number
 Value
 strValue(f::Value)
 Codata
+createCodata(year::Int)
 convertUnits(val; unitIn="Hartree", unitOut="Hz")
 calibrationReport(E, Ecal; unitIn="Hartree")
 ```

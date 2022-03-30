@@ -14,6 +14,7 @@ export convertUnits
 export Value
 export strValue
 export Codata
+export createCodata
 export calibrationReport
 
 export bohrformula
