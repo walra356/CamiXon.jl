@@ -103,7 +103,7 @@ end
 * `  .KJ`: Josephson constant
 * `  .RK`: Von Klitzing constant
 * `   .R`: Molar gas constant
-* `.matE': unit conversion matrix
+* `.matE`: unit conversion matrix
 
 Codata object
 """
@@ -154,11 +154,11 @@ function createCodata(year::Int)
       kB = Value(1.380649e-23, "J K"*sup(-1), "Boltzmann constant", "kB")
       NA = Value(6.02214076e23, "mol"*sup(-1), "Avogadro constant", "NA")
      Kcd = Value(683, "lm W"*sup(-1), "Luminous efficacy", "Kcd")
-      me = Value(9.1093837015e-31, "Kg", "electron rest mass", "m"*sub2("e"))
+      me = Value(9.1093837015e-31, "Kg", "electron rest mass", "m"*sub("e"))
       R∞ = Value(10973731.568160, "m"*sup(-1), "Rydberg constant", "R∞")
 
       Ry = Value(R∞.val*c.val, "Hz", "Rydberg frequency", "Ry")
-      Eh = Value(2Ry.val*h.val, "Hartree a.u.", "Hartree atomic unit", "E"*sub2("h"))
+      Eh = Value(2Ry.val*h.val, "Hartree a.u.", "Hartree atomic unit", "E"*sub("h"))
        α = Value(sqrt(Eh.val/me.val)/c.val, "", "fine-structure constant", "α")
       μ0 = Value(2α.val*h.val/e.val/e.val/c.val, "N A"*sup(-2), "magnetic permitivity of vacuum", "μ"*sub(0))
       ε0 = Value(1/μ0.val/c.val/c.val, "F m"*sup(-1), "electric permitivity of vacuum", "ε"*sub(0))
