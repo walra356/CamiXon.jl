@@ -26,11 +26,37 @@ function _subscript(i::Int)
     return join(c)
 
 end
+function _subscript(str::String)
+
+    d = Dict(
+        'a' => Char(0x2090),
+        'e' => Char(0x2091),
+        'h' => Char(0x2095),
+        'k' => Char(0x2096),
+        'l' => Char(0x2097),
+        'm' => Char(0x2098),
+        'n' => Char(0x2099),
+        'o' => Char(0x2092),
+        'p' => Char(0x209A),
+        'r' => Char(0x1D63),
+        's' => Char(0x209B),
+        't' => Char(0x209C),
+        'x' => Char(0x2093))
+
+    c::Vector{Char} = []
+
+    for i ∈ collect(str)
+        push!(c, get(d, i,'.'))
+    end
+
+    return join(c)
+
+end
 
 # ======================== sup(i) ==============================================
 
 @doc raw"""
-    sup(i)
+    sup(i::T) where T<:Real
 
 Superscript notation for integers and rational numbers
 #### Examples:
@@ -53,13 +79,16 @@ end
 # ======================== sub(i) ==============================================
 
 @doc raw"""
-    sub(i)
+    sub(i::T) where T<:Real
 
-Subscript notation for integers and rational numbers
+Subscript notation for integers, rational numbers and a *subset* of lowercase characters ('a','e','h','k','l','m','n','o','p','r','s','t','x')
 #### Examples:
 ```
 'D' * sub(5//2)
  "D₅⸝₂"
+
+"m" * sub("e")
+ "mₑ"
 ```
 """
 function sub(i::T) where T<:Real
@@ -70,6 +99,19 @@ function sub(i::T) where T<:Real
     den = _subscript(denominator(abs(i)))
 
     return T == Rational{Int} ? (sgn * num * '\U2E1D' * den) : (sgn * num)
+
+end
+function sub(str::String)
+
+    U = ['a','e','h','k','l','m','n','o','p','r','s','t','x']
+
+    c = collect(str)
+
+    for i ∈ eachindex(c)
+        c[i] ∈ U || error("Error: subscript $(S[i]) not part of Unicode")
+    end
+
+    return subscript(str::String)
 
 end
 

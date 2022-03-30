@@ -8,7 +8,13 @@ using LinearAlgebra
 export sup
 export sub
 export frac
+
 export myconvert
+export convertUnits
+export Value
+export strValue
+export Codata
+export calibrationReport
 
 export bohrformula
 export mendeleev
@@ -92,10 +98,6 @@ export cast_FORTRAN_datatype
 export find_all
 export find_first
 export find_last
-export convertUnits
-export Value
-export strValue
-export calibrationReport
 
 export bernoulli_numbers
 export VectorRational
@@ -121,6 +123,7 @@ export polynom_powers
 export permutations_unique_count
 export texp
 
+include("codata.jl")
 include("strings.jl")
 include("adams.jl")
 include("atom.jl")

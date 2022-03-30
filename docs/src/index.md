@@ -20,6 +20,17 @@ sub(i::T) where T<:Real
 frac(i::Rational{Int})
 ```
 
+## Codata
+
+```@docs
+myconvert(T::Type, val::V) where V <: Number
+Value
+strValue(f::Value)
+Codata
+convertUnits(val; unitIn="Hartree", unitOut="Hz")
+calibrationReport(E, Ecal; unitIn="Hartree")
+```
+
 ## Atomic properties
 
 ```@docs
@@ -395,11 +406,6 @@ edges(px, Δx=1.0, x0=0.0)
 find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
-myconvert(T::Type, val::V) where V <: Number
-Value
-strValue(f::Value)
-convertUnits(val; unitIn="Hartree", unitOut="Hz")
-calibrationReport(E, Ecal; unitIn="Hartree")
 ```
 
 ## Math
