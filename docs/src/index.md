@@ -23,7 +23,6 @@ frac(i::Rational{Int})
 ## Codata
 
 ```@docs
-myconvert(T::Type, val::V) where V <: Number
 Value
 strValue(f::Value)
 NamedValue
@@ -32,6 +31,7 @@ Codata
 createCodata(year::Int)
 listCodata(codata::Codata)
 convertUnits(val; unitIn="Hartree", unitOut="Hz")
+myconvert(T::Type, val::V) where V <: Number
 calibrationReport(E, Ecal; unitIn="Hartree")
 ```
 

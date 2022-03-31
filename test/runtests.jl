@@ -20,7 +20,7 @@ using Test
     @test createTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 #    @test convertUnits(1; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
 #    @test convertUnits(1) == Value(6.57968392050182, "PHz")
-    @test strValue(Value(1,"Hz", "dummy", "dummy")) == "1 Hz"
+    @test strValue(Value(1,"Hz")) == "1 Hz"
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
