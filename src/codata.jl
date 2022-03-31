@@ -227,7 +227,7 @@ List codata values by name
 """
 function listCodata(codata::Codata)
 
-    ∆νCs = NamedValue(codata.∆νCs, sup(133)*"Cs hyperfine transition frequency")
+    ∆νCs = NamedValue(codata.∆νCs, "∆νCs", sup(133)*"Cs hyperfine transition frequency")
        c = NamedValue(codata.c, "c", "speed of light in vacuum")
        h = NamedValue(codata.h, "h", "Planck constant")
        ħ = NamedValue(codata.ħ, "ħ", "Planck constant (reduced)")
