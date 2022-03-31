@@ -259,7 +259,7 @@ end
 # =============== convertUnits(val; unitIn="kHz", unitOut="xHz") ===============
 
 """
-    convertUnits(val; unitIn="kHz", unitOut="xHz")
+    convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 
 Unit conversion between μHz, ..., EHz, Hartree, Rydberg, Joule, and eV
 

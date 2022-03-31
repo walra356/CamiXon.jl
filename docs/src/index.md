@@ -30,7 +30,7 @@ createNamedValue(val::Value; name=" ", comment=" ")
 Codata
 createCodata(year::Int)
 listCodata(codata::Codata)
-convertUnits(val; unitIn="Hartree", unitOut="Hz")
+convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 myconvert(T::Type, val::V) where V <: Number
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
