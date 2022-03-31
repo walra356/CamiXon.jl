@@ -1,61 +1,28 @@
-# ==================== myconvert(T::Type, val::V) ==============================
-
-@doc raw"""
-    myconvert(T::Type, val::V) where V <: Number
-
-Conversion including BigFloat and BigInt
-#### Examples:
-```
-convert(BigInt,1//3)
- InexactError: BigInt(1//3)
-
-myconvert(BigInt, 1//3)
- 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
-```
-"""
-function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
-# ================================================================================
-# myconvert(T::Type, val::V) # generalization of convert to include BigFloat
-# ================================================================================
-
-    if T == BigFloat
-        o = V <: Rational ? T(string(numerator(val)))/T(string(denominator(val))) : T(string(val))
-    elseif T == BigInt
-        o = V <: Rational ? T(numerator(val))/T(denominator(val)) : T(val)
-    else
-        o = convert(T,val)
-    end
-
-    return o
-
-end
-
 # ============================== Value(val, unit) =====================================
 
 """
-    Value(val::Real, unit::String, name::String, name::String)
+    Value(val::Real, unit::String)
 
 Type with fields:
 * ` .val`: numerical value
 * `.unit`: unit specifier
-* `.name`: type description
-* `.symbol`: symbol
 
 Value object
 #### Example:
 ```
-f = Value(1,"Hz", "frequency", "f")
- Value(1, "Hz", "frequency")
+f = Value(1,"Hz")
+ Value(1, "Hz")
 
-f.name
- "frequency"
+f.unit
+ "Hz"
+
+strValue(f)
+ "1 Hz"
 ```
 """
 struct Value
     val::Number
     unit::String
-    name::String
-  symbol::String
 end
 
 # ========================== strValue(val) =====================================
@@ -77,6 +44,53 @@ function strValue(f::Value)
     strunit = " " * f.unit
 
     return strval * strunit
+
+end
+
+# ============================== NamedValue(val, unit) =====================================
+
+"""
+    NamedValue(val::Value, name::String, comment::String)
+
+Type with fields:
+* `.val`: Value
+* `.name`: symbolic name
+* `.comment`: description
+
+Named Value object
+prefered creation method: `createNamedValue(val; name="", comment="")`
+#### Example:
+```
+f = Value(1,"Hz")
+ Value(1, "Hz", "frequency")
+
+f.name
+ "frequency"
+```
+"""
+struct NamedValue
+    val::Value
+    name::String
+    comment::String
+end
+
+# ==================== NamedValue(val, unit) ===================================
+
+"""
+    createNamedValue(val::Value; name=" ", comment=" ")
+
+Method to create NamedValue object
+#### Example
+```
+v = Value2(1.602176634e-19, "C")
+nv = createNamedValue(v; name="e")
+nv.name * " = " * strValue2(nv.val)
+ "e = 1.60218e-19 C"
+```
+"""
+function createNamedValue(val::Value; name=" ", comment=" ")
+
+    return NamedValue(val, name, comment)
 
 end
 
@@ -146,25 +160,24 @@ function createCodata(year::Int)
 
     year == 2018 || error("Error: codata$(year) not implemented")
 
-    ∆νCs = Value(9192631770, "Hz", sup(133)*"Cs hyperfine transition frequency", "∆νCs")
-       c = Value(299792458, "m s"*sup(-1), "speed of light in vacuum", "c")
-       h = Value(6.62607015e-34, "J Hz"*sup(-1), "Planck constant", "h")
-       ħ = Value(h.val/(2π), "J s", "Planck constant (reduced)", "ħ")
-       e = Value(1.602176634e-19, "C", "elementary charge", "e")
-      kB = Value(1.380649e-23, "J K"*sup(-1), "Boltzmann constant", "kB")
-      NA = Value(6.02214076e23, "mol"*sup(-1), "Avogadro constant", "NA")
-     Kcd = Value(683, "lm W"*sup(-1), "Luminous efficacy", "Kcd")
-      me = Value(9.1093837015e-31, "Kg", "electron rest mass", "m"*sub("e"))
-      R∞ = Value(10973731.568160, "m"*sup(-1), "Rydberg constant", "R∞")
-
-      Ry = Value(R∞.val*c.val, "Hz", "Rydberg frequency", "Ry")
-      Eh = Value(2Ry.val*h.val, "Hartree a.u.", "Hartree atomic unit", "E"*sub("h"))
-       α = Value(sqrt(Eh.val/me.val)/c.val, "", "fine-structure constant", "α")
-      μ0 = Value(2α.val*h.val/e.val/e.val/c.val, "N A"*sup(-2), "magnetic permitivity of vacuum", "μ"*sub(0))
-      ε0 = Value(1/μ0.val/c.val/c.val, "F m"*sup(-1), "electric permitivity of vacuum", "ε"*sub(0))
-      KJ = Value(2e.val/h.val, "Hz V"*sup(-1), "Josephson constant", "KJ")
-      RK = Value(h.val/e.val/e.val, "Ω", "Von Klitzing constant", "RK")
-       R = Value(NA.val*kB.val, "J mol"*sup(-1)*"K"*sup(-1), "Molar gas constant", "R")
+    ∆νCs = Value(9192631770, "Hz")
+       c = Value(299792458, "m s"*sup(-1))
+       h = Value(6.62607015e-34, "J Hz"*sup(-1))
+       ħ = Value(h.val/(2π), "J s")
+       e = Value(1.602176634e-19, "C")
+      kB = Value(1.380649e-23, "J K"*sup(-1))
+      NA = Value(6.02214076e23, "mol"*sup(-1))
+     Kcd = Value(683, "lm W"*sup(-1))
+      me = Value(9.1093837015e-31, "Kg")
+      R∞ = Value(10973731.568160, "m"*sup(-1))
+      Ry = Value(R∞.val*c.val, "Hz")
+      Eh = Value(2Ry.val*h.val, "Hartree a.u.")
+       α = Value(sqrt(Eh.val/me.val)/c.val, "")
+      μ0 = Value(2α.val*h.val/e.val/e.val/c.val, "N A"*sup(-2))
+      ε0 = Value(1/μ0.val/c.val/c.val, "F m"*sup(-1))
+      KJ = Value(2e.val/h.val, "Hz V"*sup(-1))
+      RK = Value(h.val/e.val/e.val, "Ω")
+       R = Value(NA.val*kB.val, "J mol"*sup(-1)*"K"*sup(-1))
 
     H = 2e-15 * c.val * R∞.val
     J = 1e+15 * h.val
@@ -193,6 +206,48 @@ function createCodata(year::Int)
     end
 
     return Codata(∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, M)
+
+end
+
+# ========================= listCodata(codata::Codata) =================================
+
+"""
+    listCodata(codata::Codata)
+
+List codata values by name
+#### Example:
+```
+# to be done
+```
+"""
+function listCodata(codata::Codata)
+
+    ∆νCs = NamedValue(codata.∆νCs, sup(133)*"Cs hyperfine transition frequency", "∆νCs")
+       c = NamedValue(codata.c, "c", "speed of light in vacuum")
+       h = NamedValue(codata.h, "h", "Planck constant")
+       ħ = NamedValue(codata.ħ, "ħ", "Planck constant (reduced)")
+       e = NamedValue(codata.e, "e", "elementary charge")
+      kB = NamedValue(codata.kB, "kB", "Boltzmann constant")
+      NA = NamedValue(codata.NA, "NA", "Avogadro constant")
+     Kcd = NamedValue(codata.Kcd, "Kcd"), "Luminous efficacy", "Kcd")
+      me = NamedValue(codata.me, "m"*sub("e"), "electron rest mass")
+      R∞ = NamedValue(codata.R∞, "R∞", "Rydberg constant")
+      Ry = NamedValue(codata.Ry, "Ry", "Rydberg frequency")
+      Eh = NamedValue(codata.Eh, "E"*sub("h"), "Hartree atomic unit")
+       α = NamedValue(codata.α, "α", "fine-structure constant")
+      μ0 = NamedValue(codata.μ0, "μ"*sub(0), "magnetic permitivity of vacuum")
+      ε0 = NamedValue(codata.ε0, "ε"*sub(0), "electric permitivity of vacuum")
+      KJ = NamedValue(codata.KJ, "KJ", "Josephson constant")
+      RK = NamedValue(codata.RK, "RK", "Von Klitzing constant")
+       R = NamedValue(codata.R, "R", "Molar gas constant")
+
+    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, M]
+
+    for i ∈ eachindex(U)
+        println(U[i].name * " = " * strVal(U[i].val))
+    end
+
+    return
 
 end
 
@@ -298,5 +353,37 @@ function calibrationReport(E, Ecal; unitIn="Hartree")
     msg *= "input number type: $(T)"
 
     return println(msg)
+
+end
+
+# ==================== myconvert(T::Type, val::V) ==============================
+
+@doc raw"""
+    myconvert(T::Type, val::V) where V <: Number
+
+Conversion including BigFloat and BigInt
+#### Examples:
+```
+convert(BigInt,1//3)
+ InexactError: BigInt(1//3)
+
+myconvert(BigInt, 1//3)
+ 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
+```
+"""
+function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
+# ================================================================================
+# myconvert(T::Type, val::V) # generalization of convert to include BigFloat
+# ================================================================================
+
+    if T == BigFloat
+        o = V <: Rational ? T(string(numerator(val)))/T(string(denominator(val))) : T(string(val))
+    elseif T == BigInt
+        o = V <: Rational ? T(numerator(val))/T(denominator(val)) : T(val)
+    else
+        o = convert(T,val)
+    end
+
+    return o
 
 end

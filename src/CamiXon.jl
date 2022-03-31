@@ -13,8 +13,11 @@ export myconvert
 export convertUnits
 export Value
 export strValue
+export NamedValue
+export createNamedValue
 export Codata
 export createCodata
+export listCodata
 export calibrationReport
 
 export bohrformula

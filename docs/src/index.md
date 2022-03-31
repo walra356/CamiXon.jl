@@ -26,8 +26,11 @@ frac(i::Rational{Int})
 myconvert(T::Type, val::V) where V <: Number
 Value
 strValue(f::Value)
+NamedValue
+createNamedValue(val::Value; name=" ", comment=" ")
 Codata
 createCodata(year::Int)
+listCodata(codata::Codata)
 convertUnits(val; unitIn="Hartree", unitOut="Hz")
 calibrationReport(E, Ecal; unitIn="Hartree")
 ```
