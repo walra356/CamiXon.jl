@@ -34,7 +34,7 @@ end
 # ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============
 
 """
-    Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, k, am, matLD)
+    Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
 * `    .T`::Type--------------- gridType
@@ -46,11 +46,12 @@ Type with fields:
 * `   .o2`::Vector{Matrix{T}}   vector of zero-filled matrices
 * `   .o3`::Vector{Matrix{T}}   vector of unit-filled matrices
 * `  .pos`::Pos                 object containing Nmin, Na, Nctp, Nb, N and nodes
+* `  .epn`::Int                 number of endpoints used for trapezoidal endpoint correction (must be odd)
 * `    .k`::Int                 Adams-Moulton order
 * `   .am`::Vector{T}           Adams-Moulton weight coefficients
 * `.matLD`::Matrix{T}           Lagrangian differentiation matrix
 
-The type `Grid` is best created by the function `createGrid`.
+The object `Def` is best created by the function `createDef`.
 """
 struct Def{T}
     T::Type
@@ -62,6 +63,7 @@ struct Def{T}
     o2::Vector{Matrix{T}}   # vector of zero-filled matrices
     o3::Vector{Matrix{T}}   # vector of unit-filled matrices
     pos::Pos                # object containing Nmin, Na, Nctp, Nb, N and nodes
+    epn::Int                # number of endpoints used for trapezoidal endpoint correction (must be odd)
     k::Int                  # Adams-Moulton order
     am::Vector{T}           # Adams-Moulton weight coefficients
     matLD::Matrix{T}        # Lagrangian differentiation matrix
@@ -79,6 +81,7 @@ function createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
     N = grid.N
     r = grid.r
     k = grid.k
+    epn = grid.epn
     Z = atom.Z
     ℓ = orbit.ℓ
 
@@ -99,6 +102,6 @@ function createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
     am = myconvert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = myconvert.(T, create_lagrange_differentiation_matrix(k))
 
-    return Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, k, am, matLD)
+    return Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 end

@@ -1,4 +1,4 @@
-# ============================== Value(val, unit) =====================================
+# ============================== Value(val, unit) ==============================
 
 """
     Value(val::Real, unit::String)
@@ -13,11 +13,11 @@ Value object
 f = Value(1,"Hz")
  Value(1, "Hz")
 
+f.val
+ 1
+
 f.unit
  "Hz"
-
-strValue(f)
- "1 Hz"
 ```
 """
 struct Value
@@ -30,7 +30,7 @@ end
 """
     strValue(f::Value)
 
-String expression for Value object
+String expression for Value object in `:compact => true` representation
 #### Example:
 ```
 f = Value(1,"Hz")
@@ -47,7 +47,7 @@ function strValue(f::Value)
 
 end
 
-# ============================== NamedValue(val, unit) =====================================
+# ============================== NamedValue(val, unit) =========================
 
 """
     NamedValue(val::Value, name::String, comment::String)
@@ -58,7 +58,7 @@ Type with fields:
 * `.comment`: description
 
 Named Value object
-prefered creation method: `createNamedValue(val; name="", comment="")`
+The object `NamedValue` is best created by the function `createNamedValue`.
 #### Example:
 ```
 f = Value(1,"Hz")
@@ -82,7 +82,7 @@ end
 Method to create NamedValue object
 #### Example
 ```
-v = Value2(1.602176634e-19, "C")
+v = Value(1.602176634e-19, "C")
 nv = createNamedValue(v; name="e")
 nv.name * " = " * strValue2(nv.val)
  "e = 1.60218e-19 C"
@@ -152,8 +152,11 @@ Create codata object
 #### Example:
 ```
 codata = createCodata(2018)
-codata.c.symbol * " = " strValue(codata.c)
- "c = 299792458 m s
+strValue.([codata.∆νCs,codata.c,codata.h])
+3-element Vector{String}:
+ "9192631770 Hz"
+ "299792458 m s⁻¹"
+ "6.62607e-34 J Hz⁻¹"
 ```
 """
 function createCodata(year::Int)
@@ -205,7 +208,9 @@ function createCodata(year::Int)
         end
     end
 
-    return Codata(∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, M)
+    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,M)
+
+    return o
 
 end
 
@@ -241,7 +246,7 @@ function listCodata(codata::Codata)
       RK = NamedValue(codata.RK, "RK", "Von Klitzing constant")
        R = NamedValue(codata.R, "R", "Molar gas constant")
 
-    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, M]
+    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R]
 
     for i ∈ eachindex(U)
         println(U[i].name * " = " * strVal(U[i].val))
@@ -263,18 +268,19 @@ default input: Hartree
 default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
-convertUnits(1; unitIn="Hz", unitOut="Joule")
+codata = createCodata(2018)
+convertUnits(1, codata; unitIn="Hz", unitOut="Joule")
  6.62607015e-34
 
-convertUnits(1; unitIn="Hartree", unitOut="Hz")
+convertUnits(1, codata; unitIn="Hartree", unitOut="Hz")
  Value(6.57968392050182e15, "Hz")
 
-f = convertUnits(1) # default input (Hartree) and output (xHz)
+f = convertUnits(1, codata) # default input (Hartree) and output (xHz)
 strf = strValue(f)
  "6.57968 PHz"
 ```
 """
-function convertUnits(val; unitIn="Hartree", unitOut="xHz", cst=codata)
+function convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
 #  convertUnits(val; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
@@ -282,7 +288,7 @@ function convertUnits(val; unitIn="Hartree", unitOut="xHz", cst=codata)
 
     unitIn ∈ U || error("Error: unitIn ∉ {μHz, ..., EHz, Hartree, Rydberg, Joule, eV}")
 
-    M = cst.matE
+    M = codata.matE
 
     v = zeros(Float64,length(U))
     i = findfirst(x -> x==unitIn, U)
@@ -328,7 +334,7 @@ calibrationReport(1.1, 1.0; unitIn="Hartree")
  input number type: Float64
 ```
 """
-function calibrationReport(E, Ecal; unitIn="Hartree")
+function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
     T = typeof(E)
 
@@ -340,7 +346,7 @@ function calibrationReport(E, Ecal; unitIn="Hartree")
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
 
-    Δf = convertUnits(ΔE)
+    Δf = convertUnits(ΔE, codata)
     strΔf = strValue(Δf)
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)

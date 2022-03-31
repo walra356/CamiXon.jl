@@ -16,7 +16,7 @@ Type with fields:
 * `     .epw`::Vector{Vector{T}}   trapezoidal endpoint weights for n=1:epn
 * `       .k`::Int                 Adams-Moulton order
 
-The type `Grid` is best created by the function `createGrid`.
+The object `Grid` is best created by the function `createGrid`.
 """
 struct Grid{T}
     ID::Int
