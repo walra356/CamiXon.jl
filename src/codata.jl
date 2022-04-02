@@ -6,10 +6,8 @@
 Object to hold a real numberical value together with a specifield unit
 
 The fields are:
-* ` .val`: numerical value
-* `.unit`: unit specifier
-
-Value object
+* ` .val`: numerical value (::Real)
+* `.unit`: unit specifier (String)
 #### Example:
 ```
 f = Value(1,"Hz")
@@ -56,10 +54,13 @@ end
 """
     NamedValue(val::Value, name::String, comment::String)
 
-Type with fields:
-* `.val`: Value
-* `.name`: symbolic name
-* `.comment`: description
+Object to hold a `Value` together with its `symbolic name` and a `short`
+description
+
+The fields are:
+* `.val`: Value  (::Value)
+* `.name`: symbolic name (::String)
+* `.comment`: description (::String)
 
 Named Value object
 The object `NamedValue` is best created by the function `castNamedValue`.
@@ -103,30 +104,30 @@ end
 # ========================= codata =============================================
 
 """
-    Codata
+    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
 
 Object to hold the natural constants from CODATA.
 
 The fields are:
-* `.∆νCs`: Cs hyperfine transition frequency
-* `   .c`: speed of light in vacuum
-* `   .h`: Planck constant
-* `   .ħ`: Planck constant (reduced)
-* `   .e`: elementary charge
-* `  .kB`: Boltzmann constant
-* `  .NA`: Avogadro constant
-* ` .Kcd`: Luminous efficacy
-* `  .me`: electron rest mass
-* `  .R∞`: Rydberg constant
-* `  .Ry`: Rydberg frequency
-* `  .Eh`: Hartree a.u.
-* `   .α`: fine-structure constant
-* `  .μ0`: magnetic permitivity of vacuum
-* `  .ε0`: electric permitivity of vacuum
-* `  .KJ`: Josephson constant
-* `  .RK`: Von Klitzing constant
-* `   .R`: Molar gas constant
-* `.matE`: unit conversion matrix
+* `.∆νCs`: Cs hyperfine transition frequency (::Value)
+* `   .c`: speed of light in vacuum (::Value)
+* `   .h`: Planck constant (::Value)
+* `   .ħ`: Planck constant - reduced (::Value)
+* `   .e`: elementary charge (::Value)
+* `  .kB`: Boltzmann constant (::Value)
+* `  .NA`: Avogadro constant (::Value)
+* ` .Kcd`: Luminous efficacy (::Value)
+* `  .me`: electron rest mass (::Value)
+* `  .R∞`: Rydberg constant (::Value)
+* `  .Ry`: Rydberg frequency (::Value)
+* `  .Eh`: Hartree a.u. (::Value)
+* `   .α`: fine-structure constant (::Value)
+* `  .μ0`: magnetic permitivity of vacuum (::Value)
+* `  .ε0`: electric permitivity of vacuum (::Value)
+* `  .KJ`: Josephson constant (::Value)
+* `  .RK`: Von Klitzing constant (::Value)
+* `   .R`: Molar gas constant (::Value)
+* `.matE`: unit conversion matrix (::Value)
 """
 struct Codata
 
@@ -149,7 +150,7 @@ struct Codata
       RK::Value
        R::Value
     matE::Matrix{Float64}
-    
+
 end
 
 # ========================= createCodata(year) =================================

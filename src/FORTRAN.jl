@@ -12,13 +12,14 @@ of digits to right of decimal, `e` - number of digits in exponent; `N`/`S`
 (optional) - switch for engineering/scientific formating of the `E` type.
 
 The fields are:
-* `Type::String`: primary FORTRAN datatype
-* `TypeChar::Char`: primary FORTRAN datatype character
-* `EngSci::Union{Char,Nothing}`: secundary datatype character (N for engineering, S for scientific)
-* `width::Int`: width of numeric field
-* `nmin::Int`: minimum number of digits displayed
-* `ndec::Int`: number of digits to right of decimal
-* `nexp::Int`: number of digits in exponent
+* `Type`: primary FORTRAN datatype (::String)
+* `TypeChar`: primary FORTRAN datatype character (::Char)
+* `EngSci`: secundary datatype character - N for engineering, S for scientific -
+ (::Union{Char,Nothing})
+* `width`: width of numeric field (::Int)
+* `nmin`: minimum number of digits displayed (::Int)
+* `ndec`: number of digits to right of decimal (::Int)
+* `nexp`: number of digits in exponent (::Int)
 """
 struct FORTRAN_format
 

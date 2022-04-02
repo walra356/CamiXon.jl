@@ -37,19 +37,20 @@ end
     Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
-* `    .T`::Type--------------- gridType
-* ` .atom`::Atom                atom object
-* `.orbit`::Orbit               orbit object
-* `  .pot`::Vector{T}           tabulated potential function
-* `  .scr`::Vector{T}           tabulated screening function
-* `   .o1`::Vector{Matrix{T}}   vector of zero-filled matrices
-* `   .o2`::Vector{Matrix{T}}   vector of zero-filled matrices
-* `   .o3`::Vector{Matrix{T}}   vector of unit-filled matrices
-* `  .pos`::Pos                 object containing Nmin, Na, Nctp, Nb, N and nodes
-* `  .epn`::Int                 number of endpoints used for trapezoidal endpoint correction (must be odd)
-* `    .k`::Int                 Adams-Moulton order
-* `   .am`::Vector{T}           Adams-Moulton weight coefficients
-* `.matLD`::Matrix{T}           Lagrangian differentiation matrix
+* `    .T`: gridType (::Type)
+* ` .atom`: atom object (::Atom)
+* `.orbit`: orbit object (::Orbit)
+* `  .pot`: tabulated potential function (::Vector{T})
+* `  .scr`: tabulated screening function (::Vector{T})
+* `   .o1`: vector of zero-filled matrices (::Vector{Matrix{T}})
+* `   .o2`: vector of zero-filled matrices (::Vector{Matrix{T}})
+* `   .o3`: vector of unit-filled matrices (::Vector{Matrix{T}})
+* `  .pos`: object containing Nmin, Na, Nctp, Nb, N and nodes (::Pos)
+* `  .epn`: number of endpoints used for trapezoidal endpoint correction
+- must be odd (::Int)
+* `    .k`: Adams-Moulton order (::Int)
+* `   .am`: Adams-Moulton weight coefficients (::Vector{T})
+* `.matLD`: Lagrangian differentiation matrix (::Matrix{T} )
 
 The object `Def` is best created by the function `castDef`.
 """

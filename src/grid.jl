@@ -175,7 +175,7 @@ end
 """
     castGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 
-Create the Grid object
+Method to create the Grid object
 
 `ID = 1`: exponential grid,
 `ID = 2`: quasi-exponential grid,
@@ -252,7 +252,7 @@ end
 Total number of gridpoints (rule of thumb value)
 ### Example:
 ```
-orbit = createOrbit(1,0)
+orbit = castOrbit(1,0)
 autoNtot(orbit)
  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
 
@@ -280,8 +280,8 @@ end
 Floating point precision (rule of thumb value)
 ### Example:
 ```
-atom = createAtom(1)
-orbit = createOrbit(1,0)
+atom = castAtom(1)
+orbit = castOrbit(1,0)
 Rmax = autoRmax(atom, orbit)
 autoPrecision(Rmax, orbit)
  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.0, I = 1//2, gI = 5.5)
