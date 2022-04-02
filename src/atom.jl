@@ -52,7 +52,7 @@ castAtom(Z=2, Q=1, M=4.00260325413, I=1//2, gI=0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+function castAtom(Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
     S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
