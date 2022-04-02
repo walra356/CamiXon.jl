@@ -100,23 +100,23 @@ end
     Codata
 
 * `.∆νCs`: Cs hyperfine transition frequency
-* `   .c`: speed of light in vacuum
-* `   .h`: Planck constant
-* `   .ħ`: Planck constant (reduced)
-* `   .e`: elementary charge
-* `  .kB`: Boltzmann constant
-* `  .NA`: Avogadro constant
-* ` .Kcd`: Luminous efficacy
-* `  .me`: electron rest mass
-* `  .R∞`: Rydberg constant
-* `  .Ry`: Rydberg frequency
-* `  .Eh`: Hartree a.u.
-* `   .α`: fine-structure constant
-* `  .μ0`: magnetic permitivity of vacuum
-* `  .ε0`: electric permitivity of vacuum
-* `  .KJ`: Josephson constant
-* `  .RK`: Von Klitzing constant
-* `   .R`: Molar gas constant
+* `   .c`: speed of light in vacuum
+* `   .h`: Planck constant
+* `   .ħ`: Planck constant (reduced)
+* `   .e`: elementary charge
+* `  .kB`: Boltzmann constant
+* `  .NA`: Avogadro constant
+* ` .Kcd`: Luminous efficacy
+* `  .me`: electron rest mass
+* `  .R∞`: Rydberg constant
+* `  .Ry`: Rydberg frequency
+* `  .Eh`: Hartree a.u.
+* `   .α`: fine-structure constant
+* `  .μ0`: magnetic permitivity of vacuum
+* `  .ε0`: electric permitivity of vacuum
+* `  .KJ`: Josephson constant
+* `  .RK`: Von Klitzing constant
+* `   .R`: Molar gas constant
 * `.matE`: unit conversion matrix
 
 Codata object
@@ -249,7 +249,7 @@ function listCodata(codata::Codata)
     U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R]
 
     for i ∈ eachindex(U)
-        println(U[i].name * " = " * strVal(U[i].val))
+        println(U[i].name * " = " * strValue(U[i].val))
     end
 
     return
@@ -327,10 +327,10 @@ default input: Hartree
 ```
 calibrationReport(1.1, 1.0; unitIn="Hartree")
  calibration report:
+ Ecal = 1.0 Hartree
+ E = 1.1000000000000000000000000000000000000000000000000000000000000003 Hartree
  absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
  relative accuracy: ΔE/E = 0.0909091
- Ecal = 1.0 Hartree
- E = 1.100000000000000000000000000000000000000000000000000000000000000000000000000003 Hartree
  input number type: Float64
 ```
 """
@@ -352,10 +352,10 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     strΔErel = repr(ΔErel, context=:compact => true)
 
     msg = "calibration report:\n"
-    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * " (" * strΔf * ")\n"
-    msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
     msg *= "Ecal = $(Ecal) " * unitIn * "\n"
     msg *= "E = $E " * unitIn * "\n"
+    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * " (" * strΔf * ")\n"
+    msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
     msg *= "input number type: $(T)"
 
     return println(msg)
