@@ -23,11 +23,11 @@ frac(i::Rational{Int})
 ## Codata
 
 ```@docs
+Codata
 Value
 strValue(f::Value)
 NamedValue
 castNamedValue(val::Value; name=" ", comment=" ")
-Codata
 castCodata(year::Int)
 listCodata(codata::Codata)
 convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
