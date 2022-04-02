@@ -28,7 +28,7 @@ strValue(f::Value)
 NamedValue
 castNamedValue(val::Value; name=" ", comment=" ")
 Codata
-createCodata(year::Int)
+castCodata(year::Int)
 listCodata(codata::Codata)
 convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 myconvert(T::Type, val::V) where V <: Number

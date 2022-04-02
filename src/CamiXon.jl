@@ -16,7 +16,7 @@ export strValue
 export NamedValue
 export castNamedValue
 export Codata
-export createCodata
+export castCodata
 export listCodata
 export calibrationReport
 
