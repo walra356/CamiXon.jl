@@ -10,11 +10,11 @@ export sub
 export frac
 
 export myconvert
-export convertUnits
+export convertUnit
 export Value
 export strValue
 export NamedValue
-export createNamedValue
+export castNamedValue
 export Codata
 export createCodata
 export listCodata
@@ -23,9 +23,9 @@ export calibrationReport
 export bohrformula
 export mendeleev
 export Atom
-export createAtom
+export castAtom
 export Orbit
-export createOrbit
+export castOrbit
 export SpinOrbit
 export createSpinOrbit
 export Term
@@ -60,7 +60,7 @@ export trapezoidal_integration
 
 export Grid
 export gridfunction
-export createGrid
+export castGrid
 export autoRmax
 export autoNtot
 export autoPrecision
@@ -69,7 +69,7 @@ export grid_trapezoidal_integral
 
 export Pos
 export Def
-export createDef
+export castDef
 
 export fits_create
 export fits_read

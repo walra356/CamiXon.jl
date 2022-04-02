@@ -51,7 +51,7 @@ Type with fields:
 * `   .am`::Vector{T}           Adams-Moulton weight coefficients
 * `.matLD`::Matrix{T}           Lagrangian differentiation matrix
 
-The object `Def` is best created by the function `createDef`.
+The object `Def` is best created by the function `castDef`.
 """
 struct Def{T}
     T::Type
@@ -70,13 +70,13 @@ struct Def{T}
 end
 
 """
-    createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 
 Create the Def object starting from the Grid and atomic properties.
 """
-function createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 # ================================================================================
-# createDef(grid, atom, orbit) # reference arrays
+# castDef(grid, atom, orbit) # reference arrays
 # ================================================================================
     N = grid.N
     r = grid.r

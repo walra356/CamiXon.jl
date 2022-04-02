@@ -26,11 +26,11 @@ frac(i::Rational{Int})
 Value
 strValue(f::Value)
 NamedValue
-createNamedValue(val::Value; name=" ", comment=" ")
+castNamedValue(val::Value; name=" ", comment=" ")
 Codata
 createCodata(year::Int)
 listCodata(codata::Codata)
-convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
+convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 myconvert(T::Type, val::V) where V <: Number
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
@@ -39,9 +39,9 @@ calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
 ```@docs
 Atom
-createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 Orbit
-createOrbit(n::Int, ℓ::Int; msg=true)
+castOrbit(n::Int, ℓ::Int; msg=true)
 SpinOrbit
 createSpinOrbit(o::Orbit; up=true, msg=true)
 Term
@@ -320,7 +320,7 @@ The `Grid` object is the backbone for the numerical procedure on a non-uniform g
 ```@docs
 Grid{T}
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
@@ -335,7 +335,7 @@ The `Def` object serves to define the problem to be solved and to contain in the
 ```@docs
 Pos
 Def{T}
-createDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 ```
 
 ## FITS

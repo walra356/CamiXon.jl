@@ -3,7 +3,7 @@
 """
     FORTRAN_format
 
-Object to hold a FORTRAN format specifier decomposed into its fields.
+Object to hold a FORTRAN format specifier decomposed in its fields.
 Accepted *datatype specifiers* are:  `Aw`,  `Iw`,  `Fw.d`,  `Ew.d`,  `Dw.d`.
 Accepted *output formating specifiers* are: `Aw`,  `Iw.m`,  `Bw.m`,  `Ow.m`,
 `Zw.m`,  `Fw.d`,  `Ew.dEe`,  `ENw.d`,  `ESw.d`,  `Gw.dEe`,  `Dw.dEe`.

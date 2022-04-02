@@ -13,7 +13,7 @@ Type with fields:
 * `     .I`:  nuclear spin in units of ħ
 * `    .gI`:  nuclear g-factor
 
-The type `Atom` is best created by the function `createAtom`.
+The type `Atom` is best created by the function `castAtom`.
 """
 struct Atom              # atomic properties
     name::String         # name of element
@@ -27,10 +27,10 @@ struct Atom              # atomic properties
 end
 
 
-# ======== createAtomcreateAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5) ===========
+# ======== castAtomcastAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5) ===========
 
 """
-    createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+    castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
 Create Atom with fields
 * `  .name`:  name of element
@@ -43,16 +43,16 @@ Create Atom with fields
 * `    .gI`:  nuclear g-factor
 #### Examples:
 ```
-createAtom(1; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
+castAtom(1; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
  Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
-createAtom(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
+castAtom(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
  Atom created: Helium ion - ⁴Heᐩ (Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
 """
-function createAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+function castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
     S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
@@ -87,7 +87,7 @@ Type for specification of *atomic orbitals* with fields:
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
 
-The type `Orbit` is best created by the function `createOrbit`.
+The type `Orbit` is best created by the function `castOrbit`.
 """
 struct Orbit
     name::String         # LS term notation
@@ -97,10 +97,10 @@ struct Orbit
 end
 
 
-# ======================== createOrbital(n::Int, ℓ::Int) ===========
+# ======================== castOrbital(n::Int, ℓ::Int) ===========
 
 """
-    createOrbit(n::Int, ℓ::Int; msg=true)
+    castOrbit(n::Int, ℓ::Int; msg=true)
 
 Specify `Orbit` with fields:
 * `.name`: name
@@ -110,12 +110,12 @@ Specify `Orbit` with fields:
 * `.ms`:  spin magnetic quantum number
 #### Examples:
 ```
-createOrbit(1,0)
+castOrbit(1,0)
  Orbit created: 1s (n = 1, n′ = 0, ℓ = 0)
  Orbit("1s", 1, 0, 0)
 ```
 """
-function createOrbit(n::Int, ℓ::Int; msg=true)
+function castOrbit(n::Int, ℓ::Int; msg=true)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
@@ -167,7 +167,7 @@ Specify `SpinOrbit` with fields:
 * `  .ms`: spin magnetic quantum number
 #### Examples:
 ```
-s1s = createOrbit(1,0)
+s1s = castOrbit(1,0)
 createSpinOrbit(s1s; up=true)
   SpinOrbit created: 1s↑ (n = 1, n′ = 0, ℓ = 0, ms = 1//2)
   SpinOrbit("1s↑", 1, 0, 0, 1//2)

@@ -16,7 +16,7 @@ Type with fields:
 * `     .epw`::Vector{Vector{T}}   trapezoidal endpoint weights for n=1:epn
 * `       .k`::Int                 Adams-Moulton order
 
-The object `Grid` is best created by the function `createGrid`.
+The object `Grid` is best created by the function `castGrid`.
 """
 struct Grid{T}
     ID::Int
@@ -170,10 +170,10 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
 
 end
 
-# ====== createGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
+# ====== castGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
 """
-    createGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+    castGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 
 Create the Grid object
 
@@ -185,28 +185,28 @@ Create the Grid object
 ```
 h = 0.1
 r0 = 1.0
-grid = createGrid(1, 4, Float64; h, r0)                 # exponential grid
+grid = castGrid(1, 4, Float64; h, r0)                 # exponential grid
 grid.r
  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
 
-grid = createGrid(2, 4, Float64; p = 4, h, r0)          # quasi-exponential grid
+grid = castGrid(2, 4, Float64; p = 4, h, r0)          # quasi-exponential grid
 grid.r
  [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
 
-grid = createGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0)  # polynomial grid
+grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0)  # polynomial grid
 grid.r
  [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
 
-grid = createGrid(4, 4, Float64; h, r0)                 # linear grid
+grid = castGrid(4, 4, Float64; h, r0)                 # linear grid
 grid.r
  [0.0, 0.1, 0.2, 0.3]
 grid.r′
  [0.1, 0.1, 0.1, 0.1]
 ```
 """
-function createGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 # ==============================================================================
-#  createGrid: creates the grid object
+#  castGrid: creates the grid object
 # ==============================================================================
     h = myconvert(T, h)
     r0 = myconvert(T, r0)
@@ -338,7 +338,7 @@ Generalized trapezoidal integral with endpoint correction on `epn = grid.epn poi
 ```
 f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
 N = 1000
-grid = createGrid(1, N, Float64; h=0.01, r0=0.005)
+grid = castGrid(1, N, Float64; h=0.01, r0=0.005)
 r = grid.r
 f2 = [f1s(r[n])^2 for n=1:N]
 norm = grid_trapezoidal_integral(f2, 1:N, grid)
