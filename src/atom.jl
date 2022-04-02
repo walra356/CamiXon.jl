@@ -30,7 +30,7 @@ end
 # ======== castAtomcastAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5) ===========
 
 """
-    castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+    castAtom(;Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
 Create Atom with fields
 * `  .name`:  name of element
@@ -43,11 +43,11 @@ Create Atom with fields
 * `    .gI`:  nuclear g-factor
 #### Examples:
 ```
-castAtom(1; Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
+castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
  Atom("Hydrogen", "¹H", 1, 1, 0, 1.00782503223, 1//2, 5.585694713)
 
-castAtom(2; Q=1, M=4.00260325413, I=1//2, gI=0.0)
+castAtom(Z=2, Q=1, M=4.00260325413, I=1//2, gI=0.0)
  Atom created: Helium ion - ⁴Heᐩ (Z = 2, Zc = 2, Q = 1, M = 4.00260325413, I = 1//2, gI = 0.0)
  Atom("Helium ion", "⁴Heᐩ", 2, 2, 1, 4.00260325413, 1//2, 0.0)
 ```
@@ -78,7 +78,7 @@ end
 # ======================== Orbit(name, n, n′, ℓ, up) ===========
 
 """
-    Orbit
+    Orbit(name, n, n′, ℓ)
 
 Type for specification of *atomic orbitals* with fields:
 * `.name`: name
@@ -109,12 +109,12 @@ Specify `Orbit` with fields:
 * `.ms`:  spin magnetic quantum number
 #### Examples:
 ```
-castOrbit(1,0)
+castOrbit(n=1, ℓ=0)
  Orbit created: 1s (n = 1, n′ = 0, ℓ = 0)
  Orbit("1s", 1, 0, 0)
 ```
 """
-function castOrbit(n::Int, ℓ::Int; msg=true)
+function castOrbit(;n=1, ℓ=0, msg=true)
 
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 

@@ -4,8 +4,8 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    atom = castAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false);
-    orbit = castOrbit(1,0; msg=false);
+    atom = castAtom(Z=1, Q=0, M=1.008, I=1//2, gI=5.59, msg=false);
+    orbit = castOrbit(n=1, ℓ=0, msg=false);
     codata = castCodata(2018);
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
@@ -13,7 +13,7 @@ using Test
     @test bohrformula(2, 4) == -1//8
     @test mendeleev(11) == ("Sodium", "Na")
     @test Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0) == Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0)
-    @test castAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H",1,1,0,1.008,1//2,5.59)
+    @test castAtom(Z=1, Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H",1,1,0,1.008,1//2,5.59)
     # @test castDef(autoGrid(atom, orbit; msg=false), atom, orbit).atom == Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59)
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
