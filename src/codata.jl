@@ -3,7 +3,9 @@
 """
     Value(val::Real, unit::String)
 
-Type with fields:
+Object to hold a real numberical value together with a specifield unit
+
+The fields are:
 * ` .val`: numerical value
 * `.unit`: unit specifier
 
@@ -21,8 +23,10 @@ f.unit
 ```
 """
 struct Value
+
     val::Number
     unit::String
+
 end
 
 # ========================== strValue(val) =====================================
@@ -58,7 +62,7 @@ Type with fields:
 * `.comment`: description
 
 Named Value object
-The object `NamedValue` is best created by the function `createNamedValue`.
+The object `NamedValue` is best created by the function `castNamedValue`.
 #### Example:
 ```
 f = Value(1,"Hz")
@@ -69,26 +73,28 @@ f.name
 ```
 """
 struct NamedValue
+
     val::Value
     name::String
     comment::String
+
 end
 
 # ==================== NamedValue(val, unit) ===================================
 
 """
-    createNamedValue(val::Value; name=" ", comment=" ")
+    castNamedValue(val::Value; name=" ", comment=" ")
 
 Method to create NamedValue object
 #### Example
 ```
 v = Value(1.602176634e-19, "C")
-nv = createNamedValue(v; name="e")
+nv = castNamedValue(v; name="e")
 nv.name * " = " * strValue2(nv.val)
  "e = 1.60218e-19 C"
 ```
 """
-function createNamedValue(val::Value; name=" ", comment=" ")
+function castNamedValue(val::Value; name=" ", comment=" ")
 
     return NamedValue(val, name, comment)
 
@@ -99,6 +105,9 @@ end
 """
     Codata
 
+Object to hold the natural constants from CODATA.
+
+The fields are:
 * `.∆νCs`: Cs hyperfine transition frequency
 * `   .c`: speed of light in vacuum
 * `   .h`: Planck constant
@@ -118,10 +127,9 @@ end
 * `  .RK`: Von Klitzing constant
 * `   .R`: Molar gas constant
 * `.matE`: unit conversion matrix
-
-Codata object
 """
 struct Codata
+
     ∆νCs::Value
        c::Value
        h::Value
@@ -141,17 +149,18 @@ struct Codata
       RK::Value
        R::Value
     matE::Matrix{Float64}
+    
 end
 
 # ========================= createCodata(year) =================================
 
 """
-    createCodata(year::Int)
+    castCodata(year::Int)
 
-Create codata object
+Create the Codata object
 #### Example:
 ```
-codata = createCodata(2018)
+codata = castCodata(2018)
 strValue.([codata.∆νCs,codata.c,codata.h])
 3-element Vector{String}:
  "9192631770 Hz"
@@ -159,7 +168,7 @@ strValue.([codata.∆νCs,codata.c,codata.h])
  "6.62607e-34 J Hz⁻¹"
 ```
 """
-function createCodata(year::Int)
+function castCodata(year::Int)
 
     year == 2018 || error("Error: codata$(year) not implemented")
 
@@ -256,10 +265,10 @@ function listCodata(codata::Codata)
 
 end
 
-# =============== convertUnits(val; unitIn="kHz", unitOut="xHz") ===============
+# =============== convertUnit(val; unitIn="kHz", unitOut="xHz") ===============
 
 """
-    convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
+    convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 
 Unit conversion between μHz, ..., EHz, Hartree, Rydberg, Joule, and eV
 
@@ -269,20 +278,20 @@ default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
 codata = createCodata(2018)
-convertUnits(1, codata; unitIn="Hz", unitOut="Joule")
+convertUnit(1, codata; unitIn="Hz", unitOut="Joule")
  6.62607015e-34
 
-convertUnits(1, codata; unitIn="Hartree", unitOut="Hz")
+convertUnit(1, codata; unitIn="Hartree", unitOut="Hz")
  Value(6.57968392050182e15, "Hz")
 
-f = convertUnits(1, codata) # default input (Hartree) and output (xHz)
+f = convertUnit(1, codata) # default input (Hartree) and output (xHz)
 strf = strValue(f)
  "6.57968 PHz"
 ```
 """
-function convertUnits(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
+function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
-#  convertUnits(val; unitIn="kHz", unitOut="MHz")
+#  convertUnit(val; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
     U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
 
@@ -346,7 +355,7 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
 
-    Δf = convertUnits(ΔE, codata)
+    Δf = convertUnit(ΔE, codata)
     strΔf = strValue(Δf)
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
