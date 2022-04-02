@@ -62,7 +62,6 @@ function castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
     (name,symbol) = mendeleev(Z)
 
-
     name = Q ≠ 0 ? (name * " ion") : name
     symbol = sup(Int(round(M))) * symbol * strQ
 

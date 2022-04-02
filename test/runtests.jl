@@ -4,9 +4,9 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    atom = Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59);
+    atom = castAtom(1; Q=0, M=1.008, I=1//2, gI=5.59, msg=false);
     orbit = castOrbit(1,0; msg=false);
-    codata = createCodata(2018);
+    codata = castCodata(2018);
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
