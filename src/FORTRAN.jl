@@ -39,7 +39,7 @@ end
     cast_FORTRAN_format(format::String)
 
 Decompose the format specifier `format` into its fields and cast this into the
-`FORTRAN_format` object. Allowed format specifiers are of the types:
+[`FORTRAN_format`](@ref) object. Allowed format specifiers are of the types:
 `Aw`, `Iw.m`, `Bw.m`, `Ow.m`, `Zw.m`, `Fw.d`, `Ew.dEe`, `ENw.d`, `ESw.d`,
 `Gw.dEe`, `Dw.dEe`, with: `w` - width, `m `(optional) - minimum number of
 digits, `d` - number of digits to right of decimal, `e` - number of digits in
@@ -48,16 +48,16 @@ the `E` type.
 #### Examples:
 ```
 f = cast_FORTRAN_format("I10")
- FORTRAN_format("Iw", 'I', nothing, 10, 0, 0, 0)
+  FORTRAN_format("Iw", 'I', nothing, 10, 0, 0, 0)
 
 f = cast_FORTRAN_format("I10.12")
- FORTRAN_format("Iw.m", 'I', nothing, 10, 12, 0, 0)
+  FORTRAN_format("Iw.m", 'I', nothing, 10, 12, 0, 0)
 
 f = cast_FORTRAN_format("E10.5E3")
- FORTRAN_format("Ew.dEe", 'E', nothing, 10, 0, 5, 3)
+  FORTRAN_format("Ew.dEe", 'E', nothing, 10, 0, 5, 3)
 
 f.Type, f.TypeChar, f.EngSci, f.width, f.nmin, f.ndec, f.nexp
- ("Ew.dEe", 'E', nothing, 10, 0, 5, 3)
+  ("Ew.dEe", 'E', nothing, 10, 0, 5, 3)
 ```
 """
 function cast_FORTRAN_format(str::String)
@@ -113,22 +113,22 @@ end
     cast_FORTRAN_datatype(format::String)
 
 Decompose the format specifier `format` into its fields and cast this into the
-`FORTRAN_format` object. Allowed format specifiers are of the types: `Aw`,
-`Iw`, `Fw.d`, `Ew.d`, `Dw.d`, where: `w` - width, `d` - number of digits to
-right of decimal point.
+[`FORTRAN_format`](@ref) object. Allowed format specifiers are of the types:
+`Aw`, `Iw`, `Fw.d`, `Ew.d`, `Dw.d`, where: `w` - width, `d` - number of digits
+to right of decimal point.
 #### Examples:
 ```
 f = cast_FORTRAN_datatype("I10")
- FORTRAN_format("Iw", 'I', nothing, 10, 0, 0, 0)
+  FORTRAN_format("Iw", 'I', nothing, 10, 0, 0, 0)
 
 f = cast_FORTRAN_datatypet("F10.4")
- FORTRAN_format("Fw.d", 'F', nothing, 10, 0, 4, 0)
+  FORTRAN_format("Fw.d", 'F', nothing, 10, 0, 4, 0)
 
 f = cast_FORTRAN_datatype("E10.5")
- FORTRAN_format("Ew.d", 'E', nothing, 10, 0, 5, 0)
+  FORTRAN_format("Ew.d", 'E', nothing, 10, 0, 5, 0)
 
 f.Type, f.TypeChar, f.EngSci, f.width, f.nmin, f.ndec, f.nexp
- ("Ew.d", 'E', nothing, 10, 0, 5, 0)
+  ("Ew.d", 'E', nothing, 10, 0, 5, 0)
 ```
 """
 function cast_FORTRAN_datatype(str::String)
