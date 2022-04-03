@@ -3,7 +3,7 @@
 """
     Value(val::Real, unit::String)
 
-Object to hold a real numberical value together with a specifield unit
+Object to hold a real numerical value together with a unit specifier.
 
 The fields are:
 * ` .val`: numerical value (::Real)
@@ -11,13 +11,13 @@ The fields are:
 #### Example:
 ```
 f = Value(1,"Hz")
- Value(1, "Hz")
+  Value(1, "Hz")
 
 f.val
- 1
+  1
 
 f.unit
- "Hz"
+  "Hz"
 ```
 """
 struct Value
@@ -32,12 +32,13 @@ end
 """
     strValue(f::Value)
 
-String expression for Value object in `:compact => true` representation
+String expression for a [`Value`](@ref) object in `:compact => true`
+representation
 #### Example:
 ```
 f = Value(1,"Hz")
 strValue(f)
- "1 Hz"
+  "1 Hz"
 ```
 """
 function strValue(f::Value)
@@ -54,7 +55,7 @@ end
 """
     NamedValue(val::Value, name::String, comment::String)
 
-Object to hold a `Value` together with its `symbolic name` and a `short`
+Object to hold a [`Value`](@ref) together with its `symbolic name` and a `short`
 description
 
 The fields are:
@@ -63,14 +64,14 @@ The fields are:
 * `.comment`: description (::String)
 
 Named Value object
-The object `NamedValue` is best created by the function `castNamedValue`.
+The object `NamedValue` is best created using [`castNamedValue`](@ref).
 #### Example:
 ```
 f = Value(1,"Hz")
- Value(1, "Hz", "frequency")
+  Value(1, "Hz", "frequency")
 
 f.name
- "frequency"
+  "frequency"
 ```
 """
 struct NamedValue
@@ -86,13 +87,13 @@ end
 """
     castNamedValue(val::Value; name=" ", comment=" ")
 
-Method to create NamedValue object
+Method to create a [`NamedValue`](@ref) object
 #### Example
 ```
 v = Value(1.602176634e-19, "C")
 nv = castNamedValue(v; name="e")
 nv.name * " = " * strValue2(nv.val)
- "e = 1.60218e-19 C"
+  "e = 1.60218e-19 C"
 ```
 """
 function castNamedValue(val::Value; name=" ", comment=" ")
@@ -129,6 +130,16 @@ The fields are:
 * `  .RK`: Von Klitzing constant (::Value)
 * `   .R`: Molar gas constant (::Value)
 * `.matE`: unit conversion matrix (Matrix{Float64})
+
+#### Example:
+```
+codata = castCodata(2018)
+codata.μ0
+  Value(1.2566370621250601e-6, "N A⁻²")
+
+codata.μ0.val
+  1.2566370621250601e-6
+```
 """
 struct Codata
 
@@ -159,15 +170,15 @@ end
 """
     castCodata(year::Int)
 
-Create the Codata object
+Method to create the [`Codata`](@ref) object
 #### Example:
 ```
 codata = castCodata(2018)
 strValue.([codata.∆νCs,codata.c,codata.h])
-3-element Vector{String}:
- "9192631770 Hz"
- "299792458 m s⁻¹"
- "6.62607e-34 J Hz⁻¹"
+ 3-element Vector{String}:
+  "9192631770 Hz"
+  "299792458 m s⁻¹"
+  "6.62607e-34 J Hz⁻¹"
 ```
 """
 function castCodata(year::Int)
@@ -230,29 +241,29 @@ end
 """
     listCodata(codata::Codata)
 
-List codata values by name
+Method to list the fields of [`Codata`](@ref) by their symbolic name
 #### Example:
 ```
 codata = castCodata(2018)
 listCodata(codata::Codata)
- ∆νCs = 9192631770 Hz
- c = 299792458 m s⁻¹
- h = 6.62607e-34 J Hz⁻¹
- ħ = 1.05457e-34 J s
- e = 1.60218e-19 C
- kB = 1.38065e-23 J K⁻¹
- NA = 6.02214e23 mol⁻¹
- Kcd = 683 lm W⁻¹
- mₑ = 9.10938e-31 Kg
- R∞ = 1.09737e7 m⁻¹
- Ry = 3.28984e15 Hz
- Eₕ = 4.35974e-18 Hartree a.u.
- α = 0.00729735
- μ₀ = 1.25664e-6 N A⁻²
- ε₀ = 8.85419e-12 F m⁻¹
- KJ = 4.83598e14 Hz V⁻¹
- RK = 25812.8 Ω
- R = 8.31446 J mol⁻¹K⁻¹
+  ∆νCs = 9192631770 Hz
+  c = 299792458 m s⁻¹
+  h = 6.62607e-34 J Hz⁻¹
+  ħ = 1.05457e-34 J s
+  e = 1.60218e-19 C
+  kB = 1.38065e-23 J K⁻¹
+  NA = 6.02214e23 mol⁻¹
+  Kcd = 683 lm W⁻¹
+  mₑ = 9.10938e-31 Kg
+  R∞ = 1.09737e7 m⁻¹
+  Ry = 3.28984e15 Hz
+  Eₕ = 4.35974e-18 Hartree a.u.
+  α = 0.00729735
+  μ₀ = 1.25664e-6 N A⁻²
+  ε₀ = 8.85419e-12 F m⁻¹
+  KJ = 4.83598e14 Hz V⁻¹
+  RK = 25812.8 Ω
+  R = 8.31446 J mol⁻¹K⁻¹
 ```
 """
 function listCodata(codata::Codata)
@@ -300,14 +311,14 @@ default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 ```
 codata = createCodata(2018)
 convertUnit(1, codata; unitIn="Hz", unitOut="Joule")
- 6.62607015e-34
+  6.62607015e-34
 
 convertUnit(1, codata; unitIn="Hartree", unitOut="Hz")
- Value(6.57968392050182e15, "Hz")
+  Value(6.57968392050182e15, "Hz")
 
 f = convertUnit(1, codata) # default input (Hartree) and output (xHz)
 strf = strValue(f)
- "6.57968 PHz"
+  "6.57968 PHz"
 ```
 """
 function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
@@ -356,12 +367,12 @@ default input: Hartree
 #### Example:
 ```
 calibrationReport(1.1, 1.0; unitIn="Hartree")
- calibration report:
- Ecal = 1.0 Hartree
- E = 1.1000000000000000000000000000000000000000000000000000000000000003 Hartree
- absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
- relative accuracy: ΔE/E = 0.0909091
- input number type: Float64
+  calibration report:
+  Ecal = 1.0 Hartree
+  E = 1.1000000000000000000000000000000000000000000000000000000000000003 Hartree
+  absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
+  relative accuracy: ΔE/E = 0.0909091
+  input number type: Float64
 ```
 """
 function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
@@ -397,14 +408,14 @@ end
 @doc raw"""
     myconvert(T::Type, val::V) where V <: Number
 
-Conversion including BigFloat and BigInt
+Conversion including `BigFloat` and `BigInt`
 #### Examples:
 ```
 convert(BigInt,1//3)
- InexactError: BigInt(1//3)
+  InexactError: BigInt(1//3)
 
 myconvert(BigInt, 1//3)
- 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
+  0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
 ```
 """
 function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
