@@ -1,56 +1,3 @@
-# ========================= codata =============================================
-
-"""
-    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
-
-Object to hold the natural constants from CODATA. It is best created with the
-function [`castCodata`](@ref)
-
-The fields are:
-* `.∆νCs`: Cs hyperfine transition frequency (::Value)
-* `   .c`: speed of light in vacuum (::Value)
-* `   .h`: Planck constant (::Value)
-* `   .ħ`: Planck constant - reduced (::Value)
-* `   .e`: elementary charge (::Value)
-* `  .kB`: Boltzmann constant (::Value)
-* `  .NA`: Avogadro constant (::Value)
-* ` .Kcd`: Luminous efficacy (::Value)
-* `  .me`: electron rest mass (::Value)
-* `  .R∞`: Rydberg constant (::Value)
-* `  .Ry`: Rydberg frequency (::Value)
-* `  .Eh`: Hartree a.u. (::Value)
-* `   .α`: fine-structure constant (::Value)
-* `  .μ0`: magnetic permitivity of vacuum (::Value)
-* `  .ε0`: electric permitivity of vacuum (::Value)
-* `  .KJ`: Josephson constant (::Value)
-* `  .RK`: Von Klitzing constant (::Value)
-* `   .R`: Molar gas constant (::Value)
-* `.matE`: unit conversion matrix (Matrix{Float64})
-"""
-struct Codata
-
-    ∆νCs::Value
-       c::Value
-       h::Value
-       ħ::Value
-       e::Value
-      kB::Value
-      NA::Value
-     Kcd::Value
-      me::Value
-      R∞::Value
-      Ry::Value
-      Eh::Value
-       α::Value
-      μ0::Value
-      ε0::Value
-      KJ::Value
-      RK::Value
-       R::Value
-    matE::Matrix{Float64}
-
-end
-
 # ============================== Value(val, unit) ==============================
 
 """
@@ -151,6 +98,59 @@ nv.name * " = " * strValue2(nv.val)
 function castNamedValue(val::Value; name=" ", comment=" ")
 
     return NamedValue(val, name, comment)
+
+end
+
+# ========================= codata =============================================
+
+"""
+    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
+
+Object to hold the natural constants from CODATA. It is best created with the
+function [`castCodata`](@ref)
+
+The fields are:
+* `.∆νCs`: Cs hyperfine transition frequency (::Value)
+* `   .c`: speed of light in vacuum (::Value)
+* `   .h`: Planck constant (::Value)
+* `   .ħ`: Planck constant - reduced (::Value)
+* `   .e`: elementary charge (::Value)
+* `  .kB`: Boltzmann constant (::Value)
+* `  .NA`: Avogadro constant (::Value)
+* ` .Kcd`: Luminous efficacy (::Value)
+* `  .me`: electron rest mass (::Value)
+* `  .R∞`: Rydberg constant (::Value)
+* `  .Ry`: Rydberg frequency (::Value)
+* `  .Eh`: Hartree a.u. (::Value)
+* `   .α`: fine-structure constant (::Value)
+* `  .μ0`: magnetic permitivity of vacuum (::Value)
+* `  .ε0`: electric permitivity of vacuum (::Value)
+* `  .KJ`: Josephson constant (::Value)
+* `  .RK`: Von Klitzing constant (::Value)
+* `   .R`: Molar gas constant (::Value)
+* `.matE`: unit conversion matrix (Matrix{Float64})
+"""
+struct Codata
+
+    ∆νCs::Value
+       c::Value
+       h::Value
+       ħ::Value
+       e::Value
+      kB::Value
+      NA::Value
+     Kcd::Value
+      me::Value
+      R∞::Value
+      Ry::Value
+      Eh::Value
+       α::Value
+      μ0::Value
+      ε0::Value
+      KJ::Value
+      RK::Value
+       R::Value
+    matE::Matrix{Float64}
 
 end
 
