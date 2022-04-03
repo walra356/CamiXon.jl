@@ -73,8 +73,6 @@ function castAtom(;Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
 end
 
-
-
 # ======================== Orbit(name, n, n′, ℓ, up) ===========
 
 """

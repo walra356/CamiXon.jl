@@ -1,3 +1,56 @@
+# ========================= codata =============================================
+
+"""
+    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
+
+Object to hold the natural constants from CODATA. It is best created with the
+function [`castCodata`](@ref)
+
+The fields are:
+* `.∆νCs`: Cs hyperfine transition frequency (::Value)
+* `   .c`: speed of light in vacuum (::Value)
+* `   .h`: Planck constant (::Value)
+* `   .ħ`: Planck constant - reduced (::Value)
+* `   .e`: elementary charge (::Value)
+* `  .kB`: Boltzmann constant (::Value)
+* `  .NA`: Avogadro constant (::Value)
+* ` .Kcd`: Luminous efficacy (::Value)
+* `  .me`: electron rest mass (::Value)
+* `  .R∞`: Rydberg constant (::Value)
+* `  .Ry`: Rydberg frequency (::Value)
+* `  .Eh`: Hartree a.u. (::Value)
+* `   .α`: fine-structure constant (::Value)
+* `  .μ0`: magnetic permitivity of vacuum (::Value)
+* `  .ε0`: electric permitivity of vacuum (::Value)
+* `  .KJ`: Josephson constant (::Value)
+* `  .RK`: Von Klitzing constant (::Value)
+* `   .R`: Molar gas constant (::Value)
+* `.matE`: unit conversion matrix (Matrix{Float64})
+"""
+struct Codata
+
+    ∆νCs::Value
+       c::Value
+       h::Value
+       ħ::Value
+       e::Value
+      kB::Value
+      NA::Value
+     Kcd::Value
+      me::Value
+      R∞::Value
+      Ry::Value
+      Eh::Value
+       α::Value
+      μ0::Value
+      ε0::Value
+      KJ::Value
+      RK::Value
+       R::Value
+    matE::Matrix{Float64}
+
+end
+
 # ============================== Value(val, unit) ==============================
 
 """
@@ -101,58 +154,6 @@ function castNamedValue(val::Value; name=" ", comment=" ")
 
 end
 
-# ========================= codata =============================================
-
-"""
-    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
-
-Object to hold the natural constants from CODATA.
-
-The fields are:
-* `.∆νCs`: Cs hyperfine transition frequency (::Value)
-* `   .c`: speed of light in vacuum (::Value)
-* `   .h`: Planck constant (::Value)
-* `   .ħ`: Planck constant - reduced (::Value)
-* `   .e`: elementary charge (::Value)
-* `  .kB`: Boltzmann constant (::Value)
-* `  .NA`: Avogadro constant (::Value)
-* ` .Kcd`: Luminous efficacy (::Value)
-* `  .me`: electron rest mass (::Value)
-* `  .R∞`: Rydberg constant (::Value)
-* `  .Ry`: Rydberg frequency (::Value)
-* `  .Eh`: Hartree a.u. (::Value)
-* `   .α`: fine-structure constant (::Value)
-* `  .μ0`: magnetic permitivity of vacuum (::Value)
-* `  .ε0`: electric permitivity of vacuum (::Value)
-* `  .KJ`: Josephson constant (::Value)
-* `  .RK`: Von Klitzing constant (::Value)
-* `   .R`: Molar gas constant (::Value)
-* `.matE`: unit conversion matrix (::Value)
-"""
-struct Codata
-
-    ∆νCs::Value
-       c::Value
-       h::Value
-       ħ::Value
-       e::Value
-      kB::Value
-      NA::Value
-     Kcd::Value
-      me::Value
-      R∞::Value
-      Ry::Value
-      Eh::Value
-       α::Value
-      μ0::Value
-      ε0::Value
-      KJ::Value
-      RK::Value
-       R::Value
-    matE::Matrix{Float64}
-
-end
-
 # ========================= createCodata(year) =================================
 
 """
@@ -232,7 +233,26 @@ end
 List codata values by name
 #### Example:
 ```
-# to be done
+codata = castCodata(2018)
+listCodata(codata::Codata)
+ ∆νCs = 9192631770 Hz
+ c = 299792458 m s⁻¹
+ h = 6.62607e-34 J Hz⁻¹
+ ħ = 1.05457e-34 J s
+ e = 1.60218e-19 C
+ kB = 1.38065e-23 J K⁻¹
+ NA = 6.02214e23 mol⁻¹
+ Kcd = 683 lm W⁻¹
+ mₑ = 9.10938e-31 Kg
+ R∞ = 1.09737e7 m⁻¹
+ Ry = 3.28984e15 Hz
+ Eₕ = 4.35974e-18 Hartree a.u.
+ α = 0.00729735
+ μ₀ = 1.25664e-6 N A⁻²
+ ε₀ = 8.85419e-12 F m⁻¹
+ KJ = 4.83598e14 Hz V⁻¹
+ RK = 25812.8 Ω
+ R = 8.31446 J mol⁻¹K⁻¹
 ```
 """
 function listCodata(codata::Codata)

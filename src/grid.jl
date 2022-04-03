@@ -16,7 +16,7 @@ Type with fields:
 * `     .epw`::Vector{Vector{T}}   trapezoidal endpoint weights for n=1:epn
 * `       .k`::Int                 Adams-Moulton order
 
-The object `Grid` is best created by the function `castGrid`.
+The object `Grid` is best created by the function [`castGrid`](@ref). 
 """
 struct Grid{T}
     ID::Int
@@ -214,8 +214,8 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
     epw = [myconvert.(T, trapezoidal_weights(n; rationalize=true)) for n=1:2:epn]
     name = gridname(ID)
 
-    r = r0 * [gridfunction(ID, n-1, h; p=p, coords) for n=1:N]
-    r′= r0 * [gridfunction(ID, n-1, h; p=p, coords, deriv=1) for n=1:N]
+    r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
+    r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]
 
     msg && println(gridspecs(ID, N, T, h, r0; p, coords))
 
@@ -333,7 +333,7 @@ end
 @doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
-Generalized trapezoidal integral with endpoint correction on `epn = grid.epn points.
+Generalized trapezoidal integral with endpoint correction on `epn = grid.epn` points.
 #### Example:
 ```
 f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
