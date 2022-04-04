@@ -97,7 +97,7 @@ end
 # ======================== castOrbital(n::Int, ℓ::Int) ===========
 
 """
-    castOrbit(n::Int, ℓ::Int; msg=true)
+    castOrbit(;n=1, ℓ=0, msg=true)
 
 Specify `Orbit` with fields:
 * `.name`: name
