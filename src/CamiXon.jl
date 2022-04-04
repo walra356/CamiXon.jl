@@ -70,6 +70,7 @@ export grid_trapezoidal_integral
 export Pos
 export Def
 export castDef
+export initE
 
 export fits_create
 export fits_read

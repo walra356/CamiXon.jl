@@ -16,7 +16,7 @@ Type with fields:
 * `     .epw`::Vector{Vector{T}}   trapezoidal endpoint weights for n=1:epn
 * `       .k`::Int                 Adams-Moulton order
 
-The object `Grid` is best created by the function [`castGrid`](@ref). 
+The object `Grid` is best created by the function [`castGrid`](@ref).
 """
 struct Grid{T}
     ID::Int
@@ -228,8 +228,17 @@ end
 @doc raw"""
     autoRmax(atom::Atom, orbit::Orbit)
 
-Discretization range in atomic units (rule of thumb value)
-
+Largest relevant radial distance in a.u. (rule of thumb value)
+#### Example:
+```
+codata = castCodata(2018)
+atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713; msg=true)
+orbit = castOrbit(n=1, ℓ=0)
+rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
+  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
+  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
+  rmax = 63.0 a.u.
+```
 """
 function autoRmax(atom::Atom, orbit::Orbit)
 # ==============================================================================
