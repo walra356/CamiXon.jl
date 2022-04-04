@@ -39,9 +39,9 @@ calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
 ```@docs
 Atom
-castAtom(Z::Int; Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
+castAtom(;Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 Orbit
-castOrbit(n::Int, ℓ::Int; msg=true)
+castOrbit(;n=1, ℓ=0, msg=true)
 SpinOrbit
 createSpinOrbit(o::Orbit; up=true, msg=true)
 Term
