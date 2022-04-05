@@ -744,7 +744,7 @@ end
     parse_FITS_TABLE(hdu)
 
 Parse `FITS_TABLE` (ASCII table) into a Vector of its columns for further processing by the user.
-Default formatting in ISO 2004 FORTRAN data format specified by keys "TFORMS1" - "TFORMSn")
+Default formatting in ISO 2004 FORTRAN data format specified by keys "TFORMS1" - "TFORMSn").
 Display formatting in ISO 2004 FORTRAN data format ("TDISP1" - "TDISPn") prepared for user editing.
 #### Example:
 ```

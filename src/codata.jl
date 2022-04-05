@@ -430,6 +430,6 @@ function myconvert(T::Type, val::V) where V <: Number      #### moet verplaatst?
         o = convert(T,val)
     end
 
-    return @printf "%+15.6e" o
+    return o
 
 end
