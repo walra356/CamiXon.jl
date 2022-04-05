@@ -327,8 +327,6 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
     U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
 
-    strU =
-
     unitIn ∈ U || error("Error: unknown unit (unitIn = $(unitIn))")
 
     M = codata.matE
