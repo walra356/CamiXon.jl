@@ -6,10 +6,10 @@
 Object to hold a single "Header-Data Unit" (HDU).
 
 The fields are
-* `.filename::String`:  name of the corresponding FITS file
-* `   .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `       .header::T`:  the header object where T=FITS_header
-* `   .dataobject::V`:  the data object where V=FITS_data
+* `.filename`:  name of the corresponding FITS file (`::String`)
+* `.hduindex:`:  identifier (a file may contain more than one HDU) (`:Int`)
+* `.header`:  the header object where T=FITS_header (`::T`)
+* `.dataobject`:  the data object where V=FITS_data (`::V`)
 """
 struct FITS_HDU{T,V}
 
@@ -25,13 +25,13 @@ end
 """
     FITS_name
 
-FITS object to decompose the names of .fits files.
+FITS object to hold the decomposed name of a .fits file.
 
 The fields are:
-* `     .name::String`:  for 'p#.fits' this is 'p#.fits'
-* `   .prefix::String`:  for 'p#.fits' this is 'p'
-* `.numerator::String`:  for 'p#.fits' this is '#', a serial number (e.g., '3') or a range (e.g., '3-7')
-* `.extension::String`:  for 'p#.fits' this is '.fits'.
+* `     .name`:  for 'p#.fits' this is 'p#.fits' (`::String`)
+* `   .prefix`:  for 'p#.fits' this is 'p' (`::String`)
+* `.numerator`:  for 'p#.fits' this is '#', a serial number (e.g., '3') or a range (e.g., '3-7') (`::String`)
+* `.extension`:  for 'p#.fits' this is '.fits' (`::String`)
 """
 struct FITS_name
 
@@ -47,16 +47,16 @@ end
 """
     FITS_header
 
-Object to hold the header information of a `FITS_HDU`.
+Object to hold the header information of a [`FITS_HDU`](@ref).
 
 The fields are:
-* `           .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `.records::Array{String,1}`:  the header formated as an array of strings of 80 ASCII characters
-* `   .keys::Array{String,1}`:  `keys[i]` - key corresponding to `records[i]` (record of index `i`)
-* `    .values::Array{Any,1}`:  `value[i]` - corresponding to `records[i]`
-* `        .comments::String`:  `comments[i]` - comment corresponding to `records[i]`
-* `  .dict::Dict{String,Any}`:  Dictionary `key[i] => value[i]`
-* `  .maps::Dict{String,Int}`:  Dictionary `key[i] => i`
+* `.hduindex`:  identifier (a file may contain more than one HDU) (`::Int`)
+* `.records`:  the header formated as an array of strings of 80 ASCII characters (`::Array{String,1}`)
+* `.keys`:  `keys[i]` - key corresponding to `records[i]` (record of index `i`)  (`::Array{String,1}`)
+* `.values`:  `value[i]` - corresponding to `records[i]`  (`::Array{Any,1}`)
+* `.comments`:  `comments[i]` - comment corresponding to `records[i]` (`::String`)
+* `.dict`:  Dictionary `key[i] => value[i]` (`::Dict{String,Any}`)
+* `.maps`:  Dictionary `key[i] => i` (`::Dict{String,Int}`)
 """
 struct FITS_header
 
@@ -75,12 +75,13 @@ end
 """
     FITS_data
 
-Object to hold the data of the `FITS_HDU` of given `hduindex` and `hdutype`.
+Object to hold the data of the [`FITS_HDU`](@ref) of given `hduindex` and
+`hdutype`.
 
 The fields are:
-* `  .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `.hdutype::String`:  accepted types are 'PRIMARY', 'IMAGE' and 'TABLE'
-* `      .data::Any`:  in the from appropriate for the `hdutype`
+* `.hduindex`:  identifier (a file may contain more than one HDU) (`::Int`)
+* `.hdutype`:  accepted types are 'PRIMARY', 'IMAGE' and 'TABLE' (`::String`)
+* `.data`:  in the from appropriate for the `hdutype` (::Any)
 """
 struct FITS_data
 
@@ -95,11 +96,12 @@ end
 """
     FITS_table
 
-Object to hold the data of a `TABLE HDU` (a `FITS_HDU` for ASCII tables). It contains the data in the form of records (rows) of ASCII strings.
+Object to hold the data of a `TABLE HDU` (a [`FITS_HDU`](@ref) for ASCII
+tables). It contains the data in the form of records (rows) of ASCII strings.
 
 The fields are:
-* `        .hduindex::Int`:  identifier (a file may contain more than one HDU)
-* `.rows::Array{String,1}`:  the table formated as an array of rows of ASCII strings
+* `.hduindex`:  identifier (a file may contain more than one HDU) (`::Int`)
+* `.rows`:  the table formated as an array of rows of ASCII strings (`::Array{String,1}`)
 """
 struct FITS_table
 

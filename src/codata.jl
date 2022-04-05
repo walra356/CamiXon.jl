@@ -327,7 +327,9 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
     U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
 
-    unitIn ∈ U || error("Error: unitIn ∉ {μHz, ..., EHz, Hartree, Rydberg, Joule, eV}")
+    strU =
+
+    unitIn ∈ U || error("Error: unknown unit (unitIn = $(unitIn))")
 
     M = codata.matE
 
@@ -347,7 +349,7 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
                   1e0  ≤  w[i] < 1e3  ? "Hz"  :
                   1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
     else
-        unitOut ∈ U || error("Error: unitOut ∉ {μHz, ..., EHz, Hartree, Rydberg, Joule, eV}")
+        unitOut ∈ U || error("Error: unknown unit (unitOut = $(unitOut))
     end
 
     i = findfirst(x -> x==unitOut, U)
@@ -415,13 +417,13 @@ convert(BigInt,1//3)
   InexactError: BigInt(1//3)
 
 myconvert(BigInt, 1//3)
-  0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
+  0.3333333333333333333333333333333333333333333333333333333333333333333333333348
 ```
 """
-function myconvert(T::Type, val::V) where V <: Number        #### moet verplaatst?
-# ================================================================================
+function myconvert(T::Type, val::V) where V <: Number      #### moet verplaatst?
+# ==============================================================================
 # myconvert(T::Type, val::V) # generalization of convert to include BigFloat
-# ================================================================================
+# ==============================================================================
 
     if T == BigFloat
         o = V <: Rational ? T(string(numerator(val)))/T(string(denominator(val))) : T(string(val))

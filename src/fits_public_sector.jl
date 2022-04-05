@@ -115,7 +115,8 @@ end
 """
     fits_create(filename [, data [; protect=true]])
 
-Create FITS file of given filename [, optional data block [, default overwrite protection]] and return Array of HDUs.
+Create FITS file of given filename [, optional data block [, default overwrite
+protection]] and return Array of HDUs.
 Key:
 * `protect::Bool`: overwrite protection
 #### Examples:
