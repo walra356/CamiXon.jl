@@ -1,5 +1,6 @@
 module CamiXon
 
+using Printf
 using Dates           # used in fits_private_sector
 using IntervalSets
 #using LaTeXStrings

@@ -366,13 +366,13 @@ Comparison of energy E with calibration value Ecal
 default input: Hartree
 #### Example:
 ```
-calibrationReport(1.1, 1.0; unitIn="Hartree")
-  calibration report:
+codata = castCodata(2018)
+calibrationReport1(1.1, 1.0, codata; unitIn="Hartree")
+  calibration report (Float64):
   Ecal = 1.0 Hartree
-  E = 1.1000000000000000000000000000000000000000000000000000000000000003 Hartree
+  E = 1.1 Hartree
   absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
   relative accuracy: ΔE/E = 0.0909091
-  input number type: Float64
 ```
 """
 function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
@@ -392,12 +392,11 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
-    msg = "calibration report:\n"
+    msg = "calibration report (" * string(T) * "):\n"
     msg *= "Ecal = $(Ecal) " * unitIn * "\n"
-    msg *= "E = $E " * unitIn * "\n"
+    msg *= @sprintf "E = %.17g %s \n" E unitIn
     msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * " (" * strΔf * ")\n"
     msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
-    msg *= "input number type: $(T)"
 
     return println(msg)
 
@@ -431,6 +430,6 @@ function myconvert(T::Type, val::V) where V <: Number      #### moet verplaatst?
         o = convert(T,val)
     end
 
-    return o
+    return @printf "%+15.6e" o
 
 end
