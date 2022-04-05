@@ -38,7 +38,7 @@ function cast_FITS_name(str::String)
         n = Base.Unicode.isdigit(str[nl]) ? nl : nothing            # n: last digit of numerator (if existent)
     end
 
-    isfits || error("FitsError: '$str': incorrect filename (lacks mandatory '.fits' extension)")
+    isfits || error("FitsError: '$(str)': incorrect filename (lacks mandatory '.fits' extension)")
 
     if n != nothing
         strNum = ""
@@ -172,7 +172,7 @@ function _fits_parse(str::String) # routine
     sp == 1 && s[ip[1]] == '.' && s[ia[1]] ∈ E && ip[1] < ia[1]  && return Base.parse(T,s)
     sp == 2 && s[ip[1]] == '.' && s[ip[2]] == '-' && s[ip[2]-1] ∈ E && ip[1] < ia[1]  &&  return Base.parse(T,s)
 
-    return error("FitsError: $str: parsing error")
+    return error("FitsError: $(str): parsing error")
 
 end
 
@@ -180,7 +180,7 @@ function _format_key(key::String)::String
 
     key = Base.Unicode.uppercase(Base.strip(key))
 
-    length(key) > 8 && error("FitsError: '$key': length exceeds 8 characters (FITS standard)")
+    length(key) > 8 && error("FitsError: '$(key)': length exceeds 8 characters (FITS standard)")
 
     return key
 
@@ -244,14 +244,14 @@ end
 
 function _format_recordvalue(val::Any)
 
-    typeof(val) <: AbstractChar && error("FitsError: '$val': invalid record value (not 'numeric', 'date' or 'single quote delimited string')")
+    typeof(val) <: AbstractChar && error("FitsError: '$(val)': invalid record value (not 'numeric', 'date' or 'single quote' delimited string')")
     typeof(val) <: AbstractString ? (length(val) > 1 ? true : error("FitsError: string value not delimited by single quotes")) : 0
 
     typeof(val) <: AbstractString && return _format_recordvalue_charstring(val)
     typeof(val) <: DateTime && return _format_recordvalue_datetime(val)
     typeof(val) <: Real   && return _format_recordvalue_numeric(val)
 
-    return error("FitsError: '$val' invalid record value type")
+    return error("FitsError: '$(val)' invalid record value type")
 
 end
 
