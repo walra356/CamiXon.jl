@@ -349,7 +349,7 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
                   1e0  ≤  w[i] < 1e3  ? "Hz"  :
                   1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
     else
-        unitOut ∈ U || error("Error: unknown unit (unitOut = $(unitOut))
+        unitOut ∈ U || error("Error: unknown unit (unitOut = $(unitOut))")
     end
 
     i = findfirst(x -> x==unitOut, U)
