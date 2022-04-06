@@ -131,7 +131,7 @@ E = initE(def; E=Ecal); println("E = $E")
 """
 function initE(def::Def{T}; E=nothing) where T<:Real
 
-    isnothing(E) || return E
+    isnothing(E) || return myconvert(T, E)
 
     N = def.pos.N
     ℓ = def.orbit.ℓ
