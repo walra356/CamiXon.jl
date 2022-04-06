@@ -236,7 +236,7 @@ function castCodata(year::Int)
 
 end
 
-# ========================= listCodata(codata::Codata) =================================
+# ========================= listCodata(codata::Codata) =========================
 
 """
     listCodata(codata::Codata)
@@ -268,7 +268,8 @@ listCodata(codata::Codata)
 """
 function listCodata(codata::Codata)
 
-    ∆νCs = NamedValue(codata.∆νCs, "∆νCs", sup(133)*"Cs hyperfine transition frequency")
+    ∆νCs = NamedValue(codata.∆νCs, "∆νCs",
+                       sup(133)*"Cs hyperfine transition frequency")
        c = NamedValue(codata.c, "c", "speed of light in vacuum")
        h = NamedValue(codata.h, "h", "Planck constant")
        ħ = NamedValue(codata.ħ, "ħ", "Planck constant (reduced)")
@@ -325,9 +326,13 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
 #  convertUnit(val; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
-    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz","Hartree","Rydberg","Joule","eV"]
+    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz"]
+        push!(U,"Hartree")
+        push!(U,"Rydberg")
+        push!(U,"Joule")
+        push!(U,"eV")
 
-    unitIn ∈ U || error("Error: unknown unit (unitIn = $(unitIn))")
+    unitIn ∈ U || error("Error: unitIn = $(unitIn) unknown unit type")
 
     M = codata.matE
 
@@ -347,7 +352,7 @@ function convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
                   1e0  ≤  w[i] < 1e3  ? "Hz"  :
                   1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
     else
-        unitOut ∈ U || error("Error: unknown unit (unitOut = $(unitOut))")
+        unitOut ∈ U || error("Error: unitOut = $(unitOut) unknown unit type")
     end
 
     i = findfirst(x -> x==unitOut, U)
@@ -388,14 +393,14 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     ΔErel = ΔE/E
 
     Δf = convertUnit(ΔE, codata)
-    strΔf = strValue(Δf)
+    strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
     msg = "calibration report (" * string(T) * "):\n"
     msg *= "Ecal = $(Ecal) " * unitIn * "\n"
     msg *= @sprintf "E = %.17g %s \n" E unitIn
-    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * " (" * strΔf * ")\n"
+    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n"
     msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
 
     return println(msg)
@@ -407,7 +412,8 @@ end
 @doc raw"""
     myconvert(T::Type, val::V) where V <: Number
 
-Conversion including `BigFloat` and `BigInt`
+Conversion including `BigFloat`, `Rational{BigFloat}`, BigInt, and
+`Rational{BigInt}`
 #### Examples:
 ```
 convert(BigInt,1//3)
@@ -423,9 +429,13 @@ function myconvert(T::Type, val::V) where V <: Number      #### moet verplaatst?
 # ==============================================================================
 
     if T == BigFloat
-        o = V <: Rational ? T(string(numerator(val)))/T(string(denominator(val))) : T(string(val))
+        o = V <: Rational ?
+            T(string(numerator(val)))/T(string(denominator(val))) :
+            T(string(val))
     elseif T == BigInt
-        o = V <: Rational ? T(numerator(val))/T(denominator(val)) : T(val)
+        o = V <: Rational ?
+            T(numerator(val))/T(denominator(val)) :
+            T(val)
     else
         o = convert(T,val)
     end
