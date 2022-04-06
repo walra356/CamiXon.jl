@@ -105,30 +105,30 @@ end
 # ========================= codata =============================================
 
 """
-    Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,matE)
+    Codata
 
 Object to hold the natural constants from CODATA. It is best created with the
 function [`castCodata`](@ref)
 
 The fields are:
-* `.∆νCs`: Cs hyperfine transition frequency (::Value)
-* `   .c`: speed of light in vacuum (::Value)
-* `   .h`: Planck constant (::Value)
-* `   .ħ`: Planck constant - reduced (::Value)
-* `   .e`: elementary charge (::Value)
-* `  .kB`: Boltzmann constant (::Value)
-* `  .NA`: Avogadro constant (::Value)
-* ` .Kcd`: Luminous efficacy (::Value)
-* `  .me`: electron rest mass (::Value)
-* `  .R∞`: Rydberg constant (::Value)
-* `  .Ry`: Rydberg frequency (::Value)
-* `  .Eh`: Hartree a.u. (::Value)
-* `   .α`: fine-structure constant (::Value)
-* `  .μ0`: magnetic permitivity of vacuum (::Value)
-* `  .ε0`: electric permitivity of vacuum (::Value)
-* `  .KJ`: Josephson constant (::Value)
-* `  .RK`: Von Klitzing constant (::Value)
-* `   .R`: Molar gas constant (::Value)
+* `.∆νCs`: Cs hyperfine transition frequency (`::Value`)
+* `   .c`: speed of light in vacuum (`::Value`)
+* `   .h`: Planck constant (`::Value`)
+* `   .ħ`: Planck constant - reduced (`::Value`)
+* `   .e`: elementary charge (`::Value`)
+* `  .kB`: Boltzmann constant (`::Value`)
+* `  .NA`: Avogadro constant (`::Value`)
+* ` .Kcd`: Luminous efficacy (`::Value`)
+* `  .me`: electron rest mass (`::Value`)
+* `  .R∞`: Rydberg constant (`::Value`)
+* `  .Ry`: Rydberg frequency (`::Value`)
+* `  .Eh`: Hartree a.u. (`::Value`)
+* `   .α`: fine-structure constant (`::Value`)
+* `  .μ0`: magnetic permitivity of vacuum (`::Value`)
+* `  .ε0`: electric permitivity of vacuum (`::Value`)
+* `  .KJ`: Josephson constant (`::Value`)
+* `  .RK`: Von Klitzing constant (`::Value`)
+* `   .R`: Molar gas constant (`::Value`)
 * `.matE`: unit conversion matrix (Matrix{Float64})
 
 #### Example:
