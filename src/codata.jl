@@ -397,11 +397,13 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
-    msg = "calibration report (" * string(T) * "):\n"
-    msg *= "Ecal = $(Ecal) " * unitIn * "\n"
+    msg = "calibration report ($T):\n"
+    msg *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
     msg *= @sprintf "E = %.17g %s \n" E unitIn
-    msg *= "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n"
-    msg *= "relative accuracy: ΔE/E = " * strΔErel * "\n"
+    msg *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
+                    "absolute accuracy: ΔE = 0 (exact within $T precision)\n"
+    msg *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
+                    "relative accuracy: ΔE/E = 0 (exact within $T precision)\n"
 
     return println(msg)
 
