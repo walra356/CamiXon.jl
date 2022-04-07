@@ -1,31 +1,33 @@
-# ======================== Pos(Nmin, Na, Nctp, Nb, N, nodes) ===================
+# ======================== Pos(Nmin, Na, Nuctp, Nb, N, nodes) ===================
 """
-    Pos(Nmin::Int, Na::Int, Nctp::Int, Nb::Int, N::Int, nodes::Int)
+    Pos(Nmin::Int, Na::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
-* ` .Nmin`: grid index of (screened) potential minimum
-* `   .Na`: grid index of last leading point
-* ` .Nctp`: grid index of classical turning point
-* `   .Nb`: grid index first trailing point
-* `    .N`: grid index last point
-* `.nodes`: number of nodes
+* `   .Na`: grid index of last leading point (`::Int`)
+* `.Nlctp`: grid index of classical turning point (`::Int`)
+* ` .Nmin`: grid index of (screened) potential minimum (`::Int`)
+* `.Nuctp`: grid index of classical turning point (`::Int`)
+* `   .Nb`: grid index first trailing point (`::Int`)
+* `    .N`: grid index last point (`::Int`)
+* `.nodes`: number of nodes  (`::Int`)
 
 Mutable struct to hold special grid indices as well as the number of nodes
 #### Examples:
 ```
-pos = Pos(1,2,3,4,5,6)
-pos.Nctp
- 3
+pos = Pos(1, 2, 3, 4, 5, 6, 7)
+pos.Nuctp
+ 4
 
-pos.Nctp = 7
+pos.Nuctp = 8
 pos
- Pos(1, 2, 7, 4, 5, 6)
+ Pos(1, 2, 3, 8, 5, 6, 7)
 ```
 """
 mutable struct Pos
-    Nmin::Int
     Na::Int
-    Nctp::Int
+    Nlctp::Int
+    Nmin::Int
+    Nuctp::Int
     Nb::Int
     N::Int
     nodes::Int
@@ -45,9 +47,8 @@ Type with fields:
 * `   .o1`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
 * `   .o2`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
 * `   .o3`: vector of unit-filled matrices (`::Vector{Matrix{T}}`)
-* `  .pos`: object containing Nmin, Na, Nctp, Nb, N and nodes (`::Pos`)
-* `  .epn`: number of endpoints used for trapezoidal endpoint correction
-- must be odd (`::Int`)
+* `  .pos`: object containing Na, Nlctp, Nmin, Nuctp, Nb, N and nodes (`::Pos`)
+* `  .epn`: number of endpoints trapezoidal correction - must be odd (`::Int`)
 * `    .k`: Adams-Moulton order (`::Int`)
 * `   .am`: Adams-Moulton weight coefficients (`::Vector{T}`)
 * `.matLD`: Lagrangian differentiation matrix (`::Matrix{T} )
@@ -63,8 +64,8 @@ struct Def{T}
     o1::Vector{Matrix{T}}   # vector of zero-filled matrices
     o2::Vector{Matrix{T}}   # vector of zero-filled matrices
     o3::Vector{Matrix{T}}   # vector of unit-filled matrices
-    pos::Pos                # object containing Nmin, Na, Nctp, Nb, N and nodes
-    epn::Int                # number of endpoints used for trapezoidal endpoint correction (must be odd)
+    pos::Pos                # object containing Nmin, Na, Nuctp, Nb, N and nodes
+    epn::Int                # number of endpoints trapezoidal correction
     k::Int                  # Adams-Moulton order
     am::Vector{T}           # Adams-Moulton weight coefficients
     matLD::Matrix{T}        # Lagrangian differentiation matrix
@@ -86,7 +87,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <
     Z = atom.Z
     ℓ = orbit.ℓ
 
-    r[N]^(ℓ+1) < Inf || error("Error: numeric overflow, consider arbitrary precision type)")
+    r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (Inf)")
 
     Z = myconvert(T, Z)
     num = myconvert(T, ℓ*(ℓ + 1)//2)
@@ -99,7 +100,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <
     o1 = [fill(myconvert(T,0), (2,2)) for n=1:N]
     o2 = [fill(myconvert(T,0), (2,2)) for n=1:N]
     o3 = [fill(myconvert(T,1), (2,2)) for n=1:N]
-    pos = Pos(1, 1, 0, N, N, 0)         # placeholders for Nmin, Na, Nctp, Nb, N and nodes
+    pos = Pos(1, 0, 1, 0, N, N, 0)              # placeholders
     am = myconvert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = myconvert.(T, create_lagrange_differentiation_matrix(k))
 
