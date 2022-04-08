@@ -357,14 +357,15 @@ end
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``, tabulated
-in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-``m`` is the multiplier for intermediate positions
+``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
+tabulated in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,
+\ f[n]``; ``m`` is the multiplier for intermediate positions (``m=0`` for zero
+intermediate points).
 #### Example:
 ```
 f = [0.0,1,2,3,4,5]
 domain = 0.0..5.0
-X,Y = lagrangian_differentiation(f, domain; k=2, i = 0); println(X,Y)
+X,Y = lagrangian_differentiation(f, domain; k=2, m = 0); println(X,Y)
  (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 ```
 """
