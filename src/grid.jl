@@ -341,13 +341,16 @@ end
 @doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
-Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the [`Grid`](@ref) using the
-trapezoidal rule optimized with endpoint correction by the weightsvector `grid.epw`,
+Integral of the function ``f=[f_0,\cdots,\ f_n]`` tabulated on a [`Grid`](@ref)
+using the trapezoidal rule optimized with endpoint correction by the
+weightsvector `grid.epw`,
 ```math
     ∫_{0}^{r_n} f(r) dr = ∫_{0}^{n} f(x) r^{\prime}(x) dx,
 ```
-where the latter integral corresponds to the optimized trapezoidal rule for a uniform grid (see [`trapezoidal_integration`](@ref)). The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
-ordinary trapezoidal rule (weights = [1/2]).
+where the latter integral corresponds to the optimized trapezoidal rule for a
+uniform grid (see [`trapezoidal_integration`](@ref)). The rule is exact for
+polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to
+the ordinary trapezoidal rule (weights = [1/2]).
 #### Example:
 ```
 f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
