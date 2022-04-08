@@ -302,6 +302,10 @@ where ``s^k_x[j] ≡ s_{k-j}(x)^k``.
 k = 3
 x = 0
 ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
+  Rational{Int64}[-11//6, 3//1, -3//2, 1//3]
+
+ sum(ldw)
+   0//1
 ```
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
