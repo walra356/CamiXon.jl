@@ -344,9 +344,9 @@ end
 Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the [`Grid`](@ref) using the
 trapezoidal rule optimized with endpoint correction by the weightsvector `grid.epw`,
 ```math
-    ∫_{0}^{r_n} f(r) dr = ∫_{0}^{n} f(x) r^{\prime}(x) dx  = a_1 (r_0^{\prime}f_0+r_n^{\prime}f_n)+\cdots+a_k (r_{k-1}^{\prime}f_{k-1}+r_{n-k+1}^{\prime}f_{n-k+1}) + (r_{k}^{\prime}f_{k}+r_{n-k}^{\prime}f_{n-k}).
+    ∫_{0}^{r_n} f(r) dr = ∫_{0}^{n} f(x) r^{\prime}(x) dx,
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
+where the latter integral corresponds to the optimized trapezoidal rule for a uniform grid (see [`trapezoidal_integration`](@ref)). The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
 ordinary trapezoidal rule (weights = [1/2]).
 #### Example:
 ```
