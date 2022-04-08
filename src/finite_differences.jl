@@ -365,9 +365,9 @@ X,Y = lagrangian_differentiation(f, domain; k=2, i = 0); println(X,Y)
 ```
 """
 function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
-# ======================================================================================
-#   lagrangian (k+1)-point differentiation at i interpolation points
-# ======================================================================================
+# ==============================================================================
+#   lagrangian (k+1)-point differentiation at m interpolation points
+# ==============================================================================
     n = Base.length(f)
 
     ∇ = CamiXon.f_diff_weights_array(k)
@@ -383,7 +383,7 @@ function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Flo
 
 end
 
-# ======================== trapezoidal_weights(k; rationalize=false, devisor=false) ===================================
+# =========== trapezoidal_weights(k; rationalize=false, devisor=false) =========
 
 @doc raw"""
     trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
