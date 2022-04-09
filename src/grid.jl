@@ -108,7 +108,7 @@ function _gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
     str_Rmax = repr(Rmax, context=:compact => true)
-    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
+    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
@@ -185,23 +185,28 @@ Method to create the Grid object
 ```
 h = 0.1
 r0 = 1.0
-grid = castGrid(1, 4, Float64; h, r0)                 # exponential grid
+grid = castGrid(1, 4, Float64; h, r0)
 grid.r
- [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
+  create exponential Grid: Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
+  [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
 
-grid = castGrid(2, 4, Float64; p = 4, h, r0)          # quasi-exponential grid
+grid = castGrid(2, 4, Float64; p = 4, h, r0)
 grid.r
- [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
+  create quasi-exponential Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, p = 4, h = 0.1, r0 = 1.0
+  [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
 
-grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0)  # polynomial grid
+grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0)
 grid.r
- [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
+  create polynomial Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, coords = [0.0, 1.0, 0.5, 0.166666, 0.0416666], h = 0.1, r0 = 1.0
+  [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001]
 
-grid = castGrid(4, 4, Float64; h, r0)                 # linear grid
+grid = castGrid(4, 4, Float64; h, r0)
 grid.r
- [0.0, 0.1, 0.2, 0.3]
+  create linear Grid: Float64, Rmax = 0.4 a.u., Ntot = 4, p = 1, h = 0.1, r0 = 1.0
+  [0.0, 0.1, 0.2, 0.3]
+
 grid.r′
- [0.1, 0.1, 0.1, 0.1]
+  [0.1, 0.1, 0.1, 0.1]
 ```
 """
 function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
