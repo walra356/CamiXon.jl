@@ -94,9 +94,9 @@ function gridname(ID::Int)
 
 end
 
-# .............. gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ............
+# .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
 
-function gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
+function _gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
@@ -217,7 +217,7 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
     r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
     r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]
 
-    msg && println(gridspecs(ID, N, T, h, r0; p, coords))
+    msg && println(_gridspecs(ID, N, T, h, r0; p, coords))
 
     return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
 
@@ -349,8 +349,8 @@ tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1],\ \ldots,
 #### Example:
 ```
 ID = 4 # linear grid
-grid = castGrid(ID, 11, Float64; r0=1.0, h=1.0, k=3)  # linear grid
 f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0, 100.0]
+grid = castGrid(ID, length(f), Float64; r0=1.0, h=1.0, k=3)  # linear grid
 f′= grid_lagrange_derivative(f, grid, k=4)
 f′= ceil.(f′;sigdigits=2); println(f′)
   create linear Grid: Float64, Rmax = 11.0 (a.u.), Ntot = 11, p = 1, h = 1.0, r0 = 1.0
