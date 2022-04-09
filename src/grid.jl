@@ -204,7 +204,7 @@ grid.r′
  [0.1, 0.1, 0.1, 0.1]
 ```
 """
-function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 # ==============================================================================
 #  castGrid: creates the grid object
 # ==============================================================================
@@ -337,7 +337,45 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
 end
 
+# =============== grid_lagrange_derivative(f, grid; k=5)) ====
+
+@doc raw"""
+    grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+
+``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
+tabulated in forward order on a [`Grid`]@ref of ``n`` points, ``f[1],\ \ldots,
+\ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
+*without* intermediate points).
+#### Example:
+```
+ID = 4 # linear grid
+grid = castGrid(ID, 11, Float64; r0=1.0, h=1.0, k=3)  # linear grid
+f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0, 100.0]
+f′= grid_lagrange_derivative(f, grid, k=4)
+f′= ceil.(f′;sigdigits=2); println(f′)
+  create linear Grid: Float64, Rmax = 11.0 (a.u.), Ntot = 11, p = 1, h = 1.0, r0 = 1.0
+  [0.0, 2.0, 4.0, 6.0, 8.1, 11.0, 12.0, 14.0, 17.0, 18.0, 20.0]
+```
+"""
+function grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+
+    N = grid.N
+    r′= grid.r′
+
+    ∇ = CamiXon.f_diff_weights_array(k)
+    l = [CamiXon.f_diff_expansion_coeffs_differentiation(k, x) for x=-k:0]
+    w = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    u = Base.append!(repeat(w[1:1],N-k-1),w)
+    v = CamiXon.f_diff_function_sequences(f , k, 1)
+
+    f′= [u[i] ⋅ v[i] for i ∈ Base.eachindex(u)]
+
+    return f′ ./ r′
+
+end
+
 # =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
+
 @doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 

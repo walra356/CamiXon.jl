@@ -322,6 +322,7 @@ autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 

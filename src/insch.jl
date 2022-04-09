@@ -1,6 +1,6 @@
-# ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
+# ======================== Pos(Nmin, Na, Nuctp, Nb, N, nodes) ===================
 """
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
+    Pos(Nmin::Int, Na::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
 * `   .Na`: grid index of last leading point (`::Int`)
@@ -100,7 +100,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <
     o1 = [fill(myconvert(T,0), (2,2)) for n=1:N]
     o2 = [fill(myconvert(T,0), (2,2)) for n=1:N]
     o3 = [fill(myconvert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
+    pos = Pos(1, 0, 1, 0, N, N, 0)              # placeholders
     am = myconvert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = myconvert.(T, create_lagrange_differentiation_matrix(k))
 

@@ -169,7 +169,7 @@ end
 
 Finite-difference summation sequences of function values given in forward order
 for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
-``f`` tabulated in forward order on a regular grid of ``n`` points, ``f[1], ...,f[n]``;
+``f`` tabulated in forward order on a uniform grid of ``n`` points, ``f[1], ...,f[n]``;
 ``m`` is the multiplier defining the interpolation grid size. Each sequence consists of ``k⋅m+1`` function values.
 #### Example:
 ```
@@ -192,9 +192,9 @@ end
 @doc raw"""
     lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``-order lagrangian *interpolation* of the analytic function ``f`` tabulated
-in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,\ f[n]``;
-``m`` is the multiplier defining the interpolation grid size.
+``k^{th}``-order lagrangian *interpolation* of the analytic function ``f``
+tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
+\ f[n]``; ``m`` is the multiplier defining the interpolation grid size.
 #### Example:
 ```
 f = [0.0,1,2,3,4,5,6,7]
@@ -233,7 +233,7 @@ end
 f = [0.0,1,2,3,4,5,6,7]
 domain = 0.0..1.0
 (X,Y) = lagrangian_extrapolation(f, domain; k=2, e=1, m=2); println((X,Y))
- (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
+  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
 function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
@@ -260,9 +260,9 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0^{\prime}(x),\ \ldots,\ l_p^{\prime}(x)]`` defining
-``k^{th}``-order lagrangian *differentiation* of the tabulated analytic function ``f(n+x)``
-at position ``x``,
+Finite-difference expansion coefficient vector ``[l_0^{\prime}(x),\ \ldots,
+\ l_p^{\prime}(x)]`` defining ``k^{th}``-order lagrangian *differentiation*
+of the tabulated analytic function ``f(n+x)`` at position ``x``,
 ```math
 \frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]
 ```
@@ -291,7 +291,9 @@ end
 @doc raw"""
     create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-``k^{th}``-order Lagrange differentiation weights vector, ``s^k(x) ≡ [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``, where ``x`` is the position relative point ``n``.
+``k^{th}``-order Lagrange differentiation weights vector,
+``s^k(x) ≡ [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``, where ``x`` is the position
+relative point ``n``.
 
 ```math
 \frac{df}{dx}[n+x]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
@@ -317,12 +319,13 @@ function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
 end
 
-# =============================== create_lagrange_differentiation_matrix(k) ====
+# ============ create_lagrange_differentiation_matrix(k) =======================
 
 @doc raw"""
     create_lagrange_differentiation_matrix(k::Int)
 
-Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k^{th}``-order lagrangian differentiation,
+Lagrange differentiation matrix, ``m[i,j]=s_{k-j}^k(i)``, for ``k^{th}``-order
+lagrangian differentiation,
 ```math
 \frac{dy}{dx}[i]= \sum_{j=0}^{k}m[i,j]y[j],
 ```
@@ -352,21 +355,21 @@ function create_lagrange_differentiation_matrix(k::Int)
 
 end
 
-# ================================f_diff_expansion_coeffs_array_differentiation(k, m) ====
+# ================ f_diff_expansion_coeffs_array_differentiation(k, m) =========
 
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
-tabulated in forward order on a regular grid of ``n`` points, ``f[1],\ \ldots,
+tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
 \ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
 *without* intermediate points).
 #### Example:
 ```
-f = [0.0,1,2,3,4,5]
+f = [0.0,1,4,9,16,25] # f = x^2
 domain = 0.0..5.0
-X,Y = lagrangian_differentiation(f, domain; k=2, m = 1)
-  (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+X,Y = lagrange_differentiation(f, domain; k=2, m = 1)
+  (0.0:1.0:5.0, [0.0, 2.0, 4.0, 6.0, 8.0, 10.0])
 ```
 """
 function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
@@ -393,22 +396,24 @@ end
 @doc raw"""
     trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
 
-Weight coefficient vector ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule optimized for functions of polynomial form,
+Weight coefficient vector ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule
+optimized for functions of polynomial form,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}),
 ```
-where ``k`` is *odd*. The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``.
-For ``k=1`` the rule reduces to the ordinary trapezoidal rule. By default the output is in Float64,
-optionally the output is rational, with or without specification of the gcd devisor.
+where ``k`` is *odd*. The rule is exact for polynonials of degree ``d=0,\ 1,
+\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
+By default the output is in Float64, optionally the output is rational, with or
+without specification of the gcd devisor.
 #### Example::
 ```
 [trapezoidal_weights(k; rationalize=true, devisor=true) for k=1:2:9]
 5-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
- (1, 2, [1])
- (3, 24, [9, 28, 23])
- (5, 1440, [475, 1902, 1104, 1586, 1413])
- (7, 120960, [36799, 176648, 54851, 177984, 89437, 130936, 119585])
- (9, 7257600, [2082753, 11532470, 261166, 16263486, -1020160, 12489922, 5095890, 7783754, 7200319])
+  (1, 2, [1])
+  (3, 24, [9, 28, 23])
+  (5, 1440, [475, 1902, 1104, 1586, 1413])
+  (7, 120960, [36799, 176648, 54851, 177984, 89437, 130936, 119585])
+  (9, 7257600, [2082753, 11532470, 261166, 16263486, -1020160, 12489922, 5095890, 7783754, 7200319])
 ```
 """
 function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
@@ -450,13 +455,14 @@ end
 @doc raw"""
     trapezoidal_integration(f, domain, weights)
 
-Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the `domain` ``a..b`` using the optimized
-trapezoidal rule with endpoint correction by the weightsvector `weights`,
+Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the `domain`
+``a..b`` using the optimized trapezoidal rule with endpoint correction by the
+weightsvector `weights`,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n)+\cdots+a_k (f_{k-1}+f_{n-k+1}) + (f_k+\cdots+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``. For ``k=1`` the rule reduces to the
-ordinary trapezoidal rule (weights = [1/2]).
+The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``.
+For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Examples::
 ```
 p = 3

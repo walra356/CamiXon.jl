@@ -66,6 +66,7 @@ export autoRmax
 export autoNtot
 export autoPrecision
 export autoSteps
+export grid_lagrange_derivative
 export grid_trapezoidal_integral
 
 export Pos
