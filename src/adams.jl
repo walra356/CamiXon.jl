@@ -1,4 +1,4 @@
-# ========================== f_diff_expansion_coeffs_adams_moulton(k) ===========
+# ========================= f_diff_expansion_coeffs_adams_moulton(k) ===========
 
 @doc raw"""
     f_diff_expansion_coeffs_adams_moulton(k [; T=Int])
@@ -24,9 +24,9 @@ o = convert(Vector{Int},(b .* D)); println(o)
 ```
 """
 function f_diff_expansion_coeffs_adams_moulton(k::Int; T=Int)
-# =====================================================================================
+# ==============================================================================
 #   Adams-Moulton expansion coefficients
-# =====================================================================================
+# ==============================================================================
     o = Base.zeros(Rational{T},k+1)
     s::Rational{T} = 0//1
 
@@ -53,10 +53,11 @@ end
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
-The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]`` under the convention
-``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the Adams-Moulton weight coefficients and ``D`` the
-corresponding Adams-Moulton divisor. By default the output is in Float64,
-optionally the output is rational, with or without specification of the gcd devisor.
+The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]``
+under the convention ``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the
+Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton
+divisor. By default the output is in Float64, optionally the output is rational,
+ with or without specification of the gcd devisor.
 #### Example:
 ```
 [create_adams_moulton_weights(k; rationalize=true, devisor=true, T=Int) for k=1:8]
@@ -109,9 +110,9 @@ o = f_diff_expansion_coeffs_adams_bashford(k); println(o)
 ```
 """
 function f_diff_expansion_coeffs_adams_bashford(k::Int; T=Int)
-# =====================================================================================
+# ==============================================================================
 #   Adams-Bashford expansion coefficients
-# =====================================================================================
+# ==============================================================================
     a = Base.ones(Rational{T},k+1)
 
     b = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)

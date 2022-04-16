@@ -59,6 +59,16 @@ export f_diff_expansion_coeffs_adams_bashford
 export trapezoidal_weights
 export trapezoidal_integration
 
+export matG
+export matσ
+export matMinv
+export OUTSCH
+export OUTSCH_WKB
+export Adams
+export castAdams
+export updateAdams!
+export INSCH
+
 export Grid
 export gridfunction
 export castGrid
@@ -133,6 +143,7 @@ export texp
 include("codata.jl")
 include("strings.jl")
 include("adams.jl")
+include("adams-moulton.jl")
 include("atom.jl")
 include("grid.jl")
 include("def.jl")

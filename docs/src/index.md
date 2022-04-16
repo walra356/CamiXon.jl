@@ -310,6 +310,20 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
+## Adams-Moulton integration
+
+```@docs
+matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+Adams
+castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+```
+
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete functions of `N` elements representing the grid function and its derivative.
