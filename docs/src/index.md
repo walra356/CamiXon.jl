@@ -312,6 +312,18 @@ create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
 ## Adams-Moulton integration
 
+### Def
+
+The `Def` object serves to define the problem to be solved and to contain in
+the field `def.Z` the solution as a discrete function of `N` elements.
+
+```@docs
+Pos
+Def{T}
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
+initE(def::Def{T}; E=nothing) where T<:Real
+```
+
 ```@docs
 matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
@@ -340,16 +352,6 @@ grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 
-## Def settings for the 1D Schrödinger equation
-
-The `Def` object serves to define the problem to be solved and to contain in the field `def.Z` the solution as a discrete function of `N` elements.
-
-```@docs
-Pos
-Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
-initE(def::Def{T}; E=nothing) where T<:Real
-```
 
 ## FITS
 
