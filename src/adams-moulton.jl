@@ -1,3 +1,4 @@
+include atom.jl
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 """
     Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
