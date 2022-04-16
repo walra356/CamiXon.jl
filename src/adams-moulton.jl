@@ -1,7 +1,3 @@
-include("def.jl")
-include("atom.jl")
-include("grid.jl")
-
 function _get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 # ==============================================================================
 #  grid index of starting point outward numerical integration
