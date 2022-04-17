@@ -100,7 +100,10 @@ function _get_Nlctp(E::T, def::Def{T}) where T<:Real
     return n
 
 end
+@doc raw"""
+    matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
+"""
 function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matG - coupling matrix - Johnson (2.54)
@@ -122,7 +125,10 @@ function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     return o
 
 end
+@doc raw"""
+    matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
+"""
 function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matσ - coupling matrix - Johnson (2.54)
@@ -152,7 +158,10 @@ function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     return o
 
 end
+@doc raw"""
+    matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 
+"""
 function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 # ==============================================================================
 # matMinv - Adams-Moulton correction matrix - Johnson (2.56)
@@ -220,7 +229,12 @@ function _update_Z!(Z::Vector{Complex{T}}, o::Vector{Complex{T}}, Na::Int, k::In
     return Z
 
 end
-# ..................................................................................
+# ..............................................................................
+
+@doc raw"""
+    OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+
+"""
 function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
@@ -258,6 +272,11 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
 end
 # ..............................................................................
+
+@doc raw"""
+    OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+"""
 function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
     N = grid.N
@@ -285,6 +304,14 @@ end
 
 # =========================== Adams sector =====================================
 
+@doc raw"""
+    Adams
+
+* G: (`:Vector{Matrix{T}}`)
+* σ: (`:Vector{Matrix{T}}`)
+* Minv: (`:Vector{Matrix{T}}`)
+* Z: (`:Vector{Complex{T}}`)
+"""
 struct Adams{T}
 
     G::Vector{Matrix{T}}
@@ -294,6 +321,10 @@ struct Adams{T}
 
 end
 
+@doc raw"""
+    castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+"""
 function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
     am = def.am
@@ -314,6 +345,10 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 end
 
+@doc raw"""
+    updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+
+"""
 function updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
 
     E = myconvert(def.T, E)
@@ -384,6 +419,11 @@ function _nexto!(o::Vector{Complex{T}}, ρ::T, ρN::T, a::Vector{T}, b::Vector{T
 
 end
 # ..............................................................................
+
+@doc raw"""
+    INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
 function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     N = def.pos.N
@@ -439,6 +479,11 @@ function _prepend!(Z2, n, m, G, am, k, N)
 
 end
 # ..............................................................................
+
+@doc raw"""
+    adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
 function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     N = grid.N
@@ -466,6 +511,10 @@ end
 
 # ======================= adams_moulton_outward ================================
 
+@doc raw"""
+    adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
 function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 
     am = def.am
@@ -500,6 +549,10 @@ end
 
 # ======================= adams_moulton_normalized =============================
 
+@doc raw"""
+    adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+"""
 function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
     Na = def.pos.Na
@@ -517,6 +570,10 @@ end
 
 # ======================= count_nodes(Z, def) ==================================
 
+@doc raw"""
+    count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+
+"""
 function count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
     Na = def.pos.Na
@@ -532,6 +589,10 @@ end
 
 # =============== solve_adams_moulton(E, grid, def, adams) =====================
 
+@doc raw"""
+    solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+
+"""
 function solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 
      adams = updateAdams!(adams, E, grid, def)
