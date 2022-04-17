@@ -331,12 +331,12 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 ## Adams-Moulton integration
 
 The Adams-Moulton method is used for numerical integration of the reduces
-radial wave equation. In the present implementation it is constructed on top 
+radial wave equation. In the present implementation it is constructed on top
 the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
 and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
 `grid`, `def` and `adams`.
 
-## Pos
+### Pos
 
 The `Pos` object serves within [`Def`](@ref) object to contain the position
 indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
