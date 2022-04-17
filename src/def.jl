@@ -1,5 +1,5 @@
 # ============================== get_Na(Z, def) ================================
-"""
+@doc raw"""
     get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Grid index of the starting point for *outward* numerical integration. This is
@@ -21,7 +21,7 @@ function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 end
 
 # ============================= get_Nb(Z, def) =================================
-"""
+@doc raw"""
     get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Grid index of the stopping for *outward* numerical integration. This is
@@ -138,7 +138,7 @@ function get_Nuctp(E::T, def::Def{T}) where T<:Real
 end
 
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
-"""
+@doc raw"""
     Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
@@ -174,7 +174,7 @@ end
 
 # ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============
 
-"""
+@doc raw"""
     Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
@@ -210,7 +210,7 @@ struct Def{T}
     matLD::Matrix{T}        # Lagrangian differentiation matrix
 end
 
-"""
+@doc raw"""
     castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 
 Create the Def object starting from the Grid and atomic properties.
