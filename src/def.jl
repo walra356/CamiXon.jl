@@ -1,3 +1,142 @@
+# ============================== get_Na(Z, def) ================================
+"""
+    get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+
+Grid index of the starting point for *outward* numerical integration. This is
+the first point where the integration threshold value (1.0e-10) is exceeded.
+"""
+function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+# ==============================================================================
+#  grid index of starting point outward numerical integration
+# ==============================================================================
+    k = def.k
+
+    ref = T(1.0e-10)
+
+    Na = findfirst(x -> abs(x) > ref, real(Z))
+    Na = isnothing(Na) ? k+1 : Na > 0 ? max(k+1, Na) : k+1
+
+    return Na
+
+end
+
+# ============================= get_Nb(Z, def) =================================
+"""
+    get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+
+Grid index of the stopping for *outward* numerical integration. This is
+the last point where the integration threshold value (1.0e-10) is exceeded.
+"""
+function get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+# ==============================================================================
+#  grid index of starting point inward numerical integration
+# ==============================================================================
+    k = def.k
+    N = def.pos.N
+
+    ref = T(1.0e-10)
+
+    Nb = findlast(x -> abs(x) > ref, real(Z))
+    Nb = isnothing(Nb) ? N-k : Nb > 0 ? min(N-k, Nb) : N-k
+
+    return Nb
+
+end
+# ============================= get_Nb(Z, def) =================================
+@doc raw"""
+    get_Nmin(def::Def{T}) where T<:Real
+
+Grid index of the minimum of the screened potential curve. By definition
+``get_Nmin(def) = 1`` for zero orbital angular momentum (``ℓ=0``).
+"""
+function get_Nmin(def::Def{T}) where T<:Real
+# ==============================================================================
+#  grid index of potential minimum
+# ==============================================================================
+    N = def.pos.N
+    v = def.pot
+    s = def.scr
+
+    pot = v .+ s
+
+    n = 1
+    while pot[n+1] < pot[n]
+        n < N-1 ? n += 1 : break
+    end
+
+    return n
+
+end
+
+# ============================= get_Nuctp(E, def) ==============================
+@doc raw"""
+    get_Nlctp(E::T, def::Def{T}) where T<:Real
+
+Grid index of the *lower classical turning point * of the screened potential
+curve. By definition ``get_Nlctp(E, def) = 2`` for zero orbital angular
+momentum (``ℓ=0``).
+"""
+function get_Nlctp(E::T, def::Def{T}) where T<:Real
+# ==============================================================================
+#  grid index of lower classical turning point
+# ==============================================================================
+    Nmin = def.pos.Nmin
+    N = def.pos.N
+    v = def.pot
+    s = def.scr
+    ℓ = def.orbit.ℓ
+
+    ℓ > 0 || return 0
+
+    pot = v .+ s
+
+    E < pot[Nmin] && println("Warning: E < Emin - force Nuctp = Nmin")
+
+    n = 2
+
+    while E < pot[n]     # below classical threshhold
+        n < Nmin ? n += 1 : break
+    end
+
+    n < N || error("Error: inner classical turning point outside grid")
+
+    return n
+
+end
+
+# ============================= get_Nuctp(E, def) ==============================
+@doc raw"""
+    get_Nuctp(E::T, def::Def{T}) where T<:Real
+
+Grid index of the *upper classical turning point * of the screened potential
+curve. By definition ``get_Nuctp(E, def) = N-1`` for zero orbital angular
+momentum (``ℓ=0``).
+"""
+function get_Nuctp(E::T, def::Def{T}) where T<:Real
+# ==============================================================================
+#  grid index of upper classical turning point
+# ==============================================================================
+    Nmin = def.pos.Nmin
+    N = def.pos.N
+    v = def.pot
+    s = def.scr
+
+    pot = v .+ s
+
+    n = N-1
+
+    E < pot[Nmin] && println("Warning: E < Emin - force Nuctp = Nmin")
+
+    while E < pot[n]     # below classical threshhold
+        n > Nmin ? n -= 1 : break
+    end
+
+    n < N || error("Error: (outer) classical turning point outside grid")
+
+    return n
+
+end
+
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 """
     Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)

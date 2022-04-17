@@ -1,106 +1,4 @@
-function _get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-# ==============================================================================
-#  grid index of starting point outward numerical integration
-# ==============================================================================
-    k = def.k
-
-    ref = T(1.0e-10)
-
-    Na = findfirst(x -> abs(x) > ref, real(Z))
-    Na = isnothing(Na) ? k+1 : Na > 0 ? max(k+1, Na) : k+1
-
-    return Na
-
-end
-
-function _get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-# ==============================================================================
-#  grid index of starting point inward numerical integration
-# ==============================================================================
-    k = def.k
-    N = def.pos.N
-
-    ref = T(1.0e-10)
-
-    Nb = findlast(x -> abs(x) > ref, real(Z))
-    Nb = isnothing(Nb) ? N-k : Nb > 0 ? min(N-k, Nb) : N-k
-
-    return Nb
-
-end
-
-function _get_Nmin(def::Def{T}) where T<:Real
-# ==============================================================================
-#  grid index of potential minimum
-# ==============================================================================
-    N = def.pos.N
-    v = def.pot
-    s = def.scr
-
-    pot = v .+ s
-
-    n = 1
-    while pot[n+1] < pot[n]
-        n < N-1 ? n += 1 : break
-    end
-
-    return n
-
-end
-
-function _get_Nuctp(E::T, def::Def{T}) where T<:Real
-# ==============================================================================
-#  grid index of upper classical turning point
-# ==============================================================================
-    Nmin = def.pos.Nmin
-    N = def.pos.N
-    v = def.pot
-    s = def.scr
-
-    pot = v .+ s
-
-    n = N-1
-
-    E < pot[Nmin] && println("Warning: E < Emin - force Nuctp = Nmin")
-
-    while E < pot[n]     # below classical threshhold
-        n > Nmin ? n -= 1 : break
-    end
-
-    n < N || error("Error: (outer) classical turning point outside grid")
-
-    return n
-
-end
-
-function _get_Nlctp(E::T, def::Def{T}) where T<:Real
-# ==============================================================================
-#  grid index of lower classical turning point
-# ==============================================================================
-    Nmin = def.pos.Nmin
-    N = def.pos.N
-    v = def.pot
-    s = def.scr
-    ℓ = def.orbit.ℓ
-
-    ℓ > 0 || return 0
-
-    pot = v .+ s
-
-    E < pot[Nmin] && println("Warning: E < Emin - force Nuctp = Nmin")
-
-    n = 2
-
-    while E < pot[n]     # below classical threshhold
-        n < Nmin ? n += 1 : break
-    end
-
-    n < N || error("Error: inner classical turning point outside grid")
-
-    return n
-
-end
-@doc raw"""
+"""
     matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 """
@@ -332,9 +230,9 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
      ℓ = def.orbit.ℓ
 
     N = def.pos.N
-    def.pos.Nmin = _get_Nmin(def)
-    def.pos.Nlctp = _get_Nlctp(E, def)
-    def.pos.Nuctp = _get_Nuctp(E, def)
+    def.pos.Nmin = get_Nmin(def)
+    def.pos.Nlctp = get_Nlctp(E, def)
+    def.pos.Nuctp = get_Nuctp(E, def)
 
     G = matG(E, grid, def)
     σ = matσ(E, grid, def)
@@ -357,9 +255,9 @@ function updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:R
     M = matMinv(E, grid, def, def.am[end])
     Z = adams.Z
 
-    def.pos.Na = _get_Na(Z, def)
-    def.pos.Nlctp = _get_Nlctp(E, def)
-    def.pos.Nuctp = _get_Nuctp(E, def)
+    def.pos.Na = get_Na(Z, def)
+    def.pos.Nlctp = get_Nlctp(E, def)
+    def.pos.Nuctp = get_Nuctp(E, def)
 
     return Adams(G, σ, M, Z)
 
@@ -502,8 +400,8 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
 
     Z[Nuctp:N] = sgn * Z2[1:N-Nuctp+1] / real(Z2)[1]  # set amplitude at c.t.p. to +1 or -1
 
-    def.pos.Na = _get_Na(Z, def)
-    def.pos.Nb = _get_Nb(Z, def)
+    def.pos.Na = get_Na(Z, def)
+    def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
 
@@ -541,7 +439,7 @@ function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 
     Z[1:Nuctp] /= Z1         # set amplitude at c.t.p. to +1/-1 (nodes even/odd)
 
-    def.pos.Na = _get_Na(Z, def)
+    def.pos.Na = get_Na(Z, def)
 
     return Z
 
