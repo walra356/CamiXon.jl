@@ -88,14 +88,14 @@ end
 
 # ======================= adams_moulton_inward section =========================
 
-function _prepend!(Z2, n, m, G, am, k, N)
+function _prepend!(Z2, n, m, G, am, k)
 
-    P = am[1:k] ⋅ [G[n+k-j][1,2] * imag(Z2[j+1]) for j=0:k-1]
-    Q = am[1:k] ⋅ [G[n+k-j][2,1] * real(Z2[j+1]) for j=0:k-1]
+    P = am[1:k] ⋅ [G[n+k-j][1,2] * imag(Z2[k-j]) for j=0:k-1]
+    Q = am[1:k] ⋅ [G[n+k-j][2,1] * real(Z2[k-j]) for j=0:k-1]
     z = Z2[1] - (P + im*Q)
     z = m[n] * [real(z), -imag(z)]
 
-    return prepend!(Z2, z[1] - im*z[2])  # change sign of derivative to negative
+    return prepend!(Z2, z[1] - im*z[2])               # change sign of derivative to negative
 
 end
 # ..............................................................................
@@ -115,7 +115,7 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
     Z2 = INSCH(E, grid, def, adams)
 
     for n=N-k-1:-1:Nuctp
-        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k, N)
+        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
     end
 
     ΔQ = imag(Z[Nuctp]) - imag(Z2[1])/ real(Z2)[1]
