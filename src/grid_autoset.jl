@@ -217,7 +217,6 @@ end
 Automatic setting of grid parameters. Important cases: `p=0` (exponential grid
 - default), `p=1` (linear grid), `p>1` (quasi-exponential grid)
 """
-
 function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
 
     T ∈ [Float64,BigFloat] || println("Warning (autoGrid): grid.T = $T => Float64 (by automatic type promotion)")
