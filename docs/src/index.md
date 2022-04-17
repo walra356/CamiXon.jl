@@ -333,9 +333,11 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 ## Pos
 
 The `Pos` object serves within [`Def`](@ref) object to contain the position
-indices (`Na`, `Nb`, `Nlctp`, `Nmin`,` Nuctp`) used in Adams-Moulton
-integration. These can be obtained with the functions [`get_Na`](@ref),
-[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
+indices `Na`, `Nb`, `Nlctp`, `Nmin`,` Nuctp` used in Adams-Moulton
+integration. The preferred way to assess these indices is  `Def.pos.Na`,
+`Def.pos.Nb`, `Def.pos.Nlctp`, `Def.pos.Nmin`, `Def.pos.Nuctp`. Alternatively,
+they can be determined with the functions [`get_Na`](@ref), [`get_Nb`](@ref),
+[`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
 ```@docs
 Pos
 ```
