@@ -68,7 +68,7 @@ end
 @doc raw"""
     gridspecs(ID, N, T; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 
-Name corresponding to the grid ID.    
+Name corresponding to the grid ID.
 """
 function gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 
@@ -206,5 +206,32 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
     r0 = Rmax / gridfunction(ID, Ntot, h; p, coords)
 
     return h, r0
+
+end
+
+# ...................... autoSteps(Ntot, Rmax) .................................
+
+@doc raw"""
+    autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+
+Automatic setting of grid parameters. Important cases: `p=0` (exponential grid
+- default), `p=1` (linear grid), `p>1` (quasi-exponential grid) 
+"""
+
+function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+
+    T ∈ [Float64,BigFloat] || println("Warning (autoGrid): grid.T = $T => Float64 (by automatic type promotion)")
+
+    ID = (p < 1) & (length(coords) < 2) ? 1 :
+         (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
+         (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
+
+    Ntot = autoNtot(orbit) * Nmul
+    Rmax = autoRmax(atom, orbit)
+
+    T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
+    h, r0 = autoSteps(ID, Ntot, Rmax; p, coords)
+
+    return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
 end
