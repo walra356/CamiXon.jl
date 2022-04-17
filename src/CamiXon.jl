@@ -81,6 +81,7 @@ export autoRmax
 export autoNtot
 export autoPrecision
 export autoSteps
+export autoGrid
 export grid_lagrange_derivative
 export grid_trapezoidal_integral
 
@@ -156,6 +157,7 @@ include("finite_differences.jl")
 include("finite_difference_adams.jl")
 include("atom.jl")
 include("grid.jl")
+include("grid_autoset.jl")
 include("def.jl")
 include("outsch.jl")
 include("adams.jl")

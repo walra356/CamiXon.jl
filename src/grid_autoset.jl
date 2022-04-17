@@ -209,13 +209,13 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
 end
 
-# ...................... autoSteps(Ntot, Rmax) .................................
+# =autoGrid(atom,orbit,codata,T; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true) =
 
 @doc raw"""
     autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
 
 Automatic setting of grid parameters. Important cases: `p=0` (exponential grid
-- default), `p=1` (linear grid), `p>1` (quasi-exponential grid) 
+- default), `p=1` (linear grid), `p>1` (quasi-exponential grid)
 """
 
 function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
