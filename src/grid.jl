@@ -1,4 +1,4 @@
-# ======================== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
+# ========== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
 
 """
     Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
