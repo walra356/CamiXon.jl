@@ -310,6 +310,24 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
+## Grid
+
+The `Grid` object is the backbone for the numerical procedure on a non-uniform
+grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
+functions of `N` elements representing the grid function and its derivative.
+
+```@docs
+Grid{T}
+gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+autoRmax(atom::Atom, orbit::Orbit)
+autoNtot(orbit::Orbit)
+autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+```
+
 ## Adams-Moulton integration
 
 ### Def
@@ -340,23 +358,6 @@ adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
-
-## Grid
-
-The `Grid` object is the backbone for the numerical procedure on a non-uniform grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete functions of `N` elements representing the grid function and its derivative.
-
-```@docs
-Grid{T}
-gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
-autoRmax(atom::Atom, orbit::Orbit)
-autoNtot(orbit::Orbit)
-autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
-grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
-```
-
 
 ## FITS
 
