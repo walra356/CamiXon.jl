@@ -334,6 +334,11 @@ Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
 INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
 
 ## Grid

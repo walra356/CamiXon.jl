@@ -68,6 +68,11 @@ export Adams
 export castAdams
 export updateAdams!
 export INSCH
+export adams_moulton_inward
+export adams_moulton_outward
+export adams_moulton_normalized
+export count_nodes
+export solve_adams_moulton
 
 export Grid
 export gridfunction
