@@ -4,18 +4,17 @@
     Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
 
 Type with fields:
-* `      .ID`::Int                 grid identifer name
-* `    .name`::String              grid identifer name
-* `       .T`::Type                gridType
-* `       .N`::Int                 number of grid points
-* `      .r `::Vector{T}           tabulated grid function
-* `      .r′`::Vector{T}           tabulated derivative of grid function
-* `      .h` ::T                   grid step multiplyer
-* `      .r0`::T                   grid scale factor
-* `     .epn`::Int                 number of endpoints used for trapezoidal endpoint correction (must be odd)
-* `     .epw`::Vector{Vector{T}}   trapezoidal endpoint weights for n=1:epn
-* `       .k`::Int                 Adams-Moulton order
-
+* `.ID`:   grid identifer name (`::Int`)
+* `.name`: grid identifer name (`::String`)
+* `.T`:    gridType (`::Type`)
+* `.N`:    number of grid points (`::Int`)
+* `.r `:   tabulated grid function (`::Vector{T}`)
+* `.r′`:   tabulated derivative of grid function (`::Vector{T}`)
+* `.h` :   grid step multiplyer (`::T`)
+* `.r0`:   grid scale factor (`::T`)
+* `.epn`:  number of endpoints used for trapezoidal endpoint correction (must be odd) (`::Int`)
+* `.epw`:  trapezoidal endpoint weights for n=1:epn (`::Vector{Vector{T}}`)
+* `.k`:    Adams-Moulton order (`::Int`)
 The object `Grid` is best created by the function [`castGrid`](@ref).
 """
 struct Grid{T}
