@@ -340,6 +340,11 @@ Pos
 Def{T}
 castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 initE(def::Def{T}; E=nothing) where T<:Real
+get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nlctp(E::T, def::Def{T}) where T<:Real
+get_Nmin(def::Def{T}) where T<:Real
+get_Nuctp(E::T, def::Def{T}) where T<:Real
 ```
 
 ```@docs

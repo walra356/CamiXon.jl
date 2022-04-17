@@ -84,6 +84,11 @@ export autoSteps
 export grid_lagrange_derivative
 export grid_trapezoidal_integral
 
+export get_Na
+export get_Nb
+export get_Nlctp
+export get_Nmin
+export get_Nuctp 
 export Pos
 export Def
 export castDef
