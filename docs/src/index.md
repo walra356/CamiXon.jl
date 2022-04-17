@@ -330,13 +330,22 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 
 ## Adams-Moulton integration
 
+## Pos
+
+The `Pos` object serves within [`Def`](@ref) object to contain the position
+indices (`Na`, `Nb`, `Nlctp`, `Nmin`,` Nuctp`) used in Adams-Moulton
+integration. These can be obtained with the functions [`get_Na`](@ref),
+[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
+```@docs
+Pos
+```
+
 ### Def
 
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
 ```@docs
-Pos
 Def{T}
 castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 initE(def::Def{T}; E=nothing) where T<:Real
