@@ -71,7 +71,7 @@ export INSCH
 export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized
-export count_nodes
+export get_nodes
 export solve_adams_moulton
 
 export Grid
@@ -88,7 +88,7 @@ export get_Na
 export get_Nb
 export get_Nlctp
 export get_Nmin
-export get_Nuctp 
+export get_Nuctp
 export Pos
 export Def
 export castDef

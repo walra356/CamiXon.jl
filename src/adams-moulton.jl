@@ -466,25 +466,6 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
 end
 
-# ======================= count_nodes(Z, def) ==================================
-
-@doc raw"""
-    count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-
-"""
-function count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-
-    Na = def.pos.Na
-    Nb = def.pos.Nb
-    c = [sign(real(Z[n])*real(Z[n+2])) for n=Na:2:Nb-2]
-    c = findall(x -> x == -1, c)
-
-    nodes = length(c)
-
-    return nodes
-
-end
-
 # =============== solve_adams_moulton(E, grid, def, adams) =====================
 
 @doc raw"""

@@ -330,14 +330,20 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 
 ## Adams-Moulton integration
 
+The Adams-Moulton method is used for numerical integration of the reduces
+radial wave equation. In the present implementation it is constructed on top 
+the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
+and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
+`grid`, `def` and `adams`.
+
 ## Pos
 
 The `Pos` object serves within [`Def`](@ref) object to contain the position
-indices `Na`, `Nb`, `Nlctp`, `Nmin`,` Nuctp` used in Adams-Moulton
-integration. The preferred way to assess these indices is  `Def.pos.Na`,
-`Def.pos.Nb`, `Def.pos.Nlctp`, `Def.pos.Nmin`, `Def.pos.Nuctp`. Alternatively,
-they can be determined with the functions [`get_Na`](@ref), [`get_Nb`](@ref),
-[`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
+indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
+Adams-Moulton integration. These positions are contained in the fields
+`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
+Alternatively, they can be determined with the functions [`get_Na`](@ref),
+[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
 ```@docs
 Pos
 ```
@@ -356,6 +362,7 @@ get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
 get_Nmin(def::Def{T}) where T<:Real
 get_Nuctp(E::T, def::Def{T}) where T<:Real
+get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
 
 ```@docs
@@ -364,6 +371,15 @@ matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+```
+
+### Adams
+
+The `Adams` object serves to hold the Adams-Moulton integration matrices
+`matG`, `matσ`, `matMinv` as well as the *actual* normalized solution `Z` in
+the form of a tabulated function of `N` elements.
+
+```@docs
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
@@ -371,7 +387,6 @@ INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
-count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
 

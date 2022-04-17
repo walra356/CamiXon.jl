@@ -260,7 +260,7 @@ end
 @doc raw"""
     get_Nuctp(E::T, def::Def{T}) where T<:Real
 
-Grid index of the *upper classical turning point * of the screened potential
+Grid index of the *upper classical turning point* of the screened potential
 curve. By definition `get_Nuctp(E, def) = N-1` for zero orbital angular
 momentum (``ℓ=0``).
 """
@@ -286,5 +286,26 @@ function get_Nuctp(E::T, def::Def{T}) where T<:Real
     n < N || error("Error: (outer) classical turning point outside grid")
 
     return n
+
+end
+
+# ======================= get_nodes(Z, def) ==============================
+
+@doc raw"""
+    get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+
+Number of nodes (excluding the origin) of the reduced radial wavefunction
+χ(r) = real(Z).
+"""
+function get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+
+    Na = def.pos.Na
+    Nb = def.pos.Nb
+    c = [sign(real(Z[n])*real(Z[n+2])) for n=Na:2:Nb-2]
+    c = findall(x -> x == -1, c)
+
+    nodes = length(c)
+
+    return nodes
 
 end
