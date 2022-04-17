@@ -95,7 +95,7 @@ end
 
 # .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
 
-function _gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1]) where T <: Real
+function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
@@ -107,7 +107,7 @@ function _gridspecs(ID::Int, N::Int, mytype::Type, h::T, r0::T; p=5, coords=[0,1
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
     str_Rmax = repr(Rmax, context=:compact => true)
-    strA = "create $(name) Grid: $(mytype), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
+    strA = "create $(name) Grid: $(T), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
@@ -322,123 +322,5 @@ end
 function grid_trapezoidal_integral(f::Vector{T}, itr::UnitRange, grid::Grid{T}) where T<:Real
 
     return grid_trapezoidal_integral(f, itr.start, itr.stop, grid)
-
-end
-
-
-
-# ....................... autoRmax(atom, orbit) ................................
-
-@doc raw"""
-    autoRmax(atom::Atom, orbit::Orbit)
-
-Largest relevant radial distance in a.u. (rule of thumb value)
-#### Example:
-```
-codata = castCodata(2018)
-atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713; msg=true)
-orbit = castOrbit(n=1, ℓ=0)
-rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
-  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
-  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
-  rmax = 63.0 a.u.
-```
-"""
-function autoRmax(atom::Atom, orbit::Orbit)
-# ==============================================================================
-#  Discretization range in atomic units
-# ==============================================================================
-     n = orbit.n
-    Zc = atom.Zc
-
-    Rmax = 3(n^2+20)/Zc
-
-    return Rmax
-
-end
-
-# .......................... autoNtot(orbit) ...................................
-
-@doc raw"""
-    autoNtot(orbit::Orbit)
-
-Total number of gridpoints (rule of thumb value)
-### Example:
-```
-orbit = castOrbit(1,0)
-autoNtot(orbit)
- Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
-
- 100
-```
-"""
-function autoNtot(orbit::Orbit)
-# ==============================================================================
-#  Total number of grid points
-# ==============================================================================
-
-    n = orbit.n
-
-    Ntot = (50 + 50 * n)
-
-    return Ntot
-
-end
-
-# .................... autoPrecision(Rmax, orbit) ..............................
-
-@doc raw"""
-    autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-
-Floating point precision (rule of thumb value)
-### Example:
-```
-atom = castAtom(1)
-orbit = castOrbit(1,0)
-Rmax = autoRmax(atom, orbit)
-autoPrecision(Rmax, orbit)
- Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.0, I = 1//2, gI = 5.5)
- Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
-
- Float64
-```
-"""
-function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-# ==============================================================================
-#  Floating point precision (rule of thumb value)
-# ==============================================================================
-
-    ℓ = orbit.ℓ
-
-    mytype = Rmax^(ℓ+1) == Inf ? BigFloat : T
-
-    mytype ≠ T && println("\nWarning: overflow protection - changed to BigFloat (Rmax^(ℓ+1) => Inf)\n")
-
-    return mytype
-
-end
-
-# ...................... autoSteps(Ntot, Rmax) .................................
-
-@doc raw"""
-    autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-
-Step size parameter (h) and range parameter (r0) (rule of thumb values).
-### Example:
-```
-(h, r0) = autoSteps(1, 100, 100)
- (0.1, 0.004540199100968777)
-```
-"""
-function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-# ==============================================================================
-#  Step size parameter (h) and range parameter (r0)
-# ==============================================================================
-
-    h = 10/Ntot
-
-    r0 = Rmax / gridfunction(ID, Ntot, h; p, coords)
-
-    return h, r0
 
 end

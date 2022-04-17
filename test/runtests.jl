@@ -66,11 +66,11 @@ using Test
     @test castGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517091807564771, 0.22140275816016985]
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
-    grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false); 
+    grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
     @test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 63.0
     @test autoNtot(orbit) == 100
-    @test autoPrecision(100, orbit) == Float64
+    @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
