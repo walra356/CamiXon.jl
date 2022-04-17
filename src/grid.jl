@@ -221,7 +221,7 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
     r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
     r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]
 
-    msg && println(_gridspecs(ID, N, T, h, r0; p, coords))
+    msg && println(_gridspecs(ID, N, T; h, r0,  p, coords, epn, k, msg))
 
     return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
 
