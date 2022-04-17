@@ -199,7 +199,7 @@ end
     get_Nmin(def::Def{T}) where T<:Real
 
 Grid index of the minimum of the screened potential curve. By definition
-``get_Nmin(def) = 1`` for zero orbital angular momentum (``ℓ=0``).
+get_Nmin(def) = 1` for zero orbital angular momentum (``ℓ=0``).
 """
 function get_Nmin(def::Def{T}) where T<:Real
 # ==============================================================================
@@ -225,7 +225,7 @@ end
     get_Nlctp(E::T, def::Def{T}) where T<:Real
 
 Grid index of the *lower classical turning point * of the screened potential
-curve. By definition ``get_Nlctp(E, def) = 2`` for zero orbital angular
+curve. By definition get_Nlctp(E, def) = 2` for zero orbital angular
 momentum (``ℓ=0``).
 """
 function get_Nlctp(E::T, def::Def{T}) where T<:Real
@@ -261,7 +261,7 @@ end
     get_Nuctp(E::T, def::Def{T}) where T<:Real
 
 Grid index of the *upper classical turning point * of the screened potential
-curve. By definition ``get_Nuctp(E, def) = N-1`` for zero orbital angular
+curve. By definition get_Nuctp(E, def) = N-1 for zero orbital angular
 momentum (``ℓ=0``).
 """
 function get_Nuctp(E::T, def::Def{T}) where T<:Real
