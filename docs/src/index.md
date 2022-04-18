@@ -12,14 +12,6 @@ A package for image analysis of backscattered light
 ```@contents
 ```
 
-## Strings
-
-```@docs
-sup(i::T) where T<:Real
-sub(i::T) where T<:Real
-frac(i::Rational{Int})
-```
-
 ## Codata
 
 ```@docs
@@ -48,6 +40,190 @@ Term
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 bohrformula(Z::Int, n::Int)
 mendeleev(Z::Int)
+```
+
+## Adams-Moulton integration
+
+The Adams-Moulton method is used for numerical integration of the reduces
+radial wave equation. In the present implementation it is constructed on top
+the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
+and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
+`grid`, `def` and `adams`.
+
+### Pos
+
+The `Pos` object serves within [`Def`](@ref) object to contain the position
+indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
+Adams-Moulton integration. These positions are contained in the fields
+`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
+Alternatively, they can be determined with the functions [`get_Na`](@ref),
+[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
+```@docs
+Pos
+```
+
+### Def
+
+The `Def` object serves to define the problem to be solved and to contain in
+the field `def.Z` the solution as a discrete function of `N` elements.
+
+```@docs
+Def{T}
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
+initE(def::Def{T}; E=nothing) where T<:Real
+get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nlctp(E::T, def::Def{T}) where T<:Real
+get_Nmin(def::Def{T}) where T<:Real
+get_Nuctp(E::T, def::Def{T}) where T<:Real
+get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+```
+
+```@docs
+matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+```
+
+### Adams
+
+The `Adams` object serves to hold the Adams-Moulton integration matrices
+`matG`, `matσ`, `matMinv` as well as the *actual* normalized solution `Z` in
+the form of a tabulated function of `N` elements.
+
+```@docs
+Adams
+castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+```
+
+## Grid
+
+The `Grid` object is the backbone for the numerical procedure on a non-uniform
+grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
+functions of `N` elements representing the grid function and its derivative.
+
+```@docs
+Grid{T}
+gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+autoRmax(atom::Atom, orbit::Orbit)
+autoNtot(orbit::Orbit)
+autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+```
+
+## FITS
+
+FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.
+
+Within CamiXion only the basic FITS functionality is implemented for users not requiring celestal coordinates. The user can create, read and extend .fits files as well as create, edit and delete user-defined metainformation.
+
+A FITS file consists of a sequence of one or more header-data-units (HDUs), each containing a data block preceeded by header records of metainformation.
+
+By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objects from the file `filnam` to the variable `f`.
+
+### FITS - Types
+
+```@docs
+FITS_HDU{T,V}
+FITS_header
+FITS_data
+FITS_table
+FITS_name
+```
+
+### FITS - HDU Methods
+
+```@docs
+fits_info(hdu::FITS_HDU)
+parse_FITS_TABLE(hdu::FITS_HDU)
+```
+
+### FITS - File Methods
+
+```@docs
+cast_FITS_name(filename::String)
+fits_combine(filnamFirst::String, filnamLast::String; protect=true)
+fits_copy(filenameA::String, filenameB::String=" "; protect=true)
+fits_create(filename::String, data=[]; protect=true)
+fits_extend(filename::String, data_extend, hdutype="IMAGE")
+fits_read(filename::String)
+```
+
+### FITS - Key Methods
+
+```@docs
+fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+fits_delete_key(filename::String, hduindex::Int, key::String)
+fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
+fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
+```
+
+## FORTRAN
+
+```@docs
+FORTRAN_format
+cast_FORTRAN_format(str::String)
+cast_FORTRAN_datatype(str::String)
+```
+
+## Plotting
+
+```@docs
+step125(x::Real)
+select125(x)
+steps(x::Vector{T} where T<:Real)
+stepcenters(x::Vector{T} where T<:Real)
+stepedges(x::Vector{T} where T<:Real)
+edges(px, Δx=1.0, x0=0.0)
+```
+
+## Search and conversion tools
+
+```@docs
+find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
+find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
+find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
+```
+
+## Math
+
+```@docs
+bernoulli_numbers(nmax::Int)
+canonical_partitions(n::Int, m=0; header=true, reverse=true)
+faulhaber_polynom(p::Int)
+faulhaber_summation(n::Int, p::Int; T=Int)
+harmonic_number(n::Int, p::Int)
+harmonic_number(n::Int)
+integer_partitions(n::Int, m=0; transpose=false, count=false)
+log10_characteristic_power(x)
+log10_mantissa(x)
+permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
+pascal_triangle(nmax::Int)
+pascal_next(a::Vector{Int})
+polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
+polynom_derivative(coords::Vector{<:Number})
+polynom_derivatives(coords::Vector{<:Number}; deriv=0)
+polynom_derivatives_all(coords::Vector{<:Number})
+polynom_power(coords::Vector{<:Number}, power::Int)
+polynom_powers(coords::Vector{<:Number}, pmax::Int)
+polynom_primitive(coeffs::Vector{<:Number})
+polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
+polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
+texp(x::T, a::T, p::Int) where T <: Real
+VectorRational
+normalize_VectorRational(vec::Vector{Rational{Int}})
 ```
 
 ## Finite-difference methods
@@ -310,188 +486,12 @@ f_diff_expansion_coeffs_adams_moulton(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
-## Grid
-
-The `Grid` object is the backbone for the numerical procedure on a non-uniform
-grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
-functions of `N` elements representing the grid function and its derivative.
+## Strings
 
 ```@docs
-Grid{T}
-gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
-autoRmax(atom::Atom, orbit::Orbit)
-autoNtot(orbit::Orbit)
-autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
-grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
-grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
-```
-
-## Adams-Moulton integration
-
-The Adams-Moulton method is used for numerical integration of the reduces
-radial wave equation. In the present implementation it is constructed on top
-the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
-and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
-`grid`, `def` and `adams`.
-
-### Pos
-
-The `Pos` object serves within [`Def`](@ref) object to contain the position
-indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
-Adams-Moulton integration. These positions are contained in the fields
-`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
-Alternatively, they can be determined with the functions [`get_Na`](@ref),
-[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
-```@docs
-Pos
-```
-
-### Def
-
-The `Def` object serves to define the problem to be solved and to contain in
-the field `def.Z` the solution as a discrete function of `N` elements.
-
-```@docs
-Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
-initE(def::Def{T}; E=nothing) where T<:Real
-get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nlctp(E::T, def::Def{T}) where T<:Real
-get_Nmin(def::Def{T}) where T<:Real
-get_Nuctp(E::T, def::Def{T}) where T<:Real
-get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-```
-
-```@docs
-matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
-OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-```
-
-### Adams
-
-The `Adams` object serves to hold the Adams-Moulton integration matrices
-`matG`, `matσ`, `matMinv` as well as the *actual* normalized solution `Z` in
-the form of a tabulated function of `N` elements.
-
-```@docs
-Adams
-castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
-INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
-adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
-solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
-```
-
-## FITS
-
-FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.
-
-Within CamiXion only the basic FITS functionality is implemented for users not requiring celestal coordinates. The user can create, read and extend .fits files as well as create, edit and delete user-defined metainformation.
-
-A FITS file consists of a sequence of one or more header-data-units (HDUs), each containing a data block preceeded by header records of metainformation.
-
-By the command `f = fits_read(filnam)` we asign a collection of `FITS_HDU` objects from the file `filnam` to the variable `f`.
-
-### FITS - Types
-
-```@docs
-FITS_HDU{T,V}
-FITS_header
-FITS_data
-FITS_table
-FITS_name
-```
-
-### FITS - HDU Methods
-
-```@docs
-fits_info(hdu::FITS_HDU)
-parse_FITS_TABLE(hdu::FITS_HDU)
-```
-
-### FITS - File Methods
-
-```@docs
-cast_FITS_name(filename::String)
-fits_combine(filnamFirst::String, filnamLast::String; protect=true)
-fits_copy(filenameA::String, filenameB::String=" "; protect=true)
-fits_create(filename::String, data=[]; protect=true)
-fits_extend(filename::String, data_extend, hdutype="IMAGE")
-fits_read(filename::String)
-```
-
-### FITS - Key Methods
-
-```@docs
-fits_add_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
-fits_delete_key(filename::String, hduindex::Int, key::String)
-fits_edit_key(filename::String, hduindex::Int, key::String, val::Real, com::String)
-fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
-```
-
-## FORTRAN
-
-```@docs
-FORTRAN_format
-cast_FORTRAN_format(str::String)
-cast_FORTRAN_datatype(str::String)
-```
-
-## Plotting
-
-```@docs
-step125(x::Real)
-select125(x)
-steps(x::Vector{T} where T<:Real)
-stepcenters(x::Vector{T} where T<:Real)
-stepedges(x::Vector{T} where T<:Real)
-edges(px, Δx=1.0, x0=0.0)
-```
-
-## Search and conversion tools
-
-```@docs
-find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
-find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
-find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
-```
-
-## Math
-
-```@docs
-bernoulli_numbers(nmax::Int)
-canonical_partitions(n::Int, m=0; header=true, reverse=true)
-faulhaber_polynom(p::Int)
-faulhaber_summation(n::Int, p::Int; T=Int)
-harmonic_number(n::Int, p::Int)
-harmonic_number(n::Int)
-integer_partitions(n::Int, m=0; transpose=false, count=false)
-log10_characteristic_power(x)
-log10_mantissa(x)
-permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
-pascal_triangle(nmax::Int)
-pascal_next(a::Vector{Int})
-polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
-polynom_derivative(coords::Vector{<:Number})
-polynom_derivatives(coords::Vector{<:Number}; deriv=0)
-polynom_derivatives_all(coords::Vector{<:Number})
-polynom_power(coords::Vector{<:Number}, power::Int)
-polynom_powers(coords::Vector{<:Number}, pmax::Int)
-polynom_primitive(coeffs::Vector{<:Number})
-polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
-polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
-texp(x::T, a::T, p::Int) where T <: Real
-VectorRational
-normalize_VectorRational(vec::Vector{Rational{Int}})
+sup(i::T) where T<:Real
+sub(i::T) where T<:Real
+frac(i::Rational{Int})
 ```
 
 ## Index
