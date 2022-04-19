@@ -15,23 +15,16 @@ A package for image analysis of backscattered light
 ## Introduction
 
 CamiXon is a package for the numerical solution of the radial Schrödinger
-equation allowing for screening. In Hartree atomic units (a.u.) the equation
+equation  for one electron, acting as a *spectator* in the atomic central field
+in the presence screening by the other electrons (the *screening* electrons).
+The basics of the method can be found in the book *Atomic Structure Theory* by
+Walter R.Johnson.
 
-Numerical methods are indispensable for the structure analysis of
-many-electron atoms. We have selected a numerical solution of de radial wave
-equation for the case of a single electron in the central potential field of
-a many electron atom. Along with more advanced methods examples like
-this can be found in the book \emph{Atomic Structure Theory} by Walter
-R.\,Johnson \cite{Johnson}.
-
-Our starting point is the 1D Schrödinger equation for one electron,
-acting as a *spectator* in the atomic central field in the presence screening
-by the other electrons (the *screening* electrons). In Hartree
-atomic units (a.u.) this equation is given by
+In Hartree atomic units (a.u.) the 1D Schrödinger equation is given by
 
 ```math
 \tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(\rho)/\rho-l(l+1)/2\rho^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,
-````
+```
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
 radial wavefunction and $\varepsilon_{l}=-\kappa_{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units. As compared
