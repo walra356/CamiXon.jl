@@ -15,12 +15,14 @@ A package for image analysis of backscattered light
 ## Introduction
 
 CamiXon is a package for the numerical solution of the radial Schrödinger
-equation  for one electron, acting as a *spectator* in the atomic central field
-in the presence screening by the other electrons (the *screening* electrons).
-The basics of the method can be found in the book *Atomic Structure Theory* by
-Walter R.Johnson.
+equation allowing for screening.
 
-In Hartree atomic units (a.u.) the 1D Schrödinger equation is given by
+In this package the solution is obtained for a single electron, acting as a
+*spectator* in the atomic central field of the nucleus screened by the other
+electrons (the *screening* electrons).
+
+The starting point is the 1D Schrödinger equation in Hartree atomic units
+(a.u.),
 
 ```math
 \tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(\rho)/\rho-l(l+1)/2\rho^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,
@@ -28,12 +30,10 @@ In Hartree atomic units (a.u.) the 1D Schrödinger equation is given by
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
 radial wavefunction and $\varepsilon_{l}=-\kappa_{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units. As compared
-to the hydrogenic case - see Eq.\,(\ref{1D-SchrodingerEquation-2})
-- the atomic number has been replaced by $Z_{\mathrm{eff}}(\rho)$,
-the \emph{effective nuclear charge} at distance $\rho$ from the atomic
-center.\index{Effective!nuclear charge}\index{Nuclear!charge!effective}
-In other words, the energy of the electron in the Coulomb field of
-the nucleus, $-Z/\rho$, is replaced by a central potential,
+to the hydrogenic case, the atomic number ``Z`` has been replaced by
+$Z_{\mathrm{eff}}(\rho)$, the *effective nuclear charge* at distance $\rho$
+from the atomic center. In other words, the energy of the electron in the
+Coulomb field of the nucleus, $-Z/\rho$, is replaced by a central potential,
 $U_{\mathrm{CF}}(\rho)=-Z_{\mathrm{eff}}(\rho)/\rho$,
 composed of the bare Coulomb contribution and the screening energy
 $U_{\mathrm{scr}}(\rho)$,
@@ -43,17 +43,16 @@ Z_{\mathrm{eff}}(\rho)/\rho=Z/\rho-U_{\mathrm{scr}}(\rho),
 ```
 
 with boundary conditions $U_{\mathrm{scr}}(0)=Z$ and
-$\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$
-- see e.g.~Fig.\,\ref{fig:h.1.he}. Here $Z$ is the atomic number
-and $Z_{c}$ the Rydberg charge. Within these boundary conditions
-we can optimize the central potential while preserving the bare Coulomb
-field close to the nucleus and the Rydberg potential in the far field.
-The price we pay is that the radial Schrödinger
-equation has to be solved numerically by radial integration. Our strategy will
-be to use both *inward* and *outward* integration and match
-the two branches by *equating the two solutions* for the *wavefunction*
-and its *derivative* at a point near the classical turning point
-of the radial motion.
+$\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$.
+Here $Z$ is the atomic number and $Z_{c}$ the Rydberg charge. Within these
+assumptions we can optimize the central potential while preserving the bare
+Coulomb field close to the nucleus and the Rydberg potential in the far field.
+The price we pay is that the radial Schrödinger equation has to be solved
+numerically by radial integration. Our strategy willbe to use both *inward*
+and *outward* integration and match the two branches by *equating the two
+solutions* for the *wavefunction* and its *derivative* at a point near the
+classical turning point of the radial motion. The basics of the solution can
+be found in the book *Atomic Structure Theory* by Walter R.Johnson.
 
 
 ![Image](./assets/H1_3d.png)
