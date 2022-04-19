@@ -15,7 +15,7 @@ A package for image analysis of backscattered light
 ## Introduction
 
 CamiXon is a package for the numerical solution of the radial Schrödinger
-equation allowing for screening.
+equation allowing for screening. a
 
 In this package the solution is obtained for a single electron, acting as a
 *spectator* in the central field of the atomic nucleus screened by the 'other'
@@ -27,7 +27,7 @@ The starting point is the 1D Schrödinger equation,
 \tilde{χ}_{l}^{\prime\prime}+2[Z_{\mathrm{eff}}(ρ)/ρ-l(l+1)/2ρ^{2}+ε_{l}]\tilde{χ}_{l}=0,
 ```
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
-radial wavefunction and $\varepsilon_{l}=-\kappa_{l}^{2}$ is the
+radial wavefunction and $ε_{l}=-\kappa_{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units (a.u.). As compared
 to the hydrogenic case, the atomic number ``Z`` has been replaced by
 $Z_{\mathrm{eff}}(ρ)$, the *effective nuclear charge* at distance $\rho$
@@ -40,13 +40,14 @@ U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/\rho+U_{\mathrm{scr}}(\rho),
 ```
 
 consisting of the bare Coulomb contribution and the screening energy
-$U_{\mathrm{scr}}(ρ)$ subject to the boundary conditions $U_{\mathrm{scr}}(0)=Z$
-and $\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ$.
-Here $Z$ is the atomic number and $Z_{c}$ the Rydberg charge. Within these
+``U_{\mathrm{scr}}(ρ)`` subject to the boundary conditions
+``U_{\mathrm{scr}}(0)=Z`` and
+``\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
+Here ``Z`` is the atomic number and ``Z_{c}`` the Rydberg charge. Within these
 assumptions we can optimize the central potential while preserving the bare
 Coulomb field close to the nucleus and the Rydberg potential in the far field.
 The price we pay is that the radial Schrödinger equation has to be solved
-numerically by radial integration. Our strategy willbe to use both *inward*
+numerically by radial integration. Our strategy is to use both *inward*
 and *outward* integration and match the two branches by *equating the two
 solutions* for the *wavefunction* and its *derivative* at a point near the
 classical turning point of the radial motion. The basics of the solution can
