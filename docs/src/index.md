@@ -18,19 +18,20 @@ CamiXon is a package for the numerical solution of the radial Schrödinger
 equation allowing for screening. In Hartree atomic units (a.u.) the equation
 
 Numerical methods are indispensable for the structure analysis of
-many-electron atoms. So, let us have a close look at one of these
-methods. We have selected a numerical solution of de radial wave equation
-for the case of a single electron in the central potential field of
+many-electron atoms. We have selected a numerical solution of de radial wave
+equation for the case of a single electron in the central potential field of
 a many electron atom. Along with more advanced methods examples like
 this can be found in the book \emph{Atomic Structure Theory} by Walter
 R.\,Johnson \cite{Johnson}.
 
-Our starting point is the 1D Schrödinger equation for one electron
-(\emph{the spectator electron}) in an atomic central field with screening
-by the other electrons (\emph{the screening electrons}),
-\begin{equation}
-\tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(\rho)/\rho-l(l+1)/2\rho^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,\label{1D-SchrodingerEquation.num}
-\end{equation}
+Our starting point is the 1D Schrödinger equation for one electron,
+acting as a *spectator* in the atomic central field in the presence screening
+by the other electrons (the *screening* electrons). In Hartree
+atomic units (a.u.) this equation is given by
+
+```math
+\tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(\rho)/\rho-l(l+1)/2\rho^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,
+````
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
 radial wavefunction and $\varepsilon_{l}=-\kappa_{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units. As compared
@@ -39,22 +40,26 @@ to the hydrogenic case - see Eq.\,(\ref{1D-SchrodingerEquation-2})
 the \emph{effective nuclear charge} at distance $\rho$ from the atomic
 center.\index{Effective!nuclear charge}\index{Nuclear!charge!effective}
 In other words, the energy of the electron in the Coulomb field of
-the nucleus, $-Z/\rho$, is replaced by a central potential, $U_{\mathrm{CF}}(\rho)=-Z_{\mathrm{eff}}(\rho)/\rho$,
+the nucleus, $-Z/\rho$, is replaced by a central potential,
+$U_{\mathrm{CF}}(\rho)=-Z_{\mathrm{eff}}(\rho)/\rho$,
 composed of the bare Coulomb contribution and the screening energy
 $U_{\mathrm{scr}}(\rho)$,
-\begin{equation}
+
+```math
 Z_{\mathrm{eff}}(\rho)/\rho=Z/\rho-U_{\mathrm{scr}}(\rho),
-\end{equation}
-with boundary conditions $U_{\mathrm{scr}}(0)=Z$ and $\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$
+```
+
+with boundary conditions $U_{\mathrm{scr}}(0)=Z$ and
+$\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$
 - see e.g.~Fig.\,\ref{fig:h.1.he}. Here $Z$ is the atomic number
 and $Z_{c}$ the Rydberg charge. Within these boundary conditions
 we can optimize the central potential while preserving the bare Coulomb
 field close to the nucleus and the Rydberg potential in the far field.
-The price we pay is that Eq.\,(\ref{1D-SchrodingerEquation.num})
-has to be solved numerically by radial integration. Our strategy will
-be to use both \emph{inward} and \emph{outward} integration and match
-the two branches by \emph{equating the two solutions} for the \emph{wavefunction}
-and its \emph{derivative} at a point near the classical turning point
+The price we pay is that the radial Schrödinger
+equation has to be solved numerically by radial integration. Our strategy will
+be to use both *inward* and *outward* integration and match
+the two branches by *equating the two solutions* for the *wavefunction*
+and its *derivative* at a point near the classical turning point
 of the radial motion.
 
 
