@@ -19,13 +19,13 @@ equation allowing for screening.
 
 In this package the solution is obtained for a single electron, acting as a
 *spectator* in the central field of the atomic nucleus screened by the 'other'
-electrons (the *screening* electrons).
+electrons (the *screening* electrons). aaa
 
 The starting point is the 1D Schrödinger equation in Hartree atomic units
 (a.u.),
 
 ```math
-\tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(\rho)/\rho-l(l+1)/2\rho^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,
+\tilde{\chi}_{l}^{\prime\prime}+2\left[Z_{\mathrm{eff}}(ρ)/ρ-l(l+1)/2ρ^{2}+\varepsilon_{l}\right]\tilde{\chi}_{l}=0,
 ```
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
 radial wavefunction and $\varepsilon_{l}=-\kappa_{l}^{2}$ is the
@@ -41,7 +41,7 @@ U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(\rho)/\rho=-Z/\rho+U_{\mathrm{scr}}(\rho),
 ```
 
 consisting of the bare Coulomb contribution and the screening energy
-$U_{\mathrm{scr}}(\rho)$ under the boundary conditions $U_{\mathrm{scr}}(0)=Z$
+$U_{\mathrm{scr}}(\rho)$ subject to the boundary conditions $U_{\mathrm{scr}}(0)=Z$
 and $\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$.
 Here $Z$ is the atomic number and $Z_{c}$ the Rydberg charge. Within these
 assumptions we can optimize the central potential while preserving the bare
