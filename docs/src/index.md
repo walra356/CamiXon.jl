@@ -150,7 +150,7 @@ Pos
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
-#### Illustration: total potential ``U_{\mathrm{CF}}[n]`` versus grid index 
+#### Illustration: total potential ``U_{\mathrm{CF}}`` versus grid index 
 NB. plot_potentials is not part of the package
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
