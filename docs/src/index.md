@@ -49,15 +49,16 @@ assumptions we can optimize ``U_{\mathrm{scr}}(ρ)``, while preserving
 the bare Coulomb field close to the nucleus and the Rydberg potential in the
 far field. The price we pay is that the radial Schrödinger equation has to be
 solved numerically by radial integration. Our strategy is to use both *inward*
-and *outward* integration and match the two branches by *equating the two
-solutions* for the *wavefunction* and its *derivative* at a point near the
-classical turning point of the radial motion. The basics of the solution can
-be found in the book *Atomic Structure Theory* by Walter R.Johnson.
+and *outward* integration and match the two branches by
+*equating the two solutions* for the *wavefunction*, ``χ``, and its
+*derivative*, ``(χ′`)`` at a point near the classical turning point of the
+radial motion of the electron. The basics of the solution can be found in the
+book *Atomic Structure Theory* by Walter R.Johnson.
 
 #### Illustration: the hydrogen 3d orbital
 
 Shown below are the reduced radial wavefunction ``(χ)`` and its derivative
-``(χ^{′′})`` in the near field (left), the far field (right), and in the region
+``(χ^′)`` in the near field (left), the far field (right), and in the region
 about the classical turning point (center).
 
 ![Image](./assets/H1_3d.png)
