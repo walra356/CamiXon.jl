@@ -75,6 +75,7 @@ export get_nodes
 export solve_adams_moulton
 
 export Grid
+export gridname
 export gridfunction
 export castGrid
 export autoRmax

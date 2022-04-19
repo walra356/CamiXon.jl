@@ -65,12 +65,7 @@ function gridname(ID::Int)
 end
 
 # ========================= gridname(ID) =======================================
-@doc raw"""
-    gridspecs(ID, N, T; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
-
-Name corresponding to the grid ID.
-"""
-function gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
+function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :

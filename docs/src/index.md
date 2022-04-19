@@ -164,6 +164,7 @@ functions of `N` elements representing the grid function and its derivative.
 
 ```@docs
 Grid{T}
+gridname(ID::Int)
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
 castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
 autoRmax(atom::Atom, orbit::Orbit)
