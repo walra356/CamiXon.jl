@@ -17,7 +17,7 @@ A package for image analysis of backscattered light
 CamiXon is a package for the numerical solution of the radial Schrödinger
 equation allowing for screening. In Hartree atomic units (a.u.) the equation
 
-![Image](../src/assets/H1-3d.png "icon")
+![Image](/docs/src/assets/H1-3d.png "icon")
 
 ```math
 y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}B_p\nabla^p)f[n+1].
