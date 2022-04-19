@@ -12,6 +12,16 @@ A package for image analysis of backscattered light
 ```@contents
 ```
 
+## Introduction
+
+CamiXon is a package for the numerical solution of the radial Schrödinger
+equation allowing for screening. In Hartree atomic units (a.u.) the equation
+<img src='docs/src/assets/H1-3d.png' width=600/>
+
+```math
+y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}B_p\nabla^p)f[n+1].
+```
+
 ## Codata
 
 ```@docs
@@ -127,7 +137,7 @@ grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T
 
 FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.
 
-Within CamiXion only the basic FITS functionality is implemented for users not requiring celestal coordinates. The user can create, read and extend .fits files as well as create, edit and delete user-defined metainformation.
+Within CamiXon only the basic FITS functionality is implemented for users not requiring celestal coordinates. The user can create, read and extend .fits files as well as create, edit and delete user-defined metainformation.
 
 A FITS file consists of a sequence of one or more header-data-units (HDUs), each containing a data block preceeded by header records of metainformation.
 
