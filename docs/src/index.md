@@ -31,21 +31,21 @@ radial wavefunction and $ε_{l}=-κ _{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units (a.u.). As compared
 to the hydrogenic case, the atomic number ``Z`` has been replaced by
 ``Z_{\mathrm{eff}}(ρ)``, the *effective nuclear charge* at radial distance
-``ρ`` (in a.u.) from the atomic center. In other words, the energy of the
-electron in the Coulomb field of the nucleus is replaced by an effective
-potential of the form
+``ρ`` from the atomic center (in a.u.). In other words, the energy of the
+electron in the Coulomb field of the nucleus is replaced by an effective,
+central field potential of the form
 
 ```math
 U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/ρ+U_{\mathrm{scr}}(ρ),
 ```
 
-consisting of the bare Coulomb contribution ``-Z/ρ`` and the screening energy
-``U_{\mathrm{scr}}(ρ)`` subject to the boundary conditions
+consisting of the bare Coulomb contribution, ``-Z/ρ``, and the screening field
+``U_{\mathrm{scr}}(ρ)``, subject to the boundary conditions
 ``U_{\mathrm{scr}}(0)=Z`` and
 ``\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
-Here ``Z_{c}`` the Rydberg charge, i.e. the effective nuclear charge for a
-Rydberg electron as a spectator in the far field ``(ρ\rightarrow\infty)``.
-Within these assumptions we can optimize the central potential while preserving
+Here ``Z_{c}`` is the Rydberg charge; i.e. the effective nuclear charge for a
+spectator electron in the far field ``(ρ\rightarrow\infty)``. Within these
+assumptions we can optimize ``U_{\mathrm{scr}}(ρ)``, while preserving
 the bare Coulomb field close to the nucleus and the Rydberg potential in the
 far field. The price we pay is that the radial Schrödinger equation has to be
 solved numerically by radial integration. Our strategy is to use both *inward*
@@ -56,8 +56,9 @@ be found in the book *Atomic Structure Theory* by Walter R.Johnson.
 
 #### Illustration: the hydrogen 3d orbital
 
-The reduced radial wavefunction ``(χ)`` and its derivative
-``(χ^{′′})`` are shown below as an graphical example of a typical result.
+Shown below are the reduced radial wavefunction ``(χ)`` and its derivative
+``(χ^{′′})`` in the near field (left), the far field (right), and in the region
+about the classical turning point (center).
 
 ![Image](./assets/H1_3d.png)
 
