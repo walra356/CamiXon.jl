@@ -91,6 +91,40 @@ bohrformula(Z::Int, n::Int)
 mendeleev(Z::Int)
 ```
 
+## Grid
+
+The `Grid` object is the backbone for the numerical procedure on a non-uniform
+grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
+functions of `N` elements representing the grid function and its derivative.
+
+#### Example:
+NB. plot_gridfunction is not part of the package
+```
+atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
+orbit = castOrbit(n=75, ℓ=0)
+codata = castCodata(2018)
+grid = autoGrid(atom, orbit, codata, Float64)
+plot_gridfunction(1:grid.N, grid; title="")
+  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
+  Orbit created: 75s - (n = 75, n′ = 74, ℓ = 0)
+  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
+```
+![Image](./assets/exponential_grid.png)
+
+```@docs
+Grid{T}
+gridname(ID::Int)
+gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+autoRmax(atom::Atom, orbit::Orbit)
+autoNtot(orbit::Orbit)
+autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+```
+
 ## Adams-Moulton integration
 
 The Adams-Moulton method is used for numerical integration of the reduces
@@ -175,40 +209,6 @@ adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<
 adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
-```
-
-## Grid
-
-The `Grid` object is the backbone for the numerical procedure on a non-uniform
-grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
-functions of `N` elements representing the grid function and its derivative.
-
-#### Example:
-NB. plot_gridfunction is not part of the package
-```
-atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
-orbit = castOrbit(n=75, ℓ=0)
-codata = castCodata(2018)
-grid = autoGrid(atom, orbit, codata, Float64)
-plot_gridfunction(1:grid.N, grid; title="")
-  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
-  Orbit created: 75s - (n = 75, n′ = 74, ℓ = 0)
-  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
-```
-![Image](./assets/exponential_grid.png)
-
-```@docs
-Grid{T}
-gridname(ID::Int)
-gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
-autoRmax(atom::Atom, orbit::Orbit)
-autoNtot(orbit::Orbit)
-autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
-grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
-grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 
 ## FITS
