@@ -18,7 +18,7 @@ CamiXon is a package for the numerical solution of the radial Schrödinger
 equation allowing for screening.
 
 In this package the solution is obtained for a single electron, acting as a
-*spectator* in the atomic central field of the nucleus screened by the other
+*spectator* in the central field of the atomic nucleus screened by the other
 electrons (the *screening* electrons).
 
 The starting point is the 1D Schrödinger equation in Hartree atomic units
