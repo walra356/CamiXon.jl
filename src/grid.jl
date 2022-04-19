@@ -84,8 +84,8 @@ end
 Name corresponding to the grid ID.
 #### Example:
 ```
-n = gridname(2); println("The grid type with ID = 2 is '$n'.")
-  The grid type with ID = 2 is 'quasi-exponential'.
+n = gridname(2); println("The grid type with ID = 2 is called '$n'.")
+  The grid type with ID = 2 is called 'quasi-exponential'.
 ```
 """
 function gridname(ID::Int)
