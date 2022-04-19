@@ -15,32 +15,32 @@ A package for image analysis of backscattered light
 ## Introduction
 
 CamiXon is a package for the numerical solution of the radial Schrödinger
-equation allowing for screening. a
+equation allowing for screening.
 
 In this package the solution is obtained for a single electron, acting as a
-*spectator* in the central field of the atomic nucleus screened by the 'other'
+*spectator* in the central field of the atomic nucleus screened by 'the other'
 electrons (the *screening* electrons).
 
 The starting point is the 1D Schrödinger equation,
 
 ```math
-\tilde{χ}_{l}^{\prime\prime}+2[Z_{\mathrm{eff}}(ρ)/ρ-l(l+1)/2ρ^{2}+ε_{l}]\tilde{χ}_{l}=0,
+\tilde{χ}_{l}^{′′}+2[Z_{\mathrm{eff}}(ρ)/ρ-l(l+1)/2ρ^{2}+ε_{l}]\tilde{χ}_{l}=0,
 ```
 where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
-radial wavefunction and $ε_{l}=-\kappa_{l}^{2}$ is the
+radial wavefunction and $ε_{l}=-κ _{l}^{2}$ is the
 corresponding binding energy in Hartree atomic units (a.u.). As compared
 to the hydrogenic case, the atomic number ``Z`` has been replaced by
-$Z_{\mathrm{eff}}(ρ)$, the *effective nuclear charge* at distance $\rho$
-from the atomic center. In other words, the energy of the electron in the
-Coulomb field of the nucleus, $-Z/ρ$, is replaced by the central field
-potential
+``Z_{\mathrm{eff}}(ρ)``, the *effective nuclear charge* at radial distance
+``ρ`` (in a.u.) from the atomic center. In other words, the energy of the
+electron in the Coulomb field of the nucleus is replaced by an effective
+potential of the form
 
 ```math
-U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/\rho+U_{\mathrm{scr}}(\rho),
+U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/ρ+U_{\mathrm{scr}}(ρ),
 ```
 
 consisting of the bare Coulomb contribution and the screening energy
-``U_{\mathrm{scr}}(ρ)`` subject to the boundary conditions
+``U_{\mathrm{scr}}`` subject to the boundary conditions
 ``U_{\mathrm{scr}}(0)=Z`` and
 ``\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
 Here ``Z`` is the atomic number and ``Z_{c}`` the Rydberg charge. Within these
