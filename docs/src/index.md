@@ -46,12 +46,12 @@ consisting of the bare Coulomb contribution, ``-Z/ρ``, and the screening field
 Here ``Z_{c}`` is the Rydberg charge; i.e. the effective nuclear charge for a
 spectator electron in the far field ``(ρ\rightarrow\infty)``. Within these
 assumptions we can optimize ``U_{\mathrm{scr}}(ρ)``, while preserving
-the bare Coulomb field close to the nucleus and the Rydberg potential in the
-far field. The price we pay is that the radial Schrödinger equation has to be
-solved numerically by radial integration. Our strategy is to use both *inward*
-and *outward* integration and match the two branches by
-*equating the two solutions* for the *wavefunction*, ``χ``, and its
-*derivative*, ``(χ′`)`` at a point near the classical turning point of the
+the bare Coulomb field close to the nucleus as well as the Rydberg potential in
+the far field. The price we pay is that the radial Schrödinger equation has to
+be solved numerically by radial integration. Our strategy is to use both
+*inward* and *outward* integration and match the two branches by
+*equating the two solutions* for the *wavefunction*, ``χ(ρ)``, and its
+*derivative*, ``χ′(ρ)``, at a point near the classical turning point of the
 radial motion of the electron. The basics of the solution can be found in the
 book *Atomic Structure Theory* by Walter R.Johnson.
 
