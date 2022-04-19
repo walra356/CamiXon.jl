@@ -216,7 +216,7 @@ end
 
 * `ID = 1`: exponential grid function,
 ```math
-    f[n] = exp(h(n-1)) - 1.0
+    f[n] = \text{exp}(h(n-1)) - 1.0
 ```
 * `ID = 2`: quasi-exponential grid function (linear grid for p = 1),
 ```math
