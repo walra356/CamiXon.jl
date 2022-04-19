@@ -97,7 +97,7 @@ The `Grid` object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
-#### Example:
+#### Illustration: Radial distance `(r=grid.r)` versus grid index
 NB. plot_gridfunction is not part of the package
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
@@ -150,7 +150,7 @@ Pos
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
-#### Example:
+#### Illustration: total potential ``U_{\mathrm{CF}}[n]`` versus grid index 
 NB. plot_potentials is not part of the package
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
