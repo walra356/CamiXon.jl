@@ -39,20 +39,25 @@ potential of the form
 U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/ρ+U_{\mathrm{scr}}(ρ),
 ```
 
-consisting of the bare Coulomb contribution and the screening energy
-``U_{\mathrm{scr}}`` subject to the boundary conditions
+consisting of the bare Coulomb contribution ``-Z/ρ`` and the screening energy
+``U_{\mathrm{scr}}(ρ)`` subject to the boundary conditions
 ``U_{\mathrm{scr}}(0)=Z`` and
 ``\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
-Here ``Z`` is the atomic number and ``Z_{c}`` the Rydberg charge. Within these
-assumptions we can optimize the central potential while preserving the bare
-Coulomb field close to the nucleus and the Rydberg potential in the far field.
-The price we pay is that the radial Schrödinger equation has to be solved
-numerically by radial integration. Our strategy is to use both *inward*
+Here ``Z_{c}`` the Rydberg charge, i.e. the effective nuclear charge for a
+Rydberg electron as a spectator in the far field ``(ρ\rightarrow\infty)``.
+Within these assumptions we can optimize the central potential while preserving
+the bare Coulomb field close to the nucleus and the Rydberg potential in the
+far field. The price we pay is that the radial Schrödinger equation has to be
+solved numerically by radial integration. Our strategy is to use both *inward*
 and *outward* integration and match the two branches by *equating the two
 solutions* for the *wavefunction* and its *derivative* at a point near the
 classical turning point of the radial motion. The basics of the solution can
 be found in the book *Atomic Structure Theory* by Walter R.Johnson.
 
+#### Illustration: the hydrogen 3d orbital
+
+The reduced radial wavefunction ``(χ)`` and its derivative
+``(χ^{′′})`` are shown below as an graphical example of a typical result.
 
 ![Image](./assets/H1_3d.png)
 
