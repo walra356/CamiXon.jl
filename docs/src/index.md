@@ -51,9 +51,7 @@ the far field. The price we pay is that the radial Schrödinger equation has to
 be solved numerically by radial integration. Our strategy is to use both
 *inward* and *outward* integration and match the two branches by
 *equating the two solutions* for the *wavefunction*, ``χ(ρ)``, and its
-*derivative*, ``χ′(ρ)``, at a point near the classical turning point of the
-radial motion of the electron. The basics of the solution can be found in the
-book *Atomic Structure Theory* by Walter R.Johnson.
+*derivative*, ``χ^′(ρ)``, at a point near the classical turning point of the radial motion of the electron. The basics of the solution can be found in the book *Atomic Structure Theory* by Walter R.Johnson.
 
 #### Illustration: the hydrogen 3d orbital
 
@@ -62,7 +60,6 @@ Shown below are the reduced radial wavefunction ``(χ)`` and its derivative
 about the classical turning point (center).
 
 ![Image](./assets/H1_3d.png)
-
 
 ## Codata
 
@@ -161,6 +158,23 @@ solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Rea
 The `Grid` object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
+
+#### Example:
+```
+atom = H1I
+orbit = castOrbit(n=75, ℓ=72)
+grid = autoGrid(atom, orbit, codata, Float64)
+def = castDef(grid, atom, orbit)
+println("NB. It takes about 55 seconds to compile Cairomakie (first time only)")
+plot_gridfunction(1:grid.N, grid; title="")
+  Orbit created: [n=75, ℓ=72] - (n = 75, n′ = 2, ℓ = 72)
+
+  Warning: overflow protection - changed to BigFloat (Rmax^(ℓ+1) => Inf)
+
+  create exponential Grid: BigFloat, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
+  NB. It takes about 55 seconds to compile Cairomakie (first time only)
+```
+![Image](./assets/exponential_grid.png)
 
 ```@docs
 Grid{T}

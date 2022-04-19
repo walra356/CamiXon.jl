@@ -78,7 +78,16 @@ function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
 end
 
 # ........................ gridname(ID) ........................................
+@doc raw"""
+    gridname(ID::Int)
 
+Name corresponding to the grid ID.
+#### Example:
+```
+n = gridname(2); println("The grid type with ID = 2 is '$n'.")
+  The grid type with ID = 2 is 'quasi-exponential'.
+```
+"""
 function gridname(ID::Int)
 # ==============================================================================
 #  Name used for `Grid` of given `grid.ID`
