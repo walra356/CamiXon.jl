@@ -33,17 +33,16 @@ corresponding binding energy in Hartree atomic units. As compared
 to the hydrogenic case, the atomic number ``Z`` has been replaced by
 $Z_{\mathrm{eff}}(\rho)$, the *effective nuclear charge* at distance $\rho$
 from the atomic center. In other words, the energy of the electron in the
-Coulomb field of the nucleus, $-Z/\rho$, is replaced by a central potential,
-$U_{\mathrm{CF}}(\rho)=-Z_{\mathrm{eff}}(\rho)/\rho$,
-composed of the bare Coulomb contribution and the screening energy
-$U_{\mathrm{scr}}(\rho)$,
+Coulomb field of the nucleus, $-Z/\rho$, is replaced by the central field
+potential
 
 ```math
-Z_{\mathrm{eff}}(\rho)/\rho=Z/\rho-U_{\mathrm{scr}}(\rho),
+U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(\rho)/\rho=-Z/\rho+U_{\mathrm{scr}}(\rho),
 ```
 
-with boundary conditions $U_{\mathrm{scr}}(0)=Z$ and
-$\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$.
+consisting of the bare Coulomb contribution and the screening energy
+$U_{\mathrm{scr}}(\rho)$ under the boundary conditions $U_{\mathrm{scr}}(0)=Z$
+and $\mathrm{lim}_{\rho\rightarrow\infty}U_{\mathrm{scr}}(\rho)=Z_{c}/\rho$.
 Here $Z$ is the atomic number and $Z_{c}$ the Rydberg charge. Within these
 assumptions we can optimize the central potential while preserving the bare
 Coulomb field close to the nucleus and the Rydberg potential in the far field.
