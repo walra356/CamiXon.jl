@@ -160,19 +160,16 @@ grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
 #### Example:
+NB. plot_gridfunction is not part of the package
 ```
-atom = H1I
-orbit = castOrbit(n=75, ℓ=72)
+atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
+orbit = castOrbit(n=75, ℓ=0)
+codata = castCodata(2018)
 grid = autoGrid(atom, orbit, codata, Float64)
-def = castDef(grid, atom, orbit)
-println("NB. It takes about 55 seconds to compile Cairomakie (first time only)")
 plot_gridfunction(1:grid.N, grid; title="")
-  Orbit created: [n=75, ℓ=72] - (n = 75, n′ = 2, ℓ = 72)
-
-  Warning: overflow protection - changed to BigFloat (Rmax^(ℓ+1) => Inf)
-
-  create exponential Grid: BigFloat, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
-  NB. It takes about 55 seconds to compile Cairomakie (first time only)
+  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
+  Orbit created: 75s - (n = 75, n′ = 74, ℓ = 0)
+  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
 ```
 ![Image](./assets/exponential_grid.png)
 
