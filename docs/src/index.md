@@ -18,7 +18,7 @@ CamiXon is a package for the numerical solution of the radial Schrödinger
 equation allowing for screening.
 
 In this package the solution is obtained for a single electron, acting as a
-*spectator* in the central field of the atomic nucleus screened by the other
+*spectator* in the central field of the atomic nucleus screened by the 'other'
 electrons (the *screening* electrons).
 
 The starting point is the 1D Schrödinger equation in Hartree atomic units
@@ -57,9 +57,6 @@ be found in the book *Atomic Structure Theory* by Walter R.Johnson.
 
 ![Image](./assets/H1_3d.png)
 
-```math
-y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}B_p\nabla^p)f[n+1].
-```
 
 ## Codata
 
