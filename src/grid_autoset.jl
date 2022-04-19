@@ -209,6 +209,57 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
 end
 
+# ..............................................................................
+
+@doc raw"""
+    gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+
+* `ID = 1`: exponential grid function,
+```math
+    f[n] = exp(h(n-1)) - 1.0
+```
+* `ID = 2`: quasi-exponential grid function (linear grid for p = 1),
+```math
+    f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + \cdots + \frac{1}{p!}(h(n-1))^p
+```
+* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,\ldots,c_p]``,
+```math
+    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + \cdots + c_p(h(n-1))^p
+```
+* `ID = 4`: linear grid function,
+```math
+    f[n] = (n-1) * h
+```
+#### Examples:
+```
+h = 0.1
+r = [gridfunction(1, n-1, h) for n=1:5]                            # exponential
+ [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032, 0.49182469764127035]
+
+r = [gridfunction(2, n-1, h; p = 4) for n=1:5]  # quasi exponential (degree p=4)
+ [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375, 0.49173333333333336]
+
+r = [gridfunction(3, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial (degree p=4)
+ [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001, 0.49173333333333336]
+
+r = [gridfunction(4, n-1, h) for n=1:5]              # linear
+  [0.0, 0.1, 0.2, 0.3, 0.4]
+
+r′= [gridfunction(4, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
+   [0.1, 0.1, 0.1, 0.1, 0.1]
+```
+"""
+function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
+
+    ID == 1 && return _walterjohnson(n, h; deriv)
+    ID == 2 && return _jw_gridfunction(n, h; deriv, p)
+    ID == 3 && return polynomial(coords, h*n; deriv)
+    ID == 4 && return _linear_gridfunction(n, h; deriv)
+
+    return error("Error: unknown gridfunction")
+
+end
+
 # =autoGrid(atom,orbit,codata,T; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true) =
 
 @doc raw"""

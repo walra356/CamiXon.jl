@@ -31,6 +31,102 @@ struct Grid{T}
     k::Int
 end
 
+# ======================== gridfunction(n, h; deriv=0) =========================
+
+function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
+# ==============================================================================
+#  gridfunction(n, h) = (exp((n-1) * h)-1.0) # gridfunction from Walter Johnson
+# ==============================================================================
+    deriv ≥ 0 || return 0.0
+
+    f = deriv > 0 ? h^(deriv)*exp(n*h) : exp(n*h)-1
+
+    return f
+
+end
+
+# ..............................................................................
+
+function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
+# ==============================================================================
+# jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential texp()
+# ==============================================================================
+    deriv ≥ 0 || return T(0)
+    deriv ≤ p || return T(0)
+
+    nul = T(0)
+
+    f = deriv > 0 ? h^(deriv)*texp(n*h, nul, p-deriv) : texp(n*h, nul, p) - 1  # note: texp() not exp()
+
+    return f
+
+end
+
+# ..............................................................................
+
+function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
+# ==============================================================================
+#  linear_gridfunction(n, h; deriv) = n * h
+# ==============================================================================
+    deriv ≥ 0 || return T(0)
+    deriv ≤ 1 || return T(0)
+
+    f = deriv > 0 ? h : h * n
+
+    return f
+
+end
+
+# ........................ gridname(ID) ........................................
+@doc raw"""
+    gridname(ID::Int)
+
+Name corresponding to the grid ID.
+#### Example:
+```
+n = gridname(2); println("The grid type with ID = 2 is called '$n'.")
+  The grid type with ID = 2 is called 'quasi-exponential'.
+```
+"""
+function gridname(ID::Int)
+# ==============================================================================
+#  Name used for `Grid` of given `grid.ID`
+# ==============================================================================
+
+    ID == 1 && return "exponential"
+    ID == 2 && return "quasi-exponential"
+    ID == 3 && return "polynomial"
+    ID == 4 && return "linear"
+
+    return error("Error: unknown grid name")
+
+end
+
+# .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
+
+function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
+
+    Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
+           ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
+           ID == 3 ? r0 * polynomial(coords, h*N)  :
+           ID == 4 ? r0 * _linear_gridfunction(N, h) : error("Error: unknown grid type")
+
+    ID = ID ≠ 2 ? ID : p == 1 ? 4 : 2
+    name = gridname(ID::Int)
+    str_h = repr(h, context=:compact => true)
+    str_r0 = repr(r0, context=:compact => true)
+    str_Rmax = repr(Rmax, context=:compact => true)
+    strA = "create $(name) Grid: $(T), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
+
+    ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
+    ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
+    ID == 3 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
+    ID == 4 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
+
+    return error("Error: unknown grid type")
+
+end
+
 # ====== castGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
 
 """
