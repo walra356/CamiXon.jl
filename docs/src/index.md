@@ -150,13 +150,14 @@ Pos
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
-#### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index 
+#### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
 NB. plot_potentials is not part of the package
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
 orbit = castOrbit(n=7, ℓ=2)
 codata = castCodata(2018)
 grid = autoGrid(atom, orbit, codata, Float64)
+def = castDef(grid, atom, orbit)
 E = myconvert(grid.T,bohrformula(atom.Z, orbit.n))
 @printf "E = %.15g %s \n" E "Hartree"
 adams = castAdams(E, grid, def)
@@ -165,12 +166,7 @@ plot_potentials(E, grid, def)
   Orbit created: 7d - (n = 7, n′ = 4, ℓ = 2)
   create exponential Grid: Float64, Rmax = 207.0 (a.u.), Ntot = 400, h = 0.025, r0 = 0.00939821
   E = -0.0102040816326531 Hartree
-  Energy interval plot: 298:400
-  Energy interval plot: 230:400
-  Nlctp = 234
-  Nmin = 259
-  Nuctp = 369
-  Nuctp = 369, Ructp = 93.0059202490 (a.u.)
+  Nlctp = 234, Nmin = 259, Nuctp = 369 (Ructp = 93.0059202490 a.u.)
 ```
 ![Image](./assets/potential.png)
 
