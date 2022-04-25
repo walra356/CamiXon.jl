@@ -165,15 +165,18 @@ end
 
 function _zone(n::Int, def::Def)
 
-      Na = def.pos.Na
+        k = def.k
+       Na = def.pos.Na
     Nuctp = def.pos.Nuctp
-      Nb = def.pos.Nb
-       N = def.pos.N
+       Nb = def.pos.Nb
+        N = def.pos.N
 
-       0 < n ≤ Na     && return 1
-      Na < n ≤ Nuctp   && return 2
-    Nuctp < n ≤ Nb     && return 3
-      Nb < n ≤ N      && return 4
+        0 < n ≤ k+1    && return 1
+        k < n ≤ Na     && return 2
+       Na < n ≤ Nuctp  && return 3
+    Nuctp < n ≤ Nb     && return 4
+       Nb < n ≤ N-k-1  && return 5
+    N-k-1 < n ≤ N      && return 6
 
     error("Error: index outside of range 1:$(N)")
 
@@ -182,34 +185,39 @@ end
 function _zone_color(zone::Int)
 
     zone == 1 && return :Black
-    zone == 2 && return :Blue
-    zone == 3 && return :Red
-    zone == 4 && return :Black
+    zone == 2 && return :Grey
+    zone == 3 && return :Blue
+    zone == 4 && return :Red
+    zone == 5 && return :Grey
+    zone == 6 && return :Black
 
-    error("Error: color zone index outside of range 1:4")
+    error("Error: color zone index outside of range 1:6")
 
 end
 
 function _zone_markersize(zone::Int)
 
     zone == 1 && return 2.5
-    zone == 2 && return 1.5
+    zone == 2 && return 2.5
     zone == 3 && return 1.5
-    zone == 4 && return 2.5
+    zone == 4 && return 1.5
+    zone == 5 && return 2.5
+    zone == 6 && return 2.5
 
-    error("Error: color zone index outside of range 1:4")
+    error("Error: color zone index outside of range 1:6")
 
 end
 
 function _scatterX!(ax, r, X, itr, def)
 
-      Na = def.pos.Na
+        k = def.k
+       Na = def.pos.Na
     Nuctp = def.pos.Nuctp
-      Nb = def.pos.Nb
-       N = def.pos.N
+       Nb = def.pos.Nb
+        N = def.pos.N
 
-    N1 = itr[1]
-    N2 = itr[end]
+    N1 = itr.start
+    N2 = itr.stop
 
     A = _zone(N1, def)
     B = _zone(N2, def)
@@ -220,8 +228,8 @@ function _scatterX!(ax, r, X, itr, def)
         mkrA = _zone_markersize(A)
         scatter!(ax, r[itrA], X[itrA], markersize = mkrA, color=clrA)
     elseif B == A + 1
-        itrA = A == 1 ? (N1:Na) : A == 2 ? (N1:Nuctp)   : A == 3 ? (N1:Nb)   : 0:0
-        itrB = B == 2 ? (Na+1:N2) : B == 3 ? (Nuctp+1:N2) : B == 4 ? (Nb+1:N2) : 0:0
+        itrA = A == 1 ? (N1:k+1) : A == 2 ? (N1:Na) : A == 3 ? (N1:Nuctp) : A == 4 ? (N1:Nb) : A == 5 ? (N1:N-k-1) : 0:0
+        itrB = B == 2 ? (k+2:N2) : B == 3 ? (Na+1:N2) : B == 4 ? (Nuctp+1:N2) : B == 5 ? (Nb+1:N2) : B == 6 ? (N-k:N2) : 0:0
         clrA = _zone_color(A)
         clrB = _zone_color(B)
         mkrA = _zone_markersize(A)
@@ -230,9 +238,9 @@ function _scatterX!(ax, r, X, itr, def)
         scatter!(ax, r[itrB], X[itrB], markersize = mkrB, color=clrB)
     elseif B == A + 2
         C = A + 1
-        itrA = A == 1 ? (N1:Na) : A == 2 ? (N1:Nuctp) : 0:0
-        itrC = C == 2 ? (Na+1:Nuctp) : C == 3 ? (Nuctp+1:Nb) : 0:0
-        itrB = B == 3 ? (Nuctp+1:N2) : B == 4 ? (Nb+1:N2) : 0:0
+        itrA = A == 1 ? (N1:k+1)  : A == 2 ? (N1:Na)      : A == 3 ? (N1:Nuctp)   : A == 4 ? (N1:Nb)      : 0:0
+        itrC = C == 2 ? (k+2:Na)  : C == 3 ? (Na+1:Nuctp) : C == 4 ? (Nuctp+1:Nb) : C == 5 ? (Nb+1:N-k-1) : 0:0
+        itrB = B == 3 ? (Na+1:N2) : B == 4 ? (Nuctp+1:N2) : B == 5 ? (Nb+1:N2)    : B == 6 ? (N-k:N2)     : 0:0
         clrA = _zone_color(A)
         clrB = _zone_color(B)
         clrC = _zone_color(C)
@@ -242,13 +250,13 @@ function _scatterX!(ax, r, X, itr, def)
         scatter!(ax, r[itrA], X[itrA], markersize = mkrA, color=clrA)
         scatter!(ax, r[itrB], X[itrB], markersize = mkrB, color=clrB)
         scatter!(ax, r[itrC], X[itrC], markersize = mkrC, color=clrC)
-    else
+    elseif B == A + 3
         C = A + 1
         D = A + 2
-        itrA = A == 1 ? (N1:Na) : 0:0
-        itrC = C == 2 ? (Na+1:Nuctp) : 0:0
-        itrD = D == 3 ? (Nuctp+1:Nb) : 0:0
-        itrB = B == 4 ? (Nb+1:N2) : 0:0
+        itrA = A == 1 ? (N1:k+1)     : A == 2 ? (N1:Na)      : A == 3 ? (N1:Nuctp)   : 0:0
+        itrC = C == 2 ? (k+2:Na)     : C == 3 ? (Na+1:Nuctp) : C == 4 ? (Nuctp+1:Nb) : 0:0
+        itrD = D == 3 ? (Na+1:Nuctp) : D == 4 ? (Nuctp+1:Nb) : D == 5 ? (Nb+1:N-k-1) : 0:0
+        itrB = B == 4 ? (Nuctp+1:N2) : B == 5 ? (Nb+1:N2) : B == 6 ? (N-k:N2) : 0:0
         clrA = _zone_color(A)
         clrB = _zone_color(B)
         clrC = _zone_color(C)
@@ -261,6 +269,59 @@ function _scatterX!(ax, r, X, itr, def)
         scatter!(ax, r[itrB], X[itrB], markersize = mkrB, color=clrB)
         scatter!(ax, r[itrC], X[itrC], markersize = mkrC, color=clrC)
         scatter!(ax, r[itrD], X[itrD], markersize = mkrD, color=clrD)
+    elseif B == A + 4
+        C = A + 1
+        D = A + 2
+        E = A + 3
+        itrA = A == 1 ? (N1:k+1)     : A == 2 ? (N1:Na)      : 0:0
+        itrC = C == 2 ? (k+2:Na)     : C == 3 ? (Na+1:Nuctp) : 0:0
+        itrD = D == 3 ? (Na+1:Nuctp) : D == 4 ? (Nuctp+1:Nb) : 0:0
+        itrE = E == 4 ? (Nuctp+1:Nb) : E == 5 ? (Nb+1:N-k-1) : 0:0
+        itrB = B == 5 ? (Nb+1:N2)    : B == 6 ? (N-k:N2)     : 0:0
+        clrA = _zone_color(A)
+        clrB = _zone_color(B)
+        clrC = _zone_color(C)
+        clrD = _zone_color(D)
+        clrE = _zone_color(E)
+        mkrA = _zone_markersize(A)
+        mkrB = _zone_markersize(B)
+        mkrC = _zone_markersize(C)
+        mkrD = _zone_markersize(D)
+        mkrE = _zone_markersize(E)
+        scatter!(ax, r[itrA], X[itrA], markersize = mkrA, color=clrA)
+        scatter!(ax, r[itrB], X[itrB], markersize = mkrB, color=clrB)
+        scatter!(ax, r[itrC], X[itrC], markersize = mkrC, color=clrC)
+        scatter!(ax, r[itrD], X[itrD], markersize = mkrD, color=clrD)
+        scatter!(ax, r[itrE], X[itrE], markersize = mkrE, color=clrE)
+    else #    (B = A + 5)
+        C = A + 1
+        D = A + 2
+        E = A + 3
+        F = A + 4
+        itrA = A == 1 ? (N1:k+1)     : 0:0
+        itrC = C == 2 ? (k+2:Na)     : 0:0
+        itrD = D == 3 ? (Na+1:Nuctp) : 0:0
+        itrE = E == 4 ? (Nuctp+1:Nb) : 0:0
+        itrF = F == 5 ? (Nb+1:N-k-1) : 0:0
+        itrB = B == 6 ? (N-k:N2)     : 0:0
+        clrA = _zone_color(A)
+        clrB = _zone_color(B)
+        clrC = _zone_color(C)
+        clrD = _zone_color(D)
+        clrE = _zone_color(E)
+        clrF = _zone_color(F)
+        mkrA = _zone_markersize(A)
+        mkrB = _zone_markersize(B)
+        mkrC = _zone_markersize(C)
+        mkrD = _zone_markersize(D)
+        mkrE = _zone_markersize(E)
+        mkrF = _zone_markersize(F)
+        scatter!(ax, r[itrA], X[itrA], markersize = mkrA, color=clrA)
+        scatter!(ax, r[itrB], X[itrB], markersize = mkrB, color=clrB)
+        scatter!(ax, r[itrC], X[itrC], markersize = mkrC, color=clrC)
+        scatter!(ax, r[itrD], X[itrD], markersize = mkrD, color=clrD)
+        scatter!(ax, r[itrE], X[itrE], markersize = mkrE, color=clrE)
+        scatter!(ax, r[itrF], X[itrF], markersize = mkrF, color=clrF)
     end
 
     N1 ≤ Nuctp ≤ N2 ? scatter!(ax, (r[Nuctp], X[Nuctp]), markersize = 5, color=:Black) : false
@@ -271,15 +332,14 @@ end
 
 function plot_endpoints(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where T<:Real
 
-       r = grid.r
-       k = def.k
+    r = grid.r
+    k = def.k
 
-      Na = k+1
-    Nmin = def.pos.Nmin
+       Na = def.pos.Na
+     Nmin = def.pos.Nmin
     Nuctp = def.pos.Nuctp
-       N = def.pos.N
-      Nb = N-k
-     pos = [Nmin, Na, Nuctp, Nb, N]
+        N = def.pos.N
+       Nb = def.pos.Nb
 
     itr1 = 1:Na+k
     itr2 = Nb-k:N
@@ -330,7 +390,7 @@ function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::De
         N = def.pos.N
 
     println()
-    println("plot_wavefunction: color coding based on Na = $(def.pos.Na), Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N)")
+    println("plot_wavefunction: color coding based on k+1 = $(k+1), Na = $(def.pos.Na), Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N-k = $(def.pos.N-k), N = $(def.pos.N)")
 
     1 ≤ Nstart ≤ N || error("Error: Nstart outside index range 1:$(N)")
     1 ≤ Nstop  ≤ N || error("Error: Nstop outside index range 1:$(N)")
