@@ -1,12 +1,13 @@
-# ===================== plot_gridfunction(itr, grid; title='') ================
+# ===================== plot_gridfunction(itr, grid; title=nothing) ================
 
-function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; title="") where T <: Number
+function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; title=nothing) where T <: Number
 
     N = grid.N
     1 ≤ itr.start ≤ N || error("Error: Nstart outside index range 1:$(N)")
     1 ≤ itr.stop  ≤ N || error("Error: Nstop outside index range 1:$(N)")
 
-    strID = length(title) > 0 ? title : grid.name * " grid"
+    # strID = length(title) > 0 ? title : grid.name * " grid"
+    strID = isnothing(title) ? grid.name * " grid" : title
 
     r = grid.r
     r′= grid.r′
@@ -35,7 +36,7 @@ function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; title="") where T
     return fig
 
 end
-function plot_gridfunction(Nstart::Int, Nstop::Int, grid::Grid{T}; title="") where T <: Number
+function plot_gridfunction(Nstart::Int, Nstop::Int, grid::Grid{T}; title=nothing) where T <: Number
 
     itr = Nstart:Nstop
 
