@@ -86,6 +86,46 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 
 end
 
+
+
+# ======================= adams_moulton_outward ================================
+
+@doc raw"""
+    adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
+function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+
+    am = def.am
+    k = def.k
+
+    Minv = adams.Minv
+    G = adams.G
+    Z = adams.Z
+
+    N  = def.pos.N
+    Na = def.pos.Na
+    Nb = def.pos.Nb
+    Nuctp = def.pos.Nuctp
+
+    for n=Na:Nuctp-1
+        P = am[1:k] ⋅ [G[n+1-k+j][1,2] * imag(Z[n+1-k+j]) for j=0:k-1]
+        Q = am[1:k] ⋅ [G[n+1-k+j][2,1] * real(Z[n+1-k+j]) for j=0:k-1]
+        z = Z[n] + (P + Q*im)
+        z = Minv[n+1] * [real(z), imag(z)]
+        Z[n+1] = z[1] + z[2]*im
+    end
+
+    Z1 = abs(real(Z[Nuctp]))
+
+    Z[1:Nuctp] /= Z1         # set amplitude at c.t.p. to +1/-1 (nodes even/odd)
+
+    def.pos.Na = get_Na(Z, def)
+
+    return Z
+
+end
+
 # ======================= adams_moulton_inward section =========================
 
 function _prepend!(Z2, n, m, G, am, k)
@@ -126,44 +166,6 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
     def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
-
-end
-
-# ======================= adams_moulton_outward ================================
-
-@doc raw"""
-    adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
-
-"""
-function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
-
-    am = def.am
-    k = def.k
-
-    Minv = adams.Minv
-    G = adams.G
-    Z = adams.Z
-
-    N  = def.pos.N
-    Na = def.pos.Na
-    Nb = def.pos.Nb
-    Nuctp = def.pos.Nuctp
-
-    for n=Na:Nuctp-1
-        P = am[1:k] ⋅ [G[n+1-k+j][1,2] * imag(Z[n+1-k+j]) for j=0:k-1]
-        Q = am[1:k] ⋅ [G[n+1-k+j][2,1] * real(Z[n+1-k+j]) for j=0:k-1]
-        z = Z[n] + (P + Q*im)
-        z = Minv[n+1] * [real(z), imag(z)]
-        Z[n+1] = z[1] + z[2]*im
-    end
-
-    Z1 = abs(real(Z[Nuctp]))
-
-    Z[1:Nuctp] /= Z1         # set amplitude at c.t.p. to +1/-1 (nodes even/odd)
-
-    def.pos.Na = get_Na(Z, def)
-
-    return Z
 
 end
 

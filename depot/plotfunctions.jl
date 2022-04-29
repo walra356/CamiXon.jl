@@ -1,4 +1,4 @@
-# ===================== plot_gridfunction(itr, grid; title=nothing) ================
+# ===================== plot_gridfunction(itr, grid; title=nothing) ===========
 
 function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; title=nothing) where T <: Number
 
@@ -186,10 +186,10 @@ end
 function _zone_color(zone::Int)
 
     zone == 1 && return :Black
-    zone == 2 && return :Grey
-    zone == 3 && return :Blue
+    zone == 2 && return :Skyblue
+    zone == 3 && return :Royalblue
     zone == 4 && return :Red
-    zone == 5 && return :Grey
+    zone == 5 && return :Indianred
     zone == 6 && return :Black
 
     error("Error: color zone index outside of range 1:6")
@@ -199,10 +199,10 @@ end
 function _zone_markersize(zone::Int)
 
     zone == 1 && return 2.5
-    zone == 2 && return 2.5
+    zone == 2 && return 2.0
     zone == 3 && return 1.5
     zone == 4 && return 1.5
-    zone == 5 && return 2.5
+    zone == 5 && return 2.0
     zone == 6 && return 2.5
 
     error("Error: color zone index outside of range 1:6")
@@ -326,6 +326,54 @@ function _scatterX!(ax, r, X, itr, def)
     end
 
     N1 ≤ Nuctp ≤ N2 ? scatter!(ax, (r[Nuctp], X[Nuctp]), markersize = 5, color=:Black) : false
+
+end
+
+# =========================================================================================================================
+
+function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=true) where T<:Real
+
+    r = grid.r
+    k = def.k
+    l = k+1
+
+       Na = def.pos.Na
+     Nmin = def.pos.Nmin
+    Nuctp = def.pos.Nuctp
+        N = def.pos.N
+       Nb = def.pos.Nb
+
+    itr = 1:k+1
+    
+    (ylabelP, ylabelQ, Z) = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(r,Z))
+ 
+    
+    R = [r[n] for n ∈ itr]
+    P = [real(Z[n]) for n ∈ itr]
+    Q = [imag(Z[n]) for n ∈ itr]
+
+    symbol = def.atom.symbol
+      name = def.orbit.name
+
+    fig = Figure()
+
+    attr1 = set_attributes(fig; title = "OUTSCH: " * ylabelP * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelP )
+    attr2 = set_attributes(fig; title = "OUTSCH: " * ylabelQ * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelQ )
+
+    ax0 = Label(fig; text = symbol * ": " * name, textsize = 24,  color=:gray)
+    ax1 = Axis(fig; attr1...)                   # create axes, add atrributes
+    ax2 = Axis(fig; attr2...)                   # create axes, add atrributes
+    
+    lines!(ax1, R  , P, markersize = 1, color=:gray90)
+    scatter!(ax1, R, P, markersize = 2, color=:black)
+    lines!(ax2, R  , Q, markersize = 1, color=:gray90)
+    scatter!(ax2, R, Q, markersize = 2, color=:black)
+
+    fig[1,1] = ax1                                      # create layout and show figure
+    fig[1,2] = ax2                                      # create layout and show figure
+    fig[0,:] = ax0
+
+    return fig
 
 end
 
