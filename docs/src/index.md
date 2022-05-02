@@ -314,7 +314,9 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 ### Finite differences
 
-Consider the analytic function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
+#### Backward difference notation
+
+Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
 
 ```math
 \nabla f[n] = f[n]-f[n-1].
@@ -329,11 +331,38 @@ This is called the finite difference in *backward difference* notation. In this 
 The ``k+1`` coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
 
 ```math
-\nabla^k f[n] = \sum_{j=0}^{k} c^k[j]f[n-k+j],
+\nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
+f[n-k]\\
+\vdots\\
+f[n]
+\end{array}\right],
 ```
-where ``c^k[j] \equiv c_{k-j}^k``.    
 
 Functions:  
+
+[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
+
+[`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
+
+[`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
+
+#### Backward difference notation
+
+Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
+
+```math
+\Delta f[n] = f[n+1]-f[n].
+```
+
+This is called the finite difference in *forward difference* notation. In this notation the  ``k^{th}``-*order forward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in forward order, ``f[n],\ \ldots,\ f[n+k]``,
+
+```math
+\Delta^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + \cdots  + f[n+k] = \sum_{j=0}^{k} c_{k-j}^kf[n-j].
+```
+
+The ``k+1`` coefficients ``c_{k-j}^k=(-1)^kc_{j}^{k}``, with ``c_{j}^{k}=(-1)^{j}\binom{k}{j}``, are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
+
+Functions:   
 
 [`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
 

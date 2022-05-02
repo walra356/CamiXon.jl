@@ -26,10 +26,10 @@ Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order finite 
 f[n-k]\\
 \vdots\\
 f[n]
-\end{array}\right]=\sum_{j=0}^{k}c^k[j]f[n-k+j],
+\end{array}\right]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
 ```
-where ``c^k[j] ≡ c_{k-j}^{k}``.
-This form is designed for use with *analytic* functions, ``f``, tabulated in *forward* order, ``f[n-k], ...,f[n]``.
+
+This form is designed for use with *analytical* functions, ``f``, tabulated in *forward* order, ``f[n-k], ...,f[n]``.
 #### Example:
 ```
 k = 3
