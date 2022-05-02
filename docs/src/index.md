@@ -364,7 +364,7 @@ This is called the finite difference in *forward difference* notation. In this n
 In inner-product form the forward difference equation is given by
 
 ```math
-\Delta^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-j] =[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
+\Delta^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n+j] =[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n]\\
 \vdots\\
 f[n+k]
