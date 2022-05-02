@@ -20,8 +20,9 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
 @doc raw"""
     f_diff_weights(k)
 
-Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order backward and forward finite difference operator.
-The backward difference operator is
+Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order
+backward and forward finite difference operators. The backward difference
+\operator is
 ```math
 \nabla^{k}f[n]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n-k]\\
@@ -30,18 +31,20 @@ f[n]
 \end{array}\right]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated in *forward* order, ``f[n-k], ...,f[n]``.
+This form is designed for use with *analytical* functions, ``f``, tabulated in
+*forward* order in the format ``f[n-k], ...,f[n]``.
 
 The forward difference operator is
 ```math
-\Delta^k f[n]=\sum_{j=0}^{k} c_{k-j}^kf[n-j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
+\Delta^k f[n]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n]\\
 \vdots\\
 f[n+k]
-\end{array}\right].
+\end{array}\right]=\sum_{j=0}^{k} c_{k-j}^kf[n-j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated in *forward* order, ``f[n], ...,f[n+k]``.
+This form is designed for use with *analytical* functions, ``f``, tabulated in
+*forward* order in the format ``f[n], ...,f[n+k]``.
 #### Example:
 ```
 k = 3
