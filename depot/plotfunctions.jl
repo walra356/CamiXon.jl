@@ -56,9 +56,9 @@ function find_energy_interval(Emin, Emax, def::Def{T}) where T <: Number
 
     pot = v .+ s
 
-    Emin = myconvert(T, Emin)
-    Emax = myconvert(T, Emax)
-    Eref = myconvert(T, -5)       # reference for "clipping" of amplitude
+    Emin = convert(T, Emin)
+    Emax = convert(T, Emax)
+    Eref = convert(T, -5)       # reference for "clipping" of amplitude
 
     n = Nb
     while Emin < pot[n]
@@ -344,10 +344,10 @@ function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=
        Nb = def.pos.Nb
 
     itr = 1:k+1
-    
+
     (ylabelP, ylabelQ, Z) = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(r,Z))
- 
-    
+
+
     R = [r[n] for n ∈ itr]
     P = [real(Z[n]) for n ∈ itr]
     Q = [imag(Z[n]) for n ∈ itr]
@@ -363,7 +363,7 @@ function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=
     ax0 = Label(fig; text = symbol * ": " * name, textsize = 24,  color=:gray)
     ax1 = Axis(fig; attr1...)                   # create axes, add atrributes
     ax2 = Axis(fig; attr2...)                   # create axes, add atrributes
-    
+
     lines!(ax1, R  , P, markersize = 1, color=:gray90)
     scatter!(ax1, R, P, markersize = 2, color=:black)
     lines!(ax2, R  , Q, markersize = 1, color=:gray90)

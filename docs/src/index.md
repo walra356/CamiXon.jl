@@ -72,7 +72,7 @@ castNamedValue(val::Value; name=" ", comment=" ")
 castCodata(year::Int)
 listCodata(codata::Codata)
 convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
-myconvert(T::Type, val::V) where V <: Number
+convert(T::Type, val::V) where V <: Number
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
 
@@ -158,7 +158,7 @@ orbit = castOrbit(n=7, ℓ=2)
 codata = castCodata(2018)
 grid = autoGrid(atom, orbit, codata, Float64)
 def = castDef(grid, atom, orbit)
-E = myconvert(grid.T,bohrformula(atom.Z, orbit.n))
+E = convert(grid.T,bohrformula(atom.Z, orbit.n))
 @printf "E = %.15g %s \n" E "Hartree"
 adams = castAdams(E, grid, def)
 plot_potentials(E, grid, def)

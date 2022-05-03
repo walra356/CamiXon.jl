@@ -69,9 +69,9 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     B = BigFloat
 
-    Zc = myconvert(B, def.atom.Zc)
-     ℓ = myconvert(B, def.orbit.ℓ)
-     E = myconvert(B, E)
+    Zc = convert(B, def.atom.Zc)
+     ℓ = convert(B, def.orbit.ℓ)
+     E = convert(B, E)
 
     λ = sqrt(-2E)
     σ = Zc/λ
@@ -86,9 +86,9 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
         _nexta!(a,a[end],ℓ,σ,λ)
     end
 
-    ρN = myconvert(B, r[N])
+    ρN = convert(B, r[N])
     for n=0:k
-        ρ = myconvert(B, r[N-k+n])
+        ρ = convert(B, r[N-k+n])
         _nexto!(o, ρ, ρN, a, b, σ, λ)  # Johnson (2.77) and (2,78)
     end
 

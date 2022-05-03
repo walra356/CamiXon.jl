@@ -58,7 +58,7 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     matLD = def.matLD
 
     p = T(1)
-    q = myconvert(T, -Zval//(ℓ + 1) )
+    q = convert(T, -Zval//(ℓ + 1) )
     num = T(ℓ + 1)
 
     o = zeros(Complex{T}, k+1)

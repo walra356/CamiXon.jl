@@ -10,7 +10,7 @@ export sup
 export sub
 export frac
 
-export myconvert
+export convert
 export convertUnit
 export Value
 export strValue

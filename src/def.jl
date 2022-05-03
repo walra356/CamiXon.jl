@@ -116,20 +116,20 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <
 
     r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (Inf)")
 
-    Z = myconvert(T, Z)
-    num = myconvert(T, ℓ*(ℓ + 1)//2)
+    Z = convert(T, Z)
+    num = convert(T, ℓ*(ℓ + 1)//2)
 
     r1 = T(1.0e-100)  # quasi zero
     pot = ℓ > 0 ? [(-Z + num/r[n])/r[n] for n=1:N] : [-Z/r[n] for n=1:N]
     pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
     pot = convert.(T,pot)
     scr = isnothing(scr) ? zeros(T,N) : scr
-    o1 = [fill(myconvert(T,0), (2,2)) for n=1:N]
-    o2 = [fill(myconvert(T,0), (2,2)) for n=1:N]
-    o3 = [fill(myconvert(T,1), (2,2)) for n=1:N]
+    o1 = [fill(convert(T,0), (2,2)) for n=1:N]
+    o2 = [fill(convert(T,0), (2,2)) for n=1:N]
+    o3 = [fill(convert(T,1), (2,2)) for n=1:N]
     pos = Pos(k+1, 0, 1, 0, N-k, N, 0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
-    am = myconvert.(T, create_adams_moulton_weights(k; rationalize=true))
-    matLD = myconvert.(T, create_lagrange_differentiation_matrix(k))
+    am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
+    matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
     println(_defspecs(grid, atom, orbit))
 
@@ -161,7 +161,7 @@ E = initE(def; E=Ecal); println("E = $E")
 """
 function initE(def::Def{T}; E=nothing) where T<:Real
 
-    isnothing(E) || return myconvert(T, E)
+    isnothing(E) || return convert(T, E)
 
     N = def.pos.N
     ℓ = def.orbit.ℓ

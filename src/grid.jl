@@ -170,10 +170,10 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
 # ==============================================================================
 #  castGrid: creates the grid object
 # ==============================================================================
-    h = myconvert(T, h)
-    r0 = myconvert(T, r0)
-    coords = myconvert.(T, coords)
-    epw = [myconvert.(T, trapezoidal_weights(n; rationalize=true)) for n=1:2:epn]
+    h = convert(T, h)
+    r0 = convert(T, r0)
+    coords = convert.(T, coords)
+    epw = [convert.(T, trapezoidal_weights(n; rationalize=true)) for n=1:2:epn]
     name = gridname(ID)
 
     r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]

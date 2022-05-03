@@ -386,8 +386,8 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
     V = BigFloat
 
-    E = myconvert(V, E)
-    Ecal = myconvert(V, Ecal)
+    E = convert(V, E)
+    Ecal = convert(V, Ecal)
 
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
@@ -409,10 +409,10 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
 end
 
-# ==================== myconvert(T::Type, val::V) ==============================
+# ==================== convert(T::Type, val::V) ==============================
 
 @doc raw"""
-    myconvert(T::Type, val::V) where V <: Number
+    convert(T::Type, val::V) where V <: Number
 
 Conversion including `BigFloat`, `Rational{BigFloat}`, BigInt, and
 `Rational{BigInt}`
@@ -421,13 +421,13 @@ Conversion including `BigFloat`, `Rational{BigFloat}`, BigInt, and
 convert(BigInt,1//3)
   InexactError: BigInt(1//3)
 
-myconvert(BigInt, 1//3)
+convert(BigInt, 1//3)
   0.3333333333333333333333333333333333333333333333333333333333333333333333333348
 ```
 """
-function myconvert(T::Type, val::V) where V <: Number      #### moet verplaatst?
+function convert(T::Type, val::V) where V <: Number      #### moet verplaatst?
 # ==============================================================================
-# myconvert(T::Type, val::V) # generalization of convert to include BigFloat
+# convert(T::Type, val::V) # generalization of convert to include BigFloat
 # ==============================================================================
 
     if T == BigFloat
