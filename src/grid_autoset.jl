@@ -69,7 +69,8 @@ function gridname(ID::Int)
 
 end
 
-# ========================= gridname(ID) =======================================
+# .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
+
 function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
@@ -82,7 +83,7 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
     str_Rmax = repr(Rmax, context=:compact => true)
-    strA = "create $(name) Grid: $(T), Rmax = "  * str_Rmax * " (a.u.), Ntot = $N, "
+    strA = "Grid created: $(name), $(T), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
