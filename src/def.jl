@@ -81,7 +81,7 @@ function _defspecs(grid, atom, orbit)
     a = atom.name
     o = orbit.name
 
-    return "Def created for $a $o on $g in $T"
+    return "Def created for $a $o on $g grid in $T"
 
 end
 # ..............................................................................

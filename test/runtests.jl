@@ -7,6 +7,10 @@ using Test
     atom = castAtom(Z=1, Q=0, M=1.008, I=1//2, gI=5.59, msg=false);
     orbit = castOrbit(n=1, ℓ=0, msg=false);
     codata = castCodata(2018);
+    grid = autoGrid(atom, orbit, codata, Float64);
+    def = castDef(grid, atom, orbit);
+    @test grid.name == "exponential"
+    @test def.atom.name == "Hydrogen"
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
@@ -14,7 +18,6 @@ using Test
     @test mendeleev(11) == ("Sodium", "Na")
     @test Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0) == Atom("Helium ion", "⁴Heᐩ", 2, 1, 2, 4.0026, 1//2, 0.0)
     @test castAtom(Z=1, Q=0, M=1.008, I=1//2, gI=5.59, msg=false) == Atom("Hydrogen", "¹H",1,1,0,1.008,1//2,5.59)
-    # @test castDef(autoGrid(atom, orbit; msg=false), atom, orbit).atom == Atom("Hydrogen","¹H",1,1,0,1.008,1//2,5.59)
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
     @test createTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
@@ -67,7 +70,6 @@ using Test
     @test castGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517091807564771, 0.22140275816016985]
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
-    grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
     @test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 63.0
     @test autoNtot(orbit) == 100
