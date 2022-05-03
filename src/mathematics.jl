@@ -638,7 +638,7 @@ end
 @doc raw"""
     pochhammer(x::T, p::Int) where T<:Real
 
-Pochhammer symbol
+Pochhammer symbol ``(x)_{p}``,
 ```math
 (x)_{p}=\begin{cases}
 1 & p=0\\
@@ -663,6 +663,7 @@ pochhammer(n,20)
 n = convert(Rational{BigInt}, -1//50)
 pochhammer(n,20) == -21605762356630090481082546653745369902321614221999//9536743164062500000000000000000000
   true
+```
 """
 function pochhammer(x::T, p::Int) where T<:Real
 
