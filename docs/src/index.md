@@ -72,7 +72,7 @@ castNamedValue(val::Value; name=" ", comment=" ")
 castCodata(year::Int)
 listCodata(codata::Codata)
 convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
-convert(T::Type, val::V) where V <: Number
+# convert(T::Type, val::V) where V <: Number
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
 
