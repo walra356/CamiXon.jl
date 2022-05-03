@@ -82,29 +82,29 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 # ==============================================================================
 
 @doc raw"""
-    f_diff_expansion_weights(a, ∇)
+    f_diff_expansion_weights(α, ∇)
 
 Weight vector ``b^k ≡ [b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the
-expansion coefficients ``[a_0^k,\ ,\ldots,\ a_k^k]`` of the ``k^{th}``-order
+expansion coefficients ``[α_0^k,\ ,\ldots,\ α_k^k]`` of the ``k^{th}``-order
 finite-difference expansion,
 
 ```math
-\sum_{p=0}^{k}a_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b^k[j]f[n-k+j],
+\sum_{p=0}^{k}α_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b^k[j]f[n-k+j],
 ```
 
 where ``b^k[j] \equiv b_{k-j}^k`` and ``f[n-k], ...,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``a_{0},\ \ldots,\ a_{k}``, and the finite-difference expansion *weights*,
+``α_{0},\ \ldots,\ α_{k}``, and the finite-difference expansion *weights*,
 ``b_k^{k},\ \ldots,\ b_0^{k}``. Note further the difference in ``k`` dependence:
 the *weights*, ``b_j^k``, are ``k``*-dependent*, whereas the *coefficients*,
-``a_j``, are not.
+``α_j``, are not.
 #### Example:
 ```
 k=5
 ∇ = f_diff_weights_array(k)
-a = UnitRange(0,k)
-b = f_diff_expansion_weights(a, ∇)
+α = UnitRange(0,k)
+b = f_diff_expansion_weights(α, ∇)
 6-element Vector{Int64}:
   -5
   29

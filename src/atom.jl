@@ -54,7 +54,7 @@ castAtom(Z=2, Q=1, M=4.00260325413, I=1//2, gI=0.0)
 """
 function castAtom(;Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 
-    S = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
+    I = typeof(I) ∈ [Float16,Float32,Float64] ? rationalize(I) : I
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
