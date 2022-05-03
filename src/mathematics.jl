@@ -580,7 +580,7 @@ function pascal_triangle(nmax::Int)
 
 end
 
-# ==================================== pascal_next(nmax)  ============
+# ==================================== pascal_next(nmax)  ======================
 
 @doc raw"""
     pascal_next(nmax)
@@ -607,7 +607,7 @@ function pascal_next(a::Vector{Int})
 
 end
 
-# ==================================== permutations_unique_count(p, i) =======================
+# ====================== permutations_unique_count(p, i) =======================
 
 @doc raw"""
     permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
@@ -627,6 +627,49 @@ function permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 
     for j ∈ Base.eachindex(Base.unique(p[i]))
         o = o ÷ Base.factorial(d[Base.unique(p[i])[j]])
+    end
+
+    return o
+
+end
+
+# ===================== Pochhammer(x, p) =======================================
+
+@doc raw"""
+    pochhammer(x::T, p::Int) where T<:Real
+
+Pochhammer symbol
+```math
+(x)_{p}=\begin{cases}
+1 & p=0\\
+x(x+1)(x+2)\cdots(x+p-1)=\prod_{n=0}^{p-1}(x+n) & p>0
+\end{cases}
+```
+
+Note that ``(x)_{p}=0`` for ``x=0,-1,\cdots\ -(p-1)``
+#### Examples:
+```
+pochhammer[-7,25]
+  0
+
+n = [-4,-3,-2,-1, 0, 1, 2 , 3, 4]
+pochhammer.(n,5) == [0, 0, 0, 0, 0, 120, 720, 2520, 6720]
+  true
+
+n = -1//50
+pochhammer(n,20)
+  OverflowError: -1491212300990613201 * 449 overflowed for type Int64
+
+n = convert(Rational{BigInt}, -1//50)
+pochhammer(n,20) == -21605762356630090481082546653745369902321614221999//9536743164062500000000000000000000
+  true
+"""
+function pochhammer(x::T, p::Int) where T<:Real
+
+    o = x
+
+    for n=1:p-1
+        o *= (x+n)
     end
 
     return o

@@ -92,6 +92,7 @@ using Test
     @test harmonic_number(12, 3) == 25535765062457//21300003648000
     @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
     @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
+    @test pochhammer.([0,1,2,3,4],5) == [0, 120, 720, 2520, 6720]
     @test polynomial([1,1,1,1,1,1],1; deriv=-1) == 49//20
     @test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
     @test polynom_derivatives([1,1,1,1,1]; deriv=2) == [2, 6, 12]

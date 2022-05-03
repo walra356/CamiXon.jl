@@ -20,7 +20,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
 @doc raw"""
     f_diff_weights(k)
 
-Weight vector ``[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order
+Weight vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order
 backward and forward finite difference operators. The backward difference
 operator is
 ```math
