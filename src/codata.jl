@@ -412,7 +412,7 @@ end
 # ==================== convert(T::Type, val::V) ==============================
 
 @doc raw"""
-    convert(T::Type, val::V) where V <: Number
+    _convert(T::Type, val::V) where V <: Number
 
 Conversion including `BigFloat`, `Rational{BigFloat}`, BigInt, and
 `Rational{BigInt}`
@@ -425,7 +425,7 @@ convert(BigInt, 1//3)
   0.3333333333333333333333333333333333333333333333333333333333333333333333333348
 ```
 """
-function convert(T::Type, val::V) where V <: Number      #### moet verplaatst?
+function _convert(T::Type, val::V) where V <: Number      #### moet verplaatst?
 # ==============================================================================
 # convert(T::Type, val::V) # generalization of convert to include BigFloat
 # ==============================================================================
