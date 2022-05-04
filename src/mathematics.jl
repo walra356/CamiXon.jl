@@ -649,23 +649,51 @@ x(x+1)(x+2)\cdots(x+p-1)=\prod_{n=0}^{p-1}(x+n) & p>0
 Note that ``(x)_{p}=0`` for ``x=0,-1,\cdots\ -(p-1)``
 #### Examples:
 ```
-pochhammer[-7,25]
-  0
-
-n = [-4,-3,-2,-1, 0, 1, 2 , 3, 4]
-pochhammer.(n,5) == [0, 0, 0, 0, 0, 120, 720, 2520, 6720]
+x = [-4,-3,-2,-1, 0, 1, 2 , 3, 4]
+pochhammer.(x,5) == [0, 0, 0, 0, 0, 120, 720, 2520, 6720]
   true
 
-n = -1//50
-pochhammer(n,20)
+pochhammer.(x,0) == [1, 1, 1, 1, 1, 1, 1, 1, 1]
+  true
+
+o = [pochhammer.([x for x=0:-1:-p],p) for p=0:5]
+println("non-positive integer x = 0,⋯,-p:")
+for p=0:5
+    println("p = $p: $(o[p+1])")
+end
+  non-positive integer x = 0,⋯,-p:
+  p = 0: [1]
+  p = 1: [0, -1]
+  p = 2: [0, 0, 2]
+  p = 3: [0, 0, 0, -6]
+  p = 4: [0, 0, 0, 0, 24]
+  p = 5: [0, 0, 0, 0, 0, -120]
+
+ o = [pochhammer.([x for x=0:p],p) for p=0:5]
+ println("non-negative integer x = 0,⋯, p:")
+ for p=0:5
+     println("p = $p: $(o[p+1])")
+ end
+   non-negative integer x = 0,⋯, p:
+   p = 0: [1]
+   p = 1: [0, 1]
+   p = 2: [0, 2, 6]
+   p = 3: [0, 6, 24, 60]
+   p = 4: [0, 24, 120, 360, 840]
+   p = 5: [0, 120, 720, 2520, 6720, 15120]
+
+x = -1//50
+pochhammer(x,20)
   OverflowError: -1491212300990613201 * 449 overflowed for type Int64
 
-n = convert(Rational{BigInt}, -1//50)
-pochhammer(n,20) == -21605762356630090481082546653745369902321614221999//9536743164062500000000000000000000
-  true
+x = convert(Rational{BigInt}, -1//50)
+pochhammer(x,20)
+  -21605762356630090481082546653745369902321614221999//9536743164062500000000000000000000
 ```
 """
 function pochhammer(x::T, p::Int) where T<:Real
+
+    p > 0 || return 1
 
     o = x
 
