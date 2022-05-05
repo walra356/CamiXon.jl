@@ -67,7 +67,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
     f_diff_weights_array(kmax)
 
 Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
-``^{k}`` = [`f_diff_weights(k,j)`](@ref).
+``c^k`` = [`f_diff_weights(k)`](@ref).
 
 Application in finite difference expansions in powers of ``\nabla``.
 #### Example:
