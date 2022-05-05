@@ -1,11 +1,10 @@
 @doc raw"""
     f_diff_weight(k, j)
 
-Weight coefficient
+Finite difference weight coefficient
 ```math
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
-of the ``k^{th}``-order finite difference operator ``\nabla^k`` and corresponding to the function value ``f[n-j]``.
 #### Example:
 ```
 k = 5; j = 3
@@ -20,8 +19,9 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
 @doc raw"""
     f_diff_weights(k)
 
-Weight vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order
-finite difference operators.
+Finite difference weights vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining
+the ``k^{th}``-order finite difference operators. Here
+``c_{j}^{k}`` = [`f_diff_weight(k, j)`](@ref)
 
 Applications:
 
