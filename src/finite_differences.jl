@@ -20,8 +20,8 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
     f_diff_weights(k)
 
 Finite difference weights vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining
-the ``k^{th}``-order finite difference operators. Here
-``c_{j}^{k}`` = [`f_diff_weight(k, j)`](@ref)
+the ``k^{th}``-order finite difference operators. Note that
+``c_{j}^{k}`` = [`f_diff_weight(k, j)`](@ref).
 
 Applications:
 
