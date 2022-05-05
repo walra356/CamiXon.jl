@@ -397,7 +397,7 @@ Functions:
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 
-### Finite difference expansion
+#### Finite difference expansion
 
 Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
 
@@ -427,7 +427,7 @@ Functions:
 ```@docs
 f_diff_expansion_weights(coeffs, ∇)
 ```
-### Lagrangian interpolation
+##### Lagrangian interpolation
 
 Using the definition of the finite difference we can express the relation between ``f[n]`` and ``f[n+1]`` in operator form,
 ```math
