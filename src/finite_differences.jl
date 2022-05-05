@@ -34,8 +34,8 @@ f[n]
 \end{array}\right]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated in
-*forward* order in the format ``f[n-k], ...,f[n]``.
+This form is designed for use with *analytical* functions, ``f``, tabulated as
+``f[n-k], ...,f[n]`` in *forward* order.
 
 The forward difference operator is
 ```math
@@ -46,8 +46,8 @@ f[n+k]
 \end{array}\right]=\sum_{j=0}^{k} c_{k-j}^kf[n+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated in
-*forward* order in the format ``f[n], ...,f[n+k]``.
+This form is designed for use with *analytical* functions, ``f``, tabulated as
+``f[n], ...,f[n+k]`` in *forward* order.
 #### Example:
 ```
 k = 3
