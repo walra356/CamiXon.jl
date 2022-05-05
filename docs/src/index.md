@@ -394,7 +394,7 @@ Functions:
 
 ```@docs
 f_diff_weight(k,j)
-diff_weights(k)
+f_diff_weights(k)
 f_diff_weights_array(kmax)
 ```
 
