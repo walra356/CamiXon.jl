@@ -400,13 +400,23 @@ f_diff_weights_array(kmax)
 
 ### Finite difference expansions
 
-Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
+Finite-difference calculus builds on the *finite-difference expansion*,
+in practice truncated at *order* ``k``.
+
+#### Backward difference notation
 
 ```math
 \sum_{p=0}^{\infty}α_{p}\nabla^{p}f[n]=\sum_{p=0}^{k}α_{p}\nabla^{p}f[n]+\cdots.
 ```
 
-By choosing the order sufficiently high the expansion can be approximated to any desired level of accuracy. A finite-difference expansion of order ``k`` is defined by ``k+1`` *finite-difference expansion coefficients*, above denoted by ``α_{0},\ \ldots,\ α_{k}``. Note that both the coefficients and the operators appear in forward order. It takes some bookkeeping to rewrite the expansion in the form of a *weighted sum* over the ``k+1`` *function values* ``f[n],\ldots,f[n-k]`` (note the *backward order*). Substituting the finite-difference expression for ``\nabla^k``, we obtain
+A finite-difference expansion of order ``k`` is defined
+by ``k+1`` *finite-difference expansion coefficients*, above denoted
+by ``α_{0},\ \ldots,\ α_{k}``. Note that both the coefficients and
+the operators appear in forward order.
+It takes some bookkeeping to rewrite the expansion in the form of
+a *weighted sum* over the ``k+1`` *function values* ``f[n],\ldots,f[n-k]``
+(note the *backward order*).
+Substituting the finite difference expression for ``\nabla^k``, we obtain
 
 ```math
 \sum_{p=0}^{k}α_{p}\nabla^{p}f[n]=\sum_{p=0}^{k}α_{p}\sum_{j=0}^{p}c_{j}^{i}f[n-j]=\sum_{j=0}^{k}\sum_{p=j}^{k}α_{p}c_{j}^{p}f[n-j]=\sum_{j=0}^{k}b_{j}^{k}f[n-j],
