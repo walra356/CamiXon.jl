@@ -24,8 +24,6 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
 Finite difference weights vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining
 the ``k^{th}``-order finite difference operators.
 
-`f_diff_weights(k)` `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
-
 Applications:
 
 The backward difference operator is
@@ -37,8 +35,8 @@ f[n]
 \end{array}\right]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated as
-``f[n-k], ...,f[n]`` in *forward* order.
+This form is designed for use with *analytical* functions, ``f``, tabulated
+in *forward* order as ``f[n-k], ...,f[n]``.
 
 The forward difference operator is
 ```math
@@ -49,8 +47,10 @@ f[n+k]
 \end{array}\right]=\sum_{j=0}^{k} c_{k-j}^kf[n+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated as
-``f[n], ...,f[n+k]`` in *forward* order.
+This form is designed for use with *analytical* functions, ``f``, tabulated
+in *forward* order as ``f[n], ...,f[n+k]``.
+
+`f_diff_weights(k)` `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
 #### Example:
 ```
 c(k) = f_diff_weights(k)
@@ -72,9 +72,9 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
-`f_diff_weights_array(kmax)` ``\rightarrow\ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
-
 Application in finite difference expansions in powers of ``\nabla``.
+
+`f_diff_weights_array(kmax)` ``\rightarrow\ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 #### Example:
 ```
 kmax = 3
