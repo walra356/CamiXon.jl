@@ -314,15 +314,21 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 ### Finite differences
 
-**Forward difference notation**
+Consider the analytical function ``f`` tabulated in *forward order*  
+(growing index) at ``n`` positions on a *uniform grid*.
 
-Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
+#### Forward difference notation
+
+In *forward difference* notation, the *finite difference* of two adjacent
+values on the grid is defined by the relation
 
 ```math
 \Delta f[n] = f[n+1]-f[n].
 ```
 
-In this notation the  ``k^{th}``-*order forward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in forward order, ``f[n],\ \ldots,\ f[n+k]``,
+In this notation the  ``k^{th}``-*order forward difference*
+(which involves ``k+1`` points) is defined by a *weighted sum* over the
+function values in forward order, ``f[n],\ \ldots,\ f[n+k]``,
 
 ```math
 \Delta^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + \cdots  + f[n+k] = \sum_{j=0}^{k} c_{k-j}^kf[n-j].
@@ -333,7 +339,8 @@ The ``k+1`` coefficients
 c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
-are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
+are the *summation weight coefficients* (short: *weights*) define the summation.
+Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
 In inner-product form the forward difference equation is given by
 
 ```math
@@ -344,9 +351,9 @@ f[n+k]
 \end{array}\right].
 ```
 
-**Backward difference notation**
+#### Backward difference notation
 
-Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
+In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
 
 ```math
 \nabla f[n] = f[n]-f[n-1].
@@ -364,7 +371,10 @@ The ``k+1`` coefficients
 c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
-are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
+are the *summation weight coefficients* (short: *weights*) define the summation.
+As the function ``f`` is tabulated in forward order it is good practice to
+change dummy index to also write the summation in forward order
+(coefficients in backward order). In inner product notation this becomes
 
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
@@ -383,7 +393,7 @@ Functions:
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 
-### Finite difference expansion
+### Finite difference expansions
 
 Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
 
