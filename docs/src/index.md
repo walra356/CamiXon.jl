@@ -346,7 +346,7 @@ f[n]
 
 Functions:  
 
-[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
+[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
 
 [`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
 
@@ -371,7 +371,7 @@ The ``k+1`` coefficients
 c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
-are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. 
+are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
 In inner-product form the forward difference equation is given by
 
 ```math
@@ -384,7 +384,7 @@ f[n+k]
 
 Functions:   
 
-[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
+[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
 
 [`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
 
