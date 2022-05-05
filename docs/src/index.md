@@ -485,7 +485,7 @@ difference expression for ``∇^k``, we obtain
 ```
 
 where the weighted summation is defined by the *weights*
-``B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}``, with ``j=0,\ ⋯,\ k``. 
+``B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}``, with ``j=0,\ ⋯,\ k``.
 By a change of dummy index we write the summation in *forward order*
 
 ```math
@@ -501,7 +501,8 @@ Functions:
 
 `coeffs` = ``[β_0,\ \ldots,\ β_k]``
 
-[`backward_diff_expansion_weights(β,∇)`](@ref) ``\rightarrow b^k \equiv [B_k^k,\ ⋯,\ B_0^k]``
+[`backward_diff_expansion_weights(β,∇)`](@ref)
+``\rightarrow \bar{B}^{k} ≡ [B_k^k,\ ⋯,\ B_0^k]``
 
 ```@docs
 forward_diff_expansion_weights(α, Δ)
@@ -509,7 +510,8 @@ backward_diff_expansion_weights(β, ∇)
 ```
 ##### Lagrangian interpolation
 
-Using the definition of the finite difference we can express the relation between ``f[n]`` and ``f[n+1]`` in operator form,
+Using the definition of the finite difference we can express the relation
+between ``f[n]`` and ``f[n+1]`` in operator form,
 ```math
 f[n]=(1-\nabla)f[n+1].
 ```
