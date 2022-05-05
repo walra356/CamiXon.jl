@@ -165,7 +165,7 @@ where ``f[n-k],⋯,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
 ``β ≡ [β_{0},\ ⋯,\ β_{k}]``, and the finite-difference expansion *weights*,
-``\bar{B}^{k} ≡ B_k^{k},\ ⋯,\ B_0^{k} = \rm{reverse}(B^k)``.
+``\bar{B}^{k} ≡ B_k^{k},\ ⋯,\ B_0^{k} = \rm{reverse}$(B^k)$``.
 #### Example:
 ```
 k=5
