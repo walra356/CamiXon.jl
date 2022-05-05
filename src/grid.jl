@@ -116,7 +116,7 @@ function grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Rea
 
     ∇ = CamiXon.f_diff_weights_array(k)
     β = [CamiXon.f_diff_expansion_coeffs_differentiation(k, x) for x=-k:0]
-    w = [CamiXon.backward_diff_expansion_weights(β[i], ∇) for i ∈ Base.eachindex(l)]
+    w = [CamiXon.backward_diff_expansion_weights(β[i], ∇) for i ∈ Base.eachindex(β)]
     u = Base.append!(repeat(w[1:1],N-k-1),w)
     v = CamiXon.f_diff_function_sequences(f , k, 1)
 
