@@ -111,8 +111,8 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 @doc raw"""
     forward_diff_expansion_weights(α, Δ)
 
-Weight vector ``F^k ≡ [F_k^k,\ ,\ldots,\ F_0^k]`` corresponding to the
-expansion coefficients ``[α_0^k,\ ,\ldots,\ α_k^k]`` of the ``k^{th}``-order
+Weight vector ``F^k ≡ [F_k^k,\ ,⋯,\ F_0^k]`` corresponding to the
+expansion coefficients ``α ≡ [α_0^k,\ ,⋯,\ α_k^k]`` of the ``k^{th}``-order
 backwards difference expansion,
 
 ```math
@@ -121,12 +121,7 @@ backwards difference expansion,
 ```
 
 where ``f[n-k], ...,f[n]`` are elements of the
-analytic function ``f`` tabulated in *forward* order. Note the difference in
-ordering between the finite-difference expansion *coefficients*,
-``α_{0},\ \ldots,\ α_{k}``, and the finite-difference expansion *weights*,
-``F_k^{k},\ \ldots,\ F_0^{k}``. Note further the difference in ``k`` dependence:
-the *weights*, ``F_j^k``, are ``k``*-dependent*, whereas the *coefficients*,
-``α_j``, are not.
+analytic function ``f`` tabulated in *forward* order.
 #### Example:
 ```
 k=5
@@ -157,9 +152,9 @@ end
 @doc raw"""
     backward_diff_expansion_weights(β, ∇)
 
-Weight vector ``B^k ≡ [B_k^k,\ ,\ldots,\ B_0^k]`` corresponding to the
-expansion coefficients ``[β_0^k,\ ,\ldots,\ β_k^k]`` of the ``k^{th}``-order
-backwards difference expansion,
+Weight vector ``B^k ≡ [B_k^k,\ ,⋯,\ B_0^k]`` corresponding to the
+expansion coefficients ``β ≡ [β_0^k,\ ,⋯,\ β_k^k]`` of
+the ``k^{th}``-order backwards difference expansion,
 
 ```math
 \sum_{p=0}^{k}β_{p}\nabla^{p}f[n]
@@ -169,10 +164,8 @@ backwards difference expansion,
 where ``f[n-k], ...,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``β_{0},\ \ldots,\ β_{k}``, and the finite-difference expansion *weights*,
-``B_k^{k},\ \ldots,\ B_0^{k}``. Note further the difference in ``k`` dependence:
-the *weights*, ``B_j^k``, are ``k``*-dependent*, whereas the *coefficients*,
-``β_j``, are not.
+``β_{0},\ ⋯,\ β_{k}``, and the finite-difference expansion *weights*,
+``B_k^{k},\ ⋯,\ B_0^{k}``.
 #### Example:
 ```
 k=5
