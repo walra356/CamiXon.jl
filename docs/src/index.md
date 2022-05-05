@@ -344,20 +344,6 @@ f[n+k]
 \end{array}\right].
 ```
 
-Functions:   
-
-[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
-
-[`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
-
-[`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
-
-```@docs
-f_diff_weight(k::Int, i::Int)
-f_diff_weights(k::Int)
-f_diff_weights_array(kmax::Int)
-```
-
 **Backward difference notation**
 
 Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
