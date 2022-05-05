@@ -102,29 +102,29 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 # ==============================================================================
 
 @doc raw"""
-    f_diff_expansion_weights(α, ∇)
+    backward_diff_expansion_weights(β, ∇)
 
-Weight vector ``b^k ≡ [b_k^k,\ ,\ldots,\ b_0^k]`` corresponding to the
-expansion coefficients ``[α_0^k,\ ,\ldots,\ α_k^k]`` of the ``k^{th}``-order
+Weight vector ``b^k ≡ [B_k^k,\ ,\ldots,\ B_0^k]`` corresponding to the
+expansion coefficients ``[β_0^k,\ ,\ldots,\ β_k^k]`` of the ``k^{th}``-order
 finite-difference expansion,
 
 ```math
 \sum_{p=0}^{k}α_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}b^k[j]f[n-k+j],
 ```
 
-where ``b^k[j] \equiv b_{k-j}^k`` and ``f[n-k], ...,f[n]`` are elements of the
+where ``b^k[j] \equiv B_{k-j}^k`` and ``f[n-k], ...,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``α_{0},\ \ldots,\ α_{k}``, and the finite-difference expansion *weights*,
-``b_k^{k},\ \ldots,\ b_0^{k}``. Note further the difference in ``k`` dependence:
-the *weights*, ``b_j^k``, are ``k``*-dependent*, whereas the *coefficients*,
-``α_j``, are not.
+``β_{0},\ \ldots,\ β_{k}``, and the finite-difference expansion *weights*,
+``B_k^{k},\ \ldots,\ B_0^{k}``. Note further the difference in ``k`` dependence:
+the *weights*, ``B_j^k``, are ``k``*-dependent*, whereas the *coefficients*,
+``β_j``, are not.
 #### Example:
 ```
 k=5
 ∇ = f_diff_weights_array(k)
-α = UnitRange(0,k)
-b = f_diff_expansion_weights(α, ∇)
+β = UnitRange(0,k)
+B = backward_diff_expansion_weights(β, ∇)
 6-element Vector{Int64}:
   -5
   29
@@ -134,13 +134,13 @@ b = f_diff_expansion_weights(α, ∇)
   15
 ```
 """
-function f_diff_expansion_weights(coeffs, ∇)
+function backward_diff_expansion_weights(β, ∇)
 # ======================================================================================
 #   function weights of finite-difference summation
 # ======================================================================================
-    k = Base.length(coeffs)-1
+    k = Base.length(β)-1
     #return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
-    return [Base.sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+    return [Base.sum([β[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================
@@ -246,7 +246,7 @@ function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float
 
     ∇ = CamiXon.f_diff_weights_array(k)
     l = [CamiXon.f_diff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
+    w = [CamiXon.backward_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.f_diff_function_sequences(f, k, m)
 
@@ -279,7 +279,7 @@ function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float
 
     ∇ = CamiXon.f_diff_weights_array(k)
     l = [CamiXon.f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w1 = [CamiXon.backward_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
     w2 = CamiXon.f_diff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
@@ -350,7 +350,7 @@ function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
     ∇ = CamiXon.f_diff_weights_array(k)
     coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+x)
 
-    return CamiXon.f_diff_expansion_weights(coeffs,∇)
+    return CamiXon.backward_diff_expansion_weights(coeffs,∇)
 
 end
 
@@ -383,7 +383,7 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     for i=0:k
         coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.f_diff_expansion_weights(coeffs,∇)
+        m[1+i,1:k+1] = CamiXon.backward_diff_expansion_weights(coeffs,∇)
     end
 
     return m
@@ -415,7 +415,7 @@ function lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Flo
 
     ∇ = CamiXon.f_diff_weights_array(k)
     l = [CamiXon.f_diff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [CamiXon.f_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w = [CamiXon.backward_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
     w1 = Base.append!(repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.f_diff_function_sequences(f, k, m)
 
