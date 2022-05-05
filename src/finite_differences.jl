@@ -7,8 +7,8 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
 #### Example:
 ```
-k = 5; j = 3
-f_diff_weight(k, j)
+c(k, j) = f_diff_weight(k, j)
+c(5,3)
  -10
 ```
 """
@@ -50,8 +50,8 @@ This form is designed for use with *analytical* functions, ``f``, tabulated as
 ``f[n], ...,f[n+k]`` in *forward* order.
 #### Example:
 ```
-k = 3
-f_diff_weights(k)
+c(k) = f_diff_weights(k)
+c(3)
 4-element Vector{Int64}:
   1
  -3
@@ -67,7 +67,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
     f_diff_weights_array(kmax)
 
 Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
-``^{k}`` = [`f_diff_weights(k, j)`](@ref).
+``^{k}`` = [`f_diff_weights(k,j)`](@ref).
 
 Application in finite difference expansions in powers of ``\nabla``.
 #### Example:
