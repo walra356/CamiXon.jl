@@ -287,7 +287,8 @@ end
 # ==============================================================================
 
 @doc raw"""
-    lagrangian_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, m=1)
+    lagrangian_interpolation(f::Vector{Float64},
+                                      domain::ClosedInterval{Float64}; k=1, m=1)
 
 ``k^{th}``-order lagrangian *interpolation* of the analytic function ``f``
 tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
@@ -297,10 +298,12 @@ tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
 f = [0.0,1,2,3,4,5,6,7]
 domain = 0.0..1.0
 (X,Y) = lagrangian_interpolation(f, domain; k=2, m=2); println((X,Y))
- (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
+ (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
+                                                  4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
-function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, m=1)
+function lagrange_interpolation(f::Vector{Float64},
+                                      domain::ClosedInterval{Float64}; k=3, m=1)
 # ==============================================================================
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ==============================================================================
@@ -320,7 +323,8 @@ function lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float
 end
 
 @doc raw"""
-    lagrangian_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
+    lagrangian_extrapolation(f::Vector{Float64},
+                                 domain::ClosedInterval{Float64}; k=1, e=1, m=1)
 
 ``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the
 analytic function ``f`` tabulated in forward order at ``n`` points,
@@ -331,10 +335,12 @@ grid size.
 f = [0.0,1,2,3,4,5,6,7]
 domain = 0.0..1.0
 (X,Y) = lagrangian_extrapolation(f, domain; k=2, e=1, m=2); println((X,Y))
-  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
+  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
+                                                  4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
 ```
 """
-function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=1, m=1)
+function lagrange_extrapolation(f::Vector{Float64},
+                           domain::ClosedInterval{Float64}; k=1, e=1, m=1)
 # ==============================================================================
 #   lagrangian (k+1)-point interpolation at μ interpolation points
 # ==============================================================================
@@ -353,7 +359,7 @@ function lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float
 
 end
 
-# =========================== f_diff_expansion_coeffs_differentiation(k, x) ====
+# ============== f_diff_expansion_coeffs_differentiation(k, x) =================
 
 @doc raw"""
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
@@ -458,7 +464,7 @@ end
 
 @doc raw"""
     lagrange_differentiation(f::Vector{Float64},
-                                    domain::ClosedInterval{Float64}; k=1, m=1)
+                        domain::ClosedInterval{Float64}; k=1, m=1)
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
 tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
@@ -486,7 +492,8 @@ function lagrange_differentiation(f::Vector{Float64},
     w2 = f_diff_function_sequences(f, k, m)
 
     X = Base.range(domain.left, domain.right, length=(n-1)*m+1)
-    Y = (n-1)/(domain.right-domain.left) .*  [w1[i] ⋅ w2[i] for i ∈ Base.eachindex(w1)]
+    Y = (n-1)/(domain.right-domain.left) .*  [w1[i] ⋅ w2[i]
+                                                     for i ∈ Base.eachindex(w1)]
 
     return X, Y
 
@@ -523,8 +530,9 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false, devisor=false)
 # ==============================================================================
+    strWarn = "Warning: k = $(k-1) → $(k) (trapezoidal rule requires odd k)"
     Base.isodd(k) ? true :
-    (k=k+1; println("Warning: k = $(k-1) → $(k) (trapezoidal rule requires odd k)"))
+                   (k=k+1; println(strWarn))
 
     l = k - 1
     σ = Base.Matrix{Int}(undef,k,k)
@@ -546,9 +554,9 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 
     if rationalize
         a = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
-        D = Base.denominator(Base.gcd(a))       # == Adams-Moulton devisor
+        D = Base.denominator(Base.gcd(a))          # == Adams-Moulton devisor
         o = devisor ? (k, D, Base.round.(Int, o* D)) :
-                      Base.round.(Int, o* D) // D     # convert to Rational{Int}
+                      Base.round.(Int, o* D) // D  # convert to Rational{Int}
     end
 
     return o
