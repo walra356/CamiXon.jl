@@ -21,8 +21,11 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
     f_diff_weights(k)
 
 Weight vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining the ``k^{th}``-order
-backward and forward finite difference operators. The backward difference
-operator is
+finite difference operators.
+
+Applications:
+
+The backward difference operator is
 ```math
 \nabla^{k}f[n]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n-k]\\

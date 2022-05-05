@@ -642,7 +642,7 @@ Pochhammer symbol ``(x)_{p}``,
 ```math
 (x)_{p}=\begin{cases}
 1 & p=0\\
-x(x+1)(x+2)\cdots(x+p-1)=\prod_{n=0}^{p-1}(x+n) & p>0
+x(x+1)(x+2)\cdots(x+p-1) & p>0
 \end{cases}
 ```
 
