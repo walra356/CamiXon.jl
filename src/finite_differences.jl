@@ -4,9 +4,9 @@
 Finite difference weight coefficient
 ```math
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
+```
 
 `f_diff_weight(k,j)`] `` \rightarrow c_j^k``
-```
 #### Example:
 ```
 c(k, j) = f_diff_weight(k, j)
@@ -22,11 +22,10 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.bino
     f_diff_weights(k)
 
 Finite difference weights vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining
-the ``k^{th}``-order finite difference operators. Note that
-``c_{j}^{k}`` = [`f_diff_weight(k, j)`](@ref).
-
+the ``k^{th}``-order finite difference operators.
 
 `f_diff_weights(k)` `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
+
 Applications:
 
 The backward difference operator is
@@ -73,7 +72,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
-`f_diff_weights_array(kmax)` `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
+`f_diff_weights_array(kmax)` ``\rightarrow\ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 Application in finite difference expansions in powers of ``\nabla``.
 #### Example:
