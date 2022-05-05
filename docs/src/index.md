@@ -314,7 +314,7 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 ### Finite differences
 
-#### Forward difference notation
+**Forward difference notation**
 
 Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
 
@@ -358,7 +358,7 @@ f_diff_weights(k::Int)
 f_diff_weights_array(kmax::Int)
 ```
 
-#### Backward difference notation
+**Backward difference notation**
 
 Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
 
@@ -397,7 +397,7 @@ Functions:
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 
-#### Finite difference expansion
+### Finite difference expansion
 
 Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
 
