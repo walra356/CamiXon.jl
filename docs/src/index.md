@@ -326,7 +326,7 @@ values on the grid is defined by
 \Delta f[n] = f[n+1]-f[n],
 ```
 
-where ``\Delta`` is the forward difference operator. In this notation
+where ``\Delta`` is the forward difference operator. In this notation,
 the  ``k^{th}``-*order forward difference* (which involves ``k+1`` points) is
 defined by a *weighted sum* over the function values in forward order,
 ``f[n],\ \ldots,\ f[n+k]``,
@@ -363,7 +363,7 @@ values on the grid is defined by
 \nabla f[n] = f[n]-f[n-1].
 ```
 
-where ``\nabla`` is the forward difference operator. In this notation
+where ``\nabla`` is the forward difference operator. In this notation,
 the ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is
 defined by a *weighted sum* over the function values in backward order,
 ``f[n],\ \ldots,\ f[n-k]``,

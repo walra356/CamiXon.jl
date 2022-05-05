@@ -38,7 +38,7 @@ f[n+k]
 \end{array}\right]=\sum_{j=0}^{k} c_{k-j}^kf[n+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated
+This convention applies to *analytical* functions, ``f``, tabulated
 in *forward* order as ``f[n], ...,f[n+k]``.
 
 **Backward difference notation**
@@ -52,7 +52,7 @@ f[n]
 \end{array}\right]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
 ```
 
-This form is designed for use with *analytical* functions, ``f``, tabulated
+This convention applies to *analytical* functions, ``f``, tabulated
 in *forward* order as ``f[n-k], ...,f[n]``.
 
 Functions:
