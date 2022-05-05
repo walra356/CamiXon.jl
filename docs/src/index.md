@@ -316,19 +316,19 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 #### Backward difference notation
 
-Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *grid*. The *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
+Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *grid*. In *backward difference* notation the *finite difference* of two adjacent values on a *uniform grid* is defined by the relation
 
 ```math
 \nabla f[n] = f[n]-f[n-1].
 ```
 
-This is called the finite difference in *backward difference* notation. In this notation the  ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in backward order, ``f[n],\ \ldots,\ f[n-k]``,
+In this notation the  ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in backward order, ``f[n],\ \ldots,\ f[n-k]``,
 
 ```math
 \nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
 ```
 
-The ``k+1`` coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
+The ``k+1`` coefficients ``c_{j}^{k}=(-1)^{j}\binom{k}{j}`` are *weight coefficients* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
 
 ```math
 \nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
@@ -338,7 +338,8 @@ f[n]
 \end{array}\right],
 ```
 
-The ``k+1`` coefficients ``c_{k-j}^k=(-1)^kc_{j}^{k}``, with ``c_{j}^{k}=(-1)^{j}\binom{k}{j}``, are *weight factors* (short: *weights*) defining the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
+The ``k+1`` coefficients ``c_{k-j}^k=(-1)^kc_{j}^{k}``, with ``c_{j}^{k}=(-1)^{j}\binom{k}{j}``, are *weight factors* (short: *weights*) defining the summation. In particular, ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
+
 Functions:  
 
 [`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
