@@ -51,6 +51,8 @@ This form is designed for use with *analytical* functions, ``f``, tabulated
 in *forward* order as ``f[n], ...,f[n+k]``.
 
 `f_diff_weights(k)` `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
+
+[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``
 #### Example:
 ```
 c(k) = f_diff_weights(k)
@@ -75,6 +77,10 @@ Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
 Application in finite difference expansions in powers of ``\nabla``.
 
 `f_diff_weights_array(kmax)` ``\rightarrow\ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
+
+[`f_diff_weights(k)`](@ref)``\rightarrow\ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
+
+
 #### Example:
 ```
 kmax = 3
