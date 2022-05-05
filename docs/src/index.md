@@ -396,6 +396,7 @@ Functions:
 
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
+
 ### Finite difference expansion
 
 Finite-difference calculus builds on the *finite-difference expansion*, in practice truncated at *order* ``k``,
