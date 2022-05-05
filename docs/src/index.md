@@ -460,8 +460,10 @@ where `Δ =`[` f_diff_weights_array(kmax)`](@ref).
 
 Functions:
 
+`α` = ``[α_0,\ ⋯,\ α_k]``
+
 [`forward_diff_expansion_weights(α,Δ)`](@ref)
-                          ``\rightarrow F^k ≡ [F_0^k,\ ,⋯,\ F_k^k]``
+                                    ``\rightarrow F^k ≡ [F_0^k,\ ,⋯,\ F_k^k]``
 
 #### Backward difference notation
 
@@ -499,7 +501,7 @@ where `∇ =`[` f_diff_weights_array(kmax)`](@ref).
 
 Functions:
 
-`coeffs` = ``[β_0,\ \ldots,\ β_k]``
+`β` = ``[β_0,\ ⋯,\ β_k]``
 
 [`backward_diff_expansion_weights(β,∇)`](@ref)
 ``\rightarrow \bar{B}^{k} ≡ [B_k^k,\ ⋯,\ B_0^k]``

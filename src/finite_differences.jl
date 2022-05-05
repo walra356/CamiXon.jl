@@ -164,7 +164,7 @@ the ``k^{th}``-order backwards difference expansion,
 where ``f[n-k],⋯,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``β_{0},\ ⋯,\ β_{k}``, and the finite-difference expansion *weights*,
+``β = [β_{0},\ ⋯,\ β_{k}]``, and the finite-difference expansion *weights*,
 ``B_k^{k},\ ⋯,\ B_0^{k}``.
 #### Example:
 ```
