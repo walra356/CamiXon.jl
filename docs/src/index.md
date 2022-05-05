@@ -392,6 +392,11 @@ Functions:
 
 [`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
+```@docs
+f_diff_weight(k,j)
+diff_weights(k)
+f_diff_weights_array(kmax)
+```
 
 ### Finite difference expansions
 
