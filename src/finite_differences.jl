@@ -152,8 +152,8 @@ end
 @doc raw"""
     backward_diff_expansion_weights(β, ∇)
 
-Weight vector ``B^k ≡ [B_k^k,\ ,⋯,\ B_0^k]`` corresponding to the
-expansion coefficients ``β ≡ [β_0^k,\ ,⋯,\ β_k^k]`` of
+Weight vector ``\bar{B}^{k} ≡ [B_k^k,\ ,⋯,\ B_0^k]`` corresponding to the
+expansion coefficients ``β ≡ [β_0,\ ,⋯,\ β_k]`` of
 the ``k^{th}``-order backwards difference expansion,
 
 ```math
@@ -164,8 +164,8 @@ the ``k^{th}``-order backwards difference expansion,
 where ``f[n-k],⋯,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``β = [β_{0},\ ⋯,\ β_{k}]``, and the finite-difference expansion *weights*,
-``B_k^{k},\ ⋯,\ B_0^{k}``.
+``β ≡ [β_{0},\ ⋯,\ β_{k}]``, and the finite-difference expansion *weights*,
+``\bar{B}^{k} ≡ B_k^{k},\ ⋯,\ B_0^{k} = \rm{reverse}(B^k)``.
 #### Example:
 ```
 k=5
