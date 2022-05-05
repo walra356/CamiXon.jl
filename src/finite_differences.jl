@@ -26,7 +26,7 @@ the ``k^{th}``-order finite difference operators.
 
 Applications:
 
-The backward difference operator is
+The backward difference summation is
 ```math
 \nabla^{k}f[n]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n-k]\\
@@ -38,7 +38,7 @@ f[n]
 This form is designed for use with *analytical* functions, ``f``, tabulated
 in *forward* order as ``f[n-k], ...,f[n]``.
 
-The forward difference operator is
+The forward difference summation is
 ```math
 \Delta^k f[n]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
 f[n]\\

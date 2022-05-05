@@ -314,44 +314,6 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 ### Finite differences
 
-#### Backward difference notation
-
-Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
-
-```math
-\nabla f[n] = f[n]-f[n-1].
-```
-
-In this notation the  ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in backward order, ``f[n],\ \ldots,\ f[n-k]``,
-
-```math
-\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
-```
-
-The ``k+1`` coefficients
-
-```math
-c_{j}^{k}=(-1)^{j}\binom{k}{j}
-```
-
-are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
-
-```math
-\nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
-f[n-k]\\
-\vdots\\
-f[n]
-\end{array}\right],
-```
-
-Functions:  
-
-[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
-
-[`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
-
-[`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
-
 #### Forward difference notation
 
 Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
@@ -395,6 +357,44 @@ f_diff_weight(k::Int, i::Int)
 f_diff_weights(k::Int)
 f_diff_weights_array(kmax::Int)
 ```
+
+#### Backward difference notation
+
+Consider the analytical function ``f`` tabulated in *forward order*  (growing index) at ``n`` positions on a *uniform grid*. In *backward difference* notation, the *finite difference* of two adjacent values on the grid is defined by the relation
+
+```math
+\nabla f[n] = f[n]-f[n-1].
+```
+
+In this notation the  ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is defined by a *weighted sum* over the function values in backward order, ``f[n],\ \ldots,\ f[n-k]``,
+
+```math
+\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k] = \sum_{j=0}^{k} c_j^kf[n-j].
+```
+
+The ``k+1`` coefficients
+
+```math
+c_{j}^{k}=(-1)^{j}\binom{k}{j}
+```
+
+are *weight coefficients* (short: *weights*) define the summation. Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``. As the function ``f`` is tabulated in forward order it is good practice to change dummy index to also write the summation in forward order (coefficients in backward order),
+
+```math
+\nabla^k f[n] = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=[c_{k}^{k},\thinspace c_{k-1}^{k},\thinspace\ldots,c_{0}^{k}]\left[\begin{array}{c}
+f[n-k]\\
+\vdots\\
+f[n]
+\end{array}\right],
+```
+
+Functions:  
+
+[`f_diff_weight(k,j)`](@ref) `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
+
+[`f_diff_weights(k)`](@ref) `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
+
+[`f_diff_weights_array(kmax)`](@ref) `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 ### Finite difference expansion
 
