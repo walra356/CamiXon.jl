@@ -8,7 +8,7 @@
 ```math
 -\frac{∇}{ln(1-∇)} = \sum_{p=0}^{\infty}b_p∇^p= 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯.
 ```
-The weights are stored in *forward* order: ``[b_0^k,\ ⋯,\ b_k^k]`` -
+The weights are stored in *forward* order: ``[b_0^k,⋯,b_k^k]`` -
 order of use in summation.
 #### Examples:
 ```
@@ -53,7 +53,7 @@ end
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
-The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ ⋯,\ a_0^k/D]``
+The weights are stored in the vector ``a^k \equiv[a_k^k/D,⋯,a_0^k/D]``
 under the convention ``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the
 Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton
 divisor. By default the output is in Float64, optionally the output is rational,
@@ -77,7 +77,7 @@ function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, 
     ∇ = CamiXon.f_diff_weights_array(k)
     l = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
 
-    o = CamiXon.backward_diff_expansion_weights(l,∇)
+    o = CamiXon.bwd_diff_expansion_weights(l,∇)
 
     if rationalize
         D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor
@@ -100,7 +100,7 @@ end
 ```math
 -\frac{∇}{(1-∇)ln(1-∇)}=\sum_{p=0}^{\infty}B_p∇^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ ⋯.
 ```
-The weights are stored in *forward* order: ``[B_0^k,\ ⋯,\ B_k^k]`` -
+The weights are stored in *forward* order: ``[B_0^k,⋯,B_k^k]`` -
 order of use in summation.
 #### Examples:
 ```

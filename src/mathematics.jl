@@ -3,7 +3,7 @@
 @doc raw"""
     bernoulli_numbers(nmax [, T=Int])
 
-Bernoulli numbers ``B_0,\ ⋯,\ B_{nmax}`` calculated by repetative use of the recurrence relation
+Bernoulli numbers ``B_0,⋯,B_{nmax}`` calculated by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
@@ -130,7 +130,7 @@ end
 @doc raw"""
     faulhaber_summation(n, p [, T=Int])
 
-Sum of powers of natural numbers ``1,\ ⋯,\ n``,
+Sum of powers of natural numbers ``1,⋯,n``,
 ```math
     FS(n,p)=\sum_{k=1}^{n}k^{p}=F(n,p+1).
 ```
@@ -534,7 +534,7 @@ log10_mantissa(x) = Base.log10(x)-Base.floor(Base.log10(x))
 @doc raw"""
     pascal_triangle(nmax [, T=Int])
 
-Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,\ ⋯,\ nmax``
+Pascal triangle of binomial coefficients ``\binom{n}{k}`` for ``n=0,\ 1,⋯,nmax``
 ### Example:
 ```
 pascal_triangle(5)
@@ -711,7 +711,7 @@ end
     polynomial(coords::Vector{T}, x::T[; deriv=0]) where T<:Number
 
 Method to evaluate the function ``f(x)=\text{polynomial}(c,x)``, where
-``c=[c_0,\ ⋯,\ c_d]`` is the vector representation of a polynomial of degree ``d``.
+``c=[c_0,⋯,c_d]`` is the vector representation of a polynomial of degree ``d``.
 ```math
     \text{polynomial}(c,x)=c_0 + c_1 x + ⋯ + c_d x^d.
 ```
@@ -756,7 +756,7 @@ Vector representation of the first derivative of the polynomial `coords`,
     p'(c,x)=c_1 + 2 c_2 x + ⋯ + d c_d x^{d-1},
 ```
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 ### Examples:
 ```
@@ -786,7 +786,7 @@ end
 Vector representation of derivatives of the polynomial `coords`.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 
 `deriv`: derivative of choice; `default`: `coords` remains unchanged.
@@ -829,7 +829,7 @@ end
 Vector representation of all nontrivial derivatives of the polynomial `coords`.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 
 ### Examples:
@@ -868,7 +868,7 @@ Vector representation of the polynomial `coords` raised to the power `p` which
 results in a polynomial in a vector space of dimension ``p d + 1``.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 ### Examples:
 ```
@@ -908,7 +908,7 @@ The polynomial `coords` raised to the powers 1,...,pmax  which
 results in a collection of polynomials in vector spaces of dimension ``d+1`` tot ``p d + 1``.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 ### Examples:
 ```
@@ -947,7 +947,7 @@ polynomial in a vector space of dimension ``p d + 1``.
 The constant of integration is set to zero, ``c_{int} = 0``.
 
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``.
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 ### Examples:
 ```
@@ -983,7 +983,7 @@ is a polynomial in a vector space of dimension ``d=m+n``,
     p(c,x)=a_0b_0 + (a_0b_1 + b_0a_1)x + ⋯ + a_n b_m x^{n+m}.
 ```
 Polynomials of degree ``d`` are represented by a vector in a vector space of dimension ``d+1``
-The polynomial `coords` is specified by the coordinates vector ``c=[c_0,\ ⋯,\ c_d]``
+The polynomial `coords` is specified by the coordinates vector ``c=[c_0,⋯,c_d]``
 consisting of the polynomial coefficients.
 ####
 ```

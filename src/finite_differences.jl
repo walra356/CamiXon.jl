@@ -23,7 +23,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``c^k=[c_k^k,\ ⋯,\ c_0^k]`` defining
+Finite difference weights vector ``c^k=[c_k^k,⋯,c_0^k]`` defining
 the ``k^{th}``-order finite difference operators.
 
 Applications:
@@ -83,13 +83,13 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of finite difference weight vectors, ``c^0,\ ⋯,\ c^k``, where
+Collection of finite difference weight vectors, ``c^0,⋯,c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
 Application in `Finite-difference-expansions`
 
 `f_diff_weights_array(kmax)`
-``→\ [\ c^0,\ c^1,\ ⋯,\ c^{kmax} ]``,
+``→\ [\ c^0,\ c^1,⋯,c^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
 ``→\ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``.
@@ -109,7 +109,7 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 # ==============================================================================
 
 @doc raw"""
-    forward_diff_expansion_weights(α, Δ)
+    fwd_diff_expansion_weights(α, Δ)
 
 Weight vector ``F^k ≡ [F_k^k,\ ,⋯,\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,\ ,⋯,\ α_k^k]`` of the ``k^{th}``-order
@@ -127,7 +127,7 @@ analytic function ``f`` tabulated in *forward* order.
 k=5
 Δ = f_diff_weights_array(k)
 α = UnitRange(0,k)
-F = backward_diff_expansion_weights(α, Δ)
+F = bwd_diff_expansion_weights(α, Δ)
 6-element Vector{Int64}:
   15
  -55
@@ -137,7 +137,7 @@ F = backward_diff_expansion_weights(α, Δ)
   -5
 ```
 """
-function forward_diff_expansion_weights(α, Δ)
+function fwd_diff_expansion_weights(α, Δ)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
@@ -147,10 +147,10 @@ function forward_diff_expansion_weights(α, Δ)
 
 end
 
-# ================ backward_diff_expansion_weights(β, ∇) =======================
+# ================ bwd_diff_expansion_weights(β, ∇) =======================
 
 @doc raw"""
-    backward_diff_expansion_weights(β, ∇)
+    bwd_diff_expansion_weights(β, ∇)
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,\ ,⋯,\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,\ ,⋯,\ β_k]`` of
@@ -164,14 +164,14 @@ the ``k^{th}``-order backwards difference expansion,
 where ``f[n-k],⋯,f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``β ≡ [β_{0},\ ⋯,\ β_{k}]``, and the finite-difference expansion *weights*,
-``\bar{B}^{k} ≡ B_k^{k},\ ⋯,\ B_0^{k} ≡ \rm{reverse}````(B^k)``.
+``β ≡ [β_{0},⋯,β_{k}]``, and the finite-difference expansion *weights*,
+``\bar{B}^{k} ≡ B_k^{k},⋯,B_0^{k} ≡ \rm{reverse}````(B^k)``.
 #### Example:
 ```
 k=5
 ∇ = f_diff_weights_array(k)
 β = UnitRange(0,k)
-B = backward_diff_expansion_weights(β, ∇)
+B = bwd_diff_expansion_weights(β, ∇)
 6-element Vector{Int64}:
   -5
   29
@@ -181,7 +181,7 @@ B = backward_diff_expansion_weights(β, ∇)
   15
 ```
 """
-function backward_diff_expansion_weights(β, ∇)
+function bwd_diff_expansion_weights(β, ∇)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
@@ -195,7 +195,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ ⋯,\ l_p(x)]``
+Finite-difference expansion coefficient vector ``[l_0(x),⋯,l_p(x)]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
@@ -228,7 +228,7 @@ end
 Summation range for interpolation position ``0\le i/m \le 1`` used
 in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1],\ ⋯,\ f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],⋯,f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Examples:
 ```
@@ -304,7 +304,7 @@ function lagrange_interpolation(f::Vector{Float64},
 
     ∇ = CamiXon.f_diff_weights_array(k)
     l = [CamiXon.f_diff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [CamiXon.backward_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
+    w = [CamiXon.bwd_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.f_diff_function_sequences(f, k, m)
 
@@ -321,7 +321,7 @@ end
 
 ``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the
 analytic function ``f`` tabulated in forward order at ``n`` points,
-``f[1],\ ⋯,\ f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],⋯,f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Example:
 ```
@@ -341,7 +341,7 @@ function lagrange_extrapolation(f::Vector{Float64},
 
     ∇ = f_diff_weights_array(k)
     l = [f_diff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [backward_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w1 = [bwd_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
     w2 = f_diff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
@@ -413,7 +413,7 @@ function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
     ∇ = CamiXon.f_diff_weights_array(k)
     coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+x)
 
-    return CamiXon.backward_diff_expansion_weights(coeffs,∇)
+    return CamiXon.bwd_diff_expansion_weights(coeffs,∇)
 
 end
 
@@ -446,7 +446,7 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     for i=0:k
         coeffs = CamiXon.f_diff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.backward_diff_expansion_weights(coeffs,∇)
+        m[1+i,1:k+1] = CamiXon.bwd_diff_expansion_weights(coeffs,∇)
     end
 
     return m
@@ -480,7 +480,7 @@ function lagrange_differentiation(f::Vector{Float64},
 
     ∇ = f_diff_weights_array(k)
     l = [f_diff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [backward_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w = [bwd_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
     w1 = Base.append!(repeat(w[1:m],n-k-1),w)
     w2 = f_diff_function_sequences(f, k, m)
 
