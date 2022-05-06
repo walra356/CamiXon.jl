@@ -95,7 +95,7 @@ end
     grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
-tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1],\ \ldots,
+tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1],\ ⋯,
 \ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
 *without* intermediate points).
 #### Example:
@@ -131,7 +131,7 @@ end
 @doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
-Integral of the function ``f=[f_0,\cdots,\ f_n]`` tabulated on a [`Grid`](@ref)
+Integral of the function ``f=[f_0,⋯,\ f_n]`` tabulated on a [`Grid`](@ref)
 using the trapezoidal rule optimized with endpoint correction by the
 weightsvector `grid.epw`,
 ```math
@@ -139,7 +139,7 @@ weightsvector `grid.epw`,
 ```
 where the latter integral corresponds to the optimized trapezoidal rule for a
 uniform grid (see [`trapezoidal_integration`](@ref)). The rule is exact for
-polynonials of degree ``d=0,\ 1,\cdots\ k-1``, where ``k=`` `grid.epn`.
+polynonials of degree ``d=0,\ 1,⋯\ k-1``, where ``k=`` `grid.epn`.
 For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Example:
 ```

@@ -42,9 +42,9 @@ U_{\mathrm{CF}}(ρ)=-Z_{\mathrm{eff}}(ρ)/ρ=-Z/ρ+U_{\mathrm{scr}}(ρ),
 consisting of the bare Coulomb contribution, ``-Z/ρ``, and the screening field
 ``U_{\mathrm{scr}}(ρ)``, subject to the boundary conditions
 ``U_{\mathrm{scr}}(0)=Z`` and
-``\mathrm{lim}_{ρ\rightarrow\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
+``\mathrm{lim}_{ρ→\infty}U_{\mathrm{scr}}(ρ)=Z_{c}/ρ``.
 Here ``Z_{c}`` is the Rydberg charge; i.e. the effective nuclear charge for a
-spectator electron in the far field ``(ρ\rightarrow\infty)``. Within these
+spectator electron in the far field ``(ρ→\infty)``. Within these
 assumptions we can optimize ``U_{\mathrm{scr}}(ρ)``, while preserving
 the bare Coulomb field close to the nucleus as well as the Rydberg potential in
 the far field. The price we pay is that the radial Schrödinger equation has to
@@ -317,22 +317,22 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 Consider the analytical function ``f`` tabulated in *forward order*  
 (growing index) at ``n`` positions on a *uniform grid*.
 
-#### Forward difference notation
+**Forward difference notation**
 
 In *forward difference* notation, the *finite difference* of two adjacent
 values on the grid is defined by
 
 ```math
-\Delta f[n] = f[n+1]-f[n],
+Δ f[n] = f[n+1]-f[n],
 ```
 
-where ``\Delta`` is the forward difference operator. In this notation,
+where ``Δ`` is the forward difference operator. In this notation,
 the  ``k^{th}``-*order forward difference* (which involves ``k+1`` points) is
 defined by a *weighted sum* over the function values in forward order,
-``f[n],\ \ldots,\ f[n+k]``,
+``f[n],\ ⋯,\ f[n+k]``,
 
 ```math
-\Delta^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + \cdots  + f[n+k]
+Δ^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + ⋯  + f[n+k]
 = \sum_{j=0}^{k} c_{k-j}^kf[n-j].
 ```
 The ``k+1`` coefficients
@@ -341,70 +341,64 @@ The ``k+1`` coefficients
 c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
-are the *summation weight coefficients* (short: *weights*) define the summation.
+are the *summation weights* (short: *weights*) which define the summation.
 Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
 In inner-product form the forward difference equation is given by
 
 ```math
-\Delta^k f[n]
+Δ^k f[n]
 = \sum_{j=0}^{k} c_{k-j}^kf[n+j]
-=[c_{k}^{k},\,c_{k-1}^{k},\,\ldots,c_{0}^{k}]\left[\begin{array}{c}
+=[c_{k}^{k},\,c_{k-1}^{k},\,⋯,c_{0}^{k}]\left[\begin{array}{c}
 f[n]\\
 \vdots\\
 f[n+k]
 \end{array}\right].
 ```
 
-#### Backward difference notation
+Functions:  
+
+[`f_diff_weight(k,j)`](@ref)
+                              `` → c_{j}^{k}=(-1)^{j}\binom{k}{j}``
+
+[`f_diff_weights(k)`](@ref)
+                      `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``
+
+[`f_diff_weights_array(kmax)`](@ref)
+                        `` → \ [\ c^0,\ c^1,\ ⋯,\ c^{kmax} ]``
+
+**Backward difference notation**
 
 In *backward difference* notation, the *finite difference* of two adjacent
 values on the grid is defined by
 
 ```math
-\nabla f[n] = f[n]-f[n-1].
+∇ f[n] = f[n]-f[n-1],
 ```
 
-where ``\nabla`` is the forward difference operator. In this notation,
+where ``∇`` is the backward difference operator. In this notation,
 the ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is
 defined by a *weighted sum* over the function values in backward order,
-``f[n],\ \ldots,\ f[n-k]``,
+``f[n],\ ⋯,\ f[n-k]``,
 
 ```math
-\nabla^k f[n] = f[n] + c_1^kf[n-1] + \cdots + c_k^kf[n-k]
-= \sum_{j=0}^{k} c_j^kf[n-j].
+∇^k f[n] = f[n] + c_1^kf[n-1] + ⋯ + c_k^kf[n-k]
+= \sum_{j=0}^{k} c_j^kf[n-j],
 ```
 
-The ``k+1`` coefficients
-
-```math
-c_{j}^{k}=(-1)^{j}\binom{k}{j}
-```
-
-are the *summation weight coefficients* (short: *weights*) define the summation.
+where the c_{j}^{k} are again the ``k+1`` *summation weights* defined above.
 As the function ``f`` is tabulated in forward order it is good practice to
 change dummy index to also write the summation in forward order
 (coefficients in backward order). In inner product notation this becomes
 
 ```math
-\nabla^k f[n]
+∇^k f[n]
 = \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]
-=[c_{k}^{k},\,c_{k-1}^{k},\,\ldots,c_{0}^{k}]\left[\begin{array}{c}
+=[c_{k}^{k},\,c_{k-1}^{k},\,⋯,c_{0}^{k}]\left[\begin{array}{c}
 f[n-k]\\
 \vdots\\
 f[n]
 \end{array}\right],
 ```
-
-Functions:  
-
-[`f_diff_weight(k,j)`](@ref)
-                              `` \rightarrow c_{j}^{k}=(-1)^{j}\binom{k}{j}``
-
-[`f_diff_weights(k)`](@ref)
-                      `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``
-
-[`f_diff_weights_array(kmax)`](@ref)
-                        `` \rightarrow \ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``
 
 ```@docs
 f_diff_weight(k::Int,j::Int)
@@ -422,15 +416,15 @@ In terms of forward differences the expansion takes the form
 
 ```math
 \sum_{p=0}^{\infty}α_{p}Δ^{p}f[n]
-=\sum_{p=0}^{k}α_{p}\nabla^{p}f[n]+\cdots.
+=\sum_{p=0}^{k}α_{p}∇^{p}f[n]+⋯.
 ```
 
 A finite-difference expansion truncated order ``k`` is defined
 by ``k+1`` *finite-difference expansion coefficients*, above denoted
-by ``α_{0},\ \ldots,\ α_{k}``. Note that both the coefficients and the
+by ``α_{0},\ ⋯,\ α_{k}``. Note that both the coefficients and the
 operators appear in forward order. It takes some bookkeeping to rewrite the
 expansion in the form of a *weighted sum* over the ``k+1`` *function values*
-``f[n],\ldots,f[n-k]`` (note the *backward order*). Substituting the finite
+``f[n],⋯,f[n-k]`` (note the *backward order*). Substituting the finite
 difference expression for ``Δ^k``, we obtain
 
 ```math
@@ -463,12 +457,12 @@ Functions:
 ``α = [α_0,\ ⋯,\ α_k]``
 
 [`forward_diff_expansion_weights(α,Δ)`](@ref)
-                                    ``\rightarrow F^k ≡ [F_0^k,\ ,⋯,\ F_k^k]``
+                                    ``→ F^k ≡ [F_0^k,\ ,⋯,\ F_k^k]``
 
 #### Backward difference notation
 
 ```math
-\sum_{p=0}^{\infty}β_{p}∇^{p}f[n]=\sum_{p=0}^{k}β_{p}∇^{p}f[n]+\cdots.
+\sum_{p=0}^{\infty}β_{p}∇^{p}f[n]=\sum_{p=0}^{k}β_{p}∇^{p}f[n]+⋯.
 ```
 
 A finite-difference expansion truncated order ``k`` is defined
@@ -491,7 +485,7 @@ where the weighted summation is defined by the *weights*
 By a change of dummy index we write the summation in *forward order*
 
 ```math
-\sum_{p=0}^{k}β_{p}\nabla^{p}f[n]=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j].
+\sum_{p=0}^{k}β_{p}∇^{p}f[n]=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j].
 ```
 
 Note that the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,\ ⋯,\ B_0^k]`` contains
@@ -507,7 +501,7 @@ Functions:
 ``β = [β_0,\ ⋯,\ β_k]``
 
 [`backward_diff_expansion_weights(β,∇)`](@ref)
-``\rightarrow \bar{B}^{k} ≡ [B_k^k,\ ⋯,\ B_0^k]``
+``→ \bar{B}^{k} ≡ [B_k^k,\ ⋯,\ B_0^k]``
 
 ```@docs
 forward_diff_expansion_weights(α, Δ)
@@ -518,14 +512,14 @@ backward_diff_expansion_weights(β, ∇)
 Using the definition of the finite difference we can express the relation
 between ``f[n]`` and ``f[n+1]`` in operator form,
 ```math
-f[n]=(1-\nabla)f[n+1].
+f[n]=(1-∇)f[n+1].
 ```
 By formal inversion of the operator we have
 ```math
-f[n+1] = (1 - \nabla)^{-1} f[n] \equiv \sum_{p=0}^{\infty}∇^p f[n],
+f[n+1] = (1 - ∇)^{-1} f[n] \equiv \sum_{p=0}^{\infty}∇^p f[n],
 ```
 ```math
-f[n+2] = (1 - \nabla)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
+f[n+2] = (1 - ∇)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 ```
 ```math
 \vdots
@@ -534,26 +528,26 @@ f[n+2] = (1 - \nabla)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 which can be generalized to the form of *lagrangian interpolation*,
 
 ```math
-f[n+x] = (1 - \nabla)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
+f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
 ```
 
-where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!`` for ``p>0`` are the *finite-difference expansion coefficients* for *lagrangian interpolation*. These are generated by the function [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref). Evaluating the finite-difference expansion up to order ``k`` we obtain
+where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)⋯(x+p-1)/p!`` for ``p>0`` are the *finite-difference expansion coefficients* for *lagrangian interpolation*. These are generated by the function [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref). Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
-f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j],
+f[n+x] =\sum_{p=0}^{k}l_p(x)∇^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j],
 ```
 
 where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} l_p(x) c_j^p`` are the  *lagrangian interpolation weights*.  After changing dummy index to bring the summation in forward order the expansion becomes
 ```math
-f[n+x] =\sum_{p=0}^{k}l_p(x)\nabla^pf[n]= \sum_{j=0}^{k}r_x^k[j]f[n-k+j],
+f[n+x] =\sum_{p=0}^{k}l_p(x)∇^pf[n]= \sum_{j=0}^{k}r_x^k[j]f[n-k+j],
 ```
 where ``r^k_x[j] ≡ r_{k-j}^k(x)``. The weights vector ``r^k_x`` is generated by the function [`backward_diff_expansion_weights(β,∇)`](@ref), with `∇ =` [`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
-`β` = [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref) ``\rightarrow [β_0(x),\ \ldots,\ β_k(x)]``
+`β` = [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref) ``→ [β_0(x),\ ⋯,\ β_k(x)]``
 
-`lagrangian interpolation weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``\rightarrow B^k(x) ≡ [B_k^k(x),\ ,\ldots,\ B_0^k(x)]``
+`lagrangian interpolation weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``→ B^k(x) ≡ [B_k^k(x),\ ,⋯,\ B_0^k(x)]``
 
 ```@docs
 
@@ -569,25 +563,25 @@ lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1,
 To derive the *lagrangian differentiation* formulas we formally differentiate
 
 ```math
-f[n+x] = (1 - \nabla)^{-x} f[n]
+f[n+x] = (1 - ∇)^{-x} f[n]
 ```
 
 with respect to ``x``.
 
 ```math
-\frac{df}{dx}[n+x]=-ln(1-\nabla)\ (1-\nabla)^{-x}f[n]=\sum_{q=1}^{k}\tfrac{1}{q}∇^{q}\sum_{p=0}^{k}l_{p}(x)∇^{p}f[n]+\cdots.
+\frac{df}{dx}[n+x]=-ln(1-∇)\ (1-∇)^{-x}f[n]=\sum_{q=1}^{k}\tfrac{1}{q}∇^{q}\sum_{p=0}^{k}l_{p}(x)∇^{p}f[n]+⋯.
 ```
 
-Rewriting the r.h.s. as a single summation in powers of ``\nabla`` for given values of ``n`` and ``x`` we obtain an expression of the form
+Rewriting the r.h.s. as a single summation in powers of ``∇`` for given values of ``n`` and ``x`` we obtain an expression of the form
 
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=1}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]+\cdots,
+\frac{df}{dx}[n+x]=\sum_{p=1}^{k}l_{p}^{\prime}(x)∇^{p}f[n]+⋯,
 ```
 
 where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion coefficients* for *lagrangian differentiation* at position ``n+x``. These coefficients are determined numerically by polynomial multiplication after adding the ``p=0`` term, ``l_{0}^{\prime}(x)\equiv 0``, to the first sum. The corresponding coefficient vector is generated in *forward order* by the function [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref). Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j],
+\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)∇^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j],
 ```
 
 where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k^{th}``-order lagrangian differentiation weights.  After changing dummy index to reverse the summation from backward to forward order the expansion becomes
@@ -599,11 +593,11 @@ where ``s^k_x[j] ≡ s^k_{k-j}(x)``. The weights vector ``s^k_x`` is generated b
 
 Functions:
 
-`β` = [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref) ``\rightarrow [l_0^{\prime}(x),\ \ldots,\ l_k^{\prime}(x)]``
+`β` = [`f_diff_expansion_coeffs_differentiation(k,x)`](@ref) ``→ [l_0^{\prime}(x),\ ⋯,\ l_k^{\prime}(x)]``
 
-`Lagrange differentiation weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``s^k_x[j] ≡ \rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
+`Lagrange differentiation weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``s^k_x[j] ≡ → [s_k^k(x),\ ,⋯,\ s_0^k(x)]``
 
-`Lagrange differentiation weights` = [`create_lagrange_differentiation_weights(k,x) `](@ref) ``s^k_x[j] ≡ \rightarrow [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``
+`Lagrange differentiation weights` = [`create_lagrange_differentiation_weights(k,x) `](@ref) ``s^k_x[j] ≡ → [s_k^k(x),\ ,⋯,\ s_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
@@ -626,40 +620,40 @@ trapezoidal_integration(f, domain, weights)
 The *Adams-Bashford integration step* is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{h \nabla}{(1-\nabla)ln(1-\nabla)}f[n+1]=h (\sum_{p=0}^{\infty}B_p\nabla^p)f[n+1].
+y[n+1]-y[n] = -\frac{h ∇}{(1-∇)ln(1-∇)}f[n+1]=h (\sum_{p=0}^{\infty}B_p∇^p)f[n+1].
 ```
 
 A closed expression for the *Adams-Bashford expansion coefficients*, ``B_k``, is not available. As we already have a finite-difference expansion for the operator ``(1-∇)^{-1}``,
 
 ```math
-\frac{1}{1-∇}\equiv\sum_{p=0}^{\infty}\nabla^p,
+\frac{1}{1-∇}\equiv\sum_{p=0}^{\infty}∇^p,
 ```
 
 we ask for the expansion of
 
 ```math
--\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+\cdots)f[n+1]= (\sum_{p=0}^{\infty}b_p\nabla^p)f[n+1].
+-\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+⋯)f[n+1]= (\sum_{p=0}^{\infty}b_p∇^p)f[n+1].
 ```
 
 This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `f_diff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford expansion* is obtained as the polynomial product of the two expansions,
 
 ```math
-(\sum_{p=0}^{\infty}B_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}\nabla + \frac{5}{12}\nabla^2 + \cdots)f[n+1].
+(\sum_{p=0}^{\infty}B_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}∇ + \frac{5}{12}∇^2 + ⋯)f[n+1].
 ```
 
 The coefficients ``B_p`` are calculated numerically with the function `f_diff_expansion_adams_bashford_coeffs(k)`. Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
 
 ```math
-\sum_{p=0}^{k}B_p\nabla^pf[n]=\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}A_j^k(x)f[n-j]= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
+\sum_{p=0}^{k}B_p∇^pf[n]=\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}A_j^k(x)f[n-j]= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
 ```
 
 where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point *Adams-Bashford integration weights*.
 
 Function:
 
-`β` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``\rightarrow [B_k^k(x),\ ,\ldots,\ B_0^k(x)]``
+`β` = [`f_diff_expansion_coeffs_adams_bashford(k)`](@ref) ``→ [B_k^k(x),\ ,⋯,\ B_0^k(x)]``
 
-`adams_bashford_integration_weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``\rightarrow [A_k^k(x),\ ,\ldots,\ A_0^k(x)]``
+`adams_bashford_integration_weights` = [`backward_diff_expansion_weights(β,∇)`](@ref) ``→ [A_k^k(x),\ ,⋯,\ A_0^k(x)]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_bashford(k::Int)
@@ -670,36 +664,36 @@ f_diff_expansion_coeffs_adams_bashford(k::Int)
 The *Adams-Moulton integration* step is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{\nabla}{ln(1-\nabla)}f[n+1] = ( 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots)f[n+1].
+y[n+1]-y[n] = -\frac{∇}{ln(1-∇)}f[n+1] = ( 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯)f[n+1].
 ```
 
 For the evaluation of the integration step we limit the summation to ``k+1`` terms (order ``k``),
 
 ```math
-y[n+1]-y[n]= (\sum_{p=0}^{k}b_p\nabla^p)f[n+1]+\cdots.
+y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 ```
 
-where ``b_0,\ldots,b_k`` are the *Adams-Moulton expansion coefficients*, rational numbers generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
+where ``b_0,⋯,b_k`` are the *Adams-Moulton expansion coefficients*, rational numbers generated numerically by the function [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
 
 ```math
-y[n+1]-y[n]= \frac{1}{D}(\sum_{p=0}^{k}b_p^{\prime}\nabla^p)f[n+1]+\cdots,
+y[n+1]-y[n]= \frac{1}{D}(\sum_{p=0}^{k}b_p^{\prime}∇^p)f[n+1]+⋯,
 ```
 
-where ``b_0^{\prime},\ldots,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
+where ``b_0^{\prime},⋯,b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
 
 ```math
-\sum_{p=0}^{k}b_p\nabla^pf[n]=\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}a_j^k(x)f[n-j]= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
+\sum_{p=0}^{k}b_p∇^pf[n]=\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}a_j^k(x)f[n-j]= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
 ```
 
 where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-Moulton integration weights*. These are generated in *backward order* by the function [`backward_diff_expansion_weights(coeffs,∇)`](@ref), with `∇ = `[`f_diff_weights_array(k)`](@ref).
 
 Functions:
 
-`β` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``\rightarrow [b_0,\ldots,b_k]``
+`β` = [`f_diff_expansion_coeffs_adams_moulton(k)`](@ref) ``→ [b_0,⋯,b_k]``
 
-`adams_moulton_weights` = [`backward_diff_expansion_weights(β,∇)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
+`adams_moulton_weights` = [`backward_diff_expansion_weights(β,∇)`](@ref)``→ [a_k^k,\ ,⋯,\ a_0^k]``
 
-`adams_moulton_weights` = [`create_adams_moulton_weights(k)`](@ref)``\rightarrow [a_k^k,\ ,\ldots,\ a_0^k]``
+`adams_moulton_weights` = [`create_adams_moulton_weights(k)`](@ref)``→ [a_k^k,\ ,⋯,\ a_0^k]``
 
 ```@docs
 f_diff_expansion_coeffs_adams_moulton(k::Int)

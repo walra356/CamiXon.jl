@@ -221,11 +221,11 @@ end
 ```
 * `ID = 2`: quasi-exponential grid function (linear grid for p = 1),
 ```math
-    f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + \cdots + \frac{1}{p!}(h(n-1))^p
+    f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + ⋯ + \frac{1}{p!}(h(n-1))^p
 ```
-* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,\ldots,c_p]``,
+* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,⋯,c_p]``,
 ```math
-    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + \cdots + c_p(h(n-1))^p
+    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
 ```
 * `ID = 4`: linear grid function,
 ```math

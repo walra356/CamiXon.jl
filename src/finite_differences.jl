@@ -7,7 +7,7 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
 Functions:
 
-`f_diff_weight(k,j)`] `` \rightarrow c_j^k``
+`f_diff_weight(k,j)`] `` → c_j^k``
 #### Example:
 ```
 c(k, j) = f_diff_weight(k, j)
@@ -23,7 +23,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``c^k=[c_k^k,\ \ldots,\ c_0^k]`` defining
+Finite difference weights vector ``c^k=[c_k^k,\ ⋯,\ c_0^k]`` defining
 the ``k^{th}``-order finite difference operators.
 
 Applications:
@@ -32,7 +32,7 @@ Applications:
 
 The *forward difference* summation is
 ```math
-\Delta^k f[n]=[c_{k}^{k},\, c_{k-1}^{k},\,\ldots,c_{0}^{k}]
+Δ^k f[n]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯,c_{0}^{k}]
 \left[\begin{array}{c}
 f[n]\\
 \vdots\\
@@ -48,7 +48,7 @@ in *forward* order as ``f[n], ...,f[n+k]``.
 
 The *backward difference* summation is
 ```math
-\nabla^{k}f[n]=[c_{k}^{k},\,c_{k-1}^{k},\,\ldots,c_{0}^{k}]
+∇^{k}f[n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯,c_{0}^{k}]
 \left[\begin{array}{c}
 f[n-k]\\
 \vdots\\
@@ -62,9 +62,9 @@ in *forward* order as ``f[n-k], ...,f[n]``.
 
 Functions:
 
-`f_diff_weights(k)` `` \rightarrow \ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``,
+`f_diff_weights(k)` `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``,
 
-where [`f_diff_weight(k,j)`](@ref) `` \rightarrow c_j^k``.
+where [`f_diff_weight(k,j)`](@ref) `` → c_j^k``.
 #### Example:
 ```
 c(k) = f_diff_weights(k)
@@ -83,16 +83,16 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of finite difference weight vectors, ``c^0,\ \ldots,\ c^k``, where
+Collection of finite difference weight vectors, ``c^0,\ ⋯,\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
 Application in `Finite-difference-expansions`
 
 `f_diff_weights_array(kmax)`
-``\rightarrow\ [\ c^0,\ c^1,\ \ldots,\ c^{kmax} ]``,
+``→\ [\ c^0,\ c^1,\ ⋯,\ c^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
-``\rightarrow\ c^k ≡ [c_k^k,\ c_1^k,\ldots,\ c_0^k]``.
+``→\ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
@@ -157,7 +157,7 @@ expansion coefficients ``β ≡ [β_0,\ ,⋯,\ β_k]`` of
 the ``k^{th}``-order backwards difference expansion,
 
 ```math
-\sum_{p=0}^{k}β_{p}\nabla^{p}f[n]
+\sum_{p=0}^{k}β_{p}∇^{p}f[n]
 =\sum_{j=0}^{k}B^k_j f[n-k+j],
 ```
 
@@ -195,14 +195,14 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),\ \ldots,\ l_p(x)]``
+Finite-difference expansion coefficient vector ``[l_0(x),\ ⋯,\ l_p(x)]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
 ```math
-f[n+x] = (1 - \nabla)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
+f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
 ```
-where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)\cdots(x+p-1)/p!``.
+where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)⋯(x+p-1)/p!``.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
 extrapolation to ``x\ge 0``.
 #### Examples:
@@ -228,7 +228,7 @@ end
 Summation range for interpolation position ``0\le i/m \le 1`` used
 in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1],\ \ldots,\ f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],\ ⋯,\ f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Examples:
 ```
@@ -284,7 +284,7 @@ end
                                       domain::ClosedInterval{Float64}; k=1, m=1)
 
 ``k^{th}``-order lagrangian *interpolation* of the analytic function ``f``
-tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
+tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ ⋯,
 \ f[n]``; ``m`` is the multiplier defining the interpolation grid size.
 #### Example:
 ```
@@ -321,7 +321,7 @@ end
 
 ``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the
 analytic function ``f`` tabulated in forward order at ``n`` points,
-``f[1],\ \ldots,\ f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],\ ⋯,\ f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Example:
 ```
@@ -357,11 +357,11 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0^{\prime}(x),\ \ldots,
+Finite-difference expansion coefficient vector ``[l_0^{\prime}(x),\ ⋯,
 \ l_p^{\prime}(x)]`` defining ``k^{th}``-order lagrangian *differentiation*
 of the tabulated analytic function ``f(n+x)`` at position ``x``,
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)\nabla^{p}f[n]
+\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)∇^{p}f[n]
 ```
 #### Example:
 ```
@@ -390,7 +390,7 @@ end
     create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
 ``k^{th}``-order Lagrange differentiation weights vector,
-``s^k(x) ≡ [s_k^k(x),\ ,\ldots,\ s_0^k(x)]``, where ``x`` is the position
+``s^k(x) ≡ [s_k^k(x),\ ,⋯,\ s_0^k(x)]``, where ``x`` is the position
 relative point ``n``.
 
 ```math
@@ -460,7 +460,7 @@ end
                         domain::ClosedInterval{Float64}; k=1, m=1)
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
-tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ \ldots,
+tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ ⋯,
 \ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
 *without* intermediate points).
 #### Example:
@@ -497,14 +497,14 @@ end
 @doc raw"""
     trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
 
-Weight coefficient vector ``a=[a_1,\cdots,\ a_k]`` of trapeziodal rule
+Weight coefficient vector ``a=[a_1,⋯,\ a_k]`` of trapeziodal rule
 optimized for functions of polynomial form,
 ```math
-    ∫_0^n f(x) dx = a_1 (f_0+f_n) + \cdots + a_k (f_{k-1}+f_{n-k+1})
-                                                         + (f_k+\cdots+f_{n-k}),
+    ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
+                                                         + (f_k+⋯+f_{n-k}),
 ```
 where ``k`` is *odd*. The rule is exact for polynonials of degree ``d=0,\ 1,
-\cdots,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
+⋯,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
 By default the output is in Float64, optionally the output is rational, with or
 without specification of the gcd devisor.
 #### Example::
@@ -561,14 +561,14 @@ end
 @doc raw"""
     trapezoidal_integration(f, domain, weights)
 
-Integral of the tabulated function ``f=[f_0,\cdots,\ f_n]`` over the `domain`
+Integral of the tabulated function ``f=[f_0,⋯,\ f_n]`` over the `domain`
 ``a..b`` using the optimized trapezoidal rule with endpoint correction by the
 weightsvector `weights`,
 ```math
-    ∫_0^n f(x) dx = a_1 (f_0+f_n) + \cdots + a_k (f_{k-1}+f_{n-k+1})
-                                                         + (f_k+\cdots+f_{n-k}).
+    ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
+                                                         + (f_k+⋯+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,\cdots,\ k-1``.
+The rule is exact for polynonials of degree ``d=0,\ 1,⋯,\ k-1``.
 For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Examples::
 ```

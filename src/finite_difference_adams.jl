@@ -6,9 +6,9 @@
 ``k^{th}``-order Adams-Moulton expansion coefficients,
 
 ```math
--\frac{\nabla}{ln(1-\nabla)} = \sum_{p=0}^{\infty}b_p\nabla^p= 1 - \frac{1}{2}\nabla - \frac{1}{12}\nabla^2 - \frac{1}{24}\nabla^3 +\cdots.
+-\frac{∇}{ln(1-∇)} = \sum_{p=0}^{\infty}b_p∇^p= 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯.
 ```
-The weights are stored in *forward* order: ``[b_0^k,\ \cdots,\ b_k^k]`` -
+The weights are stored in *forward* order: ``[b_0^k,\ ⋯,\ b_k^k]`` -
 order of use in summation.
 #### Examples:
 ```
@@ -53,7 +53,7 @@ end
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
 ```
-The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ \cdots,\ a_0^k/D]``
+The weights are stored in the vector ``a^k \equiv[a_k^k/D,\ ⋯,\ a_0^k/D]``
 under the convention ``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the
 Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton
 divisor. By default the output is in Float64, optionally the output is rational,
@@ -98,9 +98,9 @@ end
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
 ```math
--\frac{\nabla}{(1-\nabla)ln(1-\nabla)}=\sum_{p=0}^{\infty}B_p\nabla^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ \cdots.
+-\frac{∇}{(1-∇)ln(1-∇)}=\sum_{p=0}^{\infty}B_p∇^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ ⋯.
 ```
-The weights are stored in *forward* order: ``[B_0^k,\ \cdots,\ B_k^k]`` -
+The weights are stored in *forward* order: ``[B_0^k,\ ⋯,\ B_k^k]`` -
 order of use in summation.
 #### Examples:
 ```
