@@ -223,7 +223,7 @@ end
 ```math
     f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + ⋯ + \frac{1}{p!}(h(n-1))^p
 ```
-* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,⋯,c_p]``,
+* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
 ```math
     f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
 ```

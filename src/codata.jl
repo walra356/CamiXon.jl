@@ -303,7 +303,7 @@ end
 """
     convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 
-Unit conversion between μHz, ..., EHz, Hartree, Rydberg, Joule, and eV
+Unit conversion between μHz,⋯\  EHz, Hartree, Rydberg, Joule, and eV
 
 default input: Hartree
 

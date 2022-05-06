@@ -131,7 +131,7 @@ end
 @doc raw"""
     grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 
-Integral of the function ``f=[f_0,⋯,\ f_n]`` tabulated on a [`Grid`](@ref)
+Integral of the function ``f=[f_0,⋯\ f_n]`` tabulated on a [`Grid`](@ref)
 using the trapezoidal rule optimized with endpoint correction by the
 weightsvector `grid.epw`,
 ```math

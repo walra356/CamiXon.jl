@@ -23,7 +23,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``c^k=[c_k^k,⋯,c_0^k]`` defining
+Finite difference weights vector ``c^k=[c_k^k,⋯\ c_0^k]`` defining
 the ``k^{th}``-order finite difference operators.
 
 Applications:
@@ -32,7 +32,7 @@ Applications:
 
 The *forward difference* summation is
 ```math
-Δ^k f[n]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯,c_{0}^{k}]
+Δ^k f[n]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯\ c_{0}^{k}]
 \left[\begin{array}{c}
 f[n]\\
 \vdots\\
@@ -42,13 +42,13 @@ f[n+k]
 ```
 
 This convention applies to *analytical* functions, ``f``, tabulated
-in *forward* order as ``f[n], ...,f[n+k]``.
+in *forward* order as ``f[n],⋯\ f[n+k]``.
 
 **Backward difference notation**
 
 The *backward difference* summation is
 ```math
-∇^{k}f[n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯,c_{0}^{k}]
+∇^{k}f[n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]
 \left[\begin{array}{c}
 f[n-k]\\
 \vdots\\
@@ -58,11 +58,11 @@ f[n]
 ```
 
 This convention applies to *analytical* functions, ``f``, tabulated
-in *forward* order as ``f[n-k], ...,f[n]``.
+in *forward* order as ``f[n-k],⋯\ f[n]``.
 
 Functions:
 
-`f_diff_weights(k)` `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``,
+`f_diff_weights(k)` `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
 
 where [`f_diff_weight(k,j)`](@ref) `` → c_j^k``.
 #### Example:
@@ -83,16 +83,16 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of finite difference weight vectors, ``c^0,⋯,c^k``, where
+Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
 Application in `Finite-difference-expansions`
 
 `f_diff_weights_array(kmax)`
-``→\ [\ c^0,\ c^1,⋯,c^{kmax} ]``,
+``→\ [\ c^0,\ c^1,⋯\ c^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
-``→\ c^k ≡ [c_k^k,\ c_1^k,⋯,\ c_0^k]``.
+``→\ c^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
@@ -111,8 +111,8 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 @doc raw"""
     fwd_diff_expansion_weights(α, Δ)
 
-Weight vector ``F^k ≡ [F_k^k,⋯,F_0^k]`` corresponding to the
-expansion coefficients ``α ≡ [α_0^k,⋯,α_k^k]`` of the ``k^{th}``-order
+Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
+expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 backwards difference expansion,
 
 ```math
@@ -120,7 +120,7 @@ backwards difference expansion,
 =\sum_{j=0}^{k}F^k_j f[n-k+j],
 ```
 
-where ``f[n-k], ...,f[n]`` are elements of the
+where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 #### Example:
 ```
@@ -152,8 +152,8 @@ end
 @doc raw"""
     bwd_diff_expansion_weights(β, ∇)
 
-Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯,B_0^k]`` corresponding to the
-expansion coefficients ``β ≡ [β_0,⋯,β_k]`` of
+Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
+expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
 the ``k^{th}``-order backwards difference expansion,
 
 ```math
@@ -161,11 +161,11 @@ the ``k^{th}``-order backwards difference expansion,
 =\sum_{j=0}^{k}B^k_j f[n-k+j],
 ```
 
-where ``f[n-k],⋯,f[n]`` are elements of the
+where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order. Note the difference in
 ordering between the finite-difference expansion *coefficients*,
-``β ≡ [β_{0},⋯,β_{k}]``, and the finite-difference expansion *weights*,
-``\bar{B}^{k} ≡ B_k^{k},⋯,B_0^{k} ≡ \rm{reverse}````(B^k)``.
+``β ≡ [β_{0},⋯\ β_{k}]``, and the finite-difference expansion *weights*,
+``\bar{B}^{k} ≡ B_k^{k},⋯\ B_0^{k} ≡ \rm{reverse}````(B^k)``.
 #### Example:
 ```
 k=5
@@ -195,7 +195,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),⋯,l_p(x)]``
+Finite-difference expansion coefficient vector ``[l_0(x),⋯\ l_p(x)]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
@@ -228,7 +228,7 @@ end
 Summation range for interpolation position ``0\le i/m \le 1`` used
 in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1],⋯,f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Examples:
 ```
@@ -256,7 +256,7 @@ end
 Finite-difference summation sequences of function values given in forward order
 for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1], ...,f[n]``; ``m`` is the multiplier defining the interpolation grid
+``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation grid
 size. Each sequence consists of ``k⋅m+1`` function values.
 #### Example:
 ```
@@ -321,7 +321,7 @@ end
 
 ``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the
 analytic function ``f`` tabulated in forward order at ``n`` points,
-``f[1],⋯,f[n]``; ``m`` is the multiplier defining the interpolation
+``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation
 grid size.
 #### Example:
 ```
@@ -390,7 +390,7 @@ end
     create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
 ``k^{th}``-order Lagrange differentiation weights vector,
-``s^k(x) ≡ [s_k^k(x),⋯,s_0^k(x)]``, where ``x`` is the position
+``s^k(x) ≡ [s_k^k(x),⋯\ s_0^k(x)]``, where ``x`` is the position
 relative point ``n``.
 
 ```math
@@ -497,7 +497,7 @@ end
 @doc raw"""
     trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
 
-Weight coefficient vector ``a=[a_1,⋯,\ a_k]`` of trapeziodal rule
+Weight coefficient vector ``a=[a_1,⋯\ a_k]`` of trapeziodal rule
 optimized for functions of polynomial form,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
@@ -561,14 +561,14 @@ end
 @doc raw"""
     trapezoidal_integration(f, domain, weights)
 
-Integral of the tabulated function ``f=[f_0,⋯,\ f_n]`` over the `domain`
+Integral of the tabulated function ``f=[f_0,⋯\ f_n]`` over the `domain`
 ``a..b`` using the optimized trapezoidal rule with endpoint correction by the
 weightsvector `weights`,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
                                                          + (f_k+⋯+f_{n-k}).
 ```
-The rule is exact for polynonials of degree ``d=0,\ 1,⋯,\ k-1``.
+The rule is exact for polynonials of degree ``d=0,\ 1,⋯\ k-1``.
 For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Examples::
 ```
