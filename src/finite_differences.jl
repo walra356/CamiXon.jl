@@ -111,8 +111,8 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 @doc raw"""
     fwd_diff_expansion_weights(α, Δ)
 
-Weight vector ``F^k ≡ [F_k^k,\ ,⋯,\ F_0^k]`` corresponding to the
-expansion coefficients ``α ≡ [α_0^k,\ ,⋯,\ α_k^k]`` of the ``k^{th}``-order
+Weight vector ``F^k ≡ [F_k^k,⋯,F_0^k]`` corresponding to the
+expansion coefficients ``α ≡ [α_0^k,⋯,α_k^k]`` of the ``k^{th}``-order
 backwards difference expansion,
 
 ```math
@@ -152,8 +152,8 @@ end
 @doc raw"""
     bwd_diff_expansion_weights(β, ∇)
 
-Weight vector ``\bar{B}^{k} ≡ [B_k^k,\ ,⋯,\ B_0^k]`` corresponding to the
-expansion coefficients ``β ≡ [β_0,\ ,⋯,\ β_k]`` of
+Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯,B_0^k]`` corresponding to the
+expansion coefficients ``β ≡ [β_0,⋯,β_k]`` of
 the ``k^{th}``-order backwards difference expansion,
 
 ```math
@@ -390,7 +390,7 @@ end
     create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
 ``k^{th}``-order Lagrange differentiation weights vector,
-``s^k(x) ≡ [s_k^k(x),\ ,⋯,\ s_0^k(x)]``, where ``x`` is the position
+``s^k(x) ≡ [s_k^k(x),⋯,s_0^k(x)]``, where ``x`` is the position
 relative point ``n``.
 
 ```math
