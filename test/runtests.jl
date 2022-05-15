@@ -10,7 +10,7 @@ using Test
     grid = autoGrid(atom, orbit, codata, Float64);
     def = castDef(grid, atom, orbit);
     @test grid.name == "exponential"
-    @test def.atom.element.name == "Hydrogen"
+    @test def.atom.element.name == "hydrogen"
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
