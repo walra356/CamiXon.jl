@@ -77,7 +77,7 @@ end
 # ================================ mendeleev(Z) ================================
 
 @doc raw"""
-    mendeleev(Z::Int)
+    mendeleev2(Z::Int)
 
 The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
 the *atomic element* `Z`.
@@ -89,7 +89,7 @@ mendeleev(11)
  ("Sodium", "Na", 22.99)
 ```
 """
-function mendeleev(Z::Int)
+function mendeleev2(Z::Int)
 
     element =
     Dict(
@@ -207,7 +207,7 @@ end
 # ================================ mendeleev2(Z) ================================
 
 @doc raw"""
-    mendeleev2(Z::Int; elements=mendeleev)
+    mendeleev(Z::Int; elements=mendeleev)
 
 The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
 the *atomic element* `Z`.
@@ -219,7 +219,7 @@ mendeleev(11)
  ("Sodium", "Na", 22.99)
 ```
 """
-function mendeleev2(Z::Int; elements=dictElements)
+function mendeleev(Z::Int; elements=dictElements)
 
       elt = (name, symbol, weight) = get(elements, Z, nothing)
 
@@ -274,7 +274,7 @@ end
 # ======================== nucleardata(Z, A) =======================================
 
 @doc raw"""
-    nucleardata(Z::Int)
+    nucleardata2(Z::Int)
 
 The properties `name` and `symbol` of the *atomic element* `Z`.
 
@@ -285,7 +285,7 @@ nucleardata(11,23)
   (Na, 2.9936, 22989769.28, 1.5, 1, 1e100, 2.21750, 0.104, 100.00),
 ```
 """
-function nucleardata(Z::Int, A::Int)
+function nucleardata2(Z::Int, A::Int)
 
     isotope =
     Dict(
@@ -642,7 +642,7 @@ end
 # ======================== nucleardata2(Z, A) =======================================
 
 @doc raw"""
-    nucleardata2(Z::Int)
+    nucleardata(Z::Int)
 
 The properties `name` and `symbol` of the *atomic element* `Z`.
 
@@ -653,7 +653,7 @@ nucleardata(11,23)
   (Na, 2.9936, 22989769.28, 1.5, 1, 1e100, 2.21750, 0.104, 100.00),
 ```
 """
-function nucleardata2(Z::Int, A::Int; isotopes=dictIsotopes)
+function nucleardata(Z::Int, A::Int; isotopes=dictIsotopes)
 
     iso = (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = get(isotopes, (Z, A), nothing)
 
