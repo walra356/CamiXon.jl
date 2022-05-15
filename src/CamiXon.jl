@@ -24,8 +24,10 @@ export calibrationReport
 export bohrformula
 export Element
 export mendeleev
+export dictElements
 export castElement
 export Isotope
+export dictIsotopes
 export nucleardata
 export castIsotope
 export Atom
@@ -160,6 +162,7 @@ export permutations_unique_count
 export texp
 
 include("codata.jl")
+include("dict.jl")
 include("strings.jl")
 include("finite_differences.jl")
 include("finite_difference_adams.jl")
