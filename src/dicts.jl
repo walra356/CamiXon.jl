@@ -1,17 +1,23 @@
 
-# ================================ mendeleev ===================================
+# ================================ dictElements ================================
 
 @doc raw"""
-    mendeleev
-
-The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
-the *atomic element* `Z`.
+    dictElements
 
 Source:  Standard atomic weights of the elements 2021 (IUPAC Technical Report)
 #### Example:
 ```
-mendeleev
- ("Sodium", "Na", 22.99)
+dictElements
+  Dict{Int64, Tuple{String, String, Any}} with 102 entries:
+    5  => ("boron", "B", 10.81)
+    56 => ("barium", "Ba", 137.33)
+    35 => ("bromine", "Br", 79.904)
+    55 => ("caesium", "Cs", 132.91)
+    60 => ("neodymium", "Nd", 144.24)
+    30 => ("zinc", "Zn", 65.38)
+    32 => ("germanium", "Ge", 72.63)
+    6  => ("carbon", "C", 12.011)
+    ⋮  => ⋮
 ```
 """
 dictElements = Dict(
@@ -122,18 +128,24 @@ dictElements = Dict(
        )
 
 
-# ======================== nucleardata ========================================
+# ======================== dictIsotopes ========================================
 
 @doc raw"""
-    nucleardata
-
-The properties `name` and `symbol` of the *atomic element* `Z`.
+    dictIsotopes
 
 Sources: AME2020, LINDC(NDS)-0794 and INDC(NDS)-0794
 #### Example:
 ```
-nucleardata(11,23)
-  (Na, 2.9936, 22989769.28, 1.5, 1, 1e100, 2.21750, 0.104, 100.00),
+dictIsotopes
+  Dict{Tuple{Int64, Int64}, Tuple{String, Real, Real, Real, Int64, Real, Real, Any, Any, Vararg{Nothing}}} with 340 entries:
+    (71, 175) => ("Lu", 5.37, 1.74941e8, 3.5, 1, 1.0e100, 2.2257, 3.49, 97.401)
+    (40, 92)  => ("Zr", 4.3057, 9.1905e7, 0, 1, 1.0e100, 0, 0, 17.15)
+    (48, 111) => ("Cd", 4.5845, 1.10904e8, 0.5, 1, 1.0e100, -0.594, 0, 12.795)
+    (72, 176) => ("Hf", 5.3286, 1.75941e8, 0, 1, 1.0e100, 0, 0, 5.26)
+    (30, 68)  => ("Zn", 3.9658, 6.79248e7, 0, 1, 1.0e100, 0, 0, 18.45)
+    (76, 184) => ("Os", 5.3823, 1.83952e8, 0, 1, 5.6e13, 0, 0, 0.02)
+    (54, 129) => ("Xe", 4.7775, 1.28905e8, 0.5, 1, 1.0e100, -0.777961, 0, 26.401)
+    ⋮         => ⋮
 ```
 """
 dictIsotopes = Dict(

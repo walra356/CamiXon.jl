@@ -711,6 +711,13 @@ sub(i::T) where T<:Real
 frac(i::Rational{Int})
 ```
 
+## Dicts
+
+```@docs
+dictElements
+dictIsotopes
+```
+
 ## Index
 
 ```@index
