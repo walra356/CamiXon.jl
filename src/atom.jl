@@ -653,10 +653,9 @@ nucleardata(11,23)
   (Na, 2.9936, 22989769.28, 1.5, 1, 1e100, 2.21750, 0.104, 100.00),
 ```
 """
-function nucleardata(Z::Int, A::Int; isotopes=dictIsotopes)
+function nucleardata2(Z::Int, A::Int; isotopes=dictIsotopes)
 
-    iso = (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra)
-        = get(isotopes, (Z, A), nothing)
+    iso = (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = get(isotopes, (Z, A), nothing)
 
     iso = isnothing(iso) ? error("Error: isotope ($Z, $A) not included") : iso
 
