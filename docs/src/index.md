@@ -86,7 +86,7 @@ SpinOrbit
 Term
 mendeleev(Z::Int)
 castElement(;Z=1, msg=true)
-isotope(Z::Int, A::Int)
+nucleardata(Z::Int, A::Int)
 castIsotope(;Z=1, A=1, msg=true)
 castAtom(;Z=1, A=1, Q=0, msg=true)
 castOrbit(;n=1, ℓ=0, msg=true)

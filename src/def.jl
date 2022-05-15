@@ -54,7 +54,7 @@ Type with fields:
 * `   .am`: Adams-Moulton weight coefficients (`::Vector{T}`)
 * `.matLD`: Lagrangian differentiation matrix (`::Matrix{T}`)
 
-The object `Def` is best created by the function [`castDef`](@ref).
+The object `Def` is best created with the function [`castDef`](@ref).
 """
 struct Def{T}
     T::Type

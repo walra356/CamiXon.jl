@@ -15,7 +15,7 @@ Type with fields:
 * `.epn`:  number of endpoints used for trapezoidal endpoint correction (must be odd) (`::Int`)
 * `.epw`:  trapezoidal endpoint weights for n=1:epn (`::Vector{Vector{T}}`)
 * `.k`:    Adams-Moulton order (`::Int`)
-The object `Grid` is best created by the function [`castGrid`](@ref).
+The object `Grid` is best created with the function [`castGrid`](@ref).
 """
 struct Grid{T}
     ID::Int
