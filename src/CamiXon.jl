@@ -26,7 +26,7 @@ export Element
 export mendeleev
 export castElement
 export Isotope
-export isotope
+export nucleardata
 export castIsotope
 export Atom
 export castAtom
