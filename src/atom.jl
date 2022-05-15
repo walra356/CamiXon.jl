@@ -56,12 +56,12 @@ end
     Atom(Z, A, Q, Zc, element, isotope)
 
 Type with fields:
-* `     .Z`:  # atomic number (`::Int`)
-* `     .A`:  # atomic mass number in amu (`::Int`)
-* `     .Q`:  # ionic charge in a.u. (`::Int`)
-* `    .Zc`:  # Rydberg charge in a.u. (`::Int`)
-*`.element`:  #(`::Element`)
-*`.isotope`:  #(`::Isotope`)
+* `     .Z`:  atomic number (`::Int`)
+* `     .A`:  atomic mass number in amu (`::Int`)
+* `     .Q`:  ionic charge in a.u. (`::Int`)
+* `    .Zc`:  Rydberg charge in a.u. (`::Int`)
+* `.element`:  (`::Element`)
+* `.isotope`:  (`::Isotope`)
 
 The type `Atom` is best created by the function `castAtom`.
 """
@@ -80,7 +80,9 @@ end
     mendeleev(Z::Int)
 
 The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
-the *element* with *atomic number* `Z`.
+the *atomic element* `Z`.
+
+Source:  Standard atomic weights of the elements 2021 (IUPAC Technical Report)
 #### Example:
 ```
 mendeleev(11)
@@ -244,7 +246,9 @@ end
 @doc raw"""
     isotope(Z::Int)
 
-The properties `name` and `symbol` of the *element* with *atomic number* `Z`.
+The properties `name` and `symbol` of the *atomic element* `Z`.
+
+Sources: AME2020, LINDC(NDS)-0794 and INDC(NDS)-0794
 #### Example:
 ```
 isotope(11,23)
