@@ -17,8 +17,6 @@ using Test
     @test bohrformula(2, 4) == -1//8
     @test mendeleev(11) == ("sodium", "Na", 22.99)
     @test nucleardata(11,23) == ("Na", 2.9936, 2.298976928e7, 1.5, 1, 1.0e100, 2.2175, 0.104, 100.0)
-    @test mendeleev2(11) == ("sodium", "Na", 22.99)
-    @test nucleardata2(11,23) == ("Na", 2.9936, 2.298976928e7, 1.5, 1, 1.0e100, 2.2175, 0.104, 100.0)
     @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope(1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
