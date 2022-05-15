@@ -702,12 +702,12 @@ end
     castAtom(;Z=1, A=1, Q=0, msg=true)
 
 Create Atom with fields:
-* `     .Z`:  # atomic number (`::Int`)
-* `     .A`:  # atomic mass number in amu (`::Int`)
-* `     .Q`:  # ionic charge in a.u. (`::Int`)
-* `    .Zc`:  # Rydberg charge in a.u. (`::Int`)
-*`.element`:  #(`::Element`)
-*`.isotope`:  #(`::Isotope`)
+* `     .Z`:  atomic number (`::Int`)
+* `     .A`:  atomic mass number in amu (`::Int`)
+* `     .Q`:  ionic charge in a.u. (`::Int`)
+* `    .Zc`:  Rydberg charge in a.u. (`::Int`)
+*`.element`:  (`::Element`)
+*`.isotope`:  (`::Isotope`)
 #### Examples:
 ```
 castAtom(Z=1, A=1, Q=0);
@@ -732,7 +732,7 @@ castAtom(Z=1, A=1, Q=0);
 
 atom = castAtom(Z=1, A=1, Q=0, msg=false)
   Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope(1, 0, 1, 0.8783,
-                      1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)) 
+                      1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
 
 atom.isotope.ra
   99.9855
