@@ -1,6 +1,6 @@
 # ============================== Value(val, unit) ==============================
 
-"""
+@doc raw"""
     Value(val::Real, unit::String)
 
 Object to hold a real numerical value together with a unit specifier.
@@ -29,7 +29,7 @@ end
 
 # ========================== strValue(val) =====================================
 
-"""
+@doc raw"""
     strValue(f::Value)
 
 String expression for a [`Value`](@ref) object in `:compact => true`
@@ -52,7 +52,7 @@ end
 
 # ============================== NamedValue(val, unit) =========================
 
-"""
+@doc raw"""
     NamedValue(val::Value, name::String, comment::String)
 
 Object to hold a [`Value`](@ref) together with its `symbolic name` and a `short`
@@ -84,7 +84,7 @@ end
 
 # ==================== NamedValue(val, unit) ===================================
 
-"""
+@doc raw"""
     castNamedValue(val::Value; name=" ", comment=" ")
 
 Method to create a [`NamedValue`](@ref) object
@@ -104,7 +104,7 @@ end
 
 # ========================= codata =============================================
 
-"""
+@doc raw"""
     Codata
 
 Object to hold the natural constants from CODATA. It is best created with the
@@ -167,7 +167,7 @@ end
 
 # ========================= createCodata(year) =================================
 
-"""
+@doc raw"""
     castCodata(year::Int)
 
 Method to create the [`Codata`](@ref) object
@@ -238,7 +238,7 @@ end
 
 # ========================= listCodata(codata::Codata) =========================
 
-"""
+@doc raw"""
     listCodata(codata::Codata)
 
 Method to list the fields of [`Codata`](@ref) by their symbolic name
@@ -300,10 +300,10 @@ end
 
 # =============== convertUnit(val; unitIn="kHz", unitOut="xHz") ===============
 
-"""
+@doc raw"""
     convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
 
-Unit conversion between μHz,⋯\  EHz, Hartree, Rydberg, Joule, and eV
+Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, Joule, and eV
 
 default input: Hartree
 
@@ -363,7 +363,7 @@ end
 
 # ============ calibrationReport(E, Ecal; unitIn="Hartree") ====================
 
-"""
+@doc raw"""
     calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 
 Comparison of energy E with calibration value Ecal
