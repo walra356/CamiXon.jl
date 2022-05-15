@@ -162,7 +162,7 @@ export permutations_unique_count
 export texp
 
 include("codata.jl")
-include("dict.jl")
+include("dicts.jl")
 include("strings.jl")
 include("finite_differences.jl")
 include("finite_difference_adams.jl")
