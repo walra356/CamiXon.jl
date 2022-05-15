@@ -8,7 +8,7 @@ Type with fields:
 * `.symbol`:  symbol of element  (`::String`)
 * `.weight`:  relative atomic mass - atomic weight (`::Float64`)
 
-The type `Element` is best created by the function `castElement`.
+The type `Element` is best created with the function [`castElement`](@ref)).
 """
 struct Element           # elemental properties
     name::String         # ionic charge (a.u.)
@@ -30,11 +30,11 @@ Type with fields:
 * `     .I`:  nuclear spin in units of ħ  (`::Rational{Int}`)
 * `     .π`:  parity of nuclear state (`::Int`)
 * `     .lt`:  lifetime inyears (`::Float64`)
-* `     .ra`:  relative abundance in % (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
+* `     .ra`:  relative abundance in % (`::Float64`)
 
-The type `Isotope` is best created by the function `castIsotope`.
+The type `Isotope` is best created with the function [`castIsotope`](@ref)).
 """
 struct Isotope              # Isotopic properties
      Z::Int            # atomic number
@@ -45,9 +45,9 @@ struct Isotope              # Isotopic properties
      I::Rational{Int}  # nuclear spin in units of ħ
      π::Int            # parity of nuclear state
      lt::Float64       # lifetime (years)
-     ra::Float64       # relative abundance (%)
      mdm::Float64      # nuclear magnetic dipole moment
      eqm::Float64      # nuclear electric quadrupole moment
+     ra::Float64       # relative abundance (%)
 end
 
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
@@ -63,7 +63,7 @@ Type with fields:
 * `.element`:  (`::Element`)
 * `.isotope`:  (`::Isotope`)
 
-The type `Atom` is best created by the function `castAtom`.
+The type `Atom` is best created with the function [`castAtom`](@ref)).
 """
 struct Atom                           # Isotopic properties
     Z::Int             # atomic number
@@ -227,8 +227,15 @@ Create Atom with fields
 * `  .name`:  name of element
 * `.symbol`:  symbol of element
 * `.weight`:  relative atomic mass (atomic weight)
-#### Examples:
+#### Example:
 ```
+castElement(;Z=1, msg=true)
+  Element created: hydrogen
+    symbol: H
+    atomic number (Z): 1
+    atomic weight (relative atomic mass): 1.008 amu
+
+  Element("hydrogen", "H", 1.008)
 ```
 """
 function castElement(;Z=1, msg=true)
@@ -241,21 +248,21 @@ function castElement(;Z=1, msg=true)
 
 end
 
-# ======================== isotope(Z, A) =======================================
+# ======================== nucleardata(Z, A) =======================================
 
 @doc raw"""
-    isotope(Z::Int)
+    nucleardata(Z::Int)
 
 The properties `name` and `symbol` of the *atomic element* `Z`.
 
 Sources: AME2020, LINDC(NDS)-0794 and INDC(NDS)-0794
 #### Example:
 ```
-isotope(11,23)
+nucleardata(11,23)
   (Na, 2.9936, 22989769.28, 1.5, 1, 1e100, 2.21750, 0.104, 100.00),
 ```
 """
-function isotope(Z::Int, A::Int)
+function nucleardata(Z::Int, A::Int)
 
     isotope =
     Dict(
@@ -613,7 +620,7 @@ end
 
 function _isotopespecs(Z::Int, A::Int)              # Isotope properties
 
-    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope(Z, A)
+    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = nucleardata(Z, A)
     (name, symbol, weight) = mendeleev(Z)
 
     I = typeof(I) ∈ [Float16, Float32, Float64] ? rationalize(I) : I
@@ -631,9 +638,9 @@ function _isotopespecs(Z::Int, A::Int)              # Isotope properties
     nuclear spin: I = $(I) ħ
     parity of nuclear state: π = $π
     lifetime: $(lt)
-    relative abundance: ra = $(ra) %
     nuclear magnetic dipole moment: mdm = $(mdm)
-    nuclear electric quadrupole moment: eqm = $(eqm)"
+    nuclear electric quadrupole moment: eqm = $(eqm)
+    relative abundance: ra = $(ra) % "
 
     return str
 
@@ -652,17 +659,36 @@ Create Isotope with fields
 * `     .M`:  atomic mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ (`::Rational{Int}`)
 * `     .π`:  parity of nuclear state (`::Int`)
-* `     .lt`:  lifetime in years (`::Float64`)
 * `     .ra`:  relative abundance in % (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
+* `     .lt`:  lifetime in years (`::Float64`)
 #### Examples:
 ```
+isotope = castIsotope(Z=1, A=1)
+  Isotope created: ¹H
+    element: hydrogen
+    atomic number: Z = 1
+    neutron number: n = 0
+    atomic mass number: A =  1 amu
+    rms charge radius: R = 0.8783 Fermi
+    atomic mass: mass = 1.007825032 amu
+    nuclear spin: I = 1//2 ħ
+    parity of nuclear state: π = 1
+    lifetime: stable
+    nuclear magnetic dipole moment: mdm = 2.792847351
+    nuclear electric quadrupole moment: eqm = 0
+    relative abundance: ra = 99.9855 %
+
+  Isotope(1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+
+isotope.ra
+ 99.9855
 ```
 """
 function castIsotope(;Z=1, A=1, msg=true)
 
-    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope(Z, A)
+    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = nucleardata(Z, A)
 
     msg && println(_isotopespecs(Z::Int, A::Int));
 
@@ -684,6 +710,32 @@ Create Atom with fields:
 *`.isotope`:  #(`::Isotope`)
 #### Examples:
 ```
+castAtom(Z=1, A=1, Q=0);
+  Element created: hydrogen
+    symbol: H
+    atomic number (Z): 1
+    atomic weight (relative atomic mass): 1.008 amu
+  Isotope created: ¹H
+    element: hydrogen
+    atomic number: Z = 1
+    neutron number: n = 0
+    atomic mass number: A =  1 amu
+    rms charge radius: R = 0.8783 Fermi
+    atomic mass: mass = 1.007825032 amu
+    nuclear spin: I = 1//2 ħ
+    parity of nuclear state: π = 1
+    lifetime: stable
+    nuclear magnetic dipole moment: mdm = 2.792847351
+    nuclear electric quadrupole moment: eqm = 0
+    relative abundance: ra = 99.9855 %
+  Atom created: hydrogen - ¹H (Z = 1, Zc = 1, Q = 0)
+
+atom = castAtom(Z=1, A=1, Q=0, msg=false)
+  Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope(1, 0, 1, 0.8783,
+                      1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)) 
+
+atom.isotope.ra
+  99.9855
 ```
 """
 function castAtom(;Z=1, A=1, Q=0, msg=true)
@@ -717,7 +769,7 @@ Type for specification of *atomic orbitals* with fields:
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
 
-The type `Orbit` is best created by the function `castOrbit`.
+The type `Orbit` is best created with the function `castOrbit`.
 """
 struct Orbit
     name::String         # LS term notation
@@ -773,7 +825,7 @@ Type for specification of *atomic spinorbitals* with fields:
 * ` .ℓ`:  orbital angular momentum valence electron
 * `.ms`:  spin magnetic quantum number
 
-The type `SpinOrbit` is best created by the function `createSpinOrbit`.
+The type `SpinOrbit` is best created with the function `createSpinOrbit`.
 """
 struct SpinOrbit
     name::String         # LS term notation
@@ -828,7 +880,7 @@ Type for specification of atomic *fine-structure Terms* with fields:
 * ` .L`:  total orbital angular momentum in units of ħ
 * ` .J`:  total electronic angular momentum in units of ħ
 
-The type `Term` is best created by the function `createTerm`.
+The type `Term` is best created with the function `createTerm`.
 """
 struct Term
     name::String         # LS term notation
