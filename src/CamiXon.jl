@@ -22,7 +22,12 @@ export listCodata
 export calibrationReport
 
 export bohrformula
+export Element
 export mendeleev
+export castElement
+export Isotope
+export isotope
+export castIsotope
 export Atom
 export castAtom
 export Orbit

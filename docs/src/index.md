@@ -78,16 +78,21 @@ calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ## Atomic properties
 
 ```@docs
+Element
+Isotope
 Atom
-castAtom(;Z=1, Q=0, M=1.0, I=1//2, gI=5.5, msg=true)
 Orbit
-castOrbit(;n=1, ℓ=0, msg=true)
 SpinOrbit
-createSpinOrbit(o::Orbit; up=true, msg=true)
 Term
+mendeleev(Z::Int)
+castElement(;Z=1, msg=true)
+isotope(Z::Int, A::Int)
+castIsotope(;Z=1, A=1, msg=true)
+castAtom(;Z=1, A=1, Q=0, msg=true)
+castOrbit(;n=1, ℓ=0, msg=true)
+createSpinOrbit(o::Orbit; up=true, msg=true)
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 bohrformula(Z::Int, n::Int)
-mendeleev(Z::Int)
 ```
 
 ## Grid

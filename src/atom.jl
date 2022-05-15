@@ -1,3 +1,21 @@
+# ======================== Element(name, symbol, weight) =======================
+
+"""
+    Element(name, symbol, weight)
+
+Type with fields:
+* `  .name`:  name of element (`::String`)
+* `.symbol`:  symbol of element  (`::String`)
+* `.weight`:  relative atomic mass - atomic weight (`::Float64`)
+
+The type `Element` is best created by the function `castElement`.
+"""
+struct Element           # elemental properties
+    name::String         # ionic charge (a.u.)
+    symbol::String       # nuclear mass (amu)
+    weight::Float64      # relative atomic mass (atomic weight)
+end
+
 # ======== Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra) ===========
 
 """
@@ -8,7 +26,7 @@ Type with fields:
 * `     .N`:  neutron number (`::Int`)
 * `     .A`:  atomic mass number in amu (`::Int`)
 * `     .R`:  rms charge radius in Fermi (`::Float64`)
-* `     .M`:  nuclear mass in amu (`::Float64`)
+* `     .M`:  *atomic* mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ  (`::Rational{Int}`)
 * `     .π`:  parity of nuclear state (`::Int`)
 * `     .lt`:  lifetime inyears (`::Float64`)
@@ -30,24 +48,6 @@ struct Isotope              # Isotopic properties
      ra::Float64       # relative abundance (%)
      mdm::Float64      # nuclear magnetic dipole moment
      eqm::Float64      # nuclear electric quadrupole moment
-end
-
-# ======================== Element(name, symbol, weight) =======================
-
-"""
-    Element(name, symbol, weight)
-
-Type with fields:
-* `  .name`:  name of element (`::String`)
-* `.symbol`:  symbol of element  (`::String`)
-* `.weight`:  relative atomic mass - atomic weight (`::Float64`)
-
-The type `Element` is best created by the function `castElement`.
-"""
-struct Element           # elemental properties
-    name::String         # ionic charge (a.u.)
-    symbol::String       # nuclear mass (amu)
-    weight::Float64      # relative atomic mass (atomic weight)
 end
 
 # ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
@@ -72,6 +72,171 @@ struct Atom                           # Isotopic properties
     Zc::Int            # Rydberg charge in a.u.
     element::Element
     isotope::Isotope
+end
+
+# ================================ mendeleev(Z) ================================
+
+@doc raw"""
+    mendeleev(Z::Int)
+
+The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
+the *element* with *atomic number* `Z`.
+#### Example:
+```
+mendeleev(11)
+ ("Sodium", "Na", 22.99)
+```
+"""
+function mendeleev(Z::Int)
+
+    element =
+    Dict(
+         1 => ("hydrogen", "H", 1.008),
+         2 => ("helium", "He", 4.0026),
+         3 => ("lithium", "Li", 6.94),
+         4 => ("beryllium", "Be", 9.0122),
+         5 => ("boron", "B", 10.81),
+         6 => ("carbon", "C", 12.011),
+         7 => ("nitrogen", "N", 14.007),
+         8 => ("oxygen", "O", 15.999),
+         9 => ("fluorine", "F", 18.998),
+        10 => ("neon", "Ne", 20.18),
+        11 => ("sodium", "Na", 22.99),
+        12 => ("magnesium", "Mg", 24.305),
+        13 => ("aluminium", "Al", 26.982),
+        14 => ("silicon", "Si", 28.085),
+        15 => ("phosphorus", "P", 30.974),
+        16 => ("sulfur", "S", 32.06),
+        17 => ("chlorine", "Cl", 35.45),
+        18 => ("argon", "Ar", 39.95),
+        19 => ("potassium", "K", 39.098),
+        20 => ("calcium", "Ca", 40.078),
+        21 => ("scandium", "Sc", 44.956),
+        22 => ("titanium", "Ti", 47.867),
+        23 => ("vanadium", "V", 50.942),
+        24 => ("chromium", "Cr", 51.996),
+        25 => ("manganese", "Mn", 54.938),
+        26 => ("iron", "Fe", 55.845),
+        27 => ("cobalt", "Co", 58.933),
+        28 => ("nickel", "Ni", 58.693),
+        29 => ("copper", "Cu", 63.546),
+        30 => ("zinc", "Zn", 65.38),
+        31 => ("gallium", "Ga", 69.723),
+        32 => ("germanium", "Ge", 72.63),
+        33 => ("arsenic", "As", 74.922),
+        34 => ("selenium", "Se", 78.971),
+        35 => ("bromine", "Br", 79.904),
+        36 => ("krypton", "Kr", 83.798),
+        37 => ("rubidium", "Rb", 85.468),
+        38 => ("strontium", "Sr", 87.62),
+        39 => ("yttrium", "Y", 88.906),
+        40 => ("zirconium", "Zr", 91.224),
+        41 => ("niobium", "Nb", 92.906),
+        42 => ("molybdenum", "Mo", 95.95),
+        43 => ("technetium*", "Tc", nothing),
+        44 => ("ruthenium", "Ru", 101.07),
+        45 => ("rhodium", "Rh", 102.91),
+        46 => ("palladium", "Pd", 106.42),
+        47 => ("silver", "Ag", 107.87),
+        48 => ("cadmium", "Cd", 112.41),
+        49 => ("indium", "In", 114.82),
+        50 => ("tin", "Sn", 118.71),
+        51 => ("antimony", "Sb", 121.76),
+        52 => ("tellurium", "Te", 127.6),
+        53 => ("iodine", "I", 126.9),
+        54 => ("xenon", "Xe", 131.29),
+        55 => ("caesium", "Cs", 132.91),
+        56 => ("barium", "Ba", 137.33),
+        57 => ("lanthanum", "La", 138.91),
+        58 => ("cerium", "Ce", 140.12),
+        59 => ("praseodymium", "Pr", 140.91),
+        60 => ("neodymium", "Nd", 144.24),
+        61 => ("promethium*", "Pm", nothing),
+        62 => ("samarium", "Sm", 150.36),
+        63 => ("europium", "Eu", 151.96),
+        64 => ("gadolinium", "Gd", 157.25),
+        65 => ("terbium", "Tb", 158.93),
+        66 => ("dysprosium", "Dy", 162.5),
+        67 => ("holmium", "Ho", 164.93),
+        68 => ("erbium", "Er", 167.26),
+        69 => ("thulium", "Tm", 168.93),
+        70 => ("ytterbium", "Yb", 173.05),
+        71 => ("lutetium", "Lu", 174.97),
+        72 => ("hafnium", "Hf", 178.49),
+        73 => ("tantalum", "Ta", 180.95),
+        74 => ("tungsten", "W", 183.84),
+        75 => ("rhenium", "Re", 186.21),
+        76 => ("osmium", "Os", 190.23),
+        77 => ("iridium", "Ir", 192.22),
+        78 => ("platinum", "Pt", 195.08),
+        79 => ("gold", "Au", 196.97),
+        80 => ("mercury", "Hg", 200.59),
+        81 => ("thallium", "Tl", 204.38),
+        82 => ("lead", "Pb", 207.2),
+        83 => ("bismuth*", "Bi", 208.98),
+        84 => ("polonium*", "Po", nothing),
+        85 => ("astatine*", "At", nothing),
+        86 => ("radon*", "Rn", nothing),
+        87 => ("francium*", "Fr", nothing),
+        88 => ("radium*", "Ra", nothing),
+        89 => ("actinium*", "Ac", nothing),
+        90 => ("thorium*", "Th", 232.04),
+        91 => ("protactinium*", "Pa", 231.04),
+        92 => ("uranium*", "U", 238.03),
+        93 => ("neptunium*", "Np", nothing),
+        94 => ("plutonium*", "Pu", nothing),
+        95 => ("americium*", "Am", nothing),
+        96 => ("curium*", "Cm", nothing),
+        97 => ("berkelium*", "Bk", nothing),
+        98 => ("californium*", "Cf", nothing),
+        99 => ("einsteinium*", "Es", nothing),
+       100 => ("fermium*", "Fm", nothing),
+       101 => ("mendelevium*", "Md", nothing),
+       102 => ("nobelium*", "No", nothing)
+       )
+
+       elt = (name,symbol,weight) = get(element,Z,nothing)
+
+    return  isnothing(elt) ? error("Error: element Z = $Z not included") : elt
+
+end
+
+# ============================ _elementspecs(Z) ================================
+
+function _elementspecs(Z::Int)
+
+    (name, symbol, weight) = mendeleev(Z)
+
+    str = "Element created: $(name)
+    symbol: $(symbol)
+    atomic number (Z): $Z
+    atomic weight (relative atomic mass): $(weight) amu"
+
+    return str
+
+end
+
+# =========== castElement(name, symbol, weight) ================================
+
+"""
+    castElement(;Z=1, msg=true)
+
+Create Atom with fields
+* `  .name`:  name of element
+* `.symbol`:  symbol of element
+* `.weight`:  relative atomic mass (atomic weight)
+#### Examples:
+```
+```
+"""
+function castElement(;Z=1, msg=true)
+
+    (name, symbol, weight) = mendeleev(Z)
+
+    msg && println(_elementspecs(Z) )
+
+    return Element(name, symbol, weight)
+
 end
 
 # ======================== isotope(Z, A) =======================================
@@ -498,171 +663,6 @@ function castIsotope(;Z=1, A=1, msg=true)
     msg && println(_isotopespecs(Z::Int, A::Int));
 
     return Isotope(Z, Z-A, A, radius, mass/1000000, I, π, lifetime, mdm, eqm, ra)
-
-end
-
-# ================================ mendeleev(Z) ===============================
-
-@doc raw"""
-    mendeleev(Z::Int)
-
-The properties `Name`, `Symbol` and the `Abridged standard atomic weight` of
-the *element* with *atomic number* `Z`.
-#### Example:
-```
-mendeleev(11)
- ("Sodium", "Na", 22.99)
-```
-"""
-function mendeleev(Z::Int)
-
-    element =
-    Dict(
-         1 => ("hydrogen", "H", 1.008),
-         2 => ("helium", "He", 4.0026),
-         3 => ("lithium", "Li", 6.94),
-         4 => ("beryllium", "Be", 9.0122),
-         5 => ("boron", "B", 10.81),
-         6 => ("carbon", "C", 12.011),
-         7 => ("nitrogen", "N", 14.007),
-         8 => ("oxygen", "O", 15.999),
-         9 => ("fluorine", "F", 18.998),
-        10 => ("neon", "Ne", 20.18),
-        11 => ("sodium", "Na", 22.99),
-        12 => ("magnesium", "Mg", 24.305),
-        13 => ("aluminium", "Al", 26.982),
-        14 => ("silicon", "Si", 28.085),
-        15 => ("phosphorus", "P", 30.974),
-        16 => ("sulfur", "S", 32.06),
-        17 => ("chlorine", "Cl", 35.45),
-        18 => ("argon", "Ar", 39.95),
-        19 => ("potassium", "K", 39.098),
-        20 => ("calcium", "Ca", 40.078),
-        21 => ("scandium", "Sc", 44.956),
-        22 => ("titanium", "Ti", 47.867),
-        23 => ("vanadium", "V", 50.942),
-        24 => ("chromium", "Cr", 51.996),
-        25 => ("manganese", "Mn", 54.938),
-        26 => ("iron", "Fe", 55.845),
-        27 => ("cobalt", "Co", 58.933),
-        28 => ("nickel", "Ni", 58.693),
-        29 => ("copper", "Cu", 63.546),
-        30 => ("zinc", "Zn", 65.38),
-        31 => ("gallium", "Ga", 69.723),
-        32 => ("germanium", "Ge", 72.63),
-        33 => ("arsenic", "As", 74.922),
-        34 => ("selenium", "Se", 78.971),
-        35 => ("bromine", "Br", 79.904),
-        36 => ("krypton", "Kr", 83.798),
-        37 => ("rubidium", "Rb", 85.468),
-        38 => ("strontium", "Sr", 87.62),
-        39 => ("yttrium", "Y", 88.906),
-        40 => ("zirconium", "Zr", 91.224),
-        41 => ("niobium", "Nb", 92.906),
-        42 => ("molybdenum", "Mo", 95.95),
-        43 => ("technetium*", "Tc", nothing),
-        44 => ("ruthenium", "Ru", 101.07),
-        45 => ("rhodium", "Rh", 102.91),
-        46 => ("palladium", "Pd", 106.42),
-        47 => ("silver", "Ag", 107.87),
-        48 => ("cadmium", "Cd", 112.41),
-        49 => ("indium", "In", 114.82),
-        50 => ("tin", "Sn", 118.71),
-        51 => ("antimony", "Sb", 121.76),
-        52 => ("tellurium", "Te", 127.6),
-        53 => ("iodine", "I", 126.9),
-        54 => ("xenon", "Xe", 131.29),
-        55 => ("caesium", "Cs", 132.91),
-        56 => ("barium", "Ba", 137.33),
-        57 => ("lanthanum", "La", 138.91),
-        58 => ("cerium", "Ce", 140.12),
-        59 => ("praseodymium", "Pr", 140.91),
-        60 => ("neodymium", "Nd", 144.24),
-        61 => ("promethium*", "Pm", nothing),
-        62 => ("samarium", "Sm", 150.36),
-        63 => ("europium", "Eu", 151.96),
-        64 => ("gadolinium", "Gd", 157.25),
-        65 => ("terbium", "Tb", 158.93),
-        66 => ("dysprosium", "Dy", 162.5),
-        67 => ("holmium", "Ho", 164.93),
-        68 => ("erbium", "Er", 167.26),
-        69 => ("thulium", "Tm", 168.93),
-        70 => ("ytterbium", "Yb", 173.05),
-        71 => ("lutetium", "Lu", 174.97),
-        72 => ("hafnium", "Hf", 178.49),
-        73 => ("tantalum", "Ta", 180.95),
-        74 => ("tungsten", "W", 183.84),
-        75 => ("rhenium", "Re", 186.21),
-        76 => ("osmium", "Os", 190.23),
-        77 => ("iridium", "Ir", 192.22),
-        78 => ("platinum", "Pt", 195.08),
-        79 => ("gold", "Au", 196.97),
-        80 => ("mercury", "Hg", 200.59),
-        81 => ("thallium", "Tl", 204.38),
-        82 => ("lead", "Pb", 207.2),
-        83 => ("bismuth*", "Bi", 208.98),
-        84 => ("polonium*", "Po", nothing),
-        85 => ("astatine*", "At", nothing),
-        86 => ("radon*", "Rn", nothing),
-        87 => ("francium*", "Fr", nothing),
-        88 => ("radium*", "Ra", nothing),
-        89 => ("actinium*", "Ac", nothing),
-        90 => ("thorium*", "Th", 232.04),
-        91 => ("protactinium*", "Pa", 231.04),
-        92 => ("uranium*", "U", 238.03),
-        93 => ("neptunium*", "Np", nothing),
-        94 => ("plutonium*", "Pu", nothing),
-        95 => ("americium*", "Am", nothing),
-        96 => ("curium*", "Cm", nothing),
-        97 => ("berkelium*", "Bk", nothing),
-        98 => ("californium*", "Cf", nothing),
-        99 => ("einsteinium*", "Es", nothing),
-       100 => ("fermium*", "Fm", nothing),
-       101 => ("mendelevium*", "Md", nothing),
-       102 => ("nobelium*", "No", nothing)
-       )
-
-       elt = (name,symbol,weight) = get(element,Z,nothing)
-
-    return  isnothing(elt) ? error("Error: element Z = $Z not included") : elt
-
-end
-
-# ============================ _elementspecs(Z) ================================
-
-function _elementspecs(Z::Int)
-
-    (name, symbol, weight) = mendeleev(Z)
-
-    str = "Element created: $(name)
-    symbol: $(symbol)
-    atomic number (Z): $Z
-    atomic weight (relative atomic mass): $(weight) amu"
-
-    return str
-
-end
-
-# =========== castElement(name, symbol, weight) ================================
-
-"""
-    castElement(;Z=1, msg=true)
-
-Create Atom with fields
-* `  .name`:  name of element
-* `.symbol`:  symbol of element
-* `.weight`:  relative atomic mass (atomic weight)
-#### Examples:
-```
-```
-"""
-function castElement(;Z=1, msg=true)
-
-    (name, symbol, weight) = mendeleev(Z)
-
-    msg && println(_elementspecs(Z) )
-
-    return Element(name, symbol, weight)
 
 end
 
