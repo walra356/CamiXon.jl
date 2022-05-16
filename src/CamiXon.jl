@@ -23,12 +23,10 @@ export calibrationReport
 
 export bohrformula
 export Element
-export mendeleev
 export dictElements
 export castElement
 export Isotope
 export dictIsotopes
-export nucleardata
 export castIsotope
 export Atom
 export castAtom
