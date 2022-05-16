@@ -217,7 +217,6 @@ castIsotope(Z=1,A=3);
       relative abundance: RA = trace
 ```
 """
-
 function castIsotope(;Z=1, A=1, msg=true)
 
     iso = (Z, A) ∈ keys(dictIsotopes) ? get(dictIsotopes, (Z, A), nothing) :
