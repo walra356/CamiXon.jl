@@ -76,18 +76,6 @@ end
 
 # ============================ _elementspecs(Z) ================================
 
-function _elementspecs1(Z::Int)
-
-    (name, symbol, weight) = mendeleev(Z)
-
-    str = "Element created: $(name)
-    symbol: $(symbol)
-    atomic number (Z): $Z
-    atomic weight (relative atomic mass): $(weight) amu"
-
-    return str
-
-end
 function _elementspecs(Z::Int, elt)
 
     (name, symbol, weight) = elt
@@ -102,7 +90,6 @@ function _elementspecs(Z::Int, elt)
     return str
 
 end
-
 
 # =========== castElement(name, symbol, weight) ================================
 
@@ -228,7 +215,7 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     mass = mass * 0.000001
 
-    return Isotope(Z, Z-A, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
+    return Isotope(Z, A-Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
 
 end
 
