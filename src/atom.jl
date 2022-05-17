@@ -183,7 +183,7 @@ Create Isotope with fields
 #### Examples:
 ```
 isotope = castIsotope(Z=1, A=3, msg=false)
-  Isotope(1, -2, 3, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
+  Isotope(1,-2, 3, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
 isotope.ra
   99.9855
@@ -206,20 +206,51 @@ castIsotope(Z=1,A=3);
 """
 function castIsotope(;Z=1, A=1, msg=true)
 
-    iso = (Z, A) ∈ keys(dictIsotopes) ? get(dictIsotopes, (Z, A), nothing) :
+    dict = dictIsotopes
+    isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
     error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
 
-    msg && println(_isotopespecs(Z, A, iso) )
+    msg && println(_isotopespecs(Z, A, isotope) )
 
-    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = iso
+    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope
 
-    mass = mass * 0.000001
+    mass = mass * 0.000001000000
 
     return Isotope(Z, A-Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
 
 end
 
 # ======================= castAtom(;Z=1, A=1, Q=0, msg=true) ===================
+
+function _atomspecs(Z::Int, A::Int, Q::Int)
+
+    (name, symbol, weight) = get(dictElements, Z, nothing)
+
+    name = (Z,A) == (1,2) ? "deuterium" :
+           (Z,A) == (1,3) ? "tritium"   : name
+
+    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
+    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+    strN = Q ≠ 0 ? " ion" : ", neutral atom"
+
+    strD = "D ≡ " * sup(A) * symbol * strQ
+    strT = "T ≡ " * sup(A) * symbol * strQ
+
+    symbol = (Z,A) == (1,2) ? strD :
+             (Z,A) == (1,3) ? strT : sup(A) * symbol * strQ
+
+    name = name * strN
+
+    charge = Q ≠ 0 ? "ionic charge: $Q" : "neutral atom"
+
+    str = "Atom created: $(name)
+    symbol: $(symbol)
+    ionic charge: Q = $Q
+    Rydberg charge: Zc = $(1+Q)"
+
+    return str
+
+end
 
 """
     castAtom(;Z=1, A=1, Q=0, msg=true)
@@ -263,25 +294,16 @@ Atom created: hydrogen - ³H (Z = 1, Zc = 1, Q = 0)
 """
 function castAtom(;Z=1, A=1, Q=0, msg=true)
 
-    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
-    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
-    strT = Q ≠ 0 ? " ion" : " atom"
-
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    name = Q ≠ 0 ? (element.name * " ion") : element.name
-    symbol = sup(A) * element.symbol * strQ
+    msg && println(_atomspecs(Z, A, Q, element) )
 
-    Zc = 1 + Q
-
-    msg && println("Atom created: $(name) - $(symbol) (Z = $Z, Zc = $(Zc), Q = $Q)")
-
-    return Atom(Z, A, Q, Zc, element, isotope)
+    return Atom(Z, A, Q, 1+Q, element, isotope)
 
 end
 
-# ======================== Orbit(name, n, n′, ℓ, up) ===========
+# ======================== Orbit(name, n, n′, ℓ, up) ===========================
 
 """
     Orbit(name, n, n′, ℓ)
@@ -359,7 +381,7 @@ struct SpinOrbit
 end
 
 
-# ======================== createSpinOrbit(o::Orbital; up=true) ===========
+# ====================== createSpinOrbit(o::Orbital; up=true) ==================
 
 """
     createSpinOrbital(o::Orbit; up=true, msg=true)
@@ -412,10 +434,10 @@ struct Term
     ℓ::Int               # orbital angular momentum valence electron
     S::Real              # total electron spin as integer or rational number
     L::Int               # total orbital angular momentum
-    J::Real              # total electronic angular momentum as integer or rational number
+    J::Real              # total electronic angular momentum
 end
 
-# ======================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
+# ===================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
 
 """
     createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
@@ -459,7 +481,8 @@ end
 @doc raw"""
     bohrformula(Z::Int, n::Int)
 
-Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and *principal quantum number* `n`.
+Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and
+*principal quantum number* `n`.
 ```math
     E_n = - \frac{Z^2}{2n^2}
 ```
