@@ -381,7 +381,7 @@ defined by a *weighted sum* over the function values in backward order,
 
 ```math
 ∇^k f[n] = f[n] + c_1^kf[n-1] + ⋯ + c_k^kf[n-k]
-= \sum_{j=0}^{k} c_j^kf[n-j],
+= \sum_{j=0}^{k} c_j^kf[n-j]=c^k \cdot f[n:-1:n-k],
 ```
 
 where the ``c_{j}^{k}`` are again the ``k+1`` *summation weights* defined above.
@@ -396,7 +396,7 @@ change dummy index to also write the summation in forward order
 f[n-k]\\
 \vdots\\
 f[n]
-\end{array}\right],
+\end{array}\right]=\bar{c}^k \cdot f[n-k:n],
 ```
 Functions:  
 
