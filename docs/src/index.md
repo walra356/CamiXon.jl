@@ -99,20 +99,6 @@ The `Grid` object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
-#### Illustration: Radial distance `(r=grid.r)` versus grid index
-NB. plot_gridfunction is not part of the package
-```
-atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
-orbit = castOrbit(n=75, ℓ=0)
-codata = castCodata(2018)
-grid = autoGrid(atom, orbit, codata, Float64)
-plot_gridfunction(1:grid.N, grid; title="")
-  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
-  Orbit created: 75s - (n = 75, n′ = 74, ℓ = 0)
-  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
-```
-![Image](./assets/exponential_grid.png)
-
 ```@docs
 Grid{T}
 gridname(ID::Int)
@@ -349,13 +335,17 @@ In inner-product form the forward difference equation is given by
 
 ```math
 Δ^k f[n]
-= \sum_{j=0}^{k} c_{k-j}^kf[n+j]
-=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]\left[\begin{array}{c}
+= \sum_{j=0}^{k} c_{k-j}^kf[n+j]=\bar{c}^k \cdot f[n:n+k],
+```
+where
+```math
+f[n:n+k] = \left[\begin{array}{c}
 f[n]\\
 \vdots\\
 f[n+k]
-\end{array}\right]=\bar{c}^k \cdot f[n:n+k].
+\end{array}\right]
 ```
+
 
 Functions:  
 
