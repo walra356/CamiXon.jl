@@ -74,9 +74,29 @@ struct Atom                           # Isotopic properties
     isotope::Isotope
 end
 
-# ============================ _elementspecs(Z) ================================
+# ======================== Orbit(name, n, n′, ℓ, up) ===========================
 
-function _elementspecs(Z::Int, elt)
+"""
+    Orbit(name, n, n′, ℓ)
+
+Type for specification of *atomic orbitals* with fields:
+* `.name`: name
+* ` .n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+
+The type `Orbit` is best created with the function `castOrbit`.
+"""
+struct Orbit
+    name::String         # LS term notation
+    n::Int               # principal quantum number
+    n′::Int              # radial quantum number (number of nodes)
+    ℓ::Int               # orbital angular momentum valence electron
+end
+
+# ============================ _specsElement(Z) ================================
+
+function _specsElement(Z::Int, elt)
 
     (name, symbol, weight) = elt
 
@@ -116,7 +136,7 @@ function castElement(;Z=1, msg=true)
     elt = Z ∈ keys(dictElements) ? get(dictElements, Z, nothing) :
               error("Error: element Z = $Z not present in `dictElements`")
 
-    msg && println(_elementspecs(Z, elt) )
+    msg && println(_specsElement(Z, elt) )
 
     (name, symbol, weight) = elt
 
@@ -124,9 +144,9 @@ function castElement(;Z=1, msg=true)
 
 end
 
-# ====================== _isotopespecs(Z, A) ===================================
+# ====================== _specsIsotope(Z, A) ===================================
 
-function _isotopespecs(Z::Int, A::Int, iso)              # Isotope properties
+function _specsIsotope(Z::Int, A::Int, iso)              # Isotope properties
 
     (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = iso
     (name, symbol, weight) = get(dictElements, Z, nothing)
@@ -210,7 +230,7 @@ function castIsotope(;Z=1, A=1, msg=true)
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
     error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
 
-    msg && println(_isotopespecs(Z, A, isotope) )
+    msg && println(_specsIsotope(Z, A, isotope) )
 
     (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope
 
@@ -222,7 +242,7 @@ end
 
 # ======================= castAtom(;Z=1, A=1, Q=0, msg=true) ===================
 
-function _atomspecs(Z::Int, A::Int, Q::Int)
+function _specsAtom(Z::Int, A::Int, Q::Int)
 
     (name, symbol, weight) = get(dictElements, Z, nothing)
 
@@ -297,44 +317,33 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    msg && println(_atomspecs(Z, A, Q, element) )
+    msg && println(_specsAtom(Z, A, Q, element) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
 
 end
 
-# ======================== Orbit(name, n, n′, ℓ, up) ===========================
-
-"""
-    Orbit(name, n, n′, ℓ)
-
-Type for specification of *atomic orbitals* with fields:
-* `.name`: name
-* ` .n`:  principal quantum number
-* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
-* ` .ℓ`:  orbital angular momentum valence electron
-
-The type `Orbit` is best created with the function `castOrbit`.
-"""
-struct Orbit
-    name::String         # LS term notation
-    n::Int               # principal quantum number
-    n′::Int              # radial quantum number (number of nodes)
-    ℓ::Int               # orbital angular momentum valence electron
-end
-
-
 # ======================== castOrbital(n::Int, ℓ::Int) ===========
+
+function _specsOrbit(name, n, n′, ℓ)
+
+    str = "Orbital: $(name)
+    principal quantum number: n = $n
+    radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
+    orbital angular momentum of valence electron: ℓ = $ℓ"
+
+    return str
+
+end
 
 """
     castOrbit(;n=1, ℓ=0, msg=true)
 
-Specify `Orbit` with fields:
+Create `Orbit` with fields:
 * `.name`: name
 * ` .n`:  principal quantum number
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
-* `.ms`:  spin magnetic quantum number
 #### Examples:
 ```
 castOrbit(n=1, ℓ=0)
@@ -344,15 +353,15 @@ castOrbit(n=1, ℓ=0)
 """
 function castOrbit(;n=1, ℓ=0, msg=true)
 
+    ℓ < n || return error("Error: ℓ < n rule not satisfied")
+
     strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
 
     name = ℓ > 15 ? "[n=$(n), ℓ=$(ℓ)]" : string(n) * strL[ℓ + 1]
 
-    ℓ < n || return error("Error: ℓ < n rule not satisfied")
-
     n′ = n - ℓ - 1
 
-    msg && println("Orbit created: $(name) - (n = $n, n′ = $(n′), ℓ = $ℓ)")
+    msg && println(_specsOrbit(name, n, n′, ℓ) )
 
     return Orbit(name, n, n′, ℓ)
 

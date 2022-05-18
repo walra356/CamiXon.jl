@@ -268,6 +268,24 @@ end
 
 Automatic setting of grid parameters. Important cases: `p=0` (exponential grid
 - default), `p=1` (linear grid), `p>1` (quasi-exponential grid)
+
+
+
+
+#### Example:
+Radial distance `(r=grid.r)` versus grid index
+NB. plot_gridfunction is not part of the package
+```
+atom = castAtom(;Z=1, A=1, Q=0, msg=true)
+orbit = castOrbit(n=75, ℓ=0)
+codata = castCodata(2018)
+grid = autoGrid(atom, orbit, codata, Float64)
+plot_gridfunction(1:grid.N, grid; title="")
+  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
+  Orbit created: 75s - (n = 75, n′ = 74, ℓ = 0)
+  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
+```
+![Image](./assets/exponential_grid.png)
 """
 function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
 
