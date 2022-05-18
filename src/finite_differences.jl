@@ -23,8 +23,8 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` defining
-the ``k^{th}``-order finite difference operators.
+Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` (tabulated in
+backward order), defining the ``k^{th}``-order finite difference operators.
 
 Applications:
 
@@ -89,10 +89,10 @@ Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
 Application in `Finite-difference-expansions`
 
 `f_diff_weights_array(kmax)`
-``→\ [\ c^0,\ c^1,⋯\ c^{kmax} ]``,
+`` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
-``→\ c^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``.
+``→ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
