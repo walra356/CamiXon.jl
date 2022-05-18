@@ -81,7 +81,7 @@ function plot_potentials(E::T, grid::Grid{T}, def::Def{T}) where T <: Number
 
          N = grid.N
          r = grid.r
-    symbol = def.atom.symbol
+    symbol = def.atom.element.symbol
       name = def.orbit.name
          ℓ = def.orbit.ℓ
          v = def.pot
@@ -352,7 +352,7 @@ function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=
     P = [real(Z[n]) for n ∈ itr]
     Q = [imag(Z[n]) for n ∈ itr]
 
-    symbol = def.atom.symbol
+    symbol = def.atom.element.symbol
       name = def.orbit.name
 
     fig = Figure()
@@ -393,7 +393,7 @@ function plot_endpoints(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where
     itr1 = 1:Na+k
     itr2 = Nb-k:N
 
-    symbol = def.atom.symbol
+    symbol = def.atom.element.symbol
       name = def.orbit.name
 
     fig = Figure()
@@ -463,7 +463,7 @@ function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::De
 
     itr0 = Nstart:Nstop
 
-    symbol = def.atom.symbol
+    symbol = def.atom.element.symbol
       name = def.orbit.name
 
     fig = Figure()
@@ -539,7 +539,7 @@ function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T};
     itr5 = itr2
     itr6 = Nb-9:N
 
-    symbol = def.atom.symbol
+    symbol = def.atom.element.symbol
       name = def.orbit.name
 
     fig = Figure()
