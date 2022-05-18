@@ -343,9 +343,8 @@ f[n:n+k] = \left[\begin{array}{c}
 f[n]\\
 \vdots\\
 f[n+k]
-\end{array}\right]
+\end{array}\right].
 ```
-
 
 Functions:  
 
@@ -381,12 +380,7 @@ change dummy index to also write the summation in forward order
 
 ```math
 ∇^k f[n]
-= \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]
-=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]\left[\begin{array}{c}
-f[n-k]\\
-\vdots\\
-f[n]
-\end{array}\right]=\bar{c}^k \cdot f[n-k:n],
+= \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=\bar{c}^k \cdot f[n-k:n],
 ```
 Functions:  
 

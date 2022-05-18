@@ -32,13 +32,7 @@ Applications:
 
 The *forward difference* summation is
 ```math
-Δ^k f[n]=\bar{c}^k \cdot f[n:n+k]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯\ c_{0}^{k}]
-\left[\begin{array}{c}
-f[n]\\
-\vdots\\
-f[n+k]
-\end{array}\right]
-=\sum_{j=0}^{k} c_{k-j}^kf[n+j].
+Δ^k f[n]=\sum_{j=0}^{k} c_{k-j}^kf[n+j]=\bar{c}^k \cdot f[n:n+k].
 ```
 
 This convention applies to *analytical* functions, ``f``, tabulated
@@ -48,13 +42,7 @@ in *forward* order as ``f[n],⋯\ f[n+k]``.
 
 The *backward difference* summation is
 ```math
-∇^{k}f[n]=\bar{c}^k \cdot f[n-k:n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]
-\left[\begin{array}{c}
-f[n-k]\\
-\vdots\\
-f[n]
-\end{array}\right]
-=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j].
+∇^{k}f[n]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j]=\bar{c}^k \cdot f[n-k:n].
 ```
 
 This convention applies to *analytical* functions, ``f``, tabulated
