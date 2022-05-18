@@ -23,7 +23,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``c^k=[c_k^k,⋯\ c_0^k]`` defining
+Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` defining
 the ``k^{th}``-order finite difference operators.
 
 Applications:
@@ -32,7 +32,7 @@ Applications:
 
 The *forward difference* summation is
 ```math
-Δ^k f[n]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯\ c_{0}^{k}]
+Δ^k f[n]=\bar{c}^k \cdot f[n:n+k]=[c_{k}^{k},\, c_{k-1}^{k},\,⋯\ c_{0}^{k}]
 \left[\begin{array}{c}
 f[n]\\
 \vdots\\
@@ -48,7 +48,7 @@ in *forward* order as ``f[n],⋯\ f[n+k]``.
 
 The *backward difference* summation is
 ```math
-∇^{k}f[n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]
+∇^{k}f[n]=\bar{c}^k \cdot f[n-k:n]=[c_{k}^{k},\,c_{k-1}^{k},\,⋯\ c_{0}^{k}]
 \left[\begin{array}{c}
 f[n-k]\\
 \vdots\\

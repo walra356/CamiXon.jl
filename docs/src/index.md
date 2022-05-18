@@ -402,7 +402,7 @@ Functions:
 
 [`f_diff_weight(k,j)`](@ref) `` → c_{j}^{k}=(-1)^{j}\binom{k}{j}``
 
-[`f_diff_weights(k)`](@ref) `` → \ c^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
+[`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref) `` → [c^0,\ c^1,⋯\ c^{kmax}]``
 
