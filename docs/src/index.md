@@ -330,9 +330,8 @@ values on the grid is defined by
 ```
 
 where ``Δ`` is the forward difference operator. In this notation,
-the  ``k^{th}``-*order forward difference* (which involves ``k+1`` points) is
-defined by a *weighted sum* over the function values in forward order,
-``f[n],⋯\ f[n+k]``,
+the  ``k^{th}``-*order forward difference* involves ``k+1`` points and is
+defined by a *weighted sum* over the function values ``f[n],⋯\ f[n+k]``,
 
 ```math
 Δ^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + ⋯  + f[n+k]
@@ -345,7 +344,7 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
 are the *summation weights* (short: *weights*) which define the summation.
-Note that ``c_{0}^{k}\equiv1`` and ``c_{k}^{k}=(-1)^{k}``.
+Note that ``c_{0}^{k}≡1`` and ``c_{k}^{k}≡(-1)^{k}``.
 In inner-product form the forward difference equation is given by
 
 ```math
@@ -355,14 +354,14 @@ In inner-product form the forward difference equation is given by
 f[n]\\
 \vdots\\
 f[n+k]
-\end{array}\right].
+\end{array}\right]=\bar{c}^k \cdot f[n:n+k].
 ```
 
 Functions:  
 
 [`f_diff_weight(k,j)`](@ref) `` → c_{j}^{k}=(-1)^{j}\binom{k}{j}``
 
-[`f_diff_weights(k)`](@ref) `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
+[`f_diff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref) `` → \ [\ c^0,\ c^1,⋯\ c^{kmax} ]``
 
