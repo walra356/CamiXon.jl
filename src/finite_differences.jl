@@ -5,12 +5,12 @@ Finite difference weight coefficient
 ```math
 c_{j}^{k}=(-1)^{j}\binom{k}{j},
 ```
-Functions:
+Function:
 
 `f_diff_weight(k,j)`] `` → c_j^k``
 #### Example:
 ```
-c(k, j) = f_diff_weight(k, j)
+c(k,j) = f_diff_weight(k,j)
 c(5,3)
  -10
 ```
@@ -23,7 +23,7 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` (tabulated in
+Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` (note the
 backward order), defining the ``k^{th}``-order finite difference operators.
 
 Applications:
@@ -74,8 +74,6 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
-Application in `Finite-difference-expansions`
-
 `f_diff_weights_array(kmax)`
 `` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
@@ -101,7 +99,7 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
-backwards difference expansion,
+*forward-difference* expansion,
 
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
@@ -143,7 +141,7 @@ end
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
-the ``k^{th}``-order backwards difference expansion,
+the ``k^{th}``-order *backward-difference* expansion,
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
