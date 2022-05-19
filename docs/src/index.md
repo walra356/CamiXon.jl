@@ -473,7 +473,7 @@ By a change of dummy index we turn to *forward order*
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
 =\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
-=\bar{B} \cdot f[n-k:n].
+=\bar{B}^k \cdot f[n-k:n].
 ```
 
 Note that the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` contains
