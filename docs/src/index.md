@@ -433,15 +433,13 @@ with ``j=0,⋯\ k``. In inner product form this becomes
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
 =\sum_{j=0}^{k}F_{j}^{k}f[n-j]
-=F^{k}\cdot f[n:-1:n-k],
+=F^{k} \cdot f[n:-1:n-k],
 ```
 
 where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``. By a change of dummy index this becomes
 
 ```math
-\sum_{p=0}^{k}α_{p}Δ^{p}f[n]
-=\sum_{j=0}^{k}F_{k-j}^{k}f[n-k+j]
-=\bar{F}^{k}\cdot f[n-k:n],
+\sum_{p=0}^{k}α_{p}Δ^{p}f[n]=\sum_{j=0}^{k}F_{k-j}^{k}f[n-k+j]=\bar{F}^k \cdot f[n-k:n],
 ```
 
 with ``\bar{F}^k ≡ [F_k^k,⋯\ F_0^k]``.
