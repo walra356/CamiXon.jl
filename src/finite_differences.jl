@@ -163,7 +163,7 @@ Function:
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``
 
 [`bwd_diff_expansion_weights(β,∇)`](@ref)
-` `→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 #### Example:
 ```
 k=5
