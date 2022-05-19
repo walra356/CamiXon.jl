@@ -69,8 +69,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
-``c^k`` = [`f_diff_weights(k)`](@ref).
+Collection of finite difference weight vectors, 
 
 [`f_diff_weights_array(kmax)`](@ref)
 `` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
