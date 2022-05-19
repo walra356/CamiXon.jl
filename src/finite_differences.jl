@@ -109,11 +109,9 @@ analytic function ``f`` tabulated in *forward* order.
 
 Functions:
 
-[`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
-``→ α ≡ [α_0(x),⋯\ α_k(x)]``
+[`fwd_diff_expansion_weights(α,σ)`](@ref) `` → F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-[`fwd_diff_expansion_weights(α,σ)`](@ref)
-``→ F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``
+where `σ ≡`[` f_diff_weights_array(kmax)`](@ref).
 #### Example:
 ```
 k=5
@@ -159,11 +157,10 @@ analytic function ``f`` tabulated in *forward* order.
 
 Function:
 
-[`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
-``→ β ≡ [β_0(x),⋯\ β_k(x)]``
+[`bwd_diff_expansion_weights(β,σ)`](@ref)
+`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-[`bwd_diff_expansion_weights(β,∇)`](@ref)
-`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+where `σ ≡`[` f_diff_weights_array(kmax)`](@ref).
 #### Example:
 ```
 k=5
