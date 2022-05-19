@@ -142,7 +142,7 @@ expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
 the ``k^{th}``-order *backward-difference* expansion,
 
 ```math
-\sum_{p=0}^{k}β_{p}σ^{p}f[n]
+\sum_{p=0}^{k}β_{p}∇^{p}f[n]
 =\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
 =\bar{B}^k \cdot f[n-k:n].
 ```
@@ -164,7 +164,7 @@ barBk = bwd_diff_expansion_weights(β, σ)
   15
 ```
 """
-function bwd_diff_expansion_weights(β, σ)    
+function bwd_diff_expansion_weights(β, σ)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
