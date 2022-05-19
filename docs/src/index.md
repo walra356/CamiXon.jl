@@ -601,10 +601,10 @@ being the Pochhammer symbol [`pochhammer`](@ref). Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math
-f[n+x] =\sum_{p=0}^{k}β_p(x)∇^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j],
+f[n+x] =\sum_{p=0}^{k}β_p(x)∇^pf[n]= \sum_{j=0}^{k}B^k_j(x)f[n-j],
 ```
 
-where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} β_p(x) c_j^p`` are the
+where the ``k+1`` *weights* ``B^k_j(x)= \sum_{p=j}^{k} β_p(x) c_j^p`` are the
 corresponding *lagrangian interpolation weights*.  After changing dummy index
 to obtain forward order the expansion becomes
 ```math
