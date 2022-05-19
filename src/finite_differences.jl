@@ -28,6 +28,7 @@ Finite difference weights vector in backward order,
 
 ```math
 [`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
+```
 
 Applications:
 
