@@ -107,8 +107,6 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-Functions:
-
 [`fwd_diff_expansion_weights(α,σ)`](@ref) `` → F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
 where `σ ≡`[` f_diff_weights_array(kmax)`](@ref).
@@ -154,8 +152,6 @@ the ``k^{th}``-order *backward-difference* expansion,
 
 where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
-
-Function:
 
 [`bwd_diff_expansion_weights(β,σ)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
