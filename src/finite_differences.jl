@@ -23,11 +23,10 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector defining the ``k^{th}`` order finite
-difference summation weights,
+Finite difference weights vector defining the ``k^{th}`` *order finite
+difference summation weights*,
 
-[`f_diff_weights(k)`](@ref)
-`` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
+[`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
 
 where [`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
 
@@ -73,7 +72,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
-`f_diff_weights_array(kmax)`
+[`f_diff_weights_array(kmax)`](@ref)
 `` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
