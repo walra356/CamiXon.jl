@@ -433,14 +433,15 @@ with ``j=0,⋯\ k``. In inner product form this becomes
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
 =\sum_{j=0}^{k}F_{j}^{k}f[n-j]
-=F^{k}\cdotf[n:-1:n-k],
+=F^{k}\cdot f[n:-1:n-k],
 ```
+
 where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``. By a change of dummy index this becomes
 
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
-=\sum_{j=0}^{k}F_{k-j}^kf[n-k+j]
-=\bar{F}^{k}\cdotf[n-k:n],
+=\sum_{j=0}^{k}F_{k-j}^{k}f[n-k+j]
+=\bar{F}^{k}\cdot f[n-k:n],
 ```
 
 with ``\bar{F}^k ≡ [F_k^k,⋯\ F_0^k]``.
@@ -453,15 +454,14 @@ Functions:
 [`fwd_diff_expansion_weights(α,Δ)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
 
 **Backward difference notation**
+In terms of backward differences the expansion takes the form
 
 ```math
 \sum_{p=0}^{\infty}β_{p}∇^{p}f[n]=\sum_{p=0}^{k}β_{p}∇^{p}f[n]+⋯.
 ```
 
-A finite-difference expansion truncated order ``k`` is defined
-by ``k+1`` *finite-difference expansion coefficients*, above denoted
-by ``β_{0},⋯\ β_{k}``. Note that both the coefficients and the
-operators appear in forward order. It takes some bookkeeping to rewrite the
+In this case the ``k+1`` *finite-difference expansion coefficients* are denoted
+by ``β_{0},⋯\ β_{k}``. It takes some bookkeeping to rewrite the
 expansion in the form of a *weighted sum* over the ``k+1`` *function values*
 ``f[n],\ ⋯,f[n-k]`` (note the *backward order*). Substituting the finite
 difference expression for ``∇^k``, we obtain
