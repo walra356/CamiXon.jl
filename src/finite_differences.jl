@@ -52,7 +52,7 @@ Functions:
 
 `f_diff_weights(k)` `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
 
-where [`f_diff_weight(k,j)`](@ref) `` → c_j^k``.
+where [`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
 #### Example:
 ```
 c(k) = f_diff_weights(k)
