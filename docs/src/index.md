@@ -523,7 +523,7 @@ f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} β_p(x) ∇^p f[n],
 ```
 where ``β_p(x) ≡ (-1)^p(x)_p/p!`` is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
-interval ``-k ≤x ≤0\ \ (n \le n-x \le n+k)``, with
+interval ``-k ≤x ≤0\ \ (n-k \le n+x \le n)``, with
 
 ```math
 (x)_{p}=\begin{cases}
