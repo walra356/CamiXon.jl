@@ -352,7 +352,8 @@ Functions:
 
 [`f_diff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
-[`f_diff_weights_array(kmax)`](@ref) `` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+[`f_diff_weights_array(kmax)`](@ref)
+`` → \bar{c} ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 **Backward difference notation**
 
@@ -388,7 +389,8 @@ Functions:
 
 [`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
 
-[`f_diff_weights_array(kmax)`](@ref) `` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+[`f_diff_weights_array(kmax)`](@ref)
+`` → \bar{c}^k ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 ```@docs
 f_diff_weight(k::Int,j::Int)
