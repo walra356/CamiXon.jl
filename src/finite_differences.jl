@@ -23,12 +23,13 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 @doc raw"""
     f_diff_weights(k)
 
-Finite difference weights vector in backward order,
-``\bar{c}^k=[c_k^k,⋯\ c_0^k]``, where
+Finite difference weights vector defining the ``k^{th}`` order finite
+difference summation weights,
 
-```math
-[`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
-```
+[`f_diff_weights(k)`](@ref)
+`` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
+
+where [`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
 
 Applications:
 
@@ -51,12 +52,6 @@ The *backward difference* summation is
 
 This convention applies to *analytical* functions, ``f``, tabulated
 in *forward* order as ``f[n-k],⋯\ f[n]``.
-
-Functions:
-
-[`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
-
-where [`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
 #### Example:
 ```
 c(k) = f_diff_weights(k)
