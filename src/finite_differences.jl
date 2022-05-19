@@ -116,7 +116,7 @@ analytic function ``f`` tabulated in *forward* order.
 k=5
 Δ = f_diff_weights_array(k)
 α = UnitRange(0,k)
-F = bwd_diff_expansion_weights(α, Δ)
+Fk = bwd_diff_expansion_weights(α, Δ)
 6-element Vector{Int64}:
   15
  -55
@@ -158,7 +158,7 @@ analytic function ``f`` tabulated in *forward* order.
 k=5
 ∇ = f_diff_weights_array(k)
 β = UnitRange(0,k)
-B = bwd_diff_expansion_weights(β, ∇)
+barBk = bwd_diff_expansion_weights(β, ∇)
 6-element Vector{Int64}:
   -5
   29
