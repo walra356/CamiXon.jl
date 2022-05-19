@@ -105,10 +105,11 @@ backwards difference expansion,
 
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
-=\sum_{j=0}^{k}F^k_j f[n-k+j],
+=\sum_{j=0}^{k}F_{j}^{k}f[n+j]
+=F^{k} \cdot f[n:n+k],
 ```
 
-where ``f[n-k],⋯\ f[n]`` are elements of the
+where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 #### Example:
 ```
