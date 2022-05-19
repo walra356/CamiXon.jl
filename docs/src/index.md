@@ -528,7 +528,7 @@ interval ``-k ≤x ≤0\ \ (n \le n-x \le n+k)``,
 x(x+1)(x+2)\cdots(x+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ()[`pochhammer`](@ref)). Evaluating the
+being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math
@@ -588,7 +588,7 @@ interval ``-k ≤x ≤0\ \ (n-k \le n+x \le n)``, with
 x(x+1)(x+2)\cdots(x+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol [`pochhammer`](@ref). Evaluating the
+being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math
