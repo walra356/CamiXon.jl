@@ -21,10 +21,13 @@ f_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 # ==============================================================================
 
 @doc raw"""
-    f_diff_weights(k)
+    f_diff_weights(k) `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
-Finite difference weights vector ``\bar{c}^k=[c_k^k,⋯\ c_0^k]`` (note the
-backward order), defining the ``k^{th}``-order finite difference operators.
+Finite difference weights vector in backward order,
+``\bar{c}^k=[c_k^k,⋯\ c_0^k]``, where
+
+```math
+[`f_diff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
 
 Applications:
 
