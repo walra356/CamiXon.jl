@@ -461,7 +461,7 @@ difference expression for ``∇^k``, we obtain
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
-=\sum_{p=0}^{k}β_{p}\sum_{j=0}^{p}c_{j}^{i}f[n-j]
+=\sum_{p=0}^{k}β_{p}\sum_{j=0}^{p}c_{j}^{p}f[n-j]
 =\sum_{j=0}^{k}\sum_{p=j}^{k}β_{p}c_{j}^{p}f[n-j]
 =\sum_{j=0}^{k}B_{j}^{k}f[n-j],
 ```
