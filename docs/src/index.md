@@ -520,18 +520,19 @@ which can be generalized to the form of *lagrangian interpolation*,
 f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} (x)_p ∇^p f[n],
 ```
 where the *finite-difference expansion coefficients*  ``α_1,\cdots\ α_k``
-work out to be given by the [`pochhammer`](@ref) symbol,
+work out to be,
 
 ```math
 α_p → (x)_{p}=\begin{cases}
 1 & p=0\\
 x(x+1)(x+2)\cdots(x+p-1) & p>0
-\end{cases}.
+\end{cases},
 ```
-Evaluating the finite-difference expansion up to order ``k`` we obtain
+where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol. Evaluating the
+finite-difference expansion up to order ``k`` we obtain
 
 ```math
-f[n+x] =\sum_{p=0}^{k}l_p(x)∇^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j],
+f[n+x] =\sum_{p=0}^{k}(x)_{p}∇^pf[n]= \sum_{j=0}^{k}r_j^k(x)f[n-j],
 ```
 
 where the ``k+1`` *weights* ``r_j^k(x)= \sum_{p=j}^{k} (x)_p c_j^p`` are the  *lagrangian interpolation weights*.  After changing dummy index to obtain forward order the expansion becomes
