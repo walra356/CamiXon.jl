@@ -603,6 +603,7 @@ f[n+x]
 =\sum_{p=0}^{k}β_p(x)∇^pf[n]
 = \sum_{j=0}^{k}B_{k-j}^k(x)f[n-k+j]
 =\bar{B}^k(x) ⋅ f[n-k:n].
+```
 
 Functions:
 
@@ -610,7 +611,7 @@ Functions:
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``
 
 [`bwd_diff_expansion_weights(β,∇)`](@ref)
-``→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+` `→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 
 ```@docs
 
