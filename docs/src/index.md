@@ -468,10 +468,12 @@ difference expression for ``∇^k``, we obtain
 
 where the weighted summation is defined by the *weights*
 ``B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}``, with ``j=0,⋯\ k``.
-By a change of dummy index we write the summation in *forward order*
+By a change of dummy index we turn to *forward order*
 
 ```math
-\sum_{p=0}^{k}β_{p}∇^{p}f[n]=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j].
+\sum_{p=0}^{k}β_{p}∇^{p}f[n]
+=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
+=\bar{B} \cdot f[n-k:n].
 ```
 
 Note that the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` contains

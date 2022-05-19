@@ -147,14 +147,12 @@ the ``k^{th}``-order backwards difference expansion,
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
-=\sum_{j=0}^{k}B^k_j f[n-k+j],
+=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
+=\bar{B} \cdot f[n-k:n].
 ```
 
 where ``f[n-k],⋯\ f[n]`` are elements of the
-analytic function ``f`` tabulated in *forward* order. Note the difference in
-ordering between the finite-difference expansion *coefficients*,
-``β ≡ [β_{0},⋯\ β_{k}]``, and the finite-difference expansion *weights*,
-``\bar{B}^{k} ≡ B_k^{k},⋯\ B_0^{k} ≡ \rm{reverse}````(B^k)``.
+analytic function ``f`` tabulated in *forward* order. 
 #### Example:
 ```
 k=5
