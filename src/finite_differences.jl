@@ -69,7 +69,7 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 @doc raw"""
     f_diff_weights_array(kmax)
 
-Collection of finite difference weight vectors, 
+Collection of finite difference weight vectors,
 
 [`f_diff_weights_array(kmax)`](@ref)
 `` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
@@ -106,6 +106,14 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 
 where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
+
+Functions:
+
+[`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
+``→ α ≡ [α_0(x),⋯\ α_k(x)]``
+
+[`fwd_diff_expansion_weights(α,σ)`](@ref)
+``→ F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``
 #### Example:
 ```
 k=5
@@ -148,6 +156,14 @@ the ``k^{th}``-order *backward-difference* expansion,
 
 where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
+
+Function:
+
+[`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
+``→ β ≡ [β_0(x),⋯\ β_k(x)]``
+
+[`bwd_diff_expansion_weights(β,∇)`](@ref)
+` `→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 #### Example:
 ```
 k=5

@@ -605,7 +605,7 @@ f[n+x]
 =\bar{B}^k(x) ⋅ f[n-k:n].
 ```
 
-Functions:
+Function:
 
 [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``
