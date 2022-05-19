@@ -50,7 +50,7 @@ in *forward* order as ``f[n-k],⋯\ f[n]``.
 
 Functions:
 
-`f_diff_weights(k)` `` → \ c^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
+`f_diff_weights(k)` `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
 
 where [`f_diff_weight(k,j)`](@ref) `` → c_j^k``.
 #### Example:
@@ -80,7 +80,7 @@ Application in `Finite-difference-expansions`
 `` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
-``→ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``.
+``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
