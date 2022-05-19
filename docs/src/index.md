@@ -517,18 +517,19 @@ f[n+2] = (1 - ∇)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 which can be generalized to the form of *lagrangian interpolation*,
 
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} (x)_p ∇^p f[n],
+f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} α_p(x) ∇^p f[n],
 ```
-where the *finite-difference expansion coefficients*  ``α_1,\cdots\ α_k``
-work out to be
+where ``α^p(x) ≡ (-1)^p(x)_p/p!`` is the ``p^{th}``-order *finite-difference
+expansion coefficient for lagrangian lagrangian_extrapolation* over the
+interval ``-k≤x≤0 (n \le n-x \le n+k)``, with
 
 ```math
-α_p → (x)_{p}=\begin{cases}
+(x)_{p}=\begin{cases}
 1 & p=0\\
 x(x+1)(x+2)\cdots(x+p-1) & p>0
 \end{cases}
 ```
-which is known as the [`pochhammer`](@ref) symbol. Evaluating the
+being the [`pochhammer`](@ref) symbol. Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math

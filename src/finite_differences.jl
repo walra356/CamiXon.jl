@@ -180,7 +180,7 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``l^k=[(x)_0,⋯\ (x)_k]``
+Finite-difference expansion coefficient vector ``α^k=[(x)_0,⋯\ (x)_k]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
