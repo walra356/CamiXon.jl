@@ -543,9 +543,9 @@ where ``r^k_x[j] ≡ r_{k-j}^k(x)``. The weights vector ``r^k_x`` is generated b
 
 Functions:
 
-`β` = [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref) ``→ [β_0(x),⋯\ β_k(x)]``
+`β` = [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref) ``→ β ≡ [β_0(x),⋯\ β_k(x)]``
 
-`lagrangian interpolation weights` = [`bwd_diff_expansion_weights(β,∇)`](@ref) ``→ B^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+`lagrangian interpolation weights` = [`bwd_diff_expansion_weights(β,∇)`](@ref) ``→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 
 ```@docs
 

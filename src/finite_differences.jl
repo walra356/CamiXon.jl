@@ -180,14 +180,14 @@ end
 @doc raw"""
     f_diff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[l_0(x),⋯\ l_p(x)]``
+Finite-difference expansion coefficient vector ``l^k=[(x)_0,⋯\ (x)_k]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}l_p(x)∇^p f[n],
+f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}(x)_{p}∇^p f[n],
 ```
-where ``l_0\equiv 1`` and ``l_p(x) = x(x+1)(x+2)⋯(x+p-1)/p!``.
+where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
 extrapolation to ``x\ge 0``.
 #### Examples:
