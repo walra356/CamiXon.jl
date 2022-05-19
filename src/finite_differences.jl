@@ -73,14 +73,14 @@ Collection of finite difference weight vectors, ``c^0,⋯\ c^k``, where
 ``c^k`` = [`f_diff_weights(k)`](@ref).
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
+`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
 ``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
-∇ = f_diff_weights_array(kmax)
+σ = f_diff_weights_array(kmax)
 4-element Vector{Vector{Int64}}:
  [1]
  [-1, 1]
@@ -93,7 +93,7 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 # ==============================================================================
 
 @doc raw"""
-    fwd_diff_expansion_weights(α, Δ)
+    fwd_diff_expansion_weights(α, σ)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -110,9 +110,9 @@ analytic function ``f`` tabulated in *forward* order.
 #### Example:
 ```
 k=5
-Δ = f_diff_weights_array(k)
+σ = f_diff_weights_array(k)
 α = UnitRange(0,k)
-Fk = bwd_diff_expansion_weights(α, Δ)
+Fk = bwd_diff_expansion_weights(α, σ)
 6-element Vector{Int64}:
   15
  -55
@@ -122,27 +122,27 @@ Fk = bwd_diff_expansion_weights(α, Δ)
   -5
 ```
 """
-function fwd_diff_expansion_weights(α, Δ)
+function fwd_diff_expansion_weights(α, σ)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
     k = Base.length(α)-1
 
-    return [sum([coeffs[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=0:k]
+    return [sum([coeffs[1+p] * σ[1+p][1+p-j] for p=j:k]) for j=0:k]
 
 end
 
 # ================ bwd_diff_expansion_weights(β, ∇) =======================
 
 @doc raw"""
-    bwd_diff_expansion_weights(β, ∇)
+    bwd_diff_expansion_weights(β, σ)
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
 the ``k^{th}``-order *backward-difference* expansion,
 
 ```math
-\sum_{p=0}^{k}β_{p}∇^{p}f[n]
+\sum_{p=0}^{k}β_{p}σ^{p}f[n]
 =\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
 =\bar{B}^k \cdot f[n-k:n].
 ```
@@ -152,9 +152,9 @@ analytic function ``f`` tabulated in *forward* order.
 #### Example:
 ```
 k=5
-∇ = f_diff_weights_array(k)
+σ = f_diff_weights_array(k)
 β = UnitRange(0,k)
-barBk = bwd_diff_expansion_weights(β, ∇)
+barBk = bwd_diff_expansion_weights(β, σ)
 6-element Vector{Int64}:
   -5
   29
@@ -164,13 +164,13 @@ barBk = bwd_diff_expansion_weights(β, ∇)
   15
 ```
 """
-function bwd_diff_expansion_weights(β, ∇)
+function bwd_diff_expansion_weights(β, σ)    
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
     k = Base.length(β)-1
 
-    return [Base.sum([β[1+p] * ∇[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+    return [Base.sum([β[1+p] * σ[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================
