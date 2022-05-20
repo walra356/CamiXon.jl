@@ -353,7 +353,7 @@ Functions:
 [`f_diff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+`` → Λ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 **Backward difference notation**
 
@@ -390,7 +390,7 @@ Functions:
 [`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+`` → Λ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 ```@docs
 f_diff_weight(k::Int,j::Int)
@@ -442,9 +442,9 @@ where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``.
 
 Function:
 
-[`fwd_diff_expansion_weights(α,σ)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
+[`fwd_diff_expansion_weights(α,Λ)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `σ =`[` f_diff_weights_array(kmax)`](@ref).
+where `Λ =`[` f_diff_weights_array(kmax)`](@ref).
 
 **Backward difference notation**
 
@@ -485,14 +485,14 @@ In general (``β ≠ α``) there is *no simple symmetry relation* between
 
 Functions:
 
-[`bwd_diff_expansion_weights(β,σ)`](@ref)
+[`bwd_diff_expansion_weights(β,Λ)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `σ ≡`[` f_diff_weights_array(kmax)`](@ref).
+where `Λ ≡`[` f_diff_weights_array(kmax)`](@ref).
 
 ```@docs
-fwd_diff_expansion_weights(α, σ)
-bwd_diff_expansion_weights(β, σ)
+fwd_diff_expansion_weights(α, Λ)
+bwd_diff_expansion_weights(β, Λ)
 ```
 ##### Application to Lagrangian interpolation
 
@@ -551,7 +551,7 @@ Functions:
 [`f_diff_expansion_coeffs_lagrange(k,x)`](@ref)
 ``→ α ≡ [α_0(x),⋯\ α_k(x)]``
 
-[`fwd_diff_expansion_weights(α,σ)`](@ref)
+[`fwd_diff_expansion_weights(α,Λ)`](@ref)
 ``→ F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``
 
 **Backward difference notation**

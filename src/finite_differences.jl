@@ -72,14 +72,14 @@ f_diff_weights(k::Int) = [CamiXon.f_diff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors,
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
+`` → Λ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`f_diff_weights(k)`](@ref)
 ``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
 #### Example:
 ```
 kmax = 3
-σ = f_diff_weights_array(kmax)
+Λ = f_diff_weights_array(kmax)
 4-element Vector{Vector{Int64}}:
  [1]
  [-1, 1]
@@ -92,7 +92,7 @@ f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 # ==============================================================================
 
 @doc raw"""
-    fwd_diff_expansion_weights(α, σ)
+    fwd_diff_expansion_weights(α, Λ)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -109,15 +109,15 @@ analytic function ``f`` tabulated in *forward* order.
 
 Functions:
 
-[`fwd_diff_expansion_weights(α,σ)`](@ref) `` → F^k ≡ [F_0^k,⋯\ F_k^k]``,
+[`fwd_diff_expansion_weights(α,Λ)`](@ref) `` → F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `σ \equiv`[` f_diff_weights_array(kmax)`](@ref).
+where `Λ ≡ ` [` f_diff_weights_array(kmax)`](@ref).
 #### Example:
 ```
 k=5
-σ = f_diff_weights_array(k)
+Λ = f_diff_weights_array(k)
 α = UnitRange(0,k)
-Fk = bwd_diff_expansion_weights(α, σ)
+Fk = bwd_diff_expansion_weights(α, Λ)
 6-element Vector{Int64}:
   15
  -55
@@ -127,20 +127,20 @@ Fk = bwd_diff_expansion_weights(α, σ)
   -5
 ```
 """
-function fwd_diff_expansion_weights(α, σ)
+function fwd_diff_expansion_weights(α, Λ)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
     k = Base.length(α)-1
 
-    return [sum([coeffs[1+p] * σ[1+p][1+p-j] for p=j:k]) for j=0:k]
+    return [sum([coeffs[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=0:k]
 
 end
 
 # ================ bwd_diff_expansion_weights(β, ∇) =======================
 
 @doc raw"""
-    bwd_diff_expansion_weights(β, σ)
+    bwd_diff_expansion_weights(β, Λ)
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
@@ -165,9 +165,9 @@ Function:
 #### Example:
 ```
 k=5
-σ = f_diff_weights_array(k)
+Λ = f_diff_weights_array(k)
 β = UnitRange(0,k)
-barBk = bwd_diff_expansion_weights(β, σ)
+barBk = bwd_diff_expansion_weights(β, Λ)
 6-element Vector{Int64}:
   -5
   29
@@ -177,13 +177,13 @@ barBk = bwd_diff_expansion_weights(β, σ)
   15
 ```
 """
-function bwd_diff_expansion_weights(β, σ)
+function bwd_diff_expansion_weights(β, Λ)
 # ==============================================================================
 #   function weights of finite-difference summation
 # ==============================================================================
     k = Base.length(β)-1
 
-    return [Base.sum([β[1+p] * σ[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+    return [Base.sum([β[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================
