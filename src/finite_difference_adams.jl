@@ -74,10 +74,10 @@ divisor. By default the output is in Float64, optionally the output is rational,
 """
 function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
-    ∇ = CamiXon.f_diff_weights_array(k)
-    l = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
+    #∇ = CamiXon.f_diff_weights_array(k)
+    β = CamiXon.f_diff_expansion_coeffs_adams_moulton(k; T)
 
-    o = CamiXon.bwd_diff_expansion_weights(l,∇)
+    o = CamiXon.bwd_diff_expansion_weights(β,∇(k))
 
     if rationalize
         D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor

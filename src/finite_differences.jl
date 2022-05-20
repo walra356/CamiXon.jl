@@ -98,19 +98,12 @@ Collection of finite difference weight vectors for use in ``k^{th}``-order
 finite difference expansions in *forward-difference* notation
 #### Example:
 ```
-k=5
+k=4
 Δ(k)
+  (true, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
 ```
 """
-function Δ(k::Int)
-# ==============================================================================
-#    finite difference weights array in forward difference notation
-# ==============================================================================
-    w = f_diff_weights_array(k)
-
-    return (w, k, true)
-
-end
+Δ(k::Int) = (true, k, f_diff_weights_array(k) )
 
 # =========================== ∇(k) =============================================
 
@@ -121,19 +114,14 @@ Collection of finite difference weight vectors for use in ``k^{th}``-order
 finite difference expansions in *backward-difference* notation
 #### Example:
 ```
-k=5
+k=4
 ∇(k)
+  (false, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
 ```
 """
-function ∇(k::Int)
-# ==============================================================================
-#    finite difference weights array for backward difference notation
-# ==============================================================================
-    w = f_diff_weights_array(k)
+∇(k::Int) = (false, k, f_diff_weights_array(k) )
 
-    return (w, k, false)
-
-end
+# ============== f_diff_expansion_weights(coeffs, fdiff) =======================
 
 @doc raw"""
     f_diff_expansion_weights(coeffs, fdiff)
@@ -180,7 +168,7 @@ Bbk = f_diff_expansion_weights(β,∇(k)); println("Bbk = $(Bbk)")
 """
 function f_diff_expansion_weights(coeffs, f_diff)
 
-    (w, k, forward) = f_diff
+    (forward, k, w) = f_diff
 
     o = forward ? [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
                   [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
