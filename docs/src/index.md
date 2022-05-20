@@ -494,7 +494,10 @@ where `Λ ≡`[` f_diff_weights_array(kmax)`](@ref).
 fwd_diff_expansion_weights(α, Λ)
 bwd_diff_expansion_weights(β, Λ)
 ```
-##### Application to Lagrangian interpolation
+
+### Lagrangian interpolation
+
+This section build on the finite difference expansion methods
 
 **Forward difference notation**
 
