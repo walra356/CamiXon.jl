@@ -353,7 +353,7 @@ Functions:
 [`f_diff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+`` →w ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 **Backward difference notation**
 
@@ -390,7 +390,7 @@ Functions:
 [`f_diff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
 
 [`f_diff_weights_array(kmax)`](@ref)
-`` → σ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+`` →w ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 ```@docs
 f_diff_weight(k::Int,j::Int)
@@ -491,8 +491,8 @@ Functions:
 where `σ ≡`[` f_diff_weights_array(kmax)`](@ref).
 
 ```@docs
-fwd_diff_expansion_weights(α, σ)
-bwd_diff_expansion_weights(β, σ)
+fwd_diff_expansion_weights(α,w)
+bwd_diff_expansion_weights(β,w)
 ```
 ##### Application to Lagrangian interpolation
 
