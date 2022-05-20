@@ -534,7 +534,7 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 
    w = Base.inv(Base.transpose(σ))
 
-    o = -σ * c  # solving matrix equation results in trapezoidal_weights
+    o = -w * c  # solving matrix equation results in trapezoidal_weights
 
     if rationalize
         a = CamiXon.f_diff_expansion_coeffs_adams_moulton(k)
