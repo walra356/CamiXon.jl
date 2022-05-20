@@ -491,6 +491,9 @@ Functions:
 where `Λ ≡`[` f_diff_weights_array(kmax)`](@ref).
 
 ```@docs
+Δ(k::Int)
+∇(k::Int)
+f_diff_expansion_weights(coeffs, f_diff)
 fwd_diff_expansion_weights(α, Λ)
 bwd_diff_expansion_weights(β, Λ)
 ```

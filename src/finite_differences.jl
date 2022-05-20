@@ -89,7 +89,103 @@ kmax = 3
 """
 f_diff_weights_array(kmax::Int) = [CamiXon.f_diff_weights(k)  for k=0:kmax]
 
+# =========================== Δ(k) =============================================
+
+@doc raw"""
+    Δ(k::Int)
+
+Collection of finite difference weight vectors for use in ``k^{th}``-order
+finite difference expansions in *forward-difference* notation
+#### Example:
+```
+k=5
+Δ(k)
+```
+"""
+function Δ(k::Int)
 # ==============================================================================
+#    finite difference weights array in forward difference notation
+# ==============================================================================
+    w = f_diff_weights_array(k)
+
+    return (w, k, true)
+
+end
+
+# =========================== ∇(k) =============================================
+
+@doc raw"""
+    ∇(k::Int)
+
+Collection of finite difference weight vectors for use in ``k^{th}``-order
+finite difference expansions in *backward-difference* notation
+#### Example:
+```
+k=5
+∇(k)
+```
+"""
+function ∇(k::Int)
+# ==============================================================================
+#    finite difference weights array for backward difference notation
+# ==============================================================================
+    w = f_diff_weights_array(k)
+
+    return (w, k, false)
+
+end
+
+@doc raw"""
+    f_diff_expansion_weights(coeffs, fdiff)
+
+Expansion weights corresponding to the expansion coefficients `coeffs` for
+the finite difference expansion `fdiff`:
+
+**Forward difference notation**
+
+Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
+expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
+*forward-difference* expansion,
+
+```math
+\sum_{p=0}^{k}α_{p}Δ^{p}f[n]
+=\sum_{j=0}^{k}F_{j}^{k}f[n+j]
+=F^{k} \cdot f[n:n+k],
+```
+
+where ``f[n],⋯\ f[n+k]`` are elements of the
+analytic function ``f`` tabulated in *forward* order.
+
+**Backward difference notation**
+
+Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
+expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
+the ``k^{th}``-order *backward-difference* expansion,
+
+```math
+\sum_{p=0}^{k}β_{p}∇^{p}f[n]
+=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
+=\bar{B}^k \cdot f[n-k:n].
+```
+
+where ``f[n-k],⋯\ f[n]`` are elements of the
+analytic function ``f`` tabulated in *forward* order.
+#### Example:
+```
+k=5
+α = β = UnitRange(0,k)
+Fk = f_diff_expansion_weights(α,Δ(k)); println("Fk = $(Fk)")
+Bbk = f_diff_expansion_weights(β,∇(k)); println("Bbk = $(Bbk)")
+```
+"""
+function f_diff_expansion_weights(coeffs, f_diff)
+
+    (w, k, forward) = f_diff
+
+    o = forward ? [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
+                  [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+
+end
 
 @doc raw"""
     fwd_diff_expansion_weights(α, Λ)
