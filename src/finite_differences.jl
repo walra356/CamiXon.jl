@@ -132,7 +132,7 @@ function fwd_diff_expansion_weights(α, Λ)
 # ==============================================================================
     k = Base.length(α)-1
 
-    return [sum([coeffs[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=0:k]
+    return [sum([α[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=0:k]
 
 end
 
