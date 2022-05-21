@@ -47,7 +47,8 @@ using Test
     @test fdiff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
     @test fdiff_expansion_coeffs_lagrange(3,-1) == [1, -1, 0, 0]
     @test fdiff_expansion_coeffs_lagrange(5,2) == [1, 2, 3, 4, 5, 6]
-    @test bwd_diff_expansion_weights(UnitRange(0,5), fdiff_weights_array(5)) == [-5, 29, -69, 85, -55, 15]
+    @test f_diff_expansion_weights(UnitRange(0,5),Δ(5)) == [15, -55, 85, -69, 29, -5]
+    @test f_diff_expansion_weights(UnitRange(0,5),∇(5)) == [-5, 29, -69, 85, -55, 15]
     @test [summation_range(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
     @test fdiff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test lagrange_interpolation([0.0,1,2,3,4,5,6], 0.0..1.0; k=2, m=2) == (0.0:0.08333333333333333:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0])
