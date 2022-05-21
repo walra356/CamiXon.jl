@@ -210,7 +210,7 @@ expansion considered.
 k=5
 Λ = fdiff_weights_array(k)
 α = UnitRange(0,k)
-Fk = bwd_diff_expansion_weights(α, Λ)
+Fk = fwd_diff_expansion_weights(α, Λ)
 6-element Vector{Int64}:
   15
  -55
@@ -342,9 +342,9 @@ function lagrange_interpolation(f::Vector{Float64},
 # ==============================================================================
     n = length(f)
 
-    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = CamiXon.fdiff_weights_array(k)
     l = [CamiXon.fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [CamiXon.bwd_diff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
+    w = [CamiXon.fdiff_expansion_weights(l[i], ∇(k)) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.fdiff_function_sequences(f, k, m)
 
@@ -379,9 +379,9 @@ function lagrange_extrapolation(f::Vector{Float64},
 # ==============================================================================
     n = Base.length(f)
 
-    ∇ = fdiff_weights_array(k)
+    #∇ = fdiff_weights_array(k)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [bwd_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w1 = [fdiff_expansion_weights(l[i], ∇(k)) for i ∈ Base.eachindex(l)]
     w2 = fdiff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
@@ -450,10 +450,10 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = CamiXon.fdiff_weights_array(k)
     coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
 
-    return CamiXon.bwd_diff_expansion_weights(coeffs,∇)
+    return CamiXon.fdiff_expansion_weights(coeffs,∇(k))
 
 end
 
@@ -482,11 +482,11 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
-    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = CamiXon.fdiff_weights_array(k)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.bwd_diff_expansion_weights(coeffs,∇)
+        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs,∇(k))
     end
 
     return m
@@ -518,9 +518,9 @@ function lagrange_differentiation(f::Vector{Float64},
 # ==============================================================================
     n = Base.length(f)
 
-    ∇ = fdiff_weights_array(k)
+    #∇ = fdiff_weights_array(k)
     l = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [bwd_diff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w = [fdiff_expansion_weights(l[i], ∇(k)) for i ∈ Base.eachindex(l)]
     w1 = Base.append!(repeat(w[1:m],n-k-1),w)
     w2 = fdiff_function_sequences(f, k, m)
 
