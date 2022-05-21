@@ -42,25 +42,25 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞], :📌) == [4]
     @test find_last([:📑,:📌,:📢,:📌,:📞], :📌; dict=true) == [:📌 => 4]
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
-    @test f_diff_weight(5, 3) == -10
-    @test f_diff_weights(3) == [-1, 3, -3, 1]
-    @test f_diff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
-    @test f_diff_expansion_coeffs_lagrange(3,-1) == [1, -1, 0, 0]
-    @test f_diff_expansion_coeffs_lagrange(5,2) == [1, 2, 3, 4, 5, 6]
-    @test bwd_diff_expansion_weights(UnitRange(0,5), f_diff_weights_array(5)) == [-5, 29, -69, 85, -55, 15]
+    @test fdiff_weight(5, 3) == -10
+    @test fdiff_weights(3) == [-1, 3, -3, 1]
+    @test fdiff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
+    @test fdiff_expansion_coeffs_lagrange(3,-1) == [1, -1, 0, 0]
+    @test fdiff_expansion_coeffs_lagrange(5,2) == [1, 2, 3, 4, 5, 6]
+    @test bwd_diff_expansion_weights(UnitRange(0,5), fdiff_weights_array(5)) == [-5, 29, -69, 85, -55, 15]
     @test [summation_range(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
-    @test f_diff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
+    @test fdiff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test lagrange_interpolation([0.0,1,2,3,4,5,6], 0.0..1.0; k=2, m=2) == (0.0:0.08333333333333333:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0])
     @test lagrange_extrapolation([0.0,1,2,3,4,5,6,7], 0.0..1.0; k=2, e=1, m=2) == (1.0:0.07142857142857142:1.1428571428571428, [7.0, 7.5, 8.0])
-    @test f_diff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
+    @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, m=1) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
     @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
     @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0..5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
-    @test f_diff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
-    @test f_diff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
+    @test fdiff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
+    @test fdiff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
     @test gridname(2) == "quasi-exponential"
     @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] ==  [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
     @test [gridfunction(1, n-1, 0.1) for n=1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]

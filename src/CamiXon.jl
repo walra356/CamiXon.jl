@@ -45,26 +45,26 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
-export f_diff_weight
-export f_diff_weights
-export f_diff_weights_array
-export f_diff_expansion_coeffs_lagrange
+export fdiff_weight
+export fdiff_weights
+export fdiff_weights_array
+export fdiff_expansion_coeffs_lagrange
 export Δ
 export ∇
-export f_diff_expansion_weights
+export fdiff_expansion_weights
 export fwd_diff_expansion_weights
 export bwd_diff_expansion_weights
 export summation_range
-export f_diff_function_sequences
+export fdiff_function_sequences
 export lagrange_interpolation
 export lagrange_extrapolation
-export f_diff_expansion_coeffs_differentiation
+export fdiff_expansion_coeffs_differentiation
 export create_lagrange_differentiation_weights
 export create_lagrange_differentiation_matrix
 export lagrange_differentiation
-export f_diff_expansion_coeffs_adams_moulton
+export fdiff_expansion_coeffs_adams_moulton
 export create_adams_moulton_weights
-export f_diff_expansion_coeffs_adams_bashford
+export fdiff_expansion_coeffs_adams_bashford
 export trapezoidal_weights
 export trapezoidal_integration
 
