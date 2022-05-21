@@ -317,7 +317,7 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    msg && println(_specsAtom(Z, A, Q, element) )
+    msg && println(_specsAtom(Z, A, Q) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
 
