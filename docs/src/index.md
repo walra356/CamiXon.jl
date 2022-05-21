@@ -552,10 +552,10 @@ are the *lagrangian interpolation weights* corresponding to the point
 Functions:
 
 [`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
-``→ α(x) ≡ [α_0(x),⋯\ α_k(x)]``
+`` → α(x) ≡ [α_0(x),⋯\ α_k(x)]``
 
 [`fdiff_expansion_weights(α(x), Δ(k))`](@ref)
-``→ F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``
+`` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``
 
 **Backward difference notation**
 
@@ -611,10 +611,10 @@ f[n+x]
 Function:
 
 [`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
-``→ β ≡ [β_0(x),⋯\ β_k(x)]``
+`` → β ≡ [β_0(x),⋯\ β_k(x)]``
 
 [`fdiff_expansion_weights(β(x), ∇(k))`](@ref)
-` `→ \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 
 ```@docs
 

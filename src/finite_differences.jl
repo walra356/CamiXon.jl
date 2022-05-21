@@ -131,7 +131,7 @@ the finite difference expansion `fdiff`, where `fdiff = Δ(k)` corresponds to
 the forward difference notation and `fdiff = ∇(k)` to the backward difference
 notation.
 
-**Forward difference notation (`fdiff = Δ(k)`)**
+**Forward difference notation** (`fdiff = Δ(k)`)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -148,7 +148,7 @@ analytic function ``f`` tabulated in *forward* order.
 
 [`fdiff_expansion_weights(coeff, Δ(k))`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
 
-**Backward difference notation (`fdiff = ∇(k)`)**
+**Backward difference notation** (`fdiff = ∇(k)`)
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
