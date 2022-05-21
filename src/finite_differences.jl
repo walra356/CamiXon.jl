@@ -127,9 +127,7 @@ k=4
     fdiff_expansion_weights(coeffs, fdiff)
 
 Expansion weights corresponding to the expansion coefficients `coeffs` for
-the finite difference expansion `fdiff`, where `fdiff = Δ(k)` corresponds to
-the forward difference notation and `fdiff = ∇(k)` to the backward difference
-notation.
+the finite difference expansion `fdiff`.
 
 **Forward difference notation** (`fdiff = Δ(k)`)
 
@@ -230,53 +228,6 @@ function fwd_diff_expansion_weights(α, Λ)
 
     return [sum([α[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=0:k]
 
-end
-
-# ================ bwd_diff_expansion_weights(β, ∇) =======================
-
-@doc raw"""
-    bwd_diff_expansion_weights(β, Λ)
-
-Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
-expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
-the ``k^{th}``-order *backward-difference* expansion,
-
-```math
-\sum_{p=0}^{k}β_{p}∇^{p}f[n]
-=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
-=\bar{B}^k \cdot f[n-k:n].
-```
-
-where ``f[n-k],⋯\ f[n]`` are elements of the
-analytic function ``f`` tabulated in *forward* order.
-
-[`bwd_diff_expansion_weights(β,∇)`](@ref)
-`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
-
-where `Λ ≡ ` [` fdiff_weights_array(kmax)`](@ref) and α depends on the
-expansion considered.
-#### Example:
-```
-k=5
-Λ = fdiff_weights_array(k)
-β = UnitRange(0,k)
-barBk = bwd_diff_expansion_weights(β, Λ)
-6-element Vector{Int64}:
-  -5
-  29
- -69
-  85
- -55
-  15
-```
-"""
-function bwd_diff_expansion_weights(β, Λ)
-# ==============================================================================
-#   function weights of finite-difference summation
-# ==============================================================================
-    k = Base.length(β)-1
-
-    return [Base.sum([β[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 end
 
 # ==============================================================================

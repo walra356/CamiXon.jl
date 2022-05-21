@@ -53,7 +53,6 @@ export Δ
 export ∇
 export fdiff_expansion_weights
 export fwd_diff_expansion_weights
-export bwd_diff_expansion_weights
 export summation_range
 export fdiff_function_sequences
 export lagrange_interpolation
