@@ -443,8 +443,7 @@ where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``.
 Function:
 
 [`fdiff_expansion_weights(coeff, fdiff)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
-
-for  `fdiff = ` [`Δ(k)`](@ref).
+for  `fdiff = ` [`Δ(k)`](@ref)
 
 **Backward difference notation**
 
@@ -480,15 +479,14 @@ By a change of dummy index we turn to *forward order*
 Note that the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` contains
 the weights in backward order.
 
-In general (``β ≠ α``) there is *no simple symmetry relation* between
-``B^k`` and ``F^k``. In the special case ``β = α`` we find ``\bar{B}^k = F^k``.
+In general ``β ≠ α`` and there is *no simple symmetry relation* between
+``B^k`` and ``F^k``. In the special case ``β = α`` we find
+``\bar{B}^k = \reverse(F^k)``.
 
 Functions:
 
 [`fdiff_expansion_weights(coeff, fdiff)`](@ref)
-`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``
-
-for  `fdiff = ` [`∇(k)`](@ref).
+`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` for  `fdiff = ` [`∇(k)`](@ref)
 
 ```@docs
 Δ(k::Int)
