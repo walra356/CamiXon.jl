@@ -1,3 +1,13 @@
+# =========================== fwd ==============================================
+
+struct fwd
+end
+
+struct bwd
+end
+
+# =========================== bwd ==============================================
+
 @doc raw"""
     fdiff_weight(k, j)
 
@@ -114,68 +124,15 @@ function fdiffs(k::Int; forward=true)
 
 end
 
-# ========================= fdiffs(k;forward=true) =============================
+# ============== fdiff_expansion_weights(coeffs, fdiffs; notation=fwd) =======================
 
 @doc raw"""
-    fdiffs(k::Int; forward=)
-
-Collection of finite difference weight vectors for use in ``k^{th}``-order
-finite difference expansions in *forward-difference* notation
-#### Example:
-```
-k=4
-fdiffs(k, forward=true)
-  (true, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
-```
-"""
-
-
- fdiffs(k::Int; forward=false) = (false, k, fdiff_weights_array(k) )
-
-
-
-
-# =========================== Δ(k) =============================================
-
-@doc raw"""
-    Δ(k::Int)
-
-Collection of finite difference weight vectors for use in ``k^{th}``-order
-finite difference expansions in *forward-difference* notation
-#### Example:
-```
-k=4
-Δ(k) == (true, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
-  true
-```
-"""
-Δ(k::Int) = (true, k, fdiff_weights_array(k) )
-
-# =========================== ∇(k) =============================================
-
-@doc raw"""
-    ∇(k::Int)
-
-Collection of finite difference weight vectors for use in ``k^{th}``-order
-finite difference expansions in *backward-difference* notation
-#### Example:
-```
-k=4
-∇(k) == (false, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
-  true
-```
-"""
-∇(k::Int) = (false, k, fdiff_weights_array(k) )
-
-# ============== fdiff_expansion_weights(coeffs, fdiffs) =======================
-
-@doc raw"""
-    fdiff_expansion_weights(coeffs, fdiffs)
+    fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 
 Expansion weights corresponding to the expansion coefficients `coeffs` for
 the finite difference expansion `fdiff`.
 
-**Forward difference notation** (`fdiffs = Δ(k)`)
+**Forward difference notation** (`notation = fwd`)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -190,9 +147,10 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fdiffs)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
+``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
 
-**Backward difference notation** (`fdiffs = ∇(k)`)
+**Backward difference notation** (`notation = bwd`)
 
 Weight vector ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` corresponding to the
 expansion coefficients ``β ≡ [β_0,⋯\ β_k]`` of
@@ -207,14 +165,15 @@ the ``k^{th}``-order *backward-difference* expansion,
 where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fdiffs)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``
 #### Example:
 ```
 k=5
 α = β = UnitRange(0,k)
-Fk = fdiff_expansion_weights(α,Δ(k)); println("Fk = $(Fk)")
-bBk = fdiff_expansion_weights(β,fdiffs); println("bBk = $(bBk)")
+fdiffs = fdiff_weights_array(k)
+Fk = fdiff_expansion_weights(α, fdiffs; notation=fwd); println("Fk = $(Fk)")
+bBk = fdiff_expansion_weights(β, fdiffs; notation=bwd); println("bBk = $(bBk)")
   Fk = [15, -55, 85, -69, 29, -5]
   bBk = [-5, 29, -69, 85, -55, 15]
 
@@ -222,7 +181,19 @@ bBk == reverse(Fk)
   true
 ```
 """
-function fdiff_expansion_weights(coeffs, fdiffs)
+function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
+
+    forward = notation === fwd ? true : notation === bwd ? false :
+                           error("Error: unknown notation type")
+    c = coeffs
+    w = fdiffs
+    k = Base.length(c)-1
+
+    o = forward ? [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
+                  [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+
+end
+function fdiff_expansion_weights2(coeffs, fdiffs)
 
     (forward, k, w) = fdiffs
 
@@ -230,7 +201,7 @@ function fdiff_expansion_weights(coeffs, fdiffs)
                   [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 
 end
-function fdiff_expansion_weights1(coeffs, fdiffs)
+function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 
     (forward, k, w) = fdiff
 
@@ -396,10 +367,10 @@ function lagrange_interpolation(f::Vector{Float64},
 # ==============================================================================
     n = length(f)
 
-    #∇ = CamiXon.fdiff_weights_array(k)
-    ∇ = fdiffs(k, forward=false)
-    l = [CamiXon.fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [CamiXon.fdiff_expansion_weights(l[i], ∇) for i ∈ eachindex(l)]
+    ∇ = fdiff_weights_array(k)
+    #∇ = fdiffs(k, forward=false)
+    l = [fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
+    w = [fdiff_expansion_weights(l[i], ∇; notation=bwk) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.fdiff_function_sequences(f, k, m)
 
@@ -434,10 +405,10 @@ function lagrange_extrapolation(f::Vector{Float64},
 # ==============================================================================
     n = Base.length(f)
 
-    #∇ = fdiff_weights_array(k)
-    ∇ = fdiffs(k, forward=false)
+    ∇ = fdiff_weights_array(k)
+    #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [fdiff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w1 = [fdiff_expansion_weights(l[i], ∇; notation=bwk) for i ∈ eachindex(l)]
     w2 = fdiff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
@@ -506,11 +477,11 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-    #∇ = CamiXon.fdiff_weights_array(k)
-    ∇ = fdiffs(k, forward=false)
+    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = fdiffs(k, forward=false)
     coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
 
-    return CamiXon.fdiff_expansion_weights(coeffs,∇)
+    return CamiXon.fdiff_expansion_weights(coeffs, ∇; notation=bwd)
 
 end
 
@@ -539,12 +510,12 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
-    #∇ = CamiXon.fdiff_weights_array(k)
-    ∇ = fdiffs(k, forward=false)
+    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = fdiffs(k, forward=false)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs,∇)
+        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs, ∇; notation=bwd)
     end
 
     return m
@@ -576,10 +547,10 @@ function lagrange_differentiation(f::Vector{Float64},
 # ==============================================================================
     n = Base.length(f)
 
-    #∇ = fdiff_weights_array(k)
-    ∇ = fdiffs(k, forward=false)
+    ∇ = fdiff_weights_array(k)
+    #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [fdiff_expansion_weights(l[i], ∇) for i ∈ Base.eachindex(l)]
+    w = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w1 = Base.append!(repeat(w[1:m],n-k-1),w)
     w2 = fdiff_function_sequences(f, k, m)
 
