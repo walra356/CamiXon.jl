@@ -445,7 +445,7 @@ Function:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@refs) and
 `coeffs` = ``  α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation**
@@ -491,7 +491,7 @@ Functions:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@refs) and
 `coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 
 ```@docs
@@ -562,7 +562,7 @@ Functions:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 `` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@refs) and
 
 `coeffs = `[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
@@ -628,7 +628,7 @@ Function:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@refs) and
 
 `coeffs = `[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
@@ -779,7 +779,7 @@ where ``b_0^{\prime},⋯\ b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``
 = \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-Moulton integration weights*. 
+where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-Moulton integration weights*.
 
 Functions:
 
@@ -789,7 +789,7 @@ Functions:
 = [`fdiff_expansion_weights(β, fdiffs; notation=bwd)`](@ref)
 ``→ [a_k^k,⋯\ a_0^k]``,
 
-where `fdiffs = `[`fdiff_weights_array(k)`](@ref).
+where `fdiffs = ` [`fdiff_weights_array(k)`](@ref).
 
 `adams_moulton_weights` = [`create_adams_moulton_weights(k)`](@ref)
 ``→ [a_k^k,⋯\ a_0^k]``
