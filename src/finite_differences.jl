@@ -193,22 +193,6 @@ function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
                   [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
 
 end
-function fdiff_expansion_weights2(coeffs, fdiffs)
-
-    (forward, k, w) = fdiffs
-
-    o = forward ? [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
-                  [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
-
-end
-function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
-
-    (forward, k, w) = fdiff
-
-    o = forward ? [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
-                  [sum([coeffs[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
-
-end
 
 @doc raw"""
     fwd_diff_expansion_weights(α, Λ)
