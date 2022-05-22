@@ -485,7 +485,7 @@ the weights in backward order.
 
 In general ``β ≠ α`` and there is *no simple symmetry relation* between
 ``B^k`` and ``F^k``. In the special case ``β = α`` we find
-``\bar{B}^k = \reverse(F^k)``.
+``\bar{B}^k = \text{reverse}(F^k)``.
 
 Functions:
 
