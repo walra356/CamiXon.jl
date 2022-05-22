@@ -49,7 +49,6 @@ export fdiff_weight
 export fdiff_weights
 export fdiff_weights_array
 export fdiff_expansion_coeffs_lagrange
-export fdiffs
 export fdiff_expansion_weights
 export fwd_diff_expansion_weights
 export summation_range

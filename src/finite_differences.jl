@@ -89,7 +89,7 @@ where [`fdiff_weights(k)`](@ref)
 #### Example:
 ```
 kmax = 3
-Λ = fdiff_weights_array(kmax)
+fdiffs = fdiff_weights_array(kmax)
 4-element Vector{Vector{Int64}}:
  [1]
  [-1, 1]
