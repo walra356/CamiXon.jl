@@ -443,7 +443,10 @@ where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``.
 Function:
 
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
-``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
+``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
+
+where `coeffs` `` → α ≡ [α_0,⋯\ α_k]`` and
+`fdiffs` ≡ [`fdiff_weights_array(k)`](@refs)
 
 
 **Backward difference notation**
@@ -487,7 +490,10 @@ In general ``β ≠ α`` and there is *no simple symmetry relation* between
 Functions:
 
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
-`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``
+`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
+
+where `coeffs` `` → β ≡ [β_0,⋯\ β_k]`` and
+`fdiffs` ≡ [`fdiff_weights_array(k)`](@refs)
 
 ```@docs
 fdiffs(k::Int; forward=true)
