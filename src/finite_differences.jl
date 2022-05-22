@@ -6,7 +6,7 @@ end
 struct bwd
 end
 
-function forward(notation)
+function testnotation(notation)
 
     o = notation === fwd ? true : notation === bwd ? false :
         error("Error: unknown notation type")
@@ -173,7 +173,7 @@ bBk == reverse(Fk)
 """
 function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 
-    forward = forward(notation)
+    forward = testnotation(notation)
     c = coeffs
     w = fdiffs
     k = Base.length(c)-1
