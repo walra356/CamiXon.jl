@@ -524,7 +524,12 @@ which can be generalized to the form of *lagrangian interpolation*,
 ```math
 f[n-x] = (1 + Δ)^{-x} f[n] \equiv \sum_{p=0}^{\infty} α_p(x) Δ^p f[n],
 ```
-where ``α_p(x) ≡ (-1)^p(x)_p/p!`` is the ``p^{th}``-order *finite-difference
+where
+
+```math
+α_p(x) ≡ (-1)^p(x)_p/p!
+````
+is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
 interval ``-k ≤x ≤0\ \ (n \le n-x \le n+k)``,
 
@@ -554,12 +559,12 @@ are the *lagrangian interpolation weights* corresponding to the point
 
 Functions:
 
-[`fdiff_expansion_weights(α(x), fdiffs; notation=fwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 `` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
 
-[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
 
 **Backward difference notation**
@@ -584,7 +589,12 @@ which can be generalized to the form of *lagrangian interpolation*,
 ```math
 f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} β_p(x) ∇^p f[n],
 ```
-where ``β_p(x) ≡ (-1)^p(x)_p/p!`` is the ``p^{th}``-order *finite-difference
+where
+
+```math
+β_p(x) ≡ (-1)^p(x)_p/p!
+```
+is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
 interval ``-k ≤x ≤0\ \ (n-k \le n+x \le n)``, with
 
@@ -615,12 +625,12 @@ f[n+x]
 
 Function:
 
-[`fdiff_expansion_weights(β(x), fdiffs; notation=bwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
 
-[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
 ```@docs
