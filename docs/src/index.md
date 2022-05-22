@@ -619,6 +619,7 @@ Function:
 `` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+
 [`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
