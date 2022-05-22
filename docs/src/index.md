@@ -614,7 +614,7 @@ Function:
 [`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]``
 
-[`fdiff_expansion_weights(β(x), fdiffs; notation=bwk)`](@ref)
+[`fdiff_expansion_weights(β(x), fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
 
 ```@docs

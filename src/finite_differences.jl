@@ -354,7 +354,7 @@ function lagrange_interpolation(f::Vector{Float64},
     ∇ = fdiff_weights_array(k)
     #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
-    w = [fdiff_expansion_weights(l[i], ∇; notation=bwk) for i ∈ eachindex(l)]
+    w = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.fdiff_function_sequences(f, k, m)
 
@@ -392,7 +392,7 @@ function lagrange_extrapolation(f::Vector{Float64},
     ∇ = fdiff_weights_array(k)
     #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
-    w1 = [fdiff_expansion_weights(l[i], ∇; notation=bwk) for i ∈ eachindex(l)]
+    w1 = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w2 = fdiff_function_sequences(f, k, m)[end]
 
     ΔX = (domain.right - domain.left)/((n-1)*m)
