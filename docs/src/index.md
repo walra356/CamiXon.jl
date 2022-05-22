@@ -528,7 +528,7 @@ where
 
 ```math
 α_p(x) ≡ (-1)^p(x)_p/p!
-````
+```
 is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
 interval ``-k ≤x ≤0\ \ (n \le n-x \le n+k)``,
