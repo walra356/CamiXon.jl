@@ -89,7 +89,7 @@ end
     castDef(grid::Grid{T}, atom::Atom, orbit::Orbit) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
-atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
+atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref). 
 #### Example:
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
