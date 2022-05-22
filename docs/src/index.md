@@ -445,8 +445,8 @@ Function:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `coeffs` `` → α ≡ [α_0,⋯\ α_k]`` and
-`fdiffs` ≡ [`fdiff_weights_array(k)`](@refs)
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+`coeffs` `` → α ≡ [α_0,⋯\ α_k]`` (depends on the expansion).
 
 
 **Backward difference notation**
@@ -492,8 +492,8 @@ Functions:
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `coeffs` `` → β ≡ [β_0,⋯\ β_k]`` and
-`fdiffs` ≡ [`fdiff_weights_array(k)`](@refs)
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+`coeffs` `` → β ≡ [β_0,⋯\ β_k]`` (depends on the expansion).
 
 ```@docs
 fdiffs(k::Int; forward=true)

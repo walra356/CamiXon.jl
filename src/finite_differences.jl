@@ -148,7 +148,10 @@ where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
-``→ F^k ≡ [F_0^k,⋯\ F_k^k]``
+``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
+
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+`coeffs` `` → α ≡ [α_0,⋯\ α_k]`` (depends on the expansion).
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -166,7 +169,10 @@ where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
 [`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
-`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``
+`` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
+
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+`coeffs` `` → β ≡ [β_0,⋯\ β_k]`` (depends on the expansion).
 #### Example:
 ```
 k=5
@@ -191,51 +197,6 @@ function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 
     o = forward ? [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
                   [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
-
-end
-
-@doc raw"""
-    fwd_diff_expansion_weights(α, Λ)
-
-Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
-expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
-*forward-difference* expansion,
-
-```math
-\sum_{p=0}^{k}α_{p}Δ^{p}f[n]
-=\sum_{j=0}^{k}F_{j}^{k}f[n+j]
-=F^{k} \cdot f[n:n+k],
-```
-
-where ``f[n],⋯\ f[n+k]`` are elements of the
-analytic function ``f`` tabulated in *forward* order.
-
-[`fwd_diff_expansion_weights(α,Λ)`](@ref) `` → F^k ≡ [F_0^k,⋯\ F_k^k]``,
-
-where `Λ ≡ ` [` fdiff_weights_array(kmax)`](@ref) and α depends on the
-expansion considered.
-#### Example:
-```
-k=5
-Λ = fdiff_weights_array(k)
-α = UnitRange(0,k)
-Fk = fwd_diff_expansion_weights(α, Λ)
-6-element Vector{Int64}:
-  15
- -55
-  85
- -69
-  29
-  -5
-```
-"""
-function fwd_diff_expansion_weights(α, Λ)
-# ==============================================================================
-#   function weights of finite-difference summation
-# ==============================================================================
-    k = Base.length(α)-1
-
-    return [sum([α[1+p] * Λ[1+p][1+p-j] for p=j:k]) for j=0:k]
 
 end
 
