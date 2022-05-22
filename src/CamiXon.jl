@@ -45,6 +45,8 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
+export fwd
+export bwd
 export fdiff_weight
 export fdiff_weights
 export fdiff_weights_array
