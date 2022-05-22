@@ -82,7 +82,7 @@ fdiff_weights(k::Int) = [CamiXon.fdiff_weight(k, k-j) for j=0:k]
 Collection of finite difference weight vectors,
 
 [`fdiff_weights_array(kmax)`](@ref)
-`` → Λ ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
+`` → fdiffs ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`fdiff_weights(k)`](@ref)
 ``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
@@ -98,31 +98,6 @@ fdiffs = fdiff_weights_array(kmax)
 ```
 """
 fdiff_weights_array(kmax::Int) = [CamiXon.fdiff_weights(k)  for k=0:kmax]
-
-# ========================= fdiffs(k;forward=true) =============================
-
-@doc raw"""
-    fdiffs(k::Int; forward=true)
-
-Collection of finite difference weight vectors for use in ``k^{th}``-order
-finite difference expansions in *forward-difference* or *backward-difference*
-notation
-#### Example:
-```
-k=4
-fdiffs(k, forward=true)
-  (true, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
-
-fdiffs(k, forward=false)
-  (false, k, [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1], [1, -4, 6, -4, 1]])
-```
-"""
-function fdiffs(k::Int; forward=true)
-
-    o = forward ? (true, k, fdiff_weights_array(k) ) :
-                  (false, k, fdiff_weights_array(k) )
-
-end
 
 # ============== fdiff_expansion_weights(coeffs, fdiffs; notation=fwd) =======================
 
@@ -151,7 +126,7 @@ analytic function ``f`` tabulated in *forward* order.
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs` `` → α ≡ [α_0,⋯\ α_k]`` (depends on the expansion).
+`coeffs` `` → α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -172,7 +147,7 @@ analytic function ``f`` tabulated in *forward* order.
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs` `` → β ≡ [β_0,⋯\ β_k]`` (depends on the expansion).
+`coeffs` `` → β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 #### Example:
 ```
 k=5
