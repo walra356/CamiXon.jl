@@ -126,7 +126,7 @@ analytic function ``f`` tabulated in *forward* order.
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs` `` → α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+`coeffs = ` ``α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -147,7 +147,7 @@ analytic function ``f`` tabulated in *forward* order.
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs` `` → β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+`coeffs = ` ``β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 #### Example:
 ```
 k=5
