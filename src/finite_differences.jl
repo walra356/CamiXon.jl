@@ -6,6 +6,14 @@ end
 struct bwd
 end
 
+function forward(notation)
+
+    o = notation === fwd ? true : notation === bwd ? false :
+        error("Error: unknown notation type")
+
+    return o
+end
+
 # ==================== fdiff_weight(k, j) ======================================
 
 @doc raw"""
@@ -164,8 +172,7 @@ bBk == reverse(Fk)
 """
 function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 
-    forward = notation === fwd ? true : notation === bwd ? false :
-                           error("Error: unknown notation type")
+    forward = forward(notation)
     c = coeffs
     w = fdiffs
     k = Base.length(c)-1
@@ -288,7 +295,6 @@ function lagrange_interpolation(f::Vector{Float64},
     n = length(f)
 
     ∇ = fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
     w = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
@@ -326,7 +332,6 @@ function lagrange_extrapolation(f::Vector{Float64},
     n = Base.length(f)
 
     ∇ = fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
     w1 = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w2 = fdiff_function_sequences(f, k, m)[end]
@@ -398,7 +403,6 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
     ∇ = CamiXon.fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
     coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
 
     return CamiXon.fdiff_expansion_weights(coeffs, ∇; notation=bwd)
@@ -431,7 +435,6 @@ function create_lagrange_differentiation_matrix(k::Int)
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
     ∇ = CamiXon.fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
@@ -468,7 +471,6 @@ function lagrange_differentiation(f::Vector{Float64},
     n = Base.length(f)
 
     ∇ = fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
     l = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
     w = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w1 = Base.append!(repeat(w[1:m],n-k-1),w)
