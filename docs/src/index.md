@@ -446,7 +446,7 @@ Function:
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs = ` `` α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+`coeffs` = ``  α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation**
 
@@ -492,7 +492,7 @@ Functions:
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
-`coeffs = ` `` β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+`coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 
 ```@docs
 fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
@@ -554,13 +554,13 @@ are the *lagrangian interpolation weights* corresponding to the point
 
 Functions:
 
-[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
-`` → α(x) ≡ [α_0(x),⋯\ α_k(x)]``
-
 [`fdiff_expansion_weights(α(x), fdiffs; notation=fwd)`](@ref)
 `` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``,
 
-where `fdiffs = fdiffs(k, forward=true)`.
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+
+[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
+`` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
 
 **Backward difference notation**
 
@@ -615,11 +615,12 @@ f[n+x]
 
 Function:
 
-[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
-`` → β ≡ [β_0(x),⋯\ β_k(x)]``
-
 [`fdiff_expansion_weights(β(x), fdiffs; notation=bwd)`](@ref)
-`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``
+`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
+
+where `fdiffs ≡ `[`fdiff_weights_array(k)`](@refs) and
+[`fdiff_expansion_coeffs_lagrange(k,x)`](@ref)
+`` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
 ```@docs
 
