@@ -81,8 +81,8 @@ fdiff_weights(k::Int) = [CamiXon.fdiff_weight(k, k-j) for j=0:k]
 
 Collection of finite difference weight vectors,
 
-[`fdiff_weights_array(kmax)`](@ref)
-`` → fdiffs ≡ [\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
+[`fdiff_weights_array(kmax)`](@ref) →
+`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
 
 where [`fdiff_weights(k)`](@ref)
 ``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
