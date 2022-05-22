@@ -442,7 +442,7 @@ where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``.
 
 Function:
 
-[`fdiff_expansion_weights(coeffs, fdiffs)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref) ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 where `fdiffs = fdiffs(k, forward=true)``.
 
 
@@ -486,13 +486,13 @@ In general ``β ≠ α`` and there is *no simple symmetry relation* between
 
 Functions:
 
-[`fdiff_expansion_weights(coeffs, fdiffs)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 where `fdiffs = fdiffs(k, forward=false)``.
 
 ```@docs
 fdiffs(k::Int; forward=true)
-fdiff_expansion_weights(coeffs, fdiffs)
+fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
 ```
 
 ### Lagrangian interpolation
