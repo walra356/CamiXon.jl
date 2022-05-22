@@ -12,6 +12,7 @@ function forward(notation)
         error("Error: unknown notation type")
 
     return o
+
 end
 
 # ==================== fdiff_weight(k, j) ======================================
