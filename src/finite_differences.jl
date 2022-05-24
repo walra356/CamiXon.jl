@@ -186,7 +186,7 @@ end
 # ==============================================================================
 
 @doc raw"""
-    fdiff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
+    fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
 
 Finite-difference expansion coefficient vector ``α^k=[(x)_0,⋯\ (x)_k]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
@@ -198,14 +198,20 @@ f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}(x)_{p}∇^p f[n],
 where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
 extrapolation to ``x\ge 0``.
+
+[`fdiff_expansion_coeffs_lagrange(k, x; notation=fwd)`]
+→ ``α^k ≡ [α_0,⋯\ α_k]``
+
+[`fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)`]
+→ ``β^k ≡ [β_0,⋯\ β_k]``
 #### Examples:
 ```
 k = 5; x = 1
-l = fdiff_expansion_coeffs_lagrange(k,x); println(l)
+l = fdiff_expansion_coeffs_lagrange(k, x; notation=bwd); println(l)
  [1, 1, 1, 1, 1, 1]
 ```
 """
-function fdiff_expansion_coeffs_lagrange(k::Int, x::T) where T<:Real
+function fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
 
     l = Base.ones(T,k+1)
     x == 1 ? l : x ==0 ? (for i=2:k+1; l[i] = 0 end) :
@@ -296,7 +302,7 @@ function lagrange_interpolation(f::Vector{Float64},
     n = length(f)
 
     ∇ = fdiff_weights_array(k)
-    l = [fdiff_expansion_coeffs_lagrange(k, x) for x=-k:1/m:0]
+    l = [fdiff_expansion_coeffs_lagrange(k, x; notation=bwd) for x=-k:1/m:0]
     w = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
     w2 = CamiXon.fdiff_function_sequences(f, k, m)
@@ -333,7 +339,7 @@ function lagrange_extrapolation(f::Vector{Float64},
     n = Base.length(f)
 
     ∇ = fdiff_weights_array(k)
-    l = [fdiff_expansion_coeffs_lagrange(k, x) for x=0:1/m:e]
+    l = [fdiff_expansion_coeffs_lagrange(k, x; notation=bwd) for x=0:1/m:e]
     w1 = [fdiff_expansion_weights(l[i], ∇; notation=bwd) for i ∈ eachindex(l)]
     w2 = fdiff_function_sequences(f, k, m)[end]
 
@@ -369,7 +375,7 @@ function fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 #   in interval -k ≤ x ≤ 0
 # ==============================================================================
     a = Base.prepend!([1//i for i=1:k],[0//1])
-    b = CamiXon.fdiff_expansion_coeffs_lagrange(k, x)
+    b = CamiXon.fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)
 
     a,b = Base.promote(a,b)
 
