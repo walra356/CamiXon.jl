@@ -188,12 +188,14 @@ end
 @doc raw"""
     fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
 
+**Forward difference notation** (`notation = fwd`)
+
 Finite-difference expansion coefficient vector ``α^k=[(x)_0,⋯\ (x)_k]``
 defining the ``k^{th}``-order lagrangian interpolation of the tabulated
 analytic function ``f(n+x)`` at offset position ``x`` with respect to
 position ``n``,
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty}(x)_{p}∇^p f[n],
+f[n-x] = (1 + ∇)^{-x} f[n] \equiv \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
 ```
 where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
@@ -202,8 +204,15 @@ extrapolation to ``x\ge 0``.
 [`fdiff_expansion_coeffs_lagrange(k, x; notation=fwd)`]
 → ``α^k ≡ [α_0,⋯\ α_k]``
 
+**Backward difference notation** (`notation = bwd`)
+
+```math
+f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
+```
+
 [`fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)`]
 → ``β^k ≡ [β_0,⋯\ β_k]``
+
 #### Examples:
 ```
 k = 5; x = 1
@@ -213,10 +222,15 @@ l = fdiff_expansion_coeffs_lagrange(k, x; notation=bwd); println(l)
 """
 function fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
 
+    sgn = notation === fwd ? -1 : notation === bwd ? 1 :
+                                  error("Error: unknown notation type")
+
     l = Base.ones(T,k+1)
-    x == 1 ? l : x ==0 ? (for i=2:k+1; l[i] = 0 end) :
-                         (for i=1:k; l[i+1] = l[i]*(x+i-1)/i end)
+    x == 1 ? l : x == 0 ? (for p=2:k+1; l[p] = 0 end) :
+                          (for p=1:k; l[p+1] = sgn*l[p]*(x+p-1)/p end)
+
     return l
+
 end
 
 # ==============================================================================
