@@ -201,7 +201,7 @@ where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
 extrapolation to ``x\ge 0``.
 
-[`fdiff_expansion_coeffs_lagrange(k, x; notation=fwd)`]
+[`fdiff_expansion_coeffs_lagrange(k, x; notation=fwd)`](@ref)
 → ``α^k ≡ [α_0,⋯\ α_k]``
 
 **Backward difference notation** (`notation = bwd`)
@@ -210,7 +210,7 @@ extrapolation to ``x\ge 0``.
 f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
-[`fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)`]
+[`fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)`](@ref)
 → ``β^k ≡ [β_0,⋯\ β_k]``
 
 #### Examples:
