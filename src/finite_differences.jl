@@ -188,12 +188,12 @@ end
 @doc raw"""
     fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
 
+Finite-difference expansion coefficient vector defining the ``k^{th}``-order
+lagrangian interpolation of the tabulated analytic function ``f(n+x)``
+at offset position ``x`` with respect to position ``n``.
+
 **Forward difference notation** (`notation = fwd`)
 
-Finite-difference expansion coefficient vector ``α^k=[(x)_0,⋯\ (x)_k]``
-defining the ``k^{th}``-order lagrangian interpolation of the tabulated
-analytic function ``f(n+x)`` at offset position ``x`` with respect to
-position ``n``,
 ```math
 f[n-x] = (1 + ∇)^{-x} f[n] \equiv \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
 ```
