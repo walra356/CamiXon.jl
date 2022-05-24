@@ -152,7 +152,7 @@ the ``k^{th}``-order *backward-difference* expansion,
 where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `fdiffs ≡ `[`fdiff_weights_array(k)`](@ref) and
