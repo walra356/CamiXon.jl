@@ -564,7 +564,7 @@ Functions:
 
 where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 
-`coeffs = `[`fdiff_expansion_coeffs_lagrange(k, x; notation=fwd)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x; notation=fwd)`](@ref)
 `` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
 
 **Backward difference notation**
@@ -630,12 +630,12 @@ Function:
 
 where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 
-`coeffs = `[`fdiff_expansion_coeffs_lagrange(k, x; notation=bwd)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x; notation=bwd)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
 ```@docs
 
-fdiff_expansion_coeffs_lagrange(k::Int, x::T; notation=fwd) where T<:Real
+fdiff_expansion_coeffs_interpolation(k::Int, x::T; notation=fwd) where T<:Real
 summation_range(n::Int, i::Int, k::Int, μ::Int)
 fdiff_function_sequences(f, k::Int, μ=0)
 lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
