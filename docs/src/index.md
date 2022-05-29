@@ -366,7 +366,7 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
 are the *summation weights* (short: *weights*) which define the summation.
-Note that ``c_{0}^{k}≡1``, ``c_{k}^{k}≡(-1)^{k}``.\ and
+Note that ``c_{0}^{k}≡1``, ``c_{k}^{k}≡(-1)^{k}`` and
 
 ```math
 c_{k-j}^k=(-1)^k c_j^k.
@@ -374,7 +374,7 @@ c_{k-j}^k=(-1)^k c_j^k.
 
 As the function ``f`` is tabulated in forward order it is good practice to
 change dummy index to also write the function iterator in forward order
-(coefficients in backward order). In inner product notation this becomes
+(coefficients in backward order),
 
 ```math
 ∇^k f[n]
