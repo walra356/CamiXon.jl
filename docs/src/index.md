@@ -321,34 +321,19 @@ defined as a *weighted sum* over the function values ``f[n],⋯\ f[n+k]``,
 
 ```math
 Δ^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + ⋯  + f[n+k]
-= \sum_{j=0}^{k} c_{k-j}^k f[n-j].
+= \sum_{j=0}^{k} c_{k-j}^k f[n+j].
 ```
 The ``k+1`` coefficients
 
 ```math
-c_{j}^{k}=(-1)^{j}\binom{k}{j}
+c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}
 ```
 
 are the *summation weights* (short: *weights*) which define the summation.
-Note that ``c_{0}^{k}≡1`` and ``c_{k}^{k}≡(-1)^{k}``.
-In inner-product form the forward difference equation is given by
 
-```math
-Δ^k f[n]
-= \sum_{j=0}^{k} c_{k-j}^kf[n+j]=\bar{c}^k \cdot f[n:n+k],
-```
-where the bar indicates backward order and
-```math
-f[n:n+k] = \left[\begin{array}{c}
-f[n]\\
-\vdots\\
-f[n+k]
-\end{array}\right].
-```
+Application:  
 
-Functions:  
-
-[`fdiff_weight(k,j)`](@ref) `` → c_{j}^{k}=(-1)^{j}\binom{k}{j}``
+[`fdiff_weight(k,j)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
 
 [`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
@@ -371,21 +356,34 @@ defined as a *weighted sum* over the function values in backward order,
 
 ```math
 ∇^k f[n] = f[n] + c_1^kf[n-1] + ⋯ + c_k^kf[n-k]
-= \sum_{j=0}^{k} c_j^kf[n-j]=c^k \cdot f[n:-1:n-k],
+= \sum_{j=0}^{k} c_j^kf[n-j],
 ```
 
-where the ``c_{j}^{k}`` are the ``k+1`` *summation weights* defined above.
+where the ``k+1`` coefficients
+
+```math
+c_{j}^{k}=(-1)^{j}\binom{k}{j}
+```
+
+are the *summation weights* (short: *weights*) which define the summation.
+Note that ``c_{0}^{k}≡1``, ``c_{k}^{k}≡(-1)^{k}``.\ and
+
+```math
+c_{k-j}^k=(-1)^k c_j^k.
+```
+
 As the function ``f`` is tabulated in forward order it is good practice to
 change dummy index to also write the function iterator in forward order
 (coefficients in backward order). In inner product notation this becomes
 
 ```math
 ∇^k f[n]
-= \sum_{j=0}^{k} c_{k-j}^kf[n-k+j]=\bar{c}^k \cdot f[n-k:n],
+= \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
 ```
-Functions:  
 
-[`fdiff_weight(k,j)`](@ref) `` → c_{j}^{k}=(-1)^{j}\binom{k}{j}``
+Application:  
+
+[`fdiff_weight(k,j)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
 
 [`fdiff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
 
@@ -439,6 +437,14 @@ with ``j=0,⋯\ k``. In inner product form the expansion becomes
 ```
 
 where ``F^k  ≡ [F_0^k,⋯\ F_k^k]``.
+
+```math
+f[n:n+k] = \left[\begin{array}{c}
+f[n]\\
+\vdots\\
+f[n+k]
+\end{array}\right].
+```
 
 Function:
 

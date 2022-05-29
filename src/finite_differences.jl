@@ -6,12 +6,13 @@ end
 struct bwd
 end
 
-function testnotation(notation)
+function isforward(notation)
 
-    o = notation === fwd ? true : notation === bwd ? false :
-        error("Error: unknown notation type")
+    notation === fwd && return true
 
-    return o
+    notation === bwd && return false
+
+    error("Error: unknown fdiff notation type")
 
 end
 
@@ -45,9 +46,9 @@ fdiff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
 Finite difference weights vector defining the ``k^{th}`` *order finite
 difference summation weights*,
 
-[`fdiff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``,
+[`fdiff_weights(k)`](@ref) `` → c^k ≡ [c_0^k,\ c_1^k,⋯\ c_k^k]``,
 
-where [`fdiff_weight(k,j)`](@ref) `` → \bar{c}_j^k``.
+where [`fdiff_weight(k,j)`](@ref) `` → c_j^k``.
 
 Applications:
 

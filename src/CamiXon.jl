@@ -47,6 +47,7 @@ export cast_FITS_name
 
 export fwd
 export bwd
+export isforward
 export fdiff_weight
 export fdiff_weights
 export fdiff_weights_array
