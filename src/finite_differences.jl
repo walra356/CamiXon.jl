@@ -16,31 +16,13 @@ function isforward(notation)
 
 end
 
-# ==================== fdiff_weight(k, j) ======================================
-
-@doc raw"""
-    fdiff_weight0(k, j)
-
-Finite difference weight coefficient
-```math
-c_{j}^{k}=(-1)^{j}\binom{k}{j},
-```
-Function:
-
-`fdiff_weight(k,j)`] `` → c_j^k``
-#### Example:
-```
-c(k,j) = fdiff_weight(k,j)
-c(5,3)
- -10
-```
-"""
-fdiff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
-
 # ==================== fdiff_weight(k, j, notation) ======================================
 
-fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) : -Base.binomial(k,j)
-bwd_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
+fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) :
+                                                    -Base.binomial(k,j)
+
+bwd_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
+                                                  -Base.binomial(k,j)
 
 @doc raw"""
     fdiff_weight(k::Int, j::Int, notation=bwd)
@@ -84,51 +66,29 @@ end
 
 
 
-# ==============================================================================
+# =============== fdiff_weights(k::Int, notation=fwd) ==========================
 
 @doc raw"""
-    fdiff_weights(k)
+    fdiff_weights(k::Int, notation=fwd)
 
 Finite difference weights vector defining the ``k^{th}`` *order finite
-difference summation weights*,
+difference summation weights*.
 
-[`fdiff_weights(k)`](@ref) `` → c^k ≡ [c_0^k,\ c_1^k,⋯\ c_k^k]``,
+Application:
 
-where [`fdiff_weight(k,j)`](@ref) `` → c_j^k``.
+[`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
 
-Applications:
+[`fdiff_weights(k,bwd)`](@ref) `` → c^k ≡ [c_0^k,\ c_1^k,⋯\ c_k^k]``
 
-**Forward difference notation**
+[`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
 
-The *forward difference* summation is
-```math
-Δ^k f[n]=\sum_{j=0}^{k} c_{k-j}^kf[n+j]=\bar{c}^k \cdot f[n:n+k].
-```
-
-This convention applies to *analytical* functions, ``f``, tabulated
-in *forward* order as ``f[n],⋯\ f[n+k]``.
-
-**Backward difference notation**
-
-The *backward difference* summation is
-```math
-∇^{k}f[n]=\sum_{j=0}^{k}c_{k-j}^kf[n-k+j]=\bar{c}^k \cdot f[n-k:n].
-```
-
-This convention applies to *analytical* functions, ``f``, tabulated
-in *forward* order as ``f[n-k],⋯\ f[n]``.
+where ``c_j^k ← `` [`fdiff_weight(k,j)`](@ref).
 #### Example:
 ```
-c(k) = fdiff_weights(k)
-c(3)
-4-element Vector{Int64}:
-  1
- -3
-  3
- -1
+fdiff_weights0(5,fwd) == [-1, 5, -10, 10, -5, 1]
+  true
 ```
 """
-#fdiff_weights(k::Int) = [CamiXon.fdiff_weight(k, k-j) for j=0:k]
 fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
 # ==============================================================================
 

@@ -392,7 +392,7 @@ Application:
 
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)
-fdiff_weights(k::Int, notation=bwd)
+fdiff_weights(k::Int, notation=fwd)
 fdiff_weights_array(kmax::Int)
 ```
 
