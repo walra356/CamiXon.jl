@@ -43,12 +43,12 @@ fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) : -Base.
 bwd_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
 
 @doc raw"""
-    fdiff_weight(k, j, notation=bwd)
+    fdiff_weight(k::Int, j::Int, notation=bwd)
 
 Finite difference weight coefficient,
 
 ```math
-c_{j}^{k}=(-1)^{k+j}\binom{k}{j},
+c_{j}^{k}=(-1)^{k+j}\binom{k}{j}.
 ```
 Application:
 
@@ -66,9 +66,6 @@ c(k,j,fwd) == 10
   true
 
 c(k,j,bwd) == -10
-  true
-
-c(k,j) == -10
   true
 
 c(k,j,fwd) == c(k,k-j)
@@ -131,8 +128,8 @@ c(3)
  -1
 ```
 """
-fdiff_weights(k::Int) = [CamiXon.fdiff_weight(k, k-j) for j=0:k]
-
+#fdiff_weights(k::Int) = [CamiXon.fdiff_weight(k, k-j) for j=0:k]
+fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
 # ==============================================================================
 
 @doc raw"""
