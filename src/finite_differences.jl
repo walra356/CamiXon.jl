@@ -53,10 +53,13 @@ c_{j}^{k}=(-1)^{k+j}\binom{k}{j},
 Application:
 
 `fdiff_weight(k,j,fwd)`] `` → c_{k-j}^k``
+
 `fdiff_weight(k,j,bwd)`] `` → c_j^k``
+
 `fdiff_weight(k,j)`] `` → c_j^k``
 #### Example:
 ```
+c(k,j,notation) = fdiff_weight(k,j,notation)
 k=5
 j=3
 c(k,j,fwd) == 10
@@ -66,6 +69,9 @@ c(k,j,bwd) == -10
   true
 
 c(k,j) == -10
+  true
+
+c(k,j,fwd) == c(k,k-j)
   true
 ```
 """
