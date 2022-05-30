@@ -245,7 +245,7 @@ function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where 
                                   error("Error: unknown notation type")
 
     l = Base.ones(T,k+1)
-    x == 1 ? l : x == 0 ? (for p=2:k+1; l[p] = 0 end) :
+    x == 0 ? (for p=2:k+1; l[p] = 0 end) :
                           (for p=1:k; l[p+1] = sgn*l[p]*(x+p-1)/p end)
 
     return l
