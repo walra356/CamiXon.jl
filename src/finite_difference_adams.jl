@@ -77,7 +77,7 @@ function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, 
     ∇ = CamiXon.fdiff_weights_array(k)
     β = CamiXon.fdiff_expansion_coeffs_adams_moulton(k; T)
 
-    o = CamiXon.fdiff_expansion_weights(β, ∇; notation=bwd)
+    o = CamiXon.fdiff_expansion_weights(β, ∇, bwd)
 
     if rationalize
         D = Base.denominator(Base.gcd(o))       # Adams-Moulton devisor
