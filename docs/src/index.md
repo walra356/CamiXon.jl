@@ -392,7 +392,7 @@ Application:
 
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)
-fdiff_weights(k::Int)
+fdiff_weights(k::Int, notation=bwd)
 fdiff_weights_array(kmax::Int)
 ```
 
@@ -494,7 +494,7 @@ In general ``β ≠ α`` and there is *no simple symmetry relation* between
 
 Functions:
 
-[`fdiff_expansion_weights(coeffs, fdiffs; notation=bwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, fdiffs, notation=bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and

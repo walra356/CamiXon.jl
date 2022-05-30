@@ -218,9 +218,9 @@ bBk == reverse(Fk)
   true
 ```
 """
-function fdiff_expansion_weights(coeffs, fdiffs; notation=fwd)
+function fdiff_expansion_weights(coeffs, fdiffs, notation=fwd)
 
-    forward = testnotation(notation)
+    forward = isforward(notation)
     c = coeffs
     w = fdiffs
     k = Base.length(c)-1
