@@ -388,7 +388,7 @@ Application:
 [`fdiff_weights(k,bwd)`](@ref) `` → \ c^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
 
 [`fdiff_weights_array(k,bwd)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^k,⋯\ \bar{c}^1,\ \bar{c}^0 ]``
+`fdiffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
 
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)

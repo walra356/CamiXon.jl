@@ -76,16 +76,16 @@ difference summation weights*.
 
 Application:
 
+[`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
+
 [`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
 
 [`fdiff_weights(k,bwd)`](@ref) `` → c^k ≡ [c_0^k,\ c_1^k,⋯\ c_k^k]``
 
-[`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
-
 where ``c_j^k ← `` [`fdiff_weight(k,j)`](@ref).
 #### Example:
 ```
-fdiff_weights0(5,fwd) == [-1, 5, -10, 10, -5, 1]
+fdiff_weights0(3,fwd) == [-1, 3, -3, 1]
   true
 ```
 """
@@ -98,6 +98,18 @@ fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
 
 Finite difference weights vector array defining the *finite
 difference summation weights vectors* for the orders 0, 1,⋯ k.
+
+Application:
+
+[`fdiff_weights_array(k)`](@ref) →
+`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
+
+[`fdiff_weights_array(k,fwd)`](@ref) →
+`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
+
+[`fdiff_weights_array(k,bwd)`](@ref) → `fdiffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
+
+where ``c^k ← `` [`fdiff_weights(k,bwd)`](@ref).
 
 #### Example:
 ```
