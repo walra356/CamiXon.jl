@@ -90,32 +90,30 @@ fdiff_weights0(5,fwd) == [-1, 5, -10, 10, -5, 1]
 ```
 """
 fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
-# ==============================================================================
+
+# ==================== fdiff_weights_array(k, j, notation=fwd) =================
 
 @doc raw"""
-    fdiff_weights_array(kmax)
+    fdiff_weights_array(k::Int, notation=fwd)
 
-Collection of finite difference weight vectors,
+Finite difference weights vector array defining the *finite
+difference summation weights vectors* for the orders 0, 1,⋯ k.
 
-[`fdiff_weights_array(kmax)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``,
-
-where [`fdiff_weights(k)`](@ref)
-``→ \bar{c}^k ≡ [c_k^k,\ c_{k-1}^k,⋯\ c_0^k]``.
 #### Example:
 ```
-kmax = 3
-fdiffs = fdiff_weights_array(kmax)
-4-element Vector{Vector{Int64}}:
- [1]
- [-1, 1]
- [1, -2, 1]
- [-1, 3, -3, 1]
+fdiff_weight(3,0,fwd), fdiff_weight(3,0,bwd)
+  (-1, 1)
+
+fdiff_weights(3,fwd), fdiff_weights(3,bwd)
+  ([-1, 3, -3, 1], [1, -3, 3, -1])
+
+fdiff_weights_array(3,fwd), fdiff_weights_array(3,bwd)
+  ([[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]], [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]])
 ```
 """
-fdiff_weights_array(kmax::Int) = [CamiXon.fdiff_weights(k)  for k=0:kmax]
+fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(k, notation)  for k=0:kmax]
 
-# ============== fdiff_expansion_weights(coeffs, fdiffs, fwd) =======================
+# ============== fdiff_expansion_weights(coeffs, fdiffs, fwd) ==================
 
 @doc raw"""
     fdiff_expansion_weights(coeffs, fdiffs, fwd)
@@ -248,8 +246,8 @@ function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 # ==============================================================================
 
     Δ = fdiff_weights_array(k)
-    α = fdiff_expansion_coeffs_interpolation(k, x; notation)
-    w = fdiff_expansion_weights(α, Δ; notation)
+    α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
+    w = fdiff_expansion_weights(α, Δ, fwd)
 
     return w ⋅ f
 
