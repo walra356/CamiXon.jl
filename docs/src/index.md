@@ -338,7 +338,7 @@ Application:
 [`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
 [`fdiff_weights_array(k,fwd)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
+`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
 
 **Backward difference notation**
 
@@ -388,7 +388,7 @@ Application:
 [`fdiff_weights(k,bwd)`](@ref) `` → \ c^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
 
 [`fdiff_weights_array(k,bwd)`](@ref) →
-`fdiffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
+`bwd_diffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
 
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)

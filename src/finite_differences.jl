@@ -102,14 +102,15 @@ difference summation weights vectors* for the orders 0, 1,⋯ k.
 Application:
 
 [`fdiff_weights_array(k)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
+`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
 
 [`fdiff_weights_array(k,fwd)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
+`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
 
-[`fdiff_weights_array(k,bwd)`](@ref) → `fdiffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
+[`bwd_diff_weights_array(k,bwd)`](@ref) → `fdiffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
 
-where ``c^k ← `` [`fdiff_weights(k,bwd)`](@ref).
+where ``c^k ← `` [`fdiff_weights(k,bwd)`](@ref) and
+``\bar{c}^k ← `` [`fdiff_weights(k,fwd)`](@ref)
 
 #### Example:
 ```
