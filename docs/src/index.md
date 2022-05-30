@@ -333,11 +333,11 @@ are the *summation weights* (short: *weights*) which define the summation.
 
 Application:  
 
-[`fdiff_weight(k,j)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
+[`fdiff_weight(k,j,fwd)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
 
-[`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
+[`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
-[`fdiff_weights_array(kmax)`](@ref) →
+[`fdiff_weights_array(kmax,fwd)`](@ref) →
 `fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
 
 **Backward difference notation**
@@ -383,12 +383,12 @@ change dummy index to also write the function iterator in forward order
 
 Application:  
 
-[`fdiff_weight(k,j)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
+[`fdiff_weight(k,j,bwd)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
-[`fdiff_weights(k)`](@ref) `` → \ \bar{c}^k ≡ [c_k^k,c_1^k,⋯\ c_0^k]``
+[`fdiff_weights(k,bwd)`](@ref) `` → \ \bar{c}^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
 
-[`fdiff_weights_array(kmax)`](@ref) →
-`fdiffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^{kmax} ]``
+[`fdiff_weights_array(kmax,bwd)`](@ref) →
+`fdiffs ≡ ` ``[\bar{c}^{kmax},⋯\ \bar{c}^1,\ \bar{c}^{kmax} ]``
 
 ```@docs
 fdiff_weight(k::Int,j::Int)
