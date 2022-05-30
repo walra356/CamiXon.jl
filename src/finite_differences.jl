@@ -19,7 +19,7 @@ end
 # ==================== fdiff_weight(k, j) ======================================
 
 @doc raw"""
-    fdiff_weight(k, j)
+    fdiff_weight0(k, j)
 
 Finite difference weight coefficient
 ```math
@@ -35,8 +35,51 @@ c(5,3)
  -10
 ```
 """
-fdiff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
-                                                -Base.binomial(k,j)
+fdiff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
+
+# ==================== fdiff_weight(k, j, notation) ======================================
+
+fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) : -Base.binomial(k,j)
+bwd_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
+
+@doc raw"""
+    fdiff_weight(k, j, notation)
+
+Finite difference weight coefficient
+
+**Forward-difference notation** (`notation=fwd`)
+```math
+c_{j}^{k}=(-1)^{k+j}\binom{k}{j},
+```
+
+**Backward-difference notation** (`notation=bwd`)
+```math
+c_{j}^{k}=(-1)^{j}\binom{k}{j},
+```
+Application:
+
+`fdiff_weight(k,j,notation)`] `` → c_j^k``
+#### Example:
+```
+c(k,j,notation) = fdiff_weight(k,j,notation)
+c(5,3,fwd) == 10
+  true
+
+c(5,3,bwd) == -10
+  true
+```
+"""
+function fdiff_weight(k::Int, j::Int, notation=bwd) 
+
+    o = isforward(notation) ? fwd_diff_weight(k, j) : bwd_diff_weight(k, j)
+
+    return o
+
+end
+
+
+
+
 
 # ==============================================================================
 
