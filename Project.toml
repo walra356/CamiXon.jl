@@ -4,16 +4,13 @@ authors = ["= <walra356@planet.nl> and contributors"]
 version = "1.6.22"
 
 [deps]
-### Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
-#LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
-IntervalSets = "0.6.0"
-#LaTeXStrings = "1.2.1"
+IntervalSets = "0.6.0, 0.7"
 LinearAlgebra = "1.7.2"
 julia = "1.6"
 
