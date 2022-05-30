@@ -111,7 +111,7 @@ fdiff_weights_array(3,fwd), fdiff_weights_array(3,bwd)
   ([[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]], [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]])
 ```
 """
-fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(k, notation)  for k=0:kmax]
+fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(p, notation)  for p=0:k]
 
 # ============== fdiff_expansion_weights(coeffs, fdiffs, fwd) ==================
 
