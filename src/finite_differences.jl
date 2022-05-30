@@ -227,7 +227,7 @@ l = fdiff_expansion_coeffs_interpolation(k, x, bwd); println(l)
  [1, 1, 1, 1, 1, 1]
 ```
 """
-function fdiff_expansion_coeffs_interpolation(k::Int, x::T, fwd) where T<:Real
+function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
 
     sgn = notation === fwd ? -1 : notation === bwd ? 1 :
                                   error("Error: unknown notation type")
@@ -242,7 +242,7 @@ end
 
 # ==============================================================================
 
-function lagrange_polynom(f::Vector{T}, x::T, fwd) where T <: Real
+function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 # ==============================================================================
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ==============================================================================

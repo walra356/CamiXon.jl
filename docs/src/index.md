@@ -385,7 +385,7 @@ Application:
 
 [`fdiff_weight(k,j,bwd)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
-[`fdiff_weights(k,bwd)`](@ref) `` → \ \bar{c}^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
+[`fdiff_weights(k,bwd)`](@ref) `` → \ c^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
 
 [`fdiff_weights_array(k,bwd)`](@ref) →
 `fdiffs ≡ ` ``[\bar{c}^k,⋯\ \bar{c}^1,\ \bar{c}^0 ]``
@@ -501,7 +501,7 @@ where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 `coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 
 ```@docs
-fdiff_expansion_weights(coeffs, fdiffs, fwd)
+fdiff_expansion_weights(coeffs, fdiffs, notation=fwd)
 ```
 
 ### Lagrangian interpolation
@@ -641,7 +641,7 @@ where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 
 ```@docs
 
-fdiff_expansion_coeffs_interpolation(k::Int, x::T, fwd) where T<:Real
+fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
 summation_range(n::Int, i::Int, k::Int, μ::Int)
 fdiff_function_sequences(f, k::Int, μ=0)
 lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
