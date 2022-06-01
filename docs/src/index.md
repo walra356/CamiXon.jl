@@ -640,8 +640,6 @@ where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x, bwd)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
-![Image](./assets/lagrangian_interpolation.png)
-
 ```@docs
 fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
 fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
