@@ -16,7 +16,7 @@ function isforward(notation)
 
 end
 
-# ==================== fdiff_weight(k, j, notation) ======================================
+# ==================== fdiff_weight(k, j, notation) ============================
 
 fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) :
                                                     -Base.binomial(k,j)
@@ -303,7 +303,7 @@ end
 Finite-difference summation sequences of function values given in forward order
 for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
 ``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation grid
+`f[1:n]`; ``m`` is the multiplier defining the interpolation grid
 size. Each sequence consists of ``k⋅m+1`` function values.
 #### Example:
 ```
@@ -320,82 +320,139 @@ function fdiff_function_sequences(f, k::Int, m=1)
 # ==============================================================================
     n = Base.length(f)
 
-    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:(n-1)*m]
+    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:(n-k)*m-1]
 
 end
 
-# ==============================================================================
+# =========== fdiff_expansion(coeffs, f, notation=fwd) =================
+
+# ..............................................................................
+function fwd_expansion_weights(α)
+
+    k = Base.length(α)-1
+    o = [sum([α[p+1] * fdiff_weight(p, j, fwd)  for p=j:k]) for j=0:k]
+
+    return o
+
+end
+# ..............................................................................
+function bwd_expansion_weights(β)
+
+    k = Base.length(β)-1
+    o = [sum([β[p+1] * fdiff_weight(p, j, bwd) for p=j:k]) for j=k:-1:0]
+
+    return o
+
+end
+# ------------------------------------------------------------------------------
+function fdiff_expansion_weights(coeff, notation=fwd)
+
+    o = isforward(notation) ? fwd_expansion_weights(coeff) :
+                              bwd_expansion_weights(coeff)
+
+    return o
+
+end
+# ------------------------------------------------------------------------------
 
 @doc raw"""
-    lagrangian_interpolation(f::Vector{Float64},
-                                      domain::ClosedInterval{Float64}; k=1, m=1)
+    fdiff_expansion(coeffs, f, notation=fwd)
 
-``k^{th}``-order lagrangian *interpolation* of the analytic function ``f``
-tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ ⋯,
-\ f[n]``; ``m`` is the multiplier defining the interpolation grid size.
-#### Example:
+Finite difference expansion of the analytical function f(x) tabulated
+in *forward order* (growing index) at ``k+1`` positions on a uniform grid.
+The expansion coefficients are specified by the vector `coeffs`. By default
+`coeffs` are assumed to be in forward-difference notation (`fwd`). For `coeffs`
+in backward-difference notation the third argument must be `bwd`.
+
+**Forward difference notation**
+```math
+\sum_{p=0}^{k}α_{p}Δ^{p}f[n] = F^{k} \cdot f[n:n+k],
 ```
-f = [0.0,1,2,3,4,5,6,7]
-domain = 0.0..1.0
-(X,Y) = lagrangian_interpolation(f, domain; k=2, m=2); println((X,Y))
- (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
-                                                  4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
+where ``f[n],⋯\ f[n+k]`` are elements of the
+analytic function ``f`` (tabulated in *forward* order) and ``α ≡ [α_0,⋯\ α_k]``
+is the vector `coeffs` defining the forward-difference expansion.
+The corresponding weights vector ``F^{k}`` is internally generated.
+
+**Backward difference notation**
+```math
+\sum_{p=0}^{k}β_{p}∇^{p}f[n] = \bar{B}^k \cdot f[n-k:n].
 ```
+where ``f[n-k],⋯\ f[n]`` are elements of the
+analytic function ``f`` (tabulated in *forward* order) and
+``β ≡ [β_0,⋯\ β_k]`` is the vector `coeffs` defining the backward-difference
+expansion. The corresponding weights vector ``\bar{B}^k`` is internally
+generated.
+
+#### Examples:
+Consider the function ``f(x)=x^2`` and the expansions,
+```math
+f(x-1)=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x).
+```
+```math
+f(x+1)=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
+```
+To order ``k=3`` the forward- and backward-difference coefficient vectors are
+`α=[1,-1,1,-1]` and `β=[1,1,1,1]`, respectively. We tabulate the function at
+``k+1`` points, `f=[1,4,9,16]`.
+```
+# ------------------------------------------------------
+α=[1,-1,1,-1]
+β=[1,1,1,1]
+f=[1,4,9,16]
+fdiff_expansion(α, f)      # n=1, f[n]=1, f[n-1] → 0
+ 0
+
+fdiff_expansion(β, f, bwd) # n=4, f[n]=16, f[n+1] → 25
+ 25
+# ------------------------------------------------------
+```
+In this case the result is exact because the function is quadratic and
+the expansion is third order (lagrangian expansion is based on the polynomial
+of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
+function).
 """
-function lagrange_interpolation(f::Vector{Float64},
-                                      domain::ClosedInterval{Float64}; k=3, m=1)
-# ==============================================================================
-#   lagrangian (k+1)-point interpolation at i interpolation points
-# ==============================================================================
-    n = length(f)
+function fdiff_expansion(coeffs, f, notation=fwd)
 
-    ∇ = fdiff_weights_array(k)
-    l = [fdiff_expansion_coeffs_interpolation(k, x, bwd) for x=-k:1/m:0]
-    w = [fdiff_expansion_weights(l[i], ∇, bwd) for i ∈ eachindex(l)]
-    w1 = Base.append!(Base.repeat(w[1:m],n-k-1),w)
-    w2 = CamiXon.fdiff_function_sequences(f, k, m)
+    o = fdiff_expansion_weights(coeffs, notation) ⋅ f
 
-    X = Base.range(domain.left, domain.right, length=(n-1)*m+1)
-    Y = [w1[i] ⋅ w2[i] for i ∈ Base.eachindex(w1)]
-
-    return X, Y
+    return o
 
 end
 
+# ======================== fdiff_interpolation(f, x; k=3)
 @doc raw"""
-    lagrangian_extrapolation(f::Vector{Float64},
-                                 domain::ClosedInterval{Float64}; k=1, e=1, m=1)
+    fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 
-``k^{th}``-order lagrangian *extrapolation* up to position ``n+e`` of the
-analytic function ``f`` tabulated in forward order at ``n`` points,
-``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation
-grid size.
-#### Example:
+Finite difference lagrangian interpolation (by default *third* order) in
+between the elements of the analytic function `f` (uniformly tabulated in
+*forward* order) for position `x` in *fractional-index units*).
+The interpolation points lie on a polynomial curve
+(by default *third* degree) running through the tabulated points.
+#### Examples:
+f = [1,2,3,4,5,6,7]
+[fdiff_interpolate(f, x; k) for x=1:0.5:7]
+  [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0]
+
+f = [1,4,9,16,25,36,49]
+k=3
+[fdiff_interpolate(f, x; k) for x=1:0.5:7]
+ [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
+# ------------------------------------------------------
 ```
-f = [0.0,1,2,3,4,5,6,7]
-domain = 0.0..1.0
-(X,Y) = lagrangian_extrapolation(f, domain; k=2, e=1, m=2); println((X,Y))
-  (0.0:0.07142857142857142:1.0, [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
-                                                  4.5, 5.0, 5.5, 6.0, 6.5, 7.0])
-```
+In this case the result is exact because the function is quadratic and
+the expansion is third order (lagrangian expansion is based on the polynomial
+of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
+function).
 """
-function lagrange_extrapolation(f::Vector{Float64},
-                           domain::ClosedInterval{Float64}; k=1, e=1, m=1)
-# ==============================================================================
-#   lagrangian (k+1)-point interpolation at μ interpolation points
-# ==============================================================================
-    n = Base.length(f)
+function fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 
-    ∇ = fdiff_weights_array(k)
-    l = [fdiff_expansion_coeffs_interpolation(k, x, bwd) for x=0:1/m:e]
-    w1 = [fdiff_expansion_weights(l[i], ∇, bwd) for i ∈ eachindex(l)]
-    w2 = fdiff_function_sequences(f, k, m)[end]
+    l = length(f)
+    n = floor(Int,x)
+    n = n < l-k ? n : n-k
+    α = fdiff_expansion_coeffs_interpolation0(k, n-x, fwd)
+    o = fdiff_expansion(α, f[n:n+k], fwd)
 
-    ΔX = (domain.right - domain.left)/((n-1)*m)
-    X = Base.range(domain.right, domain.right + ΔX * m*e, length=m*e+1)
-    Y = [w1[i] ⋅ w2 for i ∈ Base.eachindex(w1)]
-
-    return X, Y
+    return o
 
 end
 

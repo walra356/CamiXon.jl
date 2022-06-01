@@ -2,7 +2,7 @@ module CamiXon
 
 using Printf
 using Dates           # used in fits_private_sector
-using IntervalSets
+#using IntervalSets
 #using LaTeXStrings
 using LinearAlgebra
 
@@ -56,8 +56,7 @@ export fdiff_expansion_weights
 export fwd_diff_expansion_weights
 export summation_range
 export fdiff_function_sequences
-export lagrange_interpolation
-export lagrange_extrapolation
+export fdiff_interpolation
 export fdiff_expansion_coeffs_differentiation
 export create_lagrange_differentiation_weights
 export create_lagrange_differentiation_matrix

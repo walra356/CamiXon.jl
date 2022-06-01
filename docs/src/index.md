@@ -640,14 +640,13 @@ where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
 ```@docs
-
 fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
 summation_range(n::Int, i::Int, k::Int, μ::Int)
 fdiff_function_sequences(f, k::Int, μ=0)
-lagrange_interpolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, i=0)
-lagrange_extrapolation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=1, e=2, μ=0)
-
+fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 ```
+![Image](./assets/lagrangian_interpolation.png)
+
 ### Lagrangian differentiation
 
 To derive the *lagrangian differentiation* formulas we formally differentiate
