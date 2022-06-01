@@ -594,23 +594,24 @@ pol = ImmutablePolynomial(c,:z)
 Ipol = integrate(pol)
 n = 10
 
-domain = 0:5
-x = collect(range(domain.start, domain.stop, n))
+x1=0.0
+x2=5.0
+x = collect(range(x1, x2, n))
 f = pol.(x .-2.5)
 
 w3 = trapezoidal_weights(3)
-trapezoidal_integration(f, domain, w3)
+trapezoidal_integration(f, x1, x2, w3)
  15.416666666666673
 
 Ipol(2.5)-Ipol(-2.5)
  15.41666666666666
 ```
 """
-function trapezoidal_integration(f, domain, weights)
+function trapezoidal_integration(f, x1, x2, weights)
 
     n = Base.length(f)
     k = Base.length(weights)
-    s = (domain.stop-domain.start)/(n-1)
+    s = (x2-x1)/(n-1)
     a = Base.ones(n); a[1:k] = weights; a[end-k+1:end] = Base.reverse(weights)
     o = (f ⋅ a) * s
 

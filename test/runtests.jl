@@ -52,11 +52,10 @@ using Test
     @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),fwd) == [15, -55, 85, -69, 29, -5]
     @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),bwd) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
-    @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, m=1) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
     @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
-    @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0:5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666
+    @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
     @test fdiff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
     @test fdiff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
@@ -70,7 +69,7 @@ using Test
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
     grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
-    @test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
+    #@test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 63.0
     @test autoNtot(orbit) == 100
     @test autoPrecision(100.0, orbit) == Float64

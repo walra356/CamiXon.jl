@@ -59,7 +59,6 @@ export fdiff_interpolation
 export fdiff_expansion_coeffs_differentiation
 export create_lagrange_differentiation_weights
 export create_lagrange_differentiation_matrix
-export lagrange_differentiation
 export fdiff_expansion_coeffs_adams_moulton
 export create_adams_moulton_weights
 export fdiff_expansion_coeffs_adams_bashford
