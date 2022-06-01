@@ -696,7 +696,6 @@ Functions:
 fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
-lagrange_differentiation(f::Vector{Float64}, domain::ClosedInterval{Float64}; k=3, i=0)
 ```
 
 ### Integration
