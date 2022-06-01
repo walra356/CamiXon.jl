@@ -270,6 +270,64 @@ function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 
 end
 
+# ==============================================================================
+
+@doc raw"""
+    summation_range(n, i, k, m)
+
+Summation range for interpolation position ``0\le i/m \le 1`` used
+in ``k^{th}``-order lagrangian interpolation of the anaytic function
+``f`` tabulated in forward order on a uniform grid of ``n`` points,
+``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation
+grid size.
+#### Examples:
+```
+n = 7; k = 2; m = 1
+o = [summation_range(n,i,k,m) for i=0:(n-1)*m]; println(o)
+ UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
+```
+"""
+function summation_range(n::Int, i::Int, k::Int, m::Int)
+# ==============================================================================
+#   summation range for point position i lagrangian interpolation
+# ==============================================================================
+      strErr = "Error: position index i outside index range 0 ≤ i ≤ n⋅m"
+      0 ≤ i ≤ n*m || error(strErr)
+
+     return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
+
+end
+
+# ==============================================================================
+
+@doc raw"""
+    fdiff_function_sequences(f, k::Int, m=1)
+
+Finite-difference summation sequences of function values given in forward order
+for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
+``f`` tabulated in forward order on a uniform grid of ``n`` points,
+`f[1:n]`; ``m`` is the multiplier defining the interpolation grid
+size. Each sequence consists of ``k⋅m+1`` function values.
+#### Example:
+```
+f = [0,1,2,3,4,5,6]
+k = 2
+o = fdiff_function_sequences(f, k); println(o)
+ [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
+```
+"""
+function fdiff_function_sequences(f, k::Int, m=1)
+# ==============================================================================
+#   finite-difference function values for interpolation range
+#   of lagrangian interpolation
+# ==============================================================================
+    n = Base.length(f)
+
+    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:(n-k)*m-1]
+
+end
+
+
 # =========== fdiff_expansion(coeffs, f, notation=fwd) =================
 
 # ..............................................................................

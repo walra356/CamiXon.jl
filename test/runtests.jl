@@ -45,6 +45,8 @@ using Test
     @test fdiff_weight(5, 3) == -10
     @test fdiff_weights(3) == [-1, 3, -3, 1]
     @test fdiff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
+    @test [summation_range(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
+    @test fdiff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test fdiff_expansion_coeffs_interpolation(5, 1) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
@@ -69,7 +71,7 @@ using Test
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
     grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
-    #@test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
+    @test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 63.0
     @test autoNtot(orbit) == 100
     @test autoPrecision(100.0, orbit) == Float64

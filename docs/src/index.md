@@ -394,6 +394,8 @@ Application:
 fdiff_weight(k::Int, j::Int, notation=bwd)
 fdiff_weights(k::Int, notation=fwd)
 fdiff_weights_array(kmax::Int)
+summation_range(n::Int, i::Int, k::Int, m::Int)
+fdiff_function_sequences(f, k::Int, m=1)
 ```
 
 ### Finite difference expansions
