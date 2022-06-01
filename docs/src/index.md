@@ -644,8 +644,6 @@ where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
 
 ```@docs
 fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
-summation_range(n::Int, i::Int, k::Int, μ::Int)
-fdiff_function_sequences(f, k::Int, μ=0)
 fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 ```
 
