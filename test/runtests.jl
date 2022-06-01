@@ -1,5 +1,5 @@
 using CamiXon
-using IntervalSets
+#using IntervalSets
 using LinearAlgebra
 using Test
 
