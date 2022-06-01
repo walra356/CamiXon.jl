@@ -449,7 +449,7 @@ function fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Rea
     l = length(f)
     n = floor(Int,x)
     n = n < l-k ? n : n-k
-    α = fdiff_expansion_coeffs_interpolation0(k, n-x, fwd)
+    α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)
 
     return o
@@ -559,42 +559,7 @@ end
 
 # ================ fdiff_expansion_coeffs_array_differentiation(k, m) =========
 
-@doc raw"""
-    lagrange_differentiation(f::Vector{Float64},
-                        domain::ClosedInterval{Float64}; k=1, m=1)
 
-``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
-tabulated in forward order on a uniform grid of ``n`` points, ``f[1],\ ⋯,
-\ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
-*without* intermediate points).
-#### Example:
-```
-f = [0.0,1,4,9,16,25] # f = x^2
-domain = 0.0..5.0
-X,Y = lagrange_differentiation(f, domain; k=2, m = 1)
-  (0.0:1.0:5.0, [0.0, 2.0, 4.0, 6.0, 8.0, 10.0])
-```
-"""
-function lagrange_differentiation(f::Vector{Float64},
-                             domain::ClosedInterval{Float64}; k=1, m=1)
-# ==============================================================================
-#   lagrangian (k+1)-point differentiation at m interpolation points
-# ==============================================================================
-    n = Base.length(f)
-
-    ∇ = fdiff_weights_array(k)
-    l = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:1/m:0]
-    w = [fdiff_expansion_weights(l[i], ∇, bwd) for i ∈ eachindex(l)]
-    w1 = Base.append!(repeat(w[1:m],n-k-1),w)
-    w2 = fdiff_function_sequences(f, k, m)
-
-    X = Base.range(domain.left, domain.right, length=(n-1)*m+1)
-    Y = (n-1)/(domain.right-domain.left) .*  [w1[i] ⋅ w2[i]
-                                                     for i ∈ Base.eachindex(w1)]
-
-    return X, Y
-
-end
 
 # =========== trapezoidal_weights(k; rationalize=false, devisor=false) =========
 

@@ -58,7 +58,6 @@ export summation_range
 export fdiff_function_sequences
 export fdiff_interpolation
 export fdiff_expansion_coeffs_differentiation
-export create_lagrange_differentiation_weights
 export create_lagrange_differentiation_matrix
 export lagrange_differentiation
 export fdiff_expansion_coeffs_adams_moulton
