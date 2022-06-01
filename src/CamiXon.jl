@@ -51,11 +51,12 @@ export isforward
 export fdiff_weight
 export fdiff_weights
 export fdiff_weights_array
-export fdiff_expansion_coeffs_interpolation
 export fdiff_expansion_weights
+export fdiff_expansion
 export fwd_diff_expansion_weights
 export summation_range
 export fdiff_function_sequences
+export fdiff_expansion_coeffs_interpolation
 export fdiff_interpolation
 export fdiff_expansion_coeffs_differentiation
 export create_lagrange_differentiation_matrix
