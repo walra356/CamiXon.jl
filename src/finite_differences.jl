@@ -235,8 +235,11 @@ f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 #### Examples:
 ```
 k = 5; x = 1
+l = fdiff_expansion_coeffs_interpolation(k, x, fwd); println(l)
+  [1, -1, 1, -1, 1, -1]
+
 l = fdiff_expansion_coeffs_interpolation(k, x, bwd); println(l)
- [1, 1, 1, 1, 1, 1]
+  [1, 1, 1, 1, 1, 1]
 ```
 """
 function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
@@ -430,12 +433,12 @@ The interpolation points lie on a polynomial curve
 (by default *third* degree) running through the tabulated points.
 #### Examples:
 f = [1,2,3,4,5,6,7]
-[fdiff_interpolate(f, x; k) for x=1:0.5:7]
+[fdiff_interpolation(f, x; k) for x=1:0.5:7]
   [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0]
 
 f = [1,4,9,16,25,36,49]
 k=3
-[fdiff_interpolate(f, x; k) for x=1:0.5:7]
+[fdiff_interpolation(f, x; k) for x=1:0.5:7]
  [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
 # ------------------------------------------------------
 ```
