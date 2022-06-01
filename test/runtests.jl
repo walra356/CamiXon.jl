@@ -51,9 +51,6 @@ using Test
     @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
     @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),fwd) == [15, -55, 85, -69, 29, -5]
     @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),bwd) == [-5, 29, -69, 85, -55, 15]
-    @test [summation_range(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
-    @test fdiff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
-    @test lagrange_extrapolation([0.0,1,2,3,4,5,6,7], 0.0..1.0; k=2, e=1, m=2) == (1.0:0.07142857142857142:1.1428571428571428, [7.0, 7.5, 8.0])
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test lagrange_differentiation([0.0,1,2,3,4,5], 0.0..5.0; k=2, m=1) == (0.0:1.0:5.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]

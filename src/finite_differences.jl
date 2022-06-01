@@ -337,11 +337,10 @@ f(x-1)=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x).
 ```math
 f(x+1)=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
 ```
-To order ``k=3`` the forward- and backward-difference coefficient vectors are
-`α=[1,-1,1,-1]` and `β=[1,1,1,1]`, respectively. We tabulate the function at
-``k+1`` points, `f=[1,4,9,16]`.
+To third order `(k=3)` the forward- and backward-difference coefficient vectors
+are `α=[1,-1,1,-1]` and `β=[1,1,1,1]`, respectively. We tabulate the function
+at ``k+1`` points, `f=[1,4,9,16]`.
 ```
-# ------------------------------------------------------
 α=[1,-1,1,-1]
 β=[1,1,1,1]
 f=[1,4,9,16]
@@ -350,7 +349,6 @@ fdiff_expansion(α, f)      # n=1, f[n]=1, f[n-1] → 0
 
 fdiff_expansion(β, f, bwd) # n=4, f[n]=16, f[n+1] → 25
  25
-# ------------------------------------------------------
 ```
 In this case the result is exact because the function is quadratic and
 the expansion is third order (lagrangian expansion is based on the polynomial
@@ -375,6 +373,7 @@ between the elements of the analytic function `f` (uniformly tabulated in
 The interpolation points lie on a polynomial curve
 (by default *third* degree) running through the tabulated points.
 #### Examples:
+```
 f = [1,2,3,4,5,6,7]
 [fdiff_interpolation(f, x; k) for x=1:0.5:7]
   [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0]
@@ -383,12 +382,13 @@ f = [1,4,9,16,25,36,49]
 k=3
 [fdiff_interpolation(f, x; k) for x=1:0.5:7]
  [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
-# ------------------------------------------------------
 ```
 In this case the result is exact because the function is quadratic and
 the expansion is third order (lagrangian expansion is based on the polynomial
 of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
 function).
+
+![Image](./assets/lagrangian_interpolation.png)
 """
 function fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 
