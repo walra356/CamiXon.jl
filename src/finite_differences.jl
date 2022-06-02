@@ -349,7 +349,7 @@ function bwd_expansion_weights(β)
 
 end
 # ------------------------------------------------------------------------------
-function fdiff_expansion_weights(coeff, notation=fwd)
+function _expansion_weights(coeff, notation=fwd)
 
     o = isforward(notation) ? fwd_expansion_weights(coeff) :
                               bwd_expansion_weights(coeff)
@@ -415,7 +415,7 @@ function).
 """
 function fdiff_expansion(coeffs, f, notation=fwd)
 
-    o = fdiff_expansion_weights(coeffs, notation) ⋅ f
+    o = _expansion_weights(coeffs, notation) ⋅ f
 
     return o
 
