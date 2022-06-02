@@ -323,7 +323,7 @@ function fdiff_function_sequences(f, k::Int, m=1)
 # ==============================================================================
     n = Base.length(f)
 
-    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:(n-k)*m-1]
+    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:n*m-1]
 
 end
 
