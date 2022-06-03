@@ -451,10 +451,9 @@ function).
 function fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
 
     l = length(f)
-    n = floor(Int,x)
     k = min(k,l-1)
-    n = n < l-k ? n : n-k > 1 ? n-k : 1
-    α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
+    n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
+    α = fdiff_expansion_coeffs_interpolation0(k, n-x, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)
 
     return o
