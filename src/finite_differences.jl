@@ -397,7 +397,7 @@ function).
 """
 function fdiff_expansion(coeffs, f, notation=fwd)
 
-    o = _expansion_weights(coeffs, notation) ⋅ f
+    o = fdiff_expansion_weights(coeffs, notation) ⋅ f
 
     return o
 
