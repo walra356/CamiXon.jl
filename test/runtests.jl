@@ -50,9 +50,10 @@ using Test
     @test fdiff_expansion_coeffs_interpolation(5, 1) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
-    @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
-    @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),fwd) == [15, -55, 85, -69, 29, -5]
-    @test fdiff_expansion_weights(UnitRange(0,5),fdiff_weights_array(5),bwd) == [-5, 29, -69, 85, -55, 15]
+    @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0
+    @test fdiff_expansion_weights(UnitRange(0,5),fwd) ==  [-3, 15, -33, 37, -21, 5]
+    @test fdiff_expansion_weights(UnitRange(0,5),bwd) == [-5, 29, -69, 85, -55, 15]
+    @test fdiff_expansion_weights(UnitRange(0,5)) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]

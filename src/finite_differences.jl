@@ -129,13 +129,32 @@ fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(p, notation)  for p=0
 
 # ============== fdiff_expansion_weights(coeffs, fdiffs, fwd) ==================
 
+# ..............................................................................
+function fwd_expansion_weights(α)
+
+    k = Base.length(α)-1
+    o = [sum([α[p+1] * fdiff_weight(p, j, fwd)  for p=j:k]) for j=0:k]
+
+    return o
+
+end
+# ..............................................................................
+function bwd_expansion_weights(β)
+
+    k = Base.length(β)-1
+    o = [sum([β[p+1] * fdiff_weight(p, j, bwd) for p=j:k]) for j=k:-1:0]
+
+    return o
+
+end
+# ..............................................................................
 @doc raw"""
-    fdiff_expansion_weights(coeffs, fdiffs, fwd)
+    fdiff_expansion_weights(coeffs, notation=bwd)
 
-Expansion weights corresponding to the expansion coefficients `coeffs` for
-the finite difference expansion `fdiff`.
+Expansion weights corresponding to the expansion coefficients `coeffs` of
+a finite difference expansion.
 
-**Forward difference notation** (`notation = fwd`)
+**Forward difference notation** (`fwd`)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -150,11 +169,10 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 where ``f[n],⋯\ f[n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fdiffs, fwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@ref) and
-`coeffs` = `` α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+where `coeffs` = `` α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -171,34 +189,27 @@ the ``k^{th}``-order *backward-difference* expansion,
 where ``f[n-k],⋯\ f[n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fdiffs, bwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `fdiffs ≡ `[`fdiff_weights_array(k)`](@ref) and
-`coeffs` = `` β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+where `coeffs` = `` β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 #### Example:
 ```
 k=5
 α = β = UnitRange(0,k)
 fdiffs = fdiff_weights_array(k)
-Fk = fdiff_expansion_weights(α, fdiffs, fwd); println("Fk = $(Fk)")
-bBk = fdiff_expansion_weights(β, fdiffs, bwd); println("bBk = $(bBk)")
-  Fk = [15, -55, 85, -69, 29, -5]
+Fk = fdiff_expansion_weights(α, fwd); println("Fk = $(Fk)")
+bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
+  Fk = [-3, 15, -33, 37, -21, 5]
   bBk = [-5, 29, -69, 85, -55, 15]
-
-bBk == reverse(Fk)
-  true
 ```
 """
-function fdiff_expansion_weights(coeffs, fdiffs, notation=fwd)
+function fdiff_expansion_weights(coeffs, notation=bwd)
 
-    forward = isforward(notation)
-    c = coeffs
-    w = fdiffs
-    k = Base.length(c)-1
+    o = isforward(notation) ? fwd_expansion_weights(coeffs) :
+                              bwd_expansion_weights(coeffs)
 
-    o = forward ? [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=0:k] :
-                  [sum([c[1+p] * w[1+p][1+p-j] for p=j:k]) for j=k:-1:0]
+    return o
 
 end
 
@@ -261,10 +272,10 @@ function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 # ==============================================================================
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ==============================================================================
-
-    Δ = fdiff_weights_array(k)
+# not OK k is not defined ...................kanweg??? .........................
+    #Δ = fdiff_weights_array(k)
     α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
-    w = fdiff_expansion_weights(α, Δ, fwd)
+    w = fdiff_expansion_weights(α, fwd)
 
     return w ⋅ f
 
@@ -329,35 +340,6 @@ end
 
 
 # =========== fdiff_expansion(coeffs, f, notation=fwd) =================
-
-# ..............................................................................
-function fwd_expansion_weights(α)
-
-    k = Base.length(α)-1
-    o = [sum([α[p+1] * fdiff_weight(p, j, fwd)  for p=j:k]) for j=0:k]
-
-    return o
-
-end
-# ..............................................................................
-function bwd_expansion_weights(β)
-
-    k = Base.length(β)-1
-    o = [sum([β[p+1] * fdiff_weight(p, j, bwd) for p=j:k]) for j=k:-1:0]
-
-    return o
-
-end
-# ------------------------------------------------------------------------------
-function _expansion_weights(coeff, notation=fwd)
-
-    o = isforward(notation) ? fwd_expansion_weights(coeff) :
-                              bwd_expansion_weights(coeff)
-
-    return o
-
-end
-# ------------------------------------------------------------------------------
 
 @doc raw"""
     fdiff_expansion(coeffs, f, notation=fwd)
@@ -518,10 +500,10 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = CamiXon.fdiff_weights_array(k)
     coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
 
-    return CamiXon.fdiff_expansion_weights(coeffs, ∇, bwd)
+    return CamiXon.fdiff_expansion_weights(coeffs, bwd)
 
 end
 
@@ -550,11 +532,11 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
-    ∇ = CamiXon.fdiff_weights_array(k)
+    #∇ = CamiXon.fdiff_weights_array(k)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs, ∇, bwd)
+        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs, bwd)
     end
 
     return m
