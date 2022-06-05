@@ -335,8 +335,6 @@ Application:
 
 [`fdiff_weight(k,j,fwd)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
 
-[`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
-
 **Backward difference notation**
 
 In *backward difference* notation, the *finite difference* of two adjacent
@@ -382,11 +380,8 @@ Application:
 
 [`fdiff_weight(k,j,bwd)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
-[`fdiff_weights(k,bwd)`](@ref) `` → \ c^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
-
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)
-fdiff_weights(k::Int, notation=fwd)
 ```
 
 ### Finite difference expansions

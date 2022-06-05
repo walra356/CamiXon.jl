@@ -49,7 +49,6 @@ export fwd
 export bwd
 export isforward
 export fdiff_weight
-export fdiff_weights
 export fdiff_expansion_weights
 export fdiff_expansion
 export fwd_diff_expansion_weights

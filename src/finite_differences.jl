@@ -62,35 +62,6 @@ function fdiff_weight(k::Int, j::Int, notation=bwd)
 
 end
 
-
-
-
-
-# =============== fdiff_weights(k::Int, notation=fwd) ==========================
-
-@doc raw"""
-    fdiff_weights(k::Int, notation=fwd)
-
-Finite difference weights vector defining the ``k^{th}`` *order finite
-difference summation weights*.
-
-Application:
-
-[`fdiff_weights(k)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
-
-[`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,⋯\ c_1^k,\ c_0^k]``
-
-[`fdiff_weights(k,bwd)`](@ref) `` → c^k ≡ [c_0^k,\ c_1^k,⋯\ c_k^k]``
-
-where ``c_j^k ← `` [`fdiff_weight(k,j)`](@ref).
-#### Example:
-```
-fdiff_weights0(3,fwd) == [-1, 3, -3, 1]
-  true
-```
-"""
-fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
-
 # ============== fdiff_expansion_weights(coeffs, fwd) ==================
 
 # ..............................................................................
