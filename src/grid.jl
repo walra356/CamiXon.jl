@@ -89,39 +89,28 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
 
 end
 
-# =============== grid_lagrange_derivative(f, grid; k=5)) ====
+# =============== grid_lagrange_derivative(f, grid; k=3)) ======================
 
 @doc raw"""
-    grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+    grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
-tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1],\ ⋯,
-\ f[n]``; ``m`` is the multiplier for intermediate positions (for ``m=1``
-*without* intermediate points).
+tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1:n]``.
 #### Example:
 ```
 ID = 4 # linear grid
-f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0, 100.0]
+f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
 grid = castGrid(ID, length(f), Float64; r0=1.0, h=1.0, k=3)  # linear grid
-f′= grid_lagrange_derivative(f, grid, k=4)
-f′= ceil.(f′;sigdigits=2); println(f′)
-  create linear Grid: Float64, Rmax = 11.0 (a.u.), Ntot = 11, p = 1, h = 1.0, r0 = 1.0
-  [0.0, 2.0, 4.0, 6.0, 8.1, 11.0, 12.0, 14.0, 17.0, 18.0, 20.0]
+f′= grid_differentiation(f, grid; k=3); println("f′= $(f′)")
+  Grid created: linear, Float64, Rmax = 6.0 a.u., Ntot = 6, p = 1, h = 1.0, r0 = 1.0
+  f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
 ```
 """
-function grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 
-    N = grid.N
     r′= grid.r′
 
-    #∇ = fdiff_weights_array(k)
-    #∇ = fdiffs(k, forward=false)
-    β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
-    w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
-    u = Base.append!(repeat(w[1:1],N-k-1),w)
-    v = CamiXon.fdiff_function_sequences(f , k, 1)
-
-    f′= [u[i] ⋅ v[i] for i ∈ Base.eachindex(u)]
+    f′ = fdiff_differentiation(f; k)
 
     return f′ ./ r′
 

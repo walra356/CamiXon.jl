@@ -109,7 +109,7 @@ autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
-grid_lagrange_derivative(f::Vector{T}, grid::Grid{T}; k=5) where T<:Real
+grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3)
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
 
@@ -337,9 +337,6 @@ Application:
 
 [`fdiff_weights(k,fwd)`](@ref) `` → \bar{c}^k ≡ [c_k^k,\ c_1^k,⋯\ c_0^k]``
 
-[`fdiff_weights_array(k,fwd)`](@ref) →
-`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
-
 **Backward difference notation**
 
 In *backward difference* notation, the *finite difference* of two adjacent
@@ -387,15 +384,9 @@ Application:
 
 [`fdiff_weights(k,bwd)`](@ref) `` → \ c^k ≡ [c_0^k,c_1^k,⋯\ c_k^k]``
 
-[`fdiff_weights_array(k,bwd)`](@ref) →
-`bwd_diffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
-
 ```@docs
 fdiff_weight(k::Int, j::Int, notation=bwd)
 fdiff_weights(k::Int, notation=fwd)
-fdiff_weights_array(kmax::Int)
-summation_range(n::Int, i::Int, k::Int, m::Int)
-fdiff_function_sequences(f, k::Int, m=1)
 ```
 
 ### Finite difference expansions
@@ -453,8 +444,7 @@ Function:
 [`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
-`coeffs` = ``  α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+where `coeffs` = ``  α ≡ [α_0,⋯\ α_k]`` defines the expansion.
 
 **Backward difference notation**
 
@@ -499,8 +489,7 @@ Functions:
 [`fdiff_expansion_weights(coeffs, notation=bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
-`coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+where `coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 
 ```@docs
 fdiff_expansion(coeffs, f, notation=fwd)
@@ -571,7 +560,7 @@ Functions:
 [`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 `` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``,
 
-where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
+where
 
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x, fwd)`](@ref)
 `` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
@@ -637,7 +626,7 @@ Function:
 [`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
 
-where `fdiffs ≡ ` [`fdiff_weights_array(k)`](@ref) and
+where
 
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x, bwd)`](@ref)
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
@@ -695,6 +684,7 @@ Functions:
 
 ```@docs
 fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
@@ -792,9 +782,7 @@ Functions:
 
 `adams_moulton_weights`
 = [`fdiff_expansion_weights(β, bwd)`](@ref)
-``→ [a_k^k,⋯\ a_0^k]``,
-
-where `fdiffs = ` [`fdiff_weights_array(k)`](@ref).
+``→ [a_k^k,⋯\ a_0^k]``.
 
 `adams_moulton_weights` = [`create_adams_moulton_weights(k)`](@ref)
 ``→ [a_k^k,⋯\ a_0^k]``

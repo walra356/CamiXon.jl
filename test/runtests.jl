@@ -44,9 +44,6 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
     @test fdiff_weight(5, 3) == -10
     @test fdiff_weights(3) == [-1, 3, -3, 1]
-    @test fdiff_weights_array(3) ==  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
-    @test [summation_range(7,i,2,1) for i=0:6] == UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
-    @test fdiff_function_sequences([0,1,2,3,4,5,6],2) == [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
     @test fdiff_expansion_coeffs_interpolation(5, 1) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
@@ -55,6 +52,7 @@ using Test
     @test fdiff_expansion_weights(UnitRange(0,5),bwd) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_weights(UnitRange(0,5)) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
+    @test fdiff_differentiation([0.0, 1, 4, 9, 16, 25]; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
     @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
@@ -72,11 +70,12 @@ using Test
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333321, 0.22140000000000004]
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
     grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
-    @test ceil.(grid_lagrange_derivative([0.0, 1, 4, 9, 16, 25], grid); digits=1) == [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
+    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 63.0
     @test autoNtot(orbit) == 100
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
+    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]

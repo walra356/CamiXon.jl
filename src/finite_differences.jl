@@ -91,42 +91,6 @@ fdiff_weights0(3,fwd) == [-1, 3, -3, 1]
 """
 fdiff_weights(k::Int, notation=fwd) = [fdiff_weight(k, j, notation) for j=0:k]
 
-# ==================== fdiff_weights_array(k, j, notation=fwd) =================
-
-@doc raw"""
-    fdiff_weights_array(k::Int, notation=fwd)
-
-Finite difference weights vector array defining the *finite
-difference summation weights vectors* for the orders 0, 1,⋯ k.
-
-Application:
-
-[`fdiff_weights_array(k)`](@ref) →
-`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
-
-[`fdiff_weights_array(k,fwd)`](@ref) →
-`fwd_diffs ≡ ` ``[\bar{c}^0,\ \bar{c}^1,⋯\ \bar{c}^k ]``
-
-[`fdiff_weights_array(k,bwd)`](@ref) →
-`bwd_diffs ≡ ` ``[c^0,\ c^1,⋯\ c^k ]``
-
-where ``c^k ← `` [`fdiff_weights(k,bwd)`](@ref) and
-``\bar{c}^k ← `` [`fdiff_weights(k,fwd)`](@ref)
-
-#### Example:
-```
-fdiff_weight(3,0,fwd), fdiff_weight(3,0,bwd)
-  (-1, 1)
-
-fdiff_weights(3,fwd), fdiff_weights(3,bwd)
-  ([-1, 3, -3, 1], [1, -3, 3, -1])
-
-fdiff_weights_array(3,fwd), fdiff_weights_array(3,bwd)
-  ([[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]], [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]])
-```
-"""
-fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(p, notation)  for p=0:k]
-
 # ============== fdiff_expansion_weights(coeffs, fwd) ==================
 
 # ..............................................................................
@@ -197,7 +161,6 @@ where `coeffs` = `` β ≡ [β_0,⋯\ β_k]`` defines the expansion.
 ```
 k=5
 α = β = UnitRange(0,k)
-fdiffs = fdiff_weights_array(k)
 Fk = fdiff_expansion_weights(α, fwd); println("Fk = $(Fk)")
 bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
   Fk = [-3, 15, -33, 37, -21, 5]
@@ -273,7 +236,6 @@ function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 #   lagrangian (k+1)-point interpolation at i interpolation points
 # ==============================================================================
 # not OK k is not defined ...................kanweg??? .........................
-    #Δ = fdiff_weights_array(k)
     α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
     w = fdiff_expansion_weights(α, fwd)
 
@@ -281,62 +243,8 @@ function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
 
 end
 
-# ==============================================================================
 
-@doc raw"""
-    summation_range(n, i, k, m)
 
-Summation range for interpolation position ``0\le i/m \le 1`` used
-in ``k^{th}``-order lagrangian interpolation of the anaytic function
-``f`` tabulated in forward order on a uniform grid of ``n`` points,
-``f[1],⋯\ f[n]``; ``m`` is the multiplier defining the interpolation
-grid size.
-#### Examples:
-```
-n = 7; k = 2; m = 1
-o = [summation_range(n,i,k,m) for i=0:(n-1)*m]; println(o)
- UnitRange{Int64}[1:3, 2:4, 3:5, 4:6, 5:7, 5:7, 5:7]
-```
-"""
-function summation_range(n::Int, i::Int, k::Int, m::Int)
-# ==============================================================================
-#   summation range for point position i lagrangian interpolation
-# ==============================================================================
-      strErr = "Error: position index i outside index range 0 ≤ i ≤ n⋅m"
-      0 ≤ i ≤ n*m || error(strErr)
-
-     return i < (n-1-k)*m  ? UnitRange(i÷m+1,i÷m+k+1) : UnitRange(n-k,n)
-
-end
-
-# ==============================================================================
-
-@doc raw"""
-    fdiff_function_sequences(f, k::Int, m=1)
-
-Finite-difference summation sequences of function values given in forward order
-for use in ``k^{th}``-order lagrangian interpolation of the anaytic function
-``f`` tabulated in forward order on a uniform grid of ``n`` points,
-`f[1:n]`; ``m`` is the multiplier defining the interpolation grid
-size. Each sequence consists of ``k⋅m+1`` function values.
-#### Example:
-```
-f = [0,1,2,3,4,5,6]
-k = 2
-o = fdiff_function_sequences(f, k); println(o)
- [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 5, 6], [4, 5, 6]]
-```
-"""
-function fdiff_function_sequences(f, k::Int, m=1)
-# ==============================================================================
-#   finite-difference function values for interpolation range
-#   of lagrangian interpolation
-# ==============================================================================
-    n = Base.length(f)
-
-    return [f[CamiXon.summation_range(n,i,k,m)] for i=0:n*m-1]
-
-end
 
 
 # =========== fdiff_expansion(coeffs, f, notation=fwd) =================
@@ -474,6 +382,40 @@ function fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
 end
 
+# ================= fdiff_differentiation(f; k=5) ==============================
+
+@doc raw"""
+    fdiff_differentiation(f::Vector{T}; k=5) where T<:Real
+
+``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
+tabulated in forward order on a uniform grid of ``n`` points, ``f[1:n]``.
+#### Example:
+```
+f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
+f′= fdiff_differentiation(f; k=3); println("f′= $(f′)")
+  f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
+```
+"""
+function fdiff_differentiation(f::Vector{T}; k=5) where T<:Real
+
+    l = length(f)
+    k = min(k,l-1)
+    k > 1 || error("Error: at least 3 points (k ≥ 2) required for lagrangian differentiation")
+    m = (l÷(k+1))*(k+1)
+
+    β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
+    w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
+
+    f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
+
+    l > m || return f′
+
+    rest = [f[l-k:l] ⋅ w[1+i] for i=k-l+m+1:k]
+
+    return append!(f′,rest)
+
+end
+
 # =================== create_lagrange_differentiation_weights(k, x) ============
 
 @doc raw"""
@@ -500,7 +442,6 @@ ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
 """
 function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 
-    #∇ = CamiXon.fdiff_weights_array(k)
     coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
 
     return CamiXon.fdiff_expansion_weights(coeffs, bwd)
@@ -531,8 +472,6 @@ create_lagrange_differentiation_matrix(k)
 function create_lagrange_differentiation_matrix(k::Int)
 
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
-
-    #∇ = CamiXon.fdiff_weights_array(k)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
