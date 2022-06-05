@@ -127,7 +127,7 @@ fdiff_weights_array(3,fwd), fdiff_weights_array(3,bwd)
 """
 fdiff_weights_array(k::Int, notation=fwd) = [fdiff_weights(p, notation)  for p=0:k]
 
-# ============== fdiff_expansion_weights(coeffs, fdiffs, fwd) ==================
+# ============== fdiff_expansion_weights(coeffs, fwd) ==================
 
 # ..............................................................................
 function fwd_expansion_weights(α)
