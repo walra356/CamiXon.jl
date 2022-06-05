@@ -105,7 +105,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[1:n])                            # WKB solution
     P = append!(P,zeros(N-n))
-    Q = grid_lagrange_derivative(P, grid; k)
+    Q = grid_differentiation(P, grid; k)
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 

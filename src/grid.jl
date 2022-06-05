@@ -89,7 +89,7 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
 
 end
 
-# =============== grid_lagrange_derivative(f, grid; k=3)) ======================
+# =============== grid_differentiation(f, grid; k=3)) ======================
 
 @doc raw"""
     grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
