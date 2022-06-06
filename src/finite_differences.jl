@@ -247,26 +247,6 @@ function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where 
 
 end
 
-# ==============================================================================
-
-function lagrange_polynom(f::Vector{T}, x::T, notation=fwd) where T <: Real
-# ==============================================================================
-#   lagrangian (k+1)-point interpolation at i interpolation points
-# ==============================================================================
-# not OK k is not defined ...................kanweg??? .........................
-    α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
-    w = fdiff_expansion_weights(α, fwd)
-
-    return w ⋅ f
-
-end
-
-
-
-
-
-
-
 # ======================== fdiff_interpolation(f, x; k=3)
 @doc raw"""
     fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
