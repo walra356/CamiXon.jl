@@ -247,42 +247,46 @@ function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where 
 
 end
 
-# ======================== fdiff_interpolation(f, x; k=3)
+# ======================== fdiff_interpolation(f, x; k=3) ======================
 @doc raw"""
-    fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
+    fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T<:Real, V<:Real}
 
 Finite difference lagrangian interpolation (by default *third* order) in
 between the elements of the analytic function `f` (uniformly tabulated in
-*forward* order) for position `x` in *fractional-index units*).
-The interpolation points lie on a polynomial curve
-(by default *third* degree) running through the tabulated points.
+*forward* order starting at `x = x1`) for position `x` in
+*fractional-index units*). The interpolation points lie on a polynomial curve
+(by default *third* degree) running through the tabulated points. Outside the
+tabulated range, the output is a continuation of the lagrangian polynomial
+defined by the first/last `k+1` tabulated points.
 #### Examples:
 ```
 f = [1,2,3,4,5,6,7]
-[fdiff_interpolation(f, x; k) for x=1:0.5:7]
+[fdiff_interpolation(f, x; k=3) for x=1:0.5:7]
   [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0]
 
 f = [1,4,9,16,25,36,49]
-k=3
-[fdiff_interpolation(f, x; k) for x=1:0.5:7]
+[fdiff_interpolation(f, x; k=3) for x=1:0.5:7]
  [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
 
- f = [x^3 for x=1:4]
- k=3
- [fdiff_interpolation(f, x; k) for x=-3:0.5:3]
-   [-27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0, 3.375, 8.0, 15.625, 27.0]
+f = [x^3 for x=-5:2]     # see figure below
+x1 = -5                  # position first point
+[fdiff_interpolation(f, x, x1; k=3) for x=-4:0.5:4]
+  [-64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125,
+  1.0, 3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
 ```
-In this case the result is exact because the function is quadratic and
+In the latter case the result is exact because the function is cubic and
 the expansion is third order (lagrangian expansion is based on the polynomial
 of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
-function).
+function) - see Figure below.
 
 ![Image](./assets/lagrangian_interpolation.png)
 """
-function fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
+function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T <: Real, V <: Real}
 
     l = length(f)
     k = min(k,l-1)
+    x = x - x1 + 1
+    k > 0 || error("Error: at least 2 points (k ≥ 1) required for lagrangian interpolation")
     n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
     α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)

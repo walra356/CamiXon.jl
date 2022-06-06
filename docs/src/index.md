@@ -623,7 +623,7 @@ where
 
 ```@docs
 fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, x::V; k=3) where {T <: Real, V <: Real}
+fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T <: Real, V <: Real}
 ```
 
 
