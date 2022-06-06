@@ -25,22 +25,15 @@ Finite difference weight coefficient,
 ```math
 c_{j}^{k}=(-1)^{k+j}\binom{k}{j}.
 ```
-Application:
-
-`fdiff_weight(k,j)`] `` → c_j^k``
 #### Example:
 ```
-c(k,j,notation) = fdiff_weight(k,j,notation)
-k=5
-j=3
-c(k,j,fwd) == 10
-  true
+c(k,j) = fdiff_weight(k,j)
 
-c(k,j,bwd) == -10
-  true
+[[c(k,j) for j=0:k] for k=0:3]
+  [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]]
 
-c(k,j,fwd) == c(k,k-j)
-  true
+[[[c(k,k-j) for j=0:k] for k=0:3]]
+  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
 ```
 """
 function fdiff_weight(k::Int, j::Int)
