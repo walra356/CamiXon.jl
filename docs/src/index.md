@@ -331,10 +331,6 @@ c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}
 
 are the *summation weights* (short: *weights*) which define the summation.
 
-Application:  
-
-[`fdiff_weight(k,j,fwd)`](@ref) `` → c_{k-j}^{k}=(-1)^{k-j}\binom{k}{j}``
-
 **Backward difference notation**
 
 In *backward difference* notation, the *finite difference* of two adjacent
@@ -378,10 +374,10 @@ change dummy index to also write the function iterator in forward order
 
 Application:  
 
-[`fdiff_weight(k,j,bwd)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
+[`fdiff_weight(k,j)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
 ```@docs
-fdiff_weight(k::Int, j::Int, notation=bwd)
+fdiff_weight(k::Int, j::Int)
 ```
 
 ### Finite difference expansions

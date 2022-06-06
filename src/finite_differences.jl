@@ -16,16 +16,9 @@ function isforward(notation)
 
 end
 
-# ==================== fdiff_weight(k, j, notation) ============================
-
-fwd_diff_weight(k::Int, j::Int) = Base.iseven(k+j) ? Base.binomial(k,j) :
-                                                    -Base.binomial(k,j)
-
-bwd_diff_weight(k::Int, j::Int) = Base.iseven(j) ? Base.binomial(k,j) :
-                                                  -Base.binomial(k,j)
-
+# ==================== fdiff_weight(k, j) ======================================
 @doc raw"""
-    fdiff_weight(k::Int, j::Int, notation=bwd)
+    fdiff_weight(k::Int, j::Int)
 
 Finite difference weight coefficient,
 
@@ -33,10 +26,6 @@ Finite difference weight coefficient,
 c_{j}^{k}=(-1)^{k+j}\binom{k}{j}.
 ```
 Application:
-
-`fdiff_weight(k,j,fwd)`] `` → c_{k-j}^k``
-
-`fdiff_weight(k,j,bwd)`] `` → c_j^k``
 
 `fdiff_weight(k,j)`] `` → c_j^k``
 #### Example:
@@ -54,11 +43,9 @@ c(k,j,fwd) == c(k,k-j)
   true
 ```
 """
-function fdiff_weight(k::Int, j::Int, notation=bwd)
+function fdiff_weight(k::Int, j::Int)
 
-    o = isforward(notation) ? fwd_diff_weight(k, j) : bwd_diff_weight(k, j)
-
-    return o
+    return Base.iseven(j) ? Base.binomial(k,j) : -Base.binomial(k,j)
 
 end
 
@@ -68,7 +55,7 @@ end
 function fwd_expansion_weights(α)
 
     k = Base.length(α)-1
-    o = [sum([α[p+1] * fdiff_weight(p, j, fwd)  for p=j:k]) for j=0:k]
+    o = [sum([α[p+1] * fdiff_weight(p, p-j)  for p=j:k]) for j=0:k]
 
     return o
 
@@ -77,7 +64,7 @@ end
 function bwd_expansion_weights(β)
 
     k = Base.length(β)-1
-    o = [sum([β[p+1] * fdiff_weight(p, j, bwd) for p=j:k]) for j=k:-1:0]
+    o = [sum([β[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
 
     return o
 

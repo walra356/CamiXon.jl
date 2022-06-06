@@ -42,7 +42,7 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞], :📌) == [4]
     @test find_last([:📑,:📌,:📢,:📌,:📞], :📌; dict=true) == [:📌 => 4]
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
-    @test fdiff_weight(5, 3) == -10
+    @test [fdiff_weight(5,j) for j=0:5] == [1, -5, 10, -10, 5, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
