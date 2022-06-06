@@ -255,9 +255,10 @@ Finite difference lagrangian interpolation (by default *third* order) in
 between the elements of the analytic function `f` (uniformly tabulated in
 *forward* order starting at `x = x1`) for position `x` in
 *fractional-index units*). The interpolation points lie on a polynomial curve
-(by default *third* degree) running through the tabulated points. Outside the
-tabulated range, the output is a continuation of the lagrangian polynomial
-defined by the first/last `k+1` tabulated points.
+of ``k^{th}`` degree running through ``k+1`` points of the tabulated
+function(by default *third* degree). Outside the tabulated range, the output
+is a continuation of the lagrangian polynomial defined by the first/last
+``k+1`` tabulated points.
 #### Examples:
 ```
 f = [1,2,3,4,5,6,7]
@@ -275,9 +276,7 @@ x1 = -5                  # position first point
   1.0, 3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
 ```
 In the latter case the result is exact because the function is cubic and
-the expansion is third order (lagrangian expansion is based on the polynomial
-of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
-function) - see Figure below.
+the expansion is third order - see Figure below.
 
 ![Image](./assets/lagrangian_interpolation.png)
 """
