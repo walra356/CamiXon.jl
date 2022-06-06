@@ -29,11 +29,11 @@ c_{j}^{k}=(-1)^{k+j}\binom{k}{j}.
 ```
 c(k,j) = fdiff_weight(k,j)
 
-[[c(k,j) for j=0:k] for k=0:3]
-  [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]]
+[[c(k,j) for j=0:k] for k=0:3] == [[1], [1, -1], [1, -2, 1], [1, -3, 3, -1]]
+  true
 
-[[[c(k,k-j) for j=0:k] for k=0:3]]
-  [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
+[[c(k,k-j) for j=0:k] for k=0:3] == [[1], [-1, 1], [1, -2, 1], [-1, 3, -3, 1]]
+  true
 ```
 """
 function fdiff_weight(k::Int, j::Int)
@@ -69,7 +69,7 @@ end
 Expansion weights corresponding to the expansion coefficients `coeffs` of
 a finite difference expansion.
 
-**Forward difference notation** (`fwd`)
+**Forward difference notation** (`notation = fwd`)
 
 Weight vector ``F^k ≡ [F_k^k,⋯\ F_0^k]`` corresponding to the
 expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
@@ -87,7 +87,8 @@ analytic function ``f`` tabulated in *forward* order.
 [`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `coeffs` = `` α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+where the `coeffs`  `` α ≡ [α_0,⋯\ α_k]`` have to be supplied to define
+the expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -107,14 +108,15 @@ analytic function ``f`` tabulated in *forward* order.
 [`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `coeffs` = `` β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+where the `coeffs`  `` β ≡ [β_0,⋯\ β_k]`` have to be supplied to define
+the expansion.
 #### Example:
 ```
 k=5
 α = β = UnitRange(0,k)
-Fk = fdiff_expansion_weights(α, fwd); println("Fk = $(Fk)")
+nFk = fdiff_expansion_weights(α, fwd); println("Fk = $(Fk)")
 bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
-  Fk = [-3, 15, -33, 37, -21, 5]
+  nFk = [-3, 15, -33, 37, -21, 5]
   bBk = [-5, 29, -69, 85, -55, 15]
 ```
 """
