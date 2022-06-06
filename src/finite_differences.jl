@@ -253,10 +253,10 @@ end
 
 Finite difference lagrangian interpolation (by default *third* order) in
 between the elements of the analytic function `f` (uniformly tabulated in
-*forward* order starting at `x = x1`) for position `x` in
+*forward* order starting at `x = x1` for position `x` in
 *fractional-index units*). The interpolation points lie on a polynomial curve
-of ``k^{th}`` degree running through ``k+1`` points of the tabulated
-function(by default *third* degree). Outside the tabulated range, the output
+of ``k^{th}`` degree (by default *third* degree) running through ``k+1`` points
+of the tabulated function. Outside the tabulated range, the output
 is a continuation of the lagrangian polynomial defined by the first/last
 ``k+1`` tabulated points.
 #### Examples:
@@ -272,8 +272,8 @@ f = [1,4,9,16,25,36,49]
 f = [x^3 for x=-5:2]     # see figure below
 x1 = -5                  # position first point
 [fdiff_interpolation(f, x, x1; k=3) for x=-4:0.5:4]
-  [-64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125,
-  1.0, 3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
+  [-64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0,
+  3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
 ```
 In the latter case the result is exact because the function is cubic and
 the expansion is third order - see Figure below.
@@ -326,10 +326,10 @@ function fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
 end
 
-# ================= fdiff_differentiation(f; k=5) ==============================
+# ================= fdiff_differentiation(f; k=3) ==============================
 
 @doc raw"""
-    fdiff_differentiation(f::Vector{T}; k=5) where T<:Real
+    fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
 tabulated in forward order on a uniform grid of ``n`` points, ``f[1:n]``.
@@ -339,12 +339,15 @@ f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
 f′= fdiff_differentiation(f; k=3); println("f′= $(f′)")
   f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
 ```
+For a cubic function this is illustrated in the Figure below.
+
+![Image](./assets/lagrangian_differentation.png)
 """
-function fdiff_differentiation(f::Vector{T}; k=5) where T<:Real
+function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 
     l = length(f)
     k = min(k,l-1)
-    k > 1 || error("Error: at least 3 points (k ≥ 2) required for lagrangian differentiation")
+    k > 1 || error("Error: k ≥ 2 required for lagrangian differentiation")
     m = (l÷(k+1))*(k+1)
 
     β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
