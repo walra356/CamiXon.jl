@@ -339,7 +339,8 @@ f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
 f′= fdiff_differentiation(f; k=3); println("f′= $(f′)")
   f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
 ```
-For a cubic function this is illustrated in the figure below.
+For a cubic function the third-order lagrangian differentiation is exact -
+see Figure below.
 
 ![Image](./assets/lagrangian_differentiation.png)
 """
