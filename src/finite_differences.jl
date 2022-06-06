@@ -280,12 +280,12 @@ the expansion is third order - see Figure below.
 
 ![Image](./assets/lagrangian_interpolation.png)
 """
-function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T <: Real, V <: Real}
+function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T<:Real, V<:Real}
 
     l = length(f)
     k = min(k,l-1)
     x = x - x1 + 1
-    k > 0 || error("Error: at least 2 points (k ≥ 1) required for lagrangian interpolation")
+    k > 0 || error("Error: k ≥ 1 required for lagrangian interpolation")
     n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
     α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)
@@ -339,9 +339,9 @@ f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
 f′= fdiff_differentiation(f; k=3); println("f′= $(f′)")
   f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
 ```
-For a cubic function this is illustrated in the Figure below.
+For a cubic function this is illustrated in the figure below.
 
-![Image](./assets/lagrangian_differentation.png)
+![Image](./assets/lagrangian_differentiation.png)
 """
 function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 

@@ -638,22 +638,34 @@ f[n+x] = (1 - ∇)^{-x} f[n]
 with respect to ``x``.
 
 ```math
-\frac{df}{dx}[n+x]=-ln(1-∇)\ (1-∇)^{-x}f[n]=\sum_{q=1}^{k}\tfrac{1}{q}∇^{q}\sum_{p=0}^{k}l_{p}(x)∇^{p}f[n]+⋯.
+\frac{df}{dx}[n+x]
+=-ln(1-∇)\ (1-∇)^{-x}f[n]
+=\sum_{q=1}^{k}\tfrac{1}{q}∇^{q}\sum_{p=0}^{k}l_{p}(x)∇^{p}f[n]+⋯.
 ```
 
-Rewriting the r.h.s. as a single summation in powers of ``∇`` for given values of ``n`` and ``x`` we obtain an expression of the form
+Rewriting the r.h.s. as a single summation in powers of ``∇`` for given values
+of ``n`` and ``x`` we obtain an expression of the form
 
 ```math
 \frac{df}{dx}[n+x]=\sum_{p=1}^{k}l_{p}^{\prime}(x)∇^{p}f[n]+⋯,
 ```
 
-where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion coefficients* for *lagrangian differentiation* at position ``n+x``. These coefficients are determined numerically by polynomial multiplication after adding the ``p=0`` term, ``l_{0}^{\prime}(x)\equiv 0``, to the first sum. The corresponding coefficient vector is generated in *forward order* by the function [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref). Evaluating the finite-difference expansion up to order ``k`` we obtain
+where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion
+coefficients* for *lagrangian differentiation* at position ``n+x``. These
+coefficients are determined numerically by polynomial multiplication after
+adding the ``p=0`` term, ``l_{0}^{\prime}(x)\equiv 0``, to the first sum.
+The corresponding coefficient vector is generated in *forward order* by the
+function [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref). Evaluating
+the finite-difference expansion up to order ``k`` we obtain
 
 ```math
 \frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)∇^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j],
 ```
 
-where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the ``k^{th}``-order lagrangian differentiation weights.  After changing dummy index to reverse the summation from backward to forward order the expansion becomes
+where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the
+``k^{th}``-order lagrangian differentiation weights.  After changing dummy
+index to reverse the summation from backward to forward order the expansion
+becomes
 
 ```math
 \frac{df}{dx}[n+x]]= \sum_{j=0}^{k}s^k_x[j]f[n-k+j],
@@ -696,7 +708,9 @@ The *Adams-Bashford integration step* is given by the expansion
 y[n+1]-y[n] = -\frac{h ∇}{(1-∇)ln(1-∇)}f[n+1]=h (\sum_{p=0}^{\infty}B_p∇^p)f[n+1].
 ```
 
-A closed expression for the *Adams-Bashford expansion coefficients*, ``B_k``, is not available. As we already have a finite-difference expansion for the operator ``(1-∇)^{-1}``,
+A closed expression for the *Adams-Bashford expansion coefficients*, ``B_k``,
+is not available. As we already have a finite-difference expansion for the
+operator ``(1-∇)^{-1}``,
 
 ```math
 \frac{1}{1-∇}\equiv\sum_{p=0}^{\infty}∇^p,
@@ -705,22 +719,36 @@ A closed expression for the *Adams-Bashford expansion coefficients*, ``B_k``, is
 we ask for the expansion of
 
 ```math
--\frac{∇}{ln(1-∇)}=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+⋯)f[n+1]= (\sum_{p=0}^{\infty}b_p∇^p)f[n+1].
+-\frac{∇}{ln(1-∇)}
+=(1-\frac{1}{2}∇-\frac{1}{24}∇^2-\frac{1}{12}∇^3+⋯)f[n+1]
+= (\sum_{p=0}^{\infty}b_p∇^p)f[n+1].
 ```
 
-This is known as the *Adams-Moulton expansion*. Its coefficients are calculated numerically by the function `fdiff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford expansion* is obtained as the polynomial product of the two expansions,
+This is known as the *Adams-Moulton expansion*. Its coefficients are
+calculated numerically by the function
+`fdiff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford expansion* is
+obtained as the polynomial product of the two expansions,
 
 ```math
-(\sum_{p=0}^{\infty}B_p∇^p)f[n+1]=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]=\ ( 1 + \frac{1}{2}∇ + \frac{5}{12}∇^2 + ⋯)f[n+1].
+(\sum_{p=0}^{\infty}B_p∇^p)f[n+1]
+=(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]
+=\ ( 1 + \frac{1}{2}∇ + \frac{5}{12}∇^2 + ⋯)f[n+1].
 ```
 
-The coefficients ``B_p`` are calculated numerically with the function `fdiff_expansion_adams_bashford_coeffs(k)`. Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
+The coefficients ``B_p`` are calculated numerically with the function
+`fdiff_expansion_adams_bashford_coeffs(k)`. Evaluating the finite-difference
+expansion up to order ``k`` we obtain (after changing dummy index bring the
+summation in forward order)
 
 ```math
-\sum_{p=0}^{k}B_p∇^pf[n]=\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]= \sum_{j=0}^{k}A_j^k(x)f[n-j]= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
+\sum_{p=0}^{k}B_p∇^pf[n]
+=\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]
+= \sum_{j=0}^{k}A_j^k(x)f[n-j]
+= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point *Adams-Bashford integration weights*.
+where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point
+*Adams-Bashford integration weights*.
 
 Function:
 
@@ -740,22 +768,33 @@ fdiff_expansion_coeffs_adams_bashford(k::Int)
 The *Adams-Moulton integration* step is given by the expansion
 
 ```math
-y[n+1]-y[n] = -\frac{∇}{ln(1-∇)}f[n+1] = ( 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯)f[n+1].
+y[n+1]-y[n]
+= -\frac{∇}{ln(1-∇)}f[n+1]
+= ( 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯)f[n+1].
 ```
 
-For the evaluation of the integration step we limit the summation to ``k+1`` terms (order ``k``),
+For the evaluation of the integration step we limit the summation to ``k+1``
+terms (order ``k``),
 
 ```math
 y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 ```
 
-where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*, rational numbers generated numerically by the function [`fdiff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest common denominator, ``1/D``, the step becomes
+where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*,
+rational numbers generated numerically by the function
+[`fdiff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest
+common denominator, ``1/D``, the step becomes
 
 ```math
 y[n+1]-y[n]= \frac{1}{D}(\sum_{p=0}^{k}b_p^{\prime}∇^p)f[n+1]+⋯,
 ```
 
-where ``b_0^{\prime},⋯\ b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18`` (as limited by integer overflow). Note that this limit is much higher than values used in calculations (typically up to ``k = 10``). Evaluating the finite-difference expansion up to order ``k`` we obtain (after changing dummy index bring the summation in forward order)
+where ``b_0^{\prime},⋯\ b_k^{\prime}`` are integers and
+``b_p=b_p^{\prime}/D``. In practice the expansion is restricted to ``k<18``
+(as limited by integer overflow). Note that this limit is much higher than
+values used in calculations (typically up to ``k = 10``). Evaluating the
+finite-difference expansion up to order ``k`` we obtain (after changing
+dummy index bring the summation in forward order)
 
 ```math
 \sum_{p=0}^{k}b_p∇^pf[n]
@@ -764,7 +803,8 @@ where ``b_0^{\prime},⋯\ b_k^{\prime}`` are integers and ``b_p=b_p^{\prime}/D``
 = \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
 ```
 
-where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point *Adams-Moulton integration weights*.
+where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
+*Adams-Moulton integration weights*.
 
 Functions:
 
