@@ -266,6 +266,11 @@ f = [1,4,9,16,25,36,49]
 k=3
 [fdiff_interpolation(f, x; k) for x=1:0.5:7]
  [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
+
+ f = [x^3 for x=1:4]
+ k=3
+ [fdiff_interpolation(f, x; k) for x=-3:0.5:3]
+   [-27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0, 3.375, 8.0, 15.625, 27.0]
 ```
 In this case the result is exact because the function is quadratic and
 the expansion is third order (lagrangian expansion is based on the polynomial
@@ -489,11 +494,11 @@ end
 # ======================== trapezoidal_integration(f, domain; k=5) =============
 
 @doc raw"""
-    trapezoidal_integration(f, domain, weights)
+    trapezoidal_integration(f, x1, x2, weights)
 
 Integral of the tabulated function ``f=[f_0,⋯\ f_n]`` over the `domain`
-``a..b`` using the optimized trapezoidal rule with endpoint correction by the
-weightsvector `weights`,
+``x1 ≤ x ≤ x2`` using the optimized trapezoidal rule with endpoint correction
+by the weights vector `weights`,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
                                                          + (f_k+⋯+f_{n-k}).

@@ -683,7 +683,7 @@ create_lagrange_differentiation_matrix(k::Int)
 
 ```@docs
 trapezoidal_weights(k::Int; rationalize=false, devisor=false)
-trapezoidal_integration(f, domain, weights)
+trapezoidal_integration(f, x1, x2, weights)
 ```
 
 ### Adams Method
