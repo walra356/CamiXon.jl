@@ -137,27 +137,28 @@ end
 Finite difference expansion of the analytical function f(x) tabulated
 in *forward order* (growing index) at ``k+1`` positions on a uniform grid.
 The expansion coefficients are specified by the vector `coeffs`. By default
-`coeffs` are assumed to be in forward-difference notation (`fwd`). For `coeffs`
-in backward-difference notation the third argument must be `bwd`.
+`coeffs` are assumed to be in backward-difference notation (`bwd`). For `coeffs`
+in forward-difference notation the third argument must be `fwd`.
 
 **Forward difference notation** (`notation = fwd`)
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n] = F^{k} \cdot f[n:n+k],
 ```
-where ``f[n],⋯\ f[n+k]`` are elements of the
-analytic function ``f`` (tabulated in *forward* order) and ``α ≡ [α_0,⋯\ α_k]``
-is the vector `coeffs` defining the forward-difference expansion.
+where ``f[n:n+k]`` are elements of the
+analytical function ``f`` (tabulated in *forward* order) and
+``α ≡ [α_0,⋯\ α_k]`` is the vector `coeffs`, which has to be supplied to
+define the forward-difference expansion.
 The corresponding weights vector ``F^{k}`` is internally generated.
 
 **Backward difference notation** (`notation = bwd`)
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n] = \bar{B}^k \cdot f[n-k:n].
 ```
-where ``f[n-k],⋯\ f[n]`` are elements of the
-analytic function ``f`` (tabulated in *forward* order) and
-``β ≡ [β_0,⋯\ β_k]`` is the vector `coeffs` defining the backward-difference
-expansion. The corresponding weights vector ``\bar{B}^k`` is internally
-generated.
+where ``f[n-k:n]`` are elements of the
+analytical function ``f`` (tabulated in *forward* order) and
+``β ≡ [β_0,⋯\ β_k]`` is the vector `coeffs`, which has to be supplied to
+define the backward-difference expansion. The corresponding weights vector
+``\bar{B}^k`` is internally generated.
 
 #### Examples:
 Consider the function ``f(x)=x^2`` and the expansions,
