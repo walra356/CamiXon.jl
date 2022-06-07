@@ -44,25 +44,6 @@ end
 
 # ============== fdiff_expansion_weights(coeffs, fwd) ==================
 
-# ..............................................................................
-function fwd_expansion_weights(α)
-
-    k = Base.length(α)-1
-    o = [sum([α[p+1] * fdiff_weight(p, p-j)  for p=j:k]) for j=0:k]
-
-    return o
-
-end
-# ..............................................................................
-function bwd_expansion_weights(β)
-
-    k = Base.length(β)-1
-    o = [sum([β[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
-
-    return o
-
-end
-# ..............................................................................
 @doc raw"""
     fdiff_expansion_weights(coeffs, notation=bwd)
 
@@ -114,16 +95,19 @@ the expansion.
 ```
 k=5
 α = β = UnitRange(0,k)
-nFk = fdiff_expansion_weights(α, fwd); println("Fk = $(Fk)")
+nFk = fdiff_expansion_weights(α, fwd); println("nFk = $(nFk)")
 bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
   nFk = [-3, 15, -33, 37, -21, 5]
   bBk = [-5, 29, -69, 85, -55, 15]
 ```
 """
-function fdiff_expansion_weights(coeffs, notation=bwd)
+function fdiff_expansion_weights(coeffs::Vector{T}, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_expansion_weights(coeffs) :
-                              bwd_expansion_weights(coeffs)
+    k = Base.length(coeffs)-1
+
+    o = isforward(notation) ?
+        [sum([coeffs[p+1] * fdiff_weight(p, p-j)  for p=j:k]) for j=0:k] :
+        [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
 
     return o
 
@@ -239,11 +223,11 @@ function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where 
     sgn = notation === fwd ? -1 : notation === bwd ? 1 :
                                   error("Error: unknown notation type")
 
-    l = Base.ones(T,k+1)
-    x == 0 ? (for p=2:k+1; l[p] = 0 end) :
-                          (for p=1:k; l[p+1] = sgn*l[p]*(x+p-1)/p end)
+    o = Base.ones(T,k+1)
+    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
+             (for p=1:k; o[p+1] = sgn*o[p]*(x+p-1)/p end)
 
-    return l
+    return o
 
 end
 
