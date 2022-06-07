@@ -45,7 +45,7 @@ end
 # ============== fdiff_expansion_weights(coeffs, fwd) ==================
 
 @doc raw"""
-    fdiff_expansion_weights(coeffs, notation=bwd)
+    fdiff_expansion_weights(coeffs[, notation=bwd])
 
 Expansion weights corresponding to the expansion coefficients `coeffs` of
 a finite difference expansion.
@@ -101,7 +101,7 @@ bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
   bBk = [-5, 29, -69, 85, -55, 15]
 ```
 """
-function fdiff_expansion_weights(coeffs::Vector{T}, notation=bwd) where T<:Real
+function fdiff_expansion_weights(coeffs, notation=bwd)
 
     k = Base.length(coeffs)-1
 
