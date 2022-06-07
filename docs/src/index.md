@@ -317,7 +317,7 @@ values on the grid is defined as
 
 where ``Δ`` is the forward difference operator. In this notation,
 the  ``k^{th}``-*order forward difference* involves ``k+1`` points and is
-defined as a *weighted sum* over the function values ``f[n],⋯\ f[n+k]``,
+defined as a *weighted sum* over the function values ``f[n:n+k]``,
 
 ```math
 Δ^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + ⋯  + f[n+k]
@@ -342,8 +342,8 @@ values on the grid is defined as
 
 where ``∇`` is the backward difference operator. In this notation,
 the ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is
-defined as a *weighted sum* over the function values in backward order,
-``f[n],⋯\ f[n-k]``,
+defined as a *weighted sum* over the function values tabulated in backward
+order, ``f[n:-1:n-k]``,
 
 ```math
 ∇^k f[n] = f[n] + c_1^kf[n-1] + ⋯ + c_k^kf[n-k]
