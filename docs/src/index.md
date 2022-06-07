@@ -393,12 +393,12 @@ In terms of forward differences the expansion takes the form
 =\sum_{p=0}^{k}α_{p}Δ^{p}f[n]+⋯.
 ```
 
-A finite-difference expansion truncated order ``k`` is defined
-by ``k+1`` *finite-difference expansion coefficients*, defined by the vector
-``α = [α_{0},⋯\ α_{k}]``. It takes some bookkeeping to rewrite the
-expansion in the form of a *weighted sum* over the ``k+1`` *function values*
-``f[n:n-k]`` (note the *forward tabulation*). Substituting the finite
-difference expression for ``Δ^k``, we obtain
+A finite-difference expansion truncated at order ``k`` is defined
+by ``k+1`` *finite-difference expansion coefficients*, represented by the
+vector ``α = [α_{0},⋯\ α_{k}]``. It takes some bookkeeping to rewrite the
+expansion as a *weighted sum* over the ``k+1``
+*function values in forward tabulated form* ``f[n:n-k]``.
+Substituting the finite difference expression for ``Δ^k``, we obtain
 
 ```math
 \sum_{p=0}^{k}α_{p}Δ^{p}f[n]
@@ -446,9 +446,9 @@ In terms of backward differences the expansion takes the form
 ```
 
 In this case the ``k+1`` *finite-difference expansion coefficients* are defined
-by the vector ``β = [β_{0},⋯\ β_{k}]``. We rewrite the expansion in the form
-of a *weighted sum* over the ``k+1`` *function values* ``f[n:-1:n-k]``
-(note the *backward tabulation*). Substituting the finite
+by the vector ``β = [β_{0},⋯\ β_{k}]``. We obtain the expansion as
+*weighted sum* over the ``k+1`` *function values in backward tabulated form*
+``f[n:-1:n-k]``. Substituting the finite
 difference expression for ``∇^k``, we obtain
 
 ```math
