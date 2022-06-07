@@ -397,7 +397,7 @@ A finite-difference expansion truncated order ``k`` is defined
 by ``k+1`` *finite-difference expansion coefficients*, defined by the vector
 ``α = [α_{0},⋯\ α_{k}]``. It takes some bookkeeping to rewrite the
 expansion in the form of a *weighted sum* over the ``k+1`` *function values*
-``f[n],⋯\ f[n-k]`` (note the *backward order*). Substituting the finite
+``f[n:n-k]`` (note the *forward tabulation*). Substituting the finite
 difference expression for ``Δ^k``, we obtain
 
 ```math
@@ -447,8 +447,8 @@ In terms of backward differences the expansion takes the form
 
 In this case the ``k+1`` *finite-difference expansion coefficients* are defined
 by the vector ``β = [β_{0},⋯\ β_{k}]``. We rewrite the expansion in the form
-of a *weighted sum* over the ``k+1`` *function values* ``f[n],\ ⋯,f[n-k]``
-(note the *backward order*). Substituting the finite
+of a *weighted sum* over the ``k+1`` *function values* ``f[n:-1:n-k]``
+(note the *backward tabulation*). Substituting the finite
 difference expression for ``∇^k``, we obtain
 
 ```math
@@ -460,7 +460,7 @@ difference expression for ``∇^k``, we obtain
 
 where the weighted summation is defined as the *weights*
 ``B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}``, with ``j=0,⋯\ k``.
-By a change of dummy index we turn to *forward order*
+By a change of dummy index we turn to *forward tabulation*
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
@@ -476,7 +476,7 @@ In general there is *no simple symmetry relation* between
 
 Functions:
 
-[`fdiff_expansion_weights(coeffs, notation=bwd)`](@ref)
+[`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
