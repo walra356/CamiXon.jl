@@ -105,9 +105,9 @@ function fdiff_expansion_weights(coeffs, notation=bwd)
 
     k = Base.length(coeffs)-1
 
-    o = isforward(notation) ?
-        [sum([coeffs[p+1] * fdiff_weight(p, p-j)  for p=j:k]) for j=0:k] :
-        [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
+    o = CamiXon.isforward(notation) ?
+        [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j)  for p=j:k]) for j=0:k] :
+        [Base.sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
 
     return o
 
