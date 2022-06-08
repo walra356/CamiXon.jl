@@ -415,7 +415,7 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = CamiXon.fdiff_expansion_weights(coeffs, bwd)
+        m[1+i,1:k+1] = reverse(fdiff_expansion_weights(coeffs, bwd))
     end
 
     return m
