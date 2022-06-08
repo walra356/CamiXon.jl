@@ -50,6 +50,9 @@ using Test
     @test fdiff_expansion_weights([0,1,2,3,4,5],fwd) ==  [-3, 15, -33, 37, -21, 5]
     @test fdiff_expansion_weights([0,1,2,3,4,5],bwd) == [15, -55, 85, -69, 29, -5]
     @test fdiff_expansion_weights([0,1,2,3,4,5]) == [15, -55, 85, -69, 29, -5]
+    @test fdiff_expansion([1,-1,1,-1],[1,4,9,16],fwd) == 0
+    @test fdiff_expansion([1,1,1,1],[1,4,9,16],bwd) == 25
+    @test fdiff_expansion([1,1,1,1],[1,4,9,16]) == 25
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test fdiff_differentiation([0.0, 1, 4, 9, 16, 25]; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
