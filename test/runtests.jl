@@ -55,7 +55,6 @@ using Test
     @test fdiff_expansion([1,1,1,1],[1,4,9,16]) == 25
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test fdiff_differentiation([0.0, 1, 4, 9, 16, 25]; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
-    @test create_lagrange_differentiation_weights(8,0) == [-761//280, 8//1, -14//1, 56//3, -35//2, 56//5, -14//3, 8//7, -1//8]
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
     @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
     @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666

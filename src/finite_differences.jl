@@ -376,46 +376,15 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     m = (l÷(k+1))*(k+1)
 
     β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
-    f′= [fdiff_expansion(β[i],f[n:n+k],bwd) for i ∈ eachindex(β), n=1:k+1:m]
-    f′= vec(f′)
+    w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
+
+    f′= vec([reverse(f[n:n+k]) ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
 
     l > m || return f′
 
-    rest = [fdiff_expansion(β[i],f[l-k:l],bwd) for i=k-l+m+2:k+1]
+    rest = [reverse(f[l-k:l]) ⋅ w[1+i] for i=k-l+m+1:k]
 
     return append!(f′,rest)
-
-end
-
-# =================== create_lagrange_differentiation_weights(k, x) ============
-
-@doc raw"""
-    create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
-
-``k^{th}``-order Lagrange differentiation weights vector,
-``s^k(x) ≡ [s_k^k(x),⋯\ s_0^k(x)]``, where ``x`` is the position
-relative point ``n``.
-
-```math
-\frac{df}{dx}[n+x]= \sum_{j=0}^{k}s_{k-j}^k(x)f[n-k+j],
-```
-where ``s^k_x[j] ≡ s_{k-j}(x)^k``.
-#### Example:
-```
-k = 3
-x = 0
-ldw = create_lagrange_differentiation_weights(k,x); println(ldw)
-  Rational{Int64}[-11//6, 3//1, -3//2, 1//3]
-
- sum(ldw)
-   0//1
-```
-"""
-function create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
-
-    coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+x)
-
-    return CamiXon.fdiff_expansion_weights(coeffs, bwd)
 
 end
 

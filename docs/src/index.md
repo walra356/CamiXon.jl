@@ -687,7 +687,6 @@ Functions:
 ```@docs
 fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
-create_lagrange_differentiation_weights(k::Int, x::T) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
 
