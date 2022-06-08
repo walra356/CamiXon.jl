@@ -42,8 +42,25 @@ function fdiff_weight(k::Int, j::Int)
 
 end
 
-# ============== fdiff_expansion_weights(coeffs, fwd) ==================
+# ============== fdiff_expansion_weights(coeffs, fwd) ==========================
 
+# ..............................................................................
+function fwd_expansion_weights(coeffs)
+
+    k = Base.length(coeffs)-1
+
+    return [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j) for p=j:k]) for j=0:k]
+
+end
+# ..............................................................................
+function bwd_expansion_weights(coeffs)
+
+    k = Base.length(coeffs)-1
+
+    return [Base.sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=0:k]
+
+end
+# ..............................................................................
 @doc raw"""
     fdiff_expansion_weights(coeffs[, notation=bwd])
 
@@ -103,18 +120,40 @@ bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
 """
 function fdiff_expansion_weights(coeffs, notation=bwd)
 
-    k = Base.length(coeffs)-1
+    o = CamiXon.isforward(notation) ? fwd_expansion_weights(coeffs) :
+                                      bwd_expansion_weights(coeffs)
+end
 
-    o = CamiXon.isforward(notation) ?
-        [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j) for p=j:k]) for j=0:k] :
-        [Base.sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=0:k]
+# =========== fdiff_expansion(coeffs, f, notation=fwd) =========================
+
+# ..............................................................................
+function fwd_expansion(coeffs, f)
+
+    w = fwd_expansion_weights(coeffs)
+    o = 0
+
+    for i ∈ eachindex(coeffs)
+        o += w[i]*f[i]
+    end
 
     return o
 
 end
+# ..............................................................................
+function bwd_expansion(coeffs, f)
 
-# =========== fdiff_expansion(coeffs, f, notation=fwd) =================
+    n = Base.length(coeffs)
+    w = bwd_expansion_weights(coeffs)
+    o = 0
 
+    for i=1:n
+        o += w[i]*f[1+n-i]
+    end
+
+    return o
+
+end
+# ..............................................................................
 @doc raw"""
     fdiff_expansion(coeffs, f, notation=bwd)
 
@@ -172,12 +211,9 @@ function).
 """
 function fdiff_expansion(coeffs, f, notation=bwd)
 
-    n = Base.length(coeffs)
-    w = fdiff_expansion_weights(coeffs, notation)
-    o = 0
+    o = isforward(notation) ? fwd_expansion(coeffs, f) :
+                              bwd_expansion(coeffs, f)
 
-    isforward(notation) ? (for i=1:n o += w[i]*f[i] end) :
-                          (for i=1:n o += w[i]*f[1+n-i] end)
     return o
 
 end
@@ -340,13 +376,12 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     m = (l÷(k+1))*(k+1)
 
     β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
-    w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
-
-    f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
+    f′= [fdiff_expansion(β[i],f[n:n+k],bwd) for i ∈ eachindex(β), n=1:k+1:m]
+    f′= vec(f′)
 
     l > m || return f′
 
-    rest = [f[l-k:l] ⋅ w[1+i] for i=k-l+m+1:k]
+    rest = [fdiff_expansion(β[i],f[l-k:l],bwd) for i=k-l+m+2:k+1]
 
     return append!(f′,rest)
 
