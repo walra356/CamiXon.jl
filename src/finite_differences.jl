@@ -57,7 +57,7 @@ function bwd_expansion_weights(coeffs)
 
     k = Base.length(coeffs)-1
 
-    return [Base.sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=0:k]
+    return [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
 
 end
 # ..............................................................................
@@ -127,33 +127,6 @@ end
 # =========== fdiff_expansion(coeffs, f, notation=fwd) =========================
 
 # ..............................................................................
-function fwd_expansion(coeffs, f)
-
-    w = fwd_expansion_weights(coeffs)
-    o = 0
-
-    for i ∈ eachindex(coeffs)
-        o += w[i]*f[i]
-    end
-
-    return o
-
-end
-# ..............................................................................
-function bwd_expansion(coeffs, f)
-
-    n = Base.length(coeffs)
-    w = bwd_expansion_weights(coeffs)
-    o = 0
-
-    for i=1:n
-        o += w[i]*f[1+n-i]
-    end
-
-    return o
-
-end
-# ..............................................................................
 @doc raw"""
     fdiff_expansion(coeffs, f, notation=bwd)
 
@@ -211,10 +184,9 @@ function).
 """
 function fdiff_expansion(coeffs, f, notation=bwd)
 
-    o = isforward(notation) ? fwd_expansion(coeffs, f) :
-                              bwd_expansion(coeffs, f)
+    w = fdiff_expansion_weights(coeffs, notation)
 
-    return o
+    return w ⋅ f
 
 end
 
@@ -415,7 +387,7 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = reverse(fdiff_expansion_weights(coeffs, bwd))
+        m[1+i,1:k+1] = fdiff_expansion_weights(coeffs, bwd)
     end
 
     return m
