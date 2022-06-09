@@ -357,19 +357,11 @@ c_{j}^{k}=(-1)^{j}\binom{k}{j}
 ```
 
 are the *summation weights* (short: *weights*) which define the summation.
-Note that ``c_{0}^{k}≡1``, ``c_{k}^{k}≡(-1)^{k}`` and
+Note the special cases ``c_{0}^{k}≡1``, ``c_{k}^{k}≡(-1)^{k}`` and the symmetry
+relation
 
 ```math
 c_{k-j}^k=(-1)^k c_j^k.
-```
-
-As the function ``f`` is tabulated in forward order it is good practice to
-change dummy index to also write the function iterator in forward order
-(coefficients in backward order),
-
-```math
-∇^k f[n]
-= \sum_{j=0}^{k} c_{k-j}^kf[n-k+j].
 ```
 
 Application:  
@@ -397,7 +389,7 @@ A finite-difference expansion truncated at order ``k`` is defined
 by ``k+1`` *finite-difference expansion coefficients*, represented by the
 vector ``α = [α_{0},⋯\ α_{k}]``. It takes some bookkeeping to rewrite the
 expansion as a *weighted sum* over the ``k+1``
-*function values in forward tabulated form* ``f[n:n-k]``.
+*function values in forward tabulated form* ``f[n:n+k]``.
 Substituting the finite difference expression for ``Δ^k``, we obtain
 
 ```math
@@ -435,7 +427,7 @@ Function:
 [`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `coeffs` = ``  α ≡ [α_0,⋯\ α_k]`` defines the expansion.
+where the `coeffs` ``  α ≡ [α_0,⋯\ α_k]`` define the expansion.
 
 **Backward difference notation**
 
@@ -445,8 +437,8 @@ In terms of backward differences the expansion takes the form
 \sum_{p=0}^{\infty}β_{p}∇^{p}f[n]=\sum_{p=0}^{k}β_{p}∇^{p}f[n]+⋯.
 ```
 
-In this case the ``k+1`` *finite-difference expansion coefficients* are defined
-by the vector ``β = [β_{0},⋯\ β_{k}]``. We obtain the expansion as
+In this case the ``k^{th}``- order *finite-difference expansion* is defined
+by the vector ``β = [β_{0},⋯\ β_{k}]``. The expansion can written as
 *weighted sum* over the ``k+1`` *function values in backward tabulated form*
 ``f[n:-1:n-k]``. Substituting the finite
 difference expression for ``∇^k``, we obtain
@@ -458,13 +450,18 @@ difference expression for ``∇^k``, we obtain
 =\sum_{j=0}^{k}B_{j}^{k}f[n-j],
 ```
 
-where the weighted summation is defined as the *weights*
-``B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}``, with ``j=0,⋯\ k``.
-By a change of dummy index we turn to *forward tabulation*
+where the *weights* are given by
+
+```math
+B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}
+=\sum_{p=j}^{k}(-1)^{j}\binom{p}{j}β_{p},
+```
+with ``j=0,⋯\ k``. By a change of dummy index we turn to *forward tabulation*
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
-=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
+=\sum_{j=0}^k B_j^k f[n-j]
+=B^k \cdot f[n:-1:n-k]
 =\bar{B}^k \cdot f[n-k:n].
 ```
 
@@ -479,7 +476,7 @@ Functions:
 [`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `coeffs` = ``  β ≡ [β_0,⋯\ β_k]`` defines the expansion.
+where the `coeffs`  ``  β ≡ [β_0,⋯\ β_k]`` define the expansion.
 
 ```@docs
 fdiff_expansion_weights(coeffs, notation=bwd)

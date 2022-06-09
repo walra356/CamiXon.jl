@@ -82,11 +82,10 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 where ``f[n:n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, fwd)`](@ref)
+[`fdiff_expansion_weights(α, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where the `coeffs`  `` α ≡ [α_0,⋯\ α_k]`` have to be supplied to define
-the expansion.
+where `` α ≡ [α_0,⋯\ α_k]`` has to be supplied to define the expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -96,18 +95,17 @@ the ``k^{th}``-order *backward-difference* expansion,
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
-=\sum_{j=0}^{k}B_{k-j}^kf[n-k+j]
+=\sum_{j=0}^{k}B_{j}^kf[n-j]
 =\bar{B}^k \cdot f[n-k:n].
 ```
 
 where ``f[n-k:n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(coeffs, bwd)`](@ref)
+[`fdiff_expansion_weights(β, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where the `coeffs`  `` β ≡ [β_0,⋯\ β_k]`` have to be supplied to define
-the expansion.
+where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied to define the expansion.
 #### Example:
 ```
 k=5
