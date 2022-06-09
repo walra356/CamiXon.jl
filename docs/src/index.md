@@ -681,9 +681,6 @@ Functions:
 [`fdiff_expansion_weights(β, bwd)`](@ref)
 ``s^k_x[j] ≡ → [s_k^k(x),⋯\ s_0^k(x)]``
 
-[`create_lagrange_differentiation_weights(k,x) `](@ref)
-``s^k_x[j] ≡ → [s_k^k(x),⋯\ s_0^k(x)]``
-
 ```@docs
 fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
