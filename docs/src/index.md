@@ -422,7 +422,7 @@ f[n+k]
 \end{array}\right].
 ```
 
-Function:
+Application:
 
 [`fdiff_expansion_weights(coeffs, fwd)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
@@ -471,7 +471,7 @@ the weights in backward order.
 In general there is *no simple symmetry relation* between
 ``B^k`` and ``F^k``.
 
-Functions:
+Application:
 
 [`fdiff_expansion_weights(coeffs, bwd)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
