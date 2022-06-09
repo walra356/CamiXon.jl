@@ -456,16 +456,15 @@ where the *weights* are given by
 B_{j}^{k}=\sum_{p=j}^{k}β_{p}c_{j}^{p}
 =\sum_{p=j}^{k}(-1)^{j}\binom{p}{j}β_{p},
 ```
-with ``j=0,⋯\ k``. By a change of dummy index we turn to *forward tabulation*
+with ``j=0,⋯\ k``. In inner product form the expansion becomes
 
 ```math
 \sum_{p=0}^{k}β_{p}∇^{p}f[n]
 =\sum_{j=0}^k B_j^k f[n-j]
-=B^k \cdot f[n:-1:n-k]
-=\bar{B}^k \cdot f[n-k:n].
+=\bar{B}^k \cdot f[n-k:n],
 ```
 
-Note that the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` contains
+where the *weights vector* ``\bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]`` contains
 the weights in backward order.
 
 In general there is *no simple symmetry relation* between
