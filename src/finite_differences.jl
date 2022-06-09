@@ -350,11 +350,11 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
     w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
 
-    f′= vec([reverse(f[n:n+k]) ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
+    f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
 
     l > m || return f′
 
-    rest = [reverse(f[l-k:l]) ⋅ w[1+i] for i=k-l+m+1:k]
+    rest = [f[l-k:l] ⋅ w[1+i] for i=k-l+m+1:k]
 
     return append!(f′,rest)
 
