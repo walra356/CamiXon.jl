@@ -234,8 +234,6 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope
 
-    mass = mass * 0.000001000000
-
     return Isotope(Z, A-Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
 
 end
