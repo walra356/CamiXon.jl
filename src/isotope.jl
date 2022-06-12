@@ -5,9 +5,10 @@
 
 Type with fields:
 * `     .symbol`: symbol (`::String`)
+* `     .name`: name (`::String`)
 * `     .Z`:  atomic number (`::Int`)
-* `     .N`:  neutron number (`::Int`)
 * `     .A`:  atomic mass number in amu (`::Int`)
+* `     .N`:  neutron number (`::Int`)
 * `     .R`:  rms charge radius in Fermi (`::Float64`)
 * `     .M`:  *atomic* mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ  (`::Rational{Int}`)
@@ -71,9 +72,10 @@ end
 
 Create Isotope with fields
 * `     .symbol`: symbol (`::String`)
+* `     .name`: symbol (`::String`)
 * `     .Z`:  atomic number (`::Int`)
-* `     .N`:  neutron number (`::Int`)
 * `     .A`:  atomic mass number in amu (`::Int`)
+* `     .N`:  neutron number (`::Int`)
 * `     .R`:  rms charge radius in Fermi (`::Float64`)
 * `     .M`:  atomic mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ (`::Rational{Int}`)
@@ -112,8 +114,10 @@ function castIsotope(;Z=1, A=1, msg=true)
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
     error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
 
+    (symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra) = isotope
+
     msg && println("Isotope created: " * _specsIsotope(isotope) )
 
-    return Isotope(isotope)
+    return Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
 
 end
