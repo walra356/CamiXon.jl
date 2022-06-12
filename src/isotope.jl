@@ -94,7 +94,7 @@ Create Isotope with fields
 #### Examples:
 ```
 isotope = castIsotope(Z=1, A=3, msg=false)
-  Isotope(1,-2, 3, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
+  Isotope("¹H", 1,-2, 3, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
 isotope.ra
   99.9855
