@@ -153,7 +153,7 @@ function _specsIsotope(Z::Int, A::Int, isotope)              # Isotope propertie
     (symbol, radius, mass, I, π, t½, mdm, eqm, ra) = isotope
     (name, symbol, weight) = get(dictElements, Z, nothing)
 
-    lt = t½ == 1e100 ? "stable" : "$(t½) years"
+    str½ = t½ == 1e100 ? "stable" : "$(t½) years"
     strI = typeof(I) == Rational{Int} ?
           (repr(numerator(I)) * "/" * repr(denominator(I))) : string(I)
 
@@ -168,15 +168,15 @@ function _specsIsotope(Z::Int, A::Int, isotope)              # Isotope propertie
            (Z,A) == (1,3) ? "tritium" : name
 
     str = "Isotope created: " * strIsotope * "
-    element: $(name)
+    element: " * name * "
     atomic number: Z = $Z
     neutron number: n = $(A-Z)
-    atomic mass number: A =  $A amu
-    rms nuclear charge radius: R = $(radius) fm
-    atomic mass: mass = $(mass) amu
-    nuclear spin: I = $(strI) ħ
+    atomic mass number: A = $A amu
+    rms nuclear charge radius: R = " * repr(radius) * " fm
+    atomic mass: mass = " * repr(mass) * " amu
+    nuclear spin: I = " * strI * " ħ
     parity of nuclear state: π = $π
-    lifetime: $(lt)
+    lifetime: " * str½ * "
     nuclear magnetic dipole moment: mdm = " * strmdm * "
     nuclear electric quadrupole moment: eqm = " * streqm * "
     relative abundance: RA = " * strRA
