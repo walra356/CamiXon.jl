@@ -22,6 +22,7 @@ end
     Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
 
 Type with fields:
+* `     .symbol`: symbol (`::String`)
 * `     .Z`:  atomic number (`::Int`)
 * `     .N`:  neutron number (`::Int`)
 * `     .A`:  atomic mass number in amu (`::Int`)
@@ -29,7 +30,7 @@ Type with fields:
 * `     .M`:  *atomic* mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ  (`::Rational{Int}`)
 * `     .π`:  parity of nuclear state (`::Int`)
-* `     .lt`:  lifetime inyears (`::Float64`)
+* `     .t½`:  lifetime in years (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
 * `     .ra`:  relative abundance in % (`::Float64`)
@@ -37,6 +38,7 @@ Type with fields:
 The type `Isotope` is best created with the function [`castIsotope`](@ref)).
 """
 struct Isotope              # Isotopic properties
+     symbol::String    # isotope symbol
      Z::Int            # atomic number
      N::Int            # neutron number
      A::Int            # atomic mass number (amu)
@@ -44,7 +46,7 @@ struct Isotope              # Isotopic properties
      M::Float64        # nuclear mass (amu)
      I::Rational{Int}  # nuclear spin in units of ħ
      π::Int            # parity of nuclear state
-     lt::Float64       # lifetime (years)
+     t½::Float64       # lifetime (years)
      mdm::Float64      # nuclear magnetic dipole moment
      eqm::Union{Float64, Nothing}       # nuclear electric quadrupole moment
      ra::Union{Float64, Nothing}       # relative abundance (%)
@@ -146,20 +148,20 @@ end
 
 # ====================== _specsIsotope(Z, A) ===================================
 
-function _specsIsotope(Z::Int, A::Int, iso)              # Isotope properties
+function _specsIsotope(Z::Int, A::Int, isotope)              # Isotope properties
 
-    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = iso
+    (symbol, radius, mass, I, π, t½, mdm, eqm, ra) = isotope
     (name, symbol, weight) = get(dictElements, Z, nothing)
 
-    I = typeof(I) ∈ [Float16, Float32, Float64] ? rationalize(I) : I
-    lt = lifetime == 1e100 ? "stable" : "$(lifetime) years"
+    lt = t½ == 1e100 ? "stable" : "$(t½) years"
+    strI = typeof(I) == Rational{Int} ?
+          (repr(numerator(I)) * "/" * repr(denominator(I))) : string(I)
 
     strRA = ra ≠ nothing ? "$(ra) %" : "trace"
     strmdm = mdm ≠ nothing ? "$(mdm) " : "not available"
     streqm = eqm ≠ nothing ? "$(eqm)" : "not available"
 
     strIsotope = sup(A) * symbol
-    mass = mass * 0.0000010000000000
 
     name = (Z,A) == (1,1) ? "hydrogen"  :
            (Z,A) == (1,2) ? "deuterium" :
@@ -172,7 +174,7 @@ function _specsIsotope(Z::Int, A::Int, iso)              # Isotope properties
     atomic mass number: A =  $A amu
     rms nuclear charge radius: R = $(radius) fm
     atomic mass: mass = $(mass) amu
-    nuclear spin: I = $(I) ħ
+    nuclear spin: I = $(strI) ħ
     parity of nuclear state: π = $π
     lifetime: $(lt)
     nuclear magnetic dipole moment: mdm = " * strmdm * "
@@ -189,6 +191,7 @@ end
     castIsotope(;Z=1, A=1, msg=true)
 
 Create Isotope with fields
+* `     .symbol`: symbol (`::String`)
 * `     .Z`:  atomic number (`::Int`)
 * `     .N`:  neutron number (`::Int`)
 * `     .A`:  atomic mass number in amu (`::Int`)
@@ -232,9 +235,10 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     msg && println(_specsIsotope(Z, A, isotope) )
 
-    (symbol, radius, mass, I, π, lifetime, mdm, eqm, ra) = isotope
+    (symbol, radius, mass, I, π, t½, mdm, eqm, ra) = isotope
+    symbol = sup(A) * symbol
 
-    return Isotope(Z, A-Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
+    return Isotope(symbol, Z, A-Z, A, radius, mass, I, π, t½, mdm, eqm, ra)
 
 end
 
