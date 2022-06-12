@@ -37,7 +37,7 @@ Type with fields:
 
 The type `Isotope` is best created with the function [`castIsotope`](@ref).
 """
-struct Isotope              # Isotopic properties
+struct Isotope         # Isotopic properties
      symbol::String    # isotope symbol
      Z::Int            # atomic number
      N::Int            # neutron number
@@ -155,7 +155,7 @@ function _specsIsotope(Z::Int, A::Int, isotope)              # Isotope propertie
 
     str½ = t½ == 1e100 ? "stable" : "$(t½) years"
     strI = typeof(I) == Rational{Int} ?
-          (repr(numerator(I)) * "/" * repr(denominator(I))) : string(I)
+          (repr(numerator(I)) * "/" * repr(denominator(I))) : repr(I)
 
     strRA = ra ≠ nothing ? "$(ra) %" : "trace"
     strmdm = mdm ≠ nothing ? "$(mdm) " : "not available"

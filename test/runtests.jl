@@ -16,8 +16,8 @@ using Test
     @test frac(-5//2) == "-⁵/₂"
     @test bohrformula(2, 4) == -1//8
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
-    @test castIsotope(Z=1,A=1,msg=false) == Isotope(1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
-    @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope(1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
+    @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", 1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+    @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", 1, 0, 1, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
     @test createTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
