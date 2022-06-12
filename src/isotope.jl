@@ -1,7 +1,7 @@
 # ======== Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra) ===========
 
 """
-    Isotope(symbol Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
+    Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
 
 Type with fields:
 * `     .symbol`: symbol (`::String`)
@@ -21,9 +21,10 @@ The type `Isotope` is best created with the function [`castIsotope`](@ref).
 """
 struct Isotope         # Isotopic properties
      symbol::String    # isotope symbol
+     name::String      # name isotope
      Z::Int            # atomic number
-     N::Int            # neutron number
      A::Int            # atomic mass number (amu)
+     N::Int            # neutron number
      R::Float64        # rms charge radius (Fermi)
      M::Float64        # nuclear mass (amu)
      I::Rational{Int}  # nuclear spin in units of ħ
@@ -113,6 +114,6 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     msg && println("Isotope created: " * _specsIsotope(isotope) )
 
-    return isotope
+    return Isotope(isotope)
 
 end
