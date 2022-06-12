@@ -8,7 +8,7 @@ Type with fields:
 * `.symbol`:  symbol of element  (`::String`)
 * `.weight`:  relative atomic mass - atomic weight (`::Float64`)
 
-The type `Element` is best created with the function [`castElement`](@ref)).
+The type `Element` is best created with the function [`castElement`](@ref).
 """
 struct Element           # elemental properties
     name::String         # ionic charge (a.u.)
@@ -19,7 +19,7 @@ end
 # ======== Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra) ===========
 
 """
-    Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
+    Isotope(symbol Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra)
 
 Type with fields:
 * `     .symbol`: symbol (`::String`)
@@ -35,7 +35,7 @@ Type with fields:
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
 * `     .ra`:  relative abundance in % (`::Float64`)
 
-The type `Isotope` is best created with the function [`castIsotope`](@ref)).
+The type `Isotope` is best created with the function [`castIsotope`](@ref).
 """
 struct Isotope              # Isotopic properties
      symbol::String    # isotope symbol
@@ -235,7 +235,7 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     msg && println(_specsIsotope(Z, A, isotope) )
 
-    (symbol, radius, mass, I, π, t½, mdm, eqm, ra) = isotope
+    symbol, radius, mass, I, π, t½, mdm, eqm, ra = isotope
     symbol = sup(A) * symbol
 
     return Isotope(symbol, Z, A-Z, A, radius, mass, I, π, t½, mdm, eqm, ra)
