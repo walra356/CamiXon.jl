@@ -36,38 +36,28 @@ end
 
 # ====================== _specsIsotope(Z, A) ===================================
 
-function _specsIsotope(Z::Int, A::Int, isotope)              # Isotope properties
+function _specsIsotope(isotope)
 
-    (symbol, radius, mass, I, π, t½, mdm, eqm, ra) = isotope
-    (name, symbol, weight) = get(dictElements, Z, nothing)
+    dict = dictIsotopes
+    isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
-    str½ = t½ == 1e100 ? "stable" : "$(t½) years"
-    strI = typeof(I) == Rational{Int} ?
-          (repr(numerator(I)) * "/" * repr(denominator(I))) : repr(I)
+    strπ = isotope.π == 1 ? "⁺" : "⁻"
+    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
+    strt½ = isotope.t½ == 1e100 ? "stable" : "radioactive"
 
-    strRA = ra ≠ nothing ? "$(ra) %" : "trace"
-    strmdm = mdm ≠ nothing ? "$(mdm) " : "not available"
-    streqm = eqm ≠ nothing ? "$(eqm)" : "not available"
-
-    strIsotope = sup(A) * symbol
-
-    name = (Z,A) == (1,1) ? "hydrogen"  :
-           (Z,A) == (1,2) ? "deuterium" :
-           (Z,A) == (1,3) ? "tritium" : name
-
-    str = "Isotope created: " * strIsotope * "
+    str = isotope.symbol * "
     element: " * name * "
-    atomic number: Z = $Z
-    neutron number: n = $(A-Z)
-    atomic mass number: A = $A amu
-    rms nuclear charge radius: R = " * repr(radius) * " fm
-    atomic mass: mass = " * repr(mass) * " amu
-    nuclear spin: I = " * strI * " ħ
-    parity of nuclear state: π = $π
-    lifetime: " * str½ * "
-    nuclear magnetic dipole moment: mdm = " * strmdm * "
-    nuclear electric quadrupole moment: eqm = " * streqm * "
-    relative abundance: RA = " * strRA
+    atomic number: Z = " * repr(isotope.Z) * "
+    atomic mass number: A = " * repr(isotope.A) * "
+    neutron number: N = " * repr(isotope.N) * "
+    rms nuclear charge radius: R = " * repr(isotope.R) * " fm
+    atomic mass: M = " * repr(isotope.M) * " amu
+    nuclear spin: I = " * strRational(isotope.I) * " ħ
+    parity of nuclear state: π = " * strπ * "
+    nuclear magnetic dipole moment: μI = " * repr(isotope.mdm) * "
+    nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * "
+    relative abundance: RA = " * strRA * " %
+     (" * strt½ * ")"
 
     return str
 
@@ -90,28 +80,28 @@ Create Isotope with fields
 * `     .ra`:  relative abundance in % (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
-* `     .lt`:  lifetime in years (`::Float64`)
+* `     .t½`:  lifetime in years (`::Float64`)
 #### Examples:
 ```
 isotope = castIsotope(Z=1, A=3, msg=false)
-  Isotope("¹H", 1,-2, 3, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
+  Isotope("³T", tritium, 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
 isotope.ra
   99.9855
 
 castIsotope(Z=1,A=3);
-  Isotope created: ³H
+  Isotope created: ³T
       element: tritium
       atomic number: Z = 1
-      neutron number: n = 2
-      atomic mass number: A =  3 amu
+      atomic mass number: A =  3
+      neutron number: N = 2
       rms nuclear charge radius: R = 1.7591 fm
-      atomic mass: mass = 3.016049281 amu
-      nuclear spin: I = 1//2 ħ
+      atomic mass: M = 3.016049281 amu
+      nuclear spin: I = 1/2 ħ
       parity of nuclear state: π = 1
       lifetime: 12.33 years
-      nuclear magnetic dipole moment: mdm = 2.97896246
-      nuclear electric quadrupole moment: eqm = 0
+      nuclear magnetic dipole moment: μI = 2.97896246
+      nuclear electric quadrupole moment: Q = 0
       relative abundance: RA = trace
 ```
 """
@@ -121,11 +111,8 @@ function castIsotope(;Z=1, A=1, msg=true)
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
     error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
 
-    msg && println(_specsIsotope(Z, A, isotope) )
+    msg && println("Isotope created: " * _specsIsotope(isotope) )
 
-    symbol, radius, mass, I, π, t½, mdm, eqm, ra = isotope
-    symbol = sup(A) * symbol
-
-    return Isotope(symbol, Z, A-Z, A, radius, mass, I, π, t½, mdm, eqm, ra)
+    return isotope
 
 end

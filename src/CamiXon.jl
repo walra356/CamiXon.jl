@@ -9,6 +9,7 @@ using LinearAlgebra
 export sup
 export sub
 export frac
+export strRational
 
 #export convert
 export convertUnit

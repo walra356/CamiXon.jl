@@ -820,6 +820,7 @@ create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 sup(i::T) where T<:Real
 sub(i::T) where T<:Real
 frac(i::Rational{Int})
+strRational(i::T) where T<:Union{Rational{Int}, Int}
 ```
 
 ## Dicts

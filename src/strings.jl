@@ -135,3 +135,29 @@ function frac(i::Rational{Int})
     return sgn * num *  '/' * den
 
 end
+
+@doc raw"""
+    strRational(i)
+
+Fraction notation for rational numbers and integers
+#### Examples:
+```
+strRational(-5//2)
+ "-5/2"
+
+ strRational(-5//2)
+  "-5"
+```
+"""
+function strRational(i::T) where T<:Union{Rational{Int}, Int}
+
+    isinteger(i) && return repr(i)
+
+    sgn = i < 0 ? "-" : ""
+
+    num = repr(numerator(abs(i)))
+    den = repr(denominator(abs(i)))
+
+    return sgn * num *  '/' * den
+
+end
