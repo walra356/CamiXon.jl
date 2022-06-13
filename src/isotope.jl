@@ -310,6 +310,7 @@ latexIsotopeTable(1:3)
     \end{tabular}
   \end{table}
 ```
+![Image](./assets/latexIsotopeTable.png)
 """
 function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 
