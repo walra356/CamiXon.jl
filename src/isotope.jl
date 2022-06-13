@@ -86,8 +86,10 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
     (name, symbol, weight) = get(dictElements, Z, nothing)
 
     strπ = isotope.π == 1 ? "\$^+\$" : "\$^-\$"
-    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "\\%"
-    strt½ = isotope.t½ == 1e100 ? "\\," : "\$^*\\!\\!\$"
+    name = isotope.name
+    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra)
+    strt½ = isotope.t½ == 1e100 ? "\\," : "\$*\\!\\!\$"
+    symbol = name=="deuterium" ? "D" : name=="tritium" ? "T" : symbol
 
     str = indent ? "" : repr(isotope.Z)
     str *= " & " * (!indent ? name : name=="deuterium" ? name : name=="tritium" ? name : "")
@@ -296,15 +298,15 @@ latexIsotopeTable(1:3)
       \hline
       \hline
       $Z$ & element & symbol & $A$ & $N$ & radius & atomic mass & $I\,^\pi$ & $\mu_I $ & $Q$ & $RA$\vspace{-3pt}\\&  &  &  &  & (fm) & $(m_u)$ & $(\hbar)\ \ $ & $(\mu_N)$ & (barn) & (\%)\\\hline
-      1 & hydrogen & $^{1}$H & 1\, & 0 & 0.8783 & 1.007825032 & 1/2$^+$ & 2.792847351 & 0.0 & 99.9855\% \\
-        &  & $^{2}$H & 2\, & 1 & 2.1421 & 2.014101778 & 1//1$^+$ & 0.857438231 & 0.0028578 & 0.0145\% \\
+      1 & hydrogen & $^{1}$H & 1\, & 0 & 0.8783 & 1.007825032 & 1/2$^+$ & 2.792847351 & 0.0 & 99.9855 \\
+        &  & $^{2}$H & 2\, & 1 & 2.1421 & 2.014101778 & 1//1$^+$ & 0.857438231 & 0.0028578 & 0.0145 \\
         &  & $^{3}$H & 3$^*\!\!$ & 2 & 1.7591 & 3.016049281 & 1/2$^+$ & 2.97896246 & 0.0 & trace \\
         \hline
-      2 & helium & $^{3}$He & 3\, & 1 & 1.9661 & 3.016029322 & 1/2$^+$ & -2.12762531 & 0.0 & 0.0002\% \\
+      2 & helium & $^{3}$He & 3\, & 1 & 1.9661 & 3.016029322 & 1/2$^+$ & -2.12762531 & 0.0 & 0.0002 \\
         &  & $^{4}$He & 4\, & 2 & 1.6755 & 4.002603254 & 0//1$^+$ & 0.0 & 0.0 & 99.9998\% \\
         \hline
-      3 & lithium & $^{6}$Li & 6\, & 3 & 2.589 & 6.015122887 & 1//1$^+$ & 0.822043 & -0.000806 & 4.85\% \\
-        &  & $^{7}$Li & 7\, & 4 & 2.444 & 7.016003434 & 3/2$^-$ & 3.256407 & -0.04 & 95.15\% \\
+      3 & lithium & $^{6}$Li & 6\, & 3 & 2.589 & 6.015122887 & 1//1$^+$ & 0.822043 & -0.000806 & 4.85 \\
+        &  & $^{7}$Li & 7\, & 4 & 2.444 & 7.016003434 & 3/2$^-$ & 3.256407 & -0.04 & 95.15 \\
         \hline
       \multicolumn{12}{l}{$^{*}$radioactive }\\
     \end{tabular}
