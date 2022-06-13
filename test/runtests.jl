@@ -14,6 +14,7 @@ using Test
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
+    @test strRational(-5) == "-5"
     @test bohrformula(2, 4) == -1//8
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
