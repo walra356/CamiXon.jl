@@ -27,13 +27,15 @@ export Info
 export bohrformula
 export Element
 export dictElements
+export listElement
+export listElements
 export castElement
 export Isotope
 export dictIsotopes
 export listIsotope
 export listIsotopes
-export latexIsotopeTable
 export castIsotope
+export latexIsotopeTable
 export Atom
 export castAtom
 export Orbit

@@ -84,6 +84,8 @@ Atom
 Orbit
 SpinOrbit
 Term
+listElement(Z::Int; io=stdout)
+listElements(Z1::Int, Z2::Int; io=stdout)
 castElement(;Z=1, msg=true)
 listIsotope(Z::Int, A::Int; io=stdout)
 listIsotopes(Z1::Int, Z2::Int; io=stdout)

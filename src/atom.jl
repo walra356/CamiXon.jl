@@ -118,6 +118,22 @@ function _infoElement(Z::Int)
 
 end
 #...............................................................................
+"""
+    listElement(Z::Int; io=stdout)
+
+Properties of element with atomic number `Z`.
+
+Output options: `stdout` (default), `String`, `Info`.
+#### Example:
+```
+listElement(1; io=Info)
+Element: hydrogen
+    symbol: H
+    element: tritium
+    atomic number: Z = 1
+    atomic weight (relative atomic mass): 1.008
+```
+"""
 function listElement(Z::Int; io=stdout)
 
     io === stdout && return _stdElement(Z)
@@ -125,6 +141,46 @@ function listElement(Z::Int; io=stdout)
     io === Info && return _infoElement(Z)
 
     return error("Error: invalid output type")
+
+end
+#...............................................................................
+"""
+    listElements(Z1::Int, Z2::Int; io=stdout)
+#### Example
+```
+listElements(1:3; io=Info)
+  Element: hydrogen
+    symbol: H
+    name: hydrogen
+    atomic number: Z = 1
+    atomic weight (relative atomic mass): 1.008
+  Element: helium
+    symbol: He
+    name: helium
+    atomic number: Z = 2
+    atomic weight (relative atomic mass): 4.0026
+  Element: lithium
+    symbol: Li
+    name: lithium
+    atomic number: Z = 3
+    atomic weight (relative atomic mass): 6.94
+```
+"""
+function listElements(Z1::Int, Z2::Int; io=stdout)
+
+    o = []
+
+    for Z=Z1:Z2
+        next = listElement(Z; io)
+        isnothing(next) ? false : push!(o, next)
+    end
+
+    return o
+
+end
+function listElements(itrZ; io=stdout)
+
+    return listElements(itrZ.start,itrZ.stop; io)
 
 end
 #...............................................................................
