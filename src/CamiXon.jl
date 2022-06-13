@@ -22,12 +22,17 @@ export castCodata
 export listCodata
 export calibrationReport
 
+export Latex
+export Info
 export bohrformula
 export Element
 export dictElements
 export castElement
 export Isotope
 export dictIsotopes
+export listIsotope
+export listIsotopes
+export latexIsotopeTable
 export castIsotope
 export Atom
 export castAtom

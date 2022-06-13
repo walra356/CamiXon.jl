@@ -18,6 +18,8 @@ using Test
     @test bohrformula(2, 4) == -1//8
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+    @test listIsotope(79,197; io=stdout) == Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)
+    @test listIsotopes(79:79; io=stdout) == [Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)]
     @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)

@@ -85,6 +85,9 @@ Orbit
 SpinOrbit
 Term
 castElement(;Z=1, msg=true)
+listIsotope(Z::Int, A::Int; io=stdout)
+listIsotopes(Z1::Int, Z2::Int; io=stdout)
+latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 castIsotope(;Z=1, A=1, msg=true)
 castAtom(;Z=1, A=1, Q=0, msg=true)
 castOrbit(;n=1, ℓ=0, msg=true)
