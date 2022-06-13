@@ -203,7 +203,7 @@ end
 """
     listIsotope(Z::Int, A::Int; io=stdout)
 
-Properties of isotopes with atomic number Z and atomic mass number A.
+Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 
 Output options: `stdout` (default), `String`, `Latex`, `Info`.
 #### Example:
@@ -239,7 +239,7 @@ end
 """
     listIsotopes(Z1::Int, Z2::Int; io=stdout)
 
-All isotopes with atomic number from Z1 to Z2.
+All isotopes with atomic number from `Z1` to `Z2`.
 
 Output options: `stdout` (default), `String`, `Latex`, `Info`.
 #### Example:
@@ -285,6 +285,7 @@ end
 @doc raw"""
     latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 
+Isotope table for all isotopes with atomic number from `Z1` to `Z2`.
 #### Example:
 ```
 latexIsotopeTable(1:3)
