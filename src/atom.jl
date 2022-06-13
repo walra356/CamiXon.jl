@@ -62,7 +62,7 @@ end
 
 # ============================ _specsElement(Z) ================================
 
-function _specsElement(Z::Int, elt)
+function _infoElement(Z::Int, elt)
 
     (name, symbol, weight) = elt
 
@@ -79,6 +79,55 @@ end
 
 # =========== castElement(name, symbol, weight) ================================
 
+#...............................................................................
+function _stdElement(Z::Int)
+
+    dict = dictElements
+    element = (Z) ∈ keys(dict) ? castElement(;Z, msg=false) : return nothing
+
+    return element
+
+end
+#...............................................................................
+function _strElement(Z::Int)
+
+    dict = dictElements
+    element = (Z) ∈ keys(dict) ? castElement(;Z, msg=false) : return nothing
+
+    str = element.symbol
+    str *= ", " * element.name
+    str *= ", Z=$Z"
+    str *= ", weight=" * repr(element.weight)
+
+    return str
+
+end
+#...............................................................................
+function _infoElement(Z::Int)
+
+    dict = dictElements
+    element = (Z) ∈ keys(dict) ? castElement(; Z, msg=false) : return nothing
+
+    str = "Element: " * element.name
+    str *= "\n    symbol: " * element.symbol
+    str *= "\n    element: " * isotope.name
+    str *= "\n    atomic number: Z = $Z"
+    str *= "\n    atomic weight (relative atomic mass): " * repr(element.weight)
+
+    return println(str)
+
+end
+#...............................................................................
+function listElement(Z::Int; io=stdout)
+
+    io === stdout && return _stdElement(Z)
+    io === String && return _strElement(Z)
+    io === Info && return _infoElement(Z)
+
+    return error("Error: invalid output type")
+
+end
+#...............................................................................
 """
     castElement(;Z=1, msg=true)
 
@@ -99,12 +148,12 @@ castElement(;Z=1, msg=true)
 """
 function castElement(;Z=1, msg=true)
 
-    elt = Z ∈ keys(dictElements) ? get(dictElements, Z, nothing) :
+    element = Z ∈ keys(dictElements) ? get(dictElements, Z, nothing) :
               error("Error: element Z = $Z not present in `dictElements`")
 
-    msg && println(_specsElement(Z, elt) )
+    (name, symbol, weight) = element
 
-    (name, symbol, weight) = elt
+    msg && println("Element created: " * listElement(Z; io=String) )
 
     return Element(name, symbol, weight)
 
