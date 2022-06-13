@@ -20,20 +20,20 @@ Type with fields:
 
 The type `Isotope` is best created with the function [`castIsotope`](@ref).
 """
-struct Isotope         # Isotopic properties
-     symbol::String    # isotope symbol
-     name::String      # name isotope
-     Z::Int            # atomic number
-     A::Int            # atomic mass number (amu)
-     N::Int            # neutron number
-     R::Float64        # rms charge radius (Fermi)
-     M::Float64        # nuclear mass (amu)
-     I::Rational{Int}  # nuclear spin in units of ħ
-     π::Int            # parity of nuclear state
-     t½::Float64       # lifetime (years)
-     mdm::Float64      # nuclear magnetic dipole moment
-     eqm::Union{Float64, Nothing}       # nuclear electric quadrupole moment
-     ra::Union{Float64, Nothing}       # relative abundance (%)
+struct Isotope                     # Isotopic properties
+     symbol::String                # isotope symbol
+     name::String                  # name isotope
+     Z::Int                        # atomic number
+     A::Int                        # atomic mass number (amu)
+     N::Int                        # neutron number
+     R::Float64                    # rms charge radius (Fermi)
+     M::Float64                    # nuclear mass (amu)
+     I::Union{Rational{Int}, Int}  # nuclear spin in units of ħ
+     π::Int                        # parity of nuclear state
+     t½::Float64                   # lifetime (years)
+     mdm::Float64                  # nuclear magnetic dipole moment
+     eqm::Union{Float64, Nothing}  # nuclear electric quadrupole moment
+     ra::Union{Float64, Nothing}   # relative abundance (%)
 end
 
 # ====================== _specsIsotope(Z, A) ===================================
@@ -116,8 +116,10 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     (symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra) = isotope
 
-    msg && println("Isotope created: " * _specsIsotope(isotope) )
+    o = Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
 
-    return Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
+    msg && println("Isotope created: " * _specsIsotope(o) )
+
+    return o
 
 end
