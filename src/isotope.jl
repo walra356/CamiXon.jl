@@ -203,6 +203,9 @@ end
 """
     listIsotope(Z::Int, A::Int; io=stdout)
 
+Properties of isotopes with atomic number Z and atomic mass number A.
+
+Output options: `stdout` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
 listIsotope(1,3; io=Info)
@@ -236,6 +239,9 @@ end
 """
     listIsotopes(Z1::Int, Z2::Int; io=stdout)
 
+All isotopes with atomic number from Z1 to Z2.
+
+Output options: `stdout` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
 listIsotopes(1:2; io=stdout)
@@ -341,19 +347,20 @@ isotope.ra
   99.9855
 
 castIsotope(Z=1,A=3);
-  Isotope created: ³T
+  Isotope created: tritium-3
+      symbol: ³T
       element: tritium
       atomic number: Z = 1
-      atomic mass number: A =  3
+      atomic mass number: A = 3
       neutron number: N = 2
       rms nuclear charge radius: R = 1.7591 fm
       atomic mass: M = 3.016049281 amu
       nuclear spin: I = 1/2 ħ
-      parity of nuclear state: π = 1
-      lifetime: 12.33 years
-      nuclear magnetic dipole moment: μI = 2.97896246
-      nuclear electric quadrupole moment: Q = 0
+      parity of nuclear state: π = ⁺
+      nuclear magnetic dipole moment: μI = 2.97896246μN
+      nuclear electric quadrupole moment: Q = 0.0barn
       relative abundance: RA = trace
+      lifetime: 12.33 years
 ```
 """
 function castIsotope(;Z=1, A=1, msg=true)
