@@ -276,7 +276,7 @@ function listIsotopes(itrZ; io=stdout)
 
 end
 
-"""
+@doc raw"""
     latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 
 #### Example:
