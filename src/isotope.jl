@@ -180,6 +180,9 @@ All isotopes with atomic number from `Z1` to `Z2`.
 Output options: `stdout` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
+listIsotopes(1,3) == listIsotopes(1:3)
+ true
+
 listIsotopes(1:2; io=stdout)
 5-element Vector{Any}:
  Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
@@ -389,5 +392,10 @@ function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
     o = continuation ? _continuation_table(Z1, Z2) : _init_table(Z1, Z2)
 
     return println(o)
+
+end
+function latexIsotopeTable(itrZ; continuation=false)
+
+    return latexIsotopeTable(itrZ.start, irZ.stop; continuation=false)
 
 end

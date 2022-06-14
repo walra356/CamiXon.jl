@@ -148,6 +148,9 @@ end
     listElements(Z1::Int, Z2::Int; io=stdout)
 #### Example
 ```
+listElements(1,3) == listElements(1:3)
+  true
+
 listElements(1:3; io=Info)
   Element: hydrogen
     symbol: H

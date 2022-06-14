@@ -16,7 +16,8 @@ using Test
     @test frac(-5//2) == "-⁵/₂"
     @test strRational(-5) == "-5"
     @test bohrformula(2, 4) == -1//8
-    @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)@test listElement(1; io=stdout) == Element("hydrogen", "H", 1.008)
+    @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
+    @test listElement(1; io=stdout) == Element("hydrogen", "H", 1.008)
     @test listElement(1; io=String) == "H, hydrogen, Z=1, weight=1.008"
     @test listElements(1:2; io=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
