@@ -110,7 +110,7 @@ function _infoElement(Z::Int)
 
     str = "Element: " * element.name
     str *= "\n    symbol: " * element.symbol
-    str *= "\n    element: " * isotope.name
+    str *= "\n    element: " * element.name
     str *= "\n    atomic number: Z = $Z"
     str *= "\n    atomic weight (relative atomic mass): " * repr(element.weight)
 
