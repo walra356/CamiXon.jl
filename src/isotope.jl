@@ -69,7 +69,7 @@ function _strIsotope(Z::Int, A::Int)
     str *= ", N=" * repr(isotope.N)
     str *= ", R=" * repr(isotope.R)
     str *= ", M=" * repr(isotope.M)
-    str *= ", I=" * strRational(isotope.I)
+    str *= ", I=" * strRational(isotope.I) * strπ
     str *= ", μI=" * repr(isotope.mdm)
     str *= ", Q=" * repr(isotope.eqm)
     str *= ", RA=" * strRA

@@ -22,7 +22,7 @@ using Test
     @test listElements(1:2; io=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
     @test listIsotope(2,3; io=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"
-    @test listIsotope(2,3; io=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
+    @test listIsotope(2,3; io=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
     @test listIsotope(79,197; io=stdout) == Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)
     @test listIsotopes(79:79; io=stdout) == [Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)]
     @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
