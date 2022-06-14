@@ -7,7 +7,7 @@ end
 # ======== Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra) ===========
 
 """
-    Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
+    Isotope(symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra)
 
 Type with fields:
 * `     .symbol`: symbol (`::String`)
@@ -19,7 +19,7 @@ Type with fields:
 * `     .M`:  *atomic* mass in amu (`::Float64`)
 * `     .I`:  nuclear spin in units of ħ  (`::Rational{Int}`)
 * `     .π`:  parity of nuclear state (`::Int`)
-* `     .t½`:  lifetime in years (`::Float64`)
+* `     .T½`:  lifetime in years (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
 * `     .ra`:  relative abundance in % (`::Float64`)
@@ -36,7 +36,7 @@ struct Isotope                     # Isotopic properties
      M::Float64                    # nuclear mass (amu)
      I::Union{Rational{Int}, Int}  # nuclear spin in units of ħ
      π::Int                        # parity of nuclear state
-     t½::Float64                   # lifetime (years)
+     T½::Float64                   # lifetime (years)
      mdm::Float64                  # nuclear magnetic dipole moment
      eqm::Union{Float64, Nothing}  # nuclear electric quadrupole moment
      ra::Union{Float64, Nothing}   # relative abundance (%)
@@ -60,7 +60,7 @@ function _strIsotope(Z::Int, A::Int)
 
     strπ = isotope.π == 1 ? "⁺" : "⁻"
     strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
-    strt½ = isotope.t½ == 1e100 ? "stable" : "radioactive"
+    strT½ = isotope.T½ == 1e100 ? "stable" : "radioactive"
 
     str = isotope.symbol
     str *= ", " * isotope.name
@@ -73,7 +73,7 @@ function _strIsotope(Z::Int, A::Int)
     str *= ", μI=" * repr(isotope.mdm)
     str *= ", Q=" * repr(isotope.eqm)
     str *= ", RA=" * strRA
-    str *= ", (" * strt½ * ")"
+    str *= ", (" * strT½ * ")"
 
     return str
 
@@ -88,13 +88,13 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
     strπ = isotope.π == 1 ? "\$^+\$" : "\$^-\$"
     name = isotope.name
     strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra)
-    strt½ = isotope.t½ == 1e100 ? "\\," : "*\$\\!\\!\$"
+    strT½ = isotope.T½ == 1e100 ? "\\," : "*\$\\!\\!\$"
     symbol = name=="deuterium" ? "D" : name=="tritium" ? "T" : symbol
 
     str = indent ? "" : repr(isotope.Z)
     str *= " & " * (!indent ? name : name=="deuterium" ? name : name=="tritium" ? name : "")
     str *= " & " * "\$^{$A}\$" * symbol
-    str *= " & " * repr(isotope.A) * strt½
+    str *= " & " * repr(isotope.A) * strT½
     str *= " & " * repr(isotope.N)
     str *= " & " * repr(isotope.R)
     str *= " & " * repr(isotope.M)
@@ -115,7 +115,7 @@ function _infoIsotope(Z::Int, A::Int)
 
     strπ = isotope.π == 1 ? "⁺" : "⁻"
     strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
-    strt½ = isotope.t½ == 1e100 ? "stable" : repr(isotope.t½) * " years"
+    strT½ = isotope.T½ == 1e100 ? "stable" : repr(isotope.T½) * " years"
 
     str = "Isotope: " * isotope.name * "-" * repr(isotope.A)
     str *= "\n    symbol: " * isotope.symbol
@@ -130,7 +130,7 @@ function _infoIsotope(Z::Int, A::Int)
     str *= "\n    nuclear magnetic dipole moment: μI = " * repr(isotope.mdm) * "μN"
     str *= "\n    nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * "barn"
     str *= "\n    relative abundance: RA = " * strRA
-    str *= "\n    lifetime: " * strt½
+    str *= "\n    lifetime: " * strT½
 
     return println(str)
 
@@ -239,7 +239,7 @@ Create Isotope with fields
 * `     .ra`:  relative abundance in % (`::Float64`)
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
-* `     .t½`:  lifetime in years (`::Float64`)
+* `     .T½`:  lifetime in years (`::Float64`)
 #### Examples:
 ```
 isotope = castIsotope(Z=1, A=3, msg=false)
@@ -271,9 +271,9 @@ function castIsotope(;Z=1, A=1, msg=true)
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
     error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
 
-    (symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra) = isotope
+    (symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra) = isotope
 
-    o = Isotope(symbol, name, Z, A, N, R, M, I, π, t½, mdm, eqm, ra)
+    o = Isotope(symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra)
 
     msg && println("Isotope created: " * listIsotope(Z, A ; io=String))
 
