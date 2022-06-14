@@ -25,6 +25,9 @@ using Test
     @test listIsotope(2,3; io=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
     @test listIsotope(79,197; io=stdout) == Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)
     @test listIsotopes(79:79; io=stdout) == [Isotope("¹⁹⁷Au", "gold", 79, 197, 118, 5.4371, 196.9665701, 3//2, 1, 1.0e100, 0.1452, 0.547, 100.0)]
+    @test listAtom(1,3,1; io=String) == "tritium ion, ³Tᐩ, Q=1, Zc=2"
+    @test listAtom(1,3,1; io=stdout) == Atom(1, 3, 1, 2, Element("hydrogen", "H", 1.008), Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing))
+    @test listAtoms(2:2,0; io=String) == ["helium, neutral atom, ³He, Q=0, Zc=1", "helium, neutral atom, ⁴He, Q=0, Zc=1"]
     @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)

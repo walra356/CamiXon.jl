@@ -208,16 +208,7 @@ function listIsotopes(Z1::Int, Z2::Int; io=stdout)
 end
 function listIsotopes(itrZ; io=stdout)
 
-    o = []
-
-    for Z=itrZ.start:itrZ.stop
-        for A=1:3Z
-            next = listIsotope(Z, A; io)
-            isnothing(next) ? false : push!(o, next)
-        end
-    end
-
-    return o
+    return listIsotopes(itrZ.start, itrZ.stop; io=stdout)
 
 end
 

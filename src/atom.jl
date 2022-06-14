@@ -218,37 +218,128 @@ function castElement(;Z=1, msg=true)
 
 end
 
-# ======================= castAtom(;Z=1, A=1, Q=0, msg=true) ===================
+# =========== castAtom(Z, A, Q, msg=true)) ================================
 
-function _specsAtom(Z::Int, A::Int, Q::Int)
+#...............................................................................
+function _stdAtom(Z::Int, A::Int, Q::Int)
 
-    (name, symbol, weight) = get(dictElements, Z, nothing)
+    dict = dictIsotopes
+    atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
-    name = (Z,A) == (1,2) ? "deuterium" :
-           (Z,A) == (1,3) ? "tritium"   : name
+    return atom
+
+end
+#...............................................................................
+function _strAtom(Z::Int, A::Int, Q::Int)
+
+    dict = dictIsotopes
+    atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
     strN = Q ≠ 0 ? " ion" : ", neutral atom"
 
-    strD = "D ≡ " * sup(A) * symbol * strQ
-    strT = "T ≡ " * sup(A) * symbol * strQ
-
-    symbol = (Z,A) == (1,2) ? strD :
-             (Z,A) == (1,3) ? strT : sup(A) * symbol * strQ
-
-    name = name * strN
-
-    charge = Q ≠ 0 ? "ionic charge: $Q" : "neutral atom"
-
-    str = "Atom created: $(name)
-    symbol: $(symbol)
-    ionic charge: Q = $Q
-    Rydberg charge: Zc = $(1+Q)"
+    str = atom.isotope.name * strN
+    str *= ", " * atom.isotope.symbol * strQ
+    str *= ", Z=$Z"
+    str *= ", A=$A"
+    str *= ", Q=$Q"
+    str *= ", Zc=$(Q+1)"
 
     return str
 
 end
+#...............................................................................
+function _infoAtom(Z::Int, A::Int, Q::Int)
+
+    dict = dictIsotopes
+    atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
+
+    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
+    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+    strN = Q ≠ 0 ? " ion" : ", neutral atom"
+
+    str = "Atom: " * atom.isotope.name * strN
+    str *= "\n    symbol: " * atom.isotope.symbol * strQ
+    str *= "\n    atomic charge: Z = $Z"
+    str *= "\n    Rydberg charge: Zc = $(Q+1)"
+
+    return println(str)
+
+end
+#...............................................................................
+"""
+    listAtom(Z::Int, A::Int, Q::Int; io=stdout)
+
+Properties of atom with atomic number `Z`, atomic mass number `A`, ionic charge `Q`.
+
+Output options: `stdout` (default), `String`, `Info`.
+#### Example:
+```
+listAtom(1, 3, 0; io=Info)
+Element: hydrogen
+    symbol: H
+    element: tritium
+    atomic number: Z = 1
+    atomic weight (relative atomic mass): 1.008
+```
+"""
+function listAtom(Z::Int, A::Int, Q::Int; io=stdout)
+
+    io === stdout && return _stdAtom(Z, A, Q)
+    io === String && return _strAtom(Z, A, Q)
+    io === Info && return _infoAtom(Z, A, Q)
+
+    return error("Error: invalid output type")
+
+end
+#...............................................................................
+"""
+    listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
+
+Properties of atoms with atomic number in the range `Z1:Z3` and ionic charge `Q`.
+
+Output options: `stdout` (default), `String`, `Info`.
+#### Example
+```
+listAtoms(1,3,0) == listAtoms(1:3,0)
+  true
+
+listAtoms(1:1, 0; io=Info);
+  Atom: hydrogen, neutral atom
+    symbol: ¹H
+    atomic charge: Z = 1
+    Rydberg charge: Zc = 1
+  Atom: deuterium, neutral atom
+    symbol: ²D
+    atomic charge: Z = 1
+    Rydberg charge: Zc = 1
+  Atom: tritium, neutral atom
+    symbol: ³T
+    atomic charge: Z = 1
+    Rydberg charge: Zc = 1
+```
+"""
+function listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
+
+    o = []
+
+    for Z=Z1:Z2
+        for A=1:3Z
+            next = listAtom(Z, A, Q; io)
+            isnothing(next) ? false : push!(o, next)
+        end
+    end
+
+    return o
+
+end
+function listAtoms(itrZ, Q::Int; io=stdout)
+
+    return listAtoms(itrZ.start,itrZ.stop, Q; io)
+
+end
+#...............................................................................
 
 """
     castAtom(;Z=1, A=1, Q=0, msg=true)
@@ -270,24 +361,9 @@ atom.isotope.ra
   99.9855
 
 castAtom(Z=1, A=3, Q=0);
-  Element created: hydrogen
-      symbol: H
-      atomic number (Z): 1
-      atomic weight (relative atomic mass): 1.008 amu
-  Isotope created: ³H
-      element: tritium
-      atomic number: Z = 1
-      neutron number: n = 2
-      atomic mass number: A =  3 amu
-      rms nuclear charge radius: R = 1.7591 fm
-      atomic mass: mass = 3.016049281 amu
-      nuclear spin: I = 1//2 ħ
-      parity of nuclear state: π = 1
-      lifetime: 12.33 years
-      nuclear magnetic dipole moment: mdm = 2.97896246
-      nuclear electric quadrupole moment: eqm = 0
-      relative abundance: RA = trace
-Atom created: hydrogen - ³H (Z = 1, Zc = 1, Q = 0)
+  Element created: H, hydrogen, Z=1, weight=1.008
+  Isotope created: ³T, tritium, Z=1, A=3, N=2, R=1.7591, M=3.016049281, I=1/2, μI=2.97896246, Q=0.0, RA=trace, (radioactive)
+  Atom created: tritium, neutral atom, ³T, Z=1, A=3, Q=0, Zc=1
 ```
 """
 function castAtom(;Z=1, A=1, Q=0, msg=true)
@@ -295,11 +371,12 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    msg && println(_specsAtom(Z, A, Q) )
+    msg && println("Atom created: " * listAtom(Z, A, Q; io=String) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
 
 end
+
 
 # ======================== castOrbital(n::Int, ℓ::Int) ===========
 
