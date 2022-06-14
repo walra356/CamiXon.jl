@@ -37,6 +37,8 @@ export listIsotopes
 export castIsotope
 export latexIsotopeTable
 export Atom
+export listAtom
+export listAtoms
 export castAtom
 export Orbit
 export castOrbit
