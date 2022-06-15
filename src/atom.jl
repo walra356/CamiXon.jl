@@ -109,10 +109,9 @@ function _infoElement(Z::Int)
     element = (Z) ∈ keys(dict) ? castElement(; Z, msg=false) : return nothing
 
     str = "Element: " * element.name
-    str *= "\n    symbol: " * element.symbol
-    str *= "\n    element: " * element.name
-    str *= "\n    atomic number: Z = $Z"
-    str *= "\n    atomic weight (relative atomic mass): " * repr(element.weight)
+    str *= "\n  symbol: " * element.symbol
+    str *= "\n  atomic number: Z = $Z"
+    str *= "\n  atomic weight (relative atomic mass): " * repr(element.weight)
 
     return println(str)
 
@@ -127,9 +126,8 @@ Output options: `stdout` (default), `String`, `Info`.
 #### Example:
 ```
 listElement(1; io=Info)
-Element: hydrogen
+  Element: hydrogen
     symbol: H
-    element: tritium
     atomic number: Z = 1
     atomic weight (relative atomic mass): 1.008
 ```
@@ -154,17 +152,14 @@ listElements(1,3) == listElements(1:3)
 listElements(1:3; io=Info)
   Element: hydrogen
     symbol: H
-    name: hydrogen
     atomic number: Z = 1
     atomic weight (relative atomic mass): 1.008
   Element: helium
     symbol: He
-    name: helium
     atomic number: Z = 2
     atomic weight (relative atomic mass): 4.0026
   Element: lithium
     symbol: Li
-    name: lithium
     atomic number: Z = 3
     atomic weight (relative atomic mass): 6.94
 ```

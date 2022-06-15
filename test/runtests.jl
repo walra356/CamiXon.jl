@@ -4,8 +4,8 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    atom = castAtom(Z=1, A=1, Q=0, msg=false);
-    orbit = castOrbit(n=1, ℓ=0, msg=false);
+    atom = castAtom(Z=1, A=1, Q=0);
+    orbit = castOrbit(n=1, ℓ=0);
     codata = castCodata(2018);
     grid = autoGrid(atom, orbit, codata, Float64);
     def = castDef(grid, atom, orbit);
