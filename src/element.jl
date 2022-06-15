@@ -74,7 +74,9 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
+function listElement(Z::Int; io=stdout)
 
+    io === stdout && return _stdElement(Z, A, Q)
     io === String && return _strElement(Z)
     io === Info && return _infoElement(Z)
 
@@ -119,7 +121,7 @@ function listElements(Z1::Int, Z2::Int; io=stdout)
 
 end
 function listElements(itrZ; io=stdout)
-    
+
     return listElements(itrZ.start,itrZ.stop; io)
 
 end
