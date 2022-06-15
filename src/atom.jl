@@ -74,11 +74,9 @@ function _infoAtom(Z::Int, A::Int, Q::Int)
 end
 #...............................................................................
 """
-    listAtom(Z::Int, A::Int, Q::Int; io=stdout)
 
 Properties of atom with atomic number `Z`, atomic mass number `A`, ionic charge `Q`.
 
-Output options: `stdout` (default), `String`, `Info`.
 #### Example:
 ```
 listAtom(1, 3, 0; io=Info)
@@ -89,9 +87,7 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listAtom(Z::Int, A::Int, Q::Int; io=stdout)
 
-    io === stdout && return _stdAtom(Z, A, Q)
     io === String && return _strAtom(Z, A, Q)
     io === Info && return _infoAtom(Z, A, Q)
 
@@ -100,11 +96,9 @@ function listAtom(Z::Int, A::Int, Q::Int; io=stdout)
 end
 #...............................................................................
 """
-    listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
 
 Properties of atoms with atomic number in the range `Z1:Z3` and ionic charge `Q`.
 
-Output options: `stdout` (default), `String`, `Info`.
 #### Example
 ```
 listAtoms(1,3,0) == listAtoms(1:3,0)
@@ -125,7 +119,6 @@ listAtoms(1:1, 0; io=Info);
     Rydberg charge: Zc = 1
 ```
 """
-function listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
 
     o = []
 
@@ -139,7 +132,6 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
     return o
 
 end
-function listAtoms(itrZ, Q::Int; io=stdout)
 
     return listAtoms(itrZ.start,itrZ.stop, Q; io)
 

@@ -1,10 +1,10 @@
 # =========================== singletons =======================================
 
 struct fwd
-end
+    end
 
 struct bwd
-end
+    end
 
 struct Object
     end
@@ -27,4 +27,3 @@ function isforward(notation)
 
 end
 # ============================= End ===========================
-

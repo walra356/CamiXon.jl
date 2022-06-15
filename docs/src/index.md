@@ -84,15 +84,9 @@ Atom
 Orbit
 SpinOrbit
 Term
-listElement(Z::Int; io=stdout)
-listElements(Z1::Int, Z2::Int; io=stdout)
 castElement(;Z=1, msg=true)
-listIsotope(Z::Int, A::Int; io=stdout)
-listIsotopes(Z1::Int, Z2::Int; io=stdout)
 latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 castIsotope(;Z=1, A=1, msg=true)
-listAtom(Z::Int, A::Int, Q::Int; io=stdout)
-listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
 castAtom(;Z=1, A=1, Q=0, msg=true)
 castOrbit(;n=1, ℓ=0, msg=true)
 createSpinOrbit(o::Orbit; up=true, msg=true)

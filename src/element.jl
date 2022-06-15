@@ -74,9 +74,7 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listElement(Z::Int; io=stdout)
 
-    io === stdout && return _stdElement(Z)
     io === String && return _strElement(Z)
     io === Info && return _infoElement(Z)
 
@@ -85,7 +83,6 @@ function listElement(Z::Int; io=stdout)
 end
 #...............................................................................
 """
-    listElements(Z1::Int, Z2::Int; io=stdout)
 #### Example
 ```
 listElements(1,3) == listElements(1:3)
@@ -109,7 +106,6 @@ listElements(1:3; io=Info)
     atomic weight (relative atomic mass): 6.94
 ```
 """
-function listElements(Z1::Int, Z2::Int; io=stdout)
 
     o = []
 
@@ -121,7 +117,6 @@ function listElements(Z1::Int, Z2::Int; io=stdout)
     return o
 
 end
-function listElements(itrZ; io=stdout)
 
     return listElements(itrZ.start,itrZ.stop; io)
 
