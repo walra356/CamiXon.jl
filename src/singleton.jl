@@ -17,6 +17,14 @@ struct Latex
 
 # ============================= isforward(notation) ===========================
 
+"""
+    function isforward(notation)
+
+Boolean status of notation, with options: `fwd` and `bwd`.
+#### Example:
+isforward(fwd)
+  true
+"""
 function isforward(notation)
 
     notation === fwd && return true

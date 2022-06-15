@@ -376,6 +376,7 @@ Application:
 [`fdiff_weight(k,j)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
 ```@docs
+isforward(notation)
 fdiff_weight(k::Int, j::Int)
 ```
 

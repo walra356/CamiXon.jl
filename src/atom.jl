@@ -11,7 +11,7 @@ Type with fields:
 * `.element`:  (`::Element`)
 * `.isotope`:  (`::Isotope`)
 
-The type `Atom` is best created with the function [`castAtom`](@ref)).
+The type `Atom` is best created with the function [`castAtom`](@ref).
 """
 struct Atom                           # Isotopic properties
     Z::Int             # atomic number
@@ -154,18 +154,22 @@ Create Atom with fields:
 *`.isotope`:  (`::Isotope`)
 #### Examples:
 ```
-atom = castAtom(Z=1, A=1, Q=0, msg=false)
-  Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope(1, 0, 1, 0.8783,
-  1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
+castAtom(Z=1, A=1, Q=0, msg=false)
+  Atom(1, 3, 0, 1, Element("hydrogen", "H", 1.008), Isotope("³T", "tritium",
+  1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing))
 
-atom.isotope.ra
-  99.9855
-
-castAtom(Z=1, A=3, Q=0);
+atom = castAtom(Z=1, A=3, Q=0, msg=true);
   Element created: H, hydrogen, Z=1, weight=1.008
-  Isotope created: ³T, tritium, Z=1, A=3, N=2, R=1.7591, M=3.016049281, I=1/2, μI=2.97896246, Q=0.0, RA=trace, (radioactive)
+  Isotope created: ³T, tritium, Z=1, A=3, N=2, R=1.7591, M=3.016049281, I=1/2⁺, μI=2.97896246, Q=0.0, RA=trace, (radioactive)
   Atom created: tritium, neutral atom, ³T, Z=1, A=3, Q=0, Zc=1
-```
+
+atom
+  Atom(1, 3, 0, 1, Element("hydrogen", "H", 1.008), Isotope("³T", "tritium",
+  1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing))
+
+atom.isotope.T½
+  12.33
+  ```
 """
 function castAtom(;Z=1, A=1, Q=0, msg=true)
 

@@ -49,10 +49,9 @@ function _infoElement(Z::Int)
     element = (Z) ∈ keys(dict) ? castElement(; Z, msg=false) : return nothing
 
     str = "Element: " * element.name
-    str *= "\n    symbol: " * element.symbol
-    str *= "\n    element: " * element.name
-    str *= "\n    atomic number: Z = $Z"
-    str *= "\n    atomic weight (relative atomic mass): " * repr(element.weight)
+    str *= "\n  symbol: " * element.symbol
+    str *= "\n  atomic number: Z = $Z"
+    str *= "\n  atomic weight (relative atomic mass): " * repr(element.weight)
 
     return println(str)
 
@@ -67,7 +66,7 @@ Output options: `Object` (default), `String`, `Info`.
 #### Example:
 ```
 listElement(1; fmt=Info)
-Element: hydrogen
+  Element: hydrogen
     symbol: H
     atomic number: Z = 1
     atomic weight (relative atomic mass): 1.008
@@ -131,11 +130,9 @@ Create Atom with fields
 * `.weight`:  relative atomic mass (atomic weight)
 #### Example:
 ```
-castElement(;Z=1, msg=true)
-  Element created: hydrogen
-    symbol: H
-    atomic number (Z): 1
-    atomic weight (relative atomic mass): 1.008 amu
+element = castElement(;Z=1, msg=true)
+element
+  Element created: H, hydrogen, Z=1, weight=1.008
 
   Element("hydrogen", "H", 1.008)
 ```
