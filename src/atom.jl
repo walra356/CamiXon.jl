@@ -1,4 +1,4 @@
- ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
+# ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
 
 """
     Atom(Z, A, Q, Zc, element, isotope)
