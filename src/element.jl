@@ -106,6 +106,7 @@ listElements(1:3; io=Info)
     atomic weight (relative atomic mass): 6.94
 ```
 """
+function listElements(Z1::Int, Z2::Int; io=stdout)
 
     o = []
 
@@ -117,7 +118,8 @@ listElements(1:3; io=Info)
     return o
 
 end
-
+function listElements(itrZ; io=stdout)
+    
     return listElements(itrZ.start,itrZ.stop; io)
 
 end
