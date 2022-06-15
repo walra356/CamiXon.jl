@@ -69,7 +69,6 @@ Output options: `Object` (default), `String`, `Info`.
 listElement(1; fmt=Info)
 Element: hydrogen
     symbol: H
-    element: tritium
     atomic number: Z = 1
     atomic weight (relative atomic mass): 1.008
 ```
@@ -93,17 +92,14 @@ listElements(1,3) == listElements(1:3)
 listElements(1:3; fmt=Info)
   Element: hydrogen
     symbol: H
-    name: hydrogen
     atomic number: Z = 1
     atomic weight (relative atomic mass): 1.008
   Element: helium
     symbol: He
-    name: helium
     atomic number: Z = 2
     atomic weight (relative atomic mass): 4.0026
   Element: lithium
     symbol: Li
-    name: lithium
     atomic number: Z = 3
     atomic weight (relative atomic mass): 6.94
 ```
