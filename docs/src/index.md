@@ -253,7 +253,7 @@ fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
 
 ```@docs
 FORTRAN_format
-cast_FORTRAN_fmt(str::String)
+cast_FORTRAN_format(str::String)
 cast_FORTRAN_datatype(str::String)
 ```
 
