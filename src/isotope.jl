@@ -200,7 +200,9 @@ function listIsotopes(Z1::Int, Z2::Int; io=stdout)
     return o
 
 end
+function listIsotopes(itrZ; io=stdout)
 
+    return listIsotopes(itrZ.start, itrZ.stop; io=stdout)
 
 end
 
