@@ -1,21 +1,3 @@
-# =========================== singletons =======================================
-
-struct fwd
-end
-
-struct bwd
-end
-
-function isforward(notation)
-
-    notation === fwd && return true
-
-    notation === bwd && return false
-
-    error("Error: unknown fdiff notation type")
-
-end
-
 # ==================== fdiff_weight(k, j) ======================================
 @doc raw"""
     fdiff_weight(k::Int, j::Int)

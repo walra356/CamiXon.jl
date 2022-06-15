@@ -1,9 +1,3 @@
-struct Latex
-    end
-
-struct Info
-end
-
 # ======== Isotope(Z, A, radius, mass, I, π, lifetime, mdm, eqm, ra) ===========
 
 """

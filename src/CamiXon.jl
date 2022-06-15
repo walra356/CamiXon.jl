@@ -11,6 +11,13 @@ export sub
 export frac
 export strRational
 
+export fwd
+export bwd
+export isforward
+export Object
+export Info
+export Latex
+
 #export convert
 export convertUnit
 export Value
@@ -22,8 +29,6 @@ export castCodata
 export listCodata
 export calibrationReport
 
-export Latex
-export Info
 export bohrformula
 export Element
 export dictElements
@@ -55,9 +60,6 @@ export parse_FITS_TABLE
 export FITS_name
 export cast_FITS_name
 
-export fwd
-export bwd
-export isforward
 export fdiff_weight
 export fdiff_expansion_weights
 export fdiff_expansion
@@ -167,9 +169,11 @@ export polynom_powers
 export permutations_unique_count
 export texp
 
+include("singleton.jl")
 include("codata.jl")
 include("dicts.jl")
 include("strings.jl")
+include("latex.jl")
 include("finite_differences.jl")
 include("finite_difference_adams.jl")
 include("element.jl")
