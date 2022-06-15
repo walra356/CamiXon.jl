@@ -131,11 +131,11 @@ function _infoIsotope(Z::Int, A::Int)
 end
 # ..............................................................................
 """
-    listIsotope(Z::Int, A::Int; io=stdout)
+    listIsotope(Z::Int, A::Int; io=Object)
 
 Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 
-Output options: `stdout` (default), `String`, `Latex`, `Info`.
+Output options: `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
 listIsotope(1,3; io=Info)
@@ -155,9 +155,9 @@ listIsotope(1,3; io=Info)
     lifetime: 12.33 years
 ```
 """
-function listIsotope(Z::Int, A::Int; io=stdout)
+function listIsotope(Z::Int, A::Int; io=Object)
 
-    io === stdout && return _stdIsotope(Z, A)
+    io === Object && return _stdIsotope(Z, A)
     io === String && return _strIsotope(Z, A)
     io === Latex && return _texIsotope(Z, A)
     io === Info && return _infoIsotope(Z, A)
@@ -167,17 +167,17 @@ function listIsotope(Z::Int, A::Int; io=stdout)
 end
 # ..............................................................................
 """
-    listIsotopes(Z1::Int, Z2::Int; io=stdout)
+    listIsotopes(Z1::Int, Z2::Int; io=Object)
 
 All isotopes with atomic number from `Z1` to `Z2`.
 
-Output options: `stdout` (default), `String`, `Latex`, `Info`.
+Output options: `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
 listIsotopes(1,3) == listIsotopes(1:3)
  true
 
-listIsotopes(1:2; io=stdout)
+listIsotopes(1:2; io=Object)
 5-element Vector{Any}:
  Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
  Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1//1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
@@ -186,7 +186,7 @@ listIsotopes(1:2; io=stdout)
  Isotope("⁴He", "helium", 2, 4, 2, 1.6755, 4.002603254, 0//1, 1, 1.0e100, 0.0, 0.0, 99.9998)
 ```
 """
-function listIsotopes(Z1::Int, Z2::Int; io=stdout)
+function listIsotopes(Z1::Int, Z2::Int; io=Object)
 
     o = []
 
@@ -200,9 +200,9 @@ function listIsotopes(Z1::Int, Z2::Int; io=stdout)
     return o
 
 end
-function listIsotopes(itrZ; io=stdout)
+function listIsotopes(itrZ; io=Object)
 
-    return listIsotopes(itrZ.start, itrZ.stop; io=stdout)
+    return listIsotopes(itrZ.start, itrZ.stop; io=Object)
 
 end
 

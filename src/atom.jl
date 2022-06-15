@@ -87,9 +87,9 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listAtom(Z::Int, A::Int, Q::Int; io=stdout)
+function listAtom(Z::Int, A::Int, Q::Int; io=Object)
 
-    io === stdout && return _stdAtom(Z, A, Q)
+    io === Object && return _stdAtom(Z, A, Q)
     io === String && return _strAtom(Z, A, Q)
     io === Info && return _infoAtom(Z, A, Q)
 
@@ -121,7 +121,7 @@ listAtoms(1:1, 0; io=Info);
     Rydberg charge: Zc = 1
 ```
 """
-function listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
+function listAtoms(Z1::Int, Z2::Int, Q::Int; io=Object)
 
     o = []
 
@@ -135,7 +135,7 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; io=stdout)
     return o
 
 end
-function listAtoms(itrZ, Q::Int; io=stdout)
+function listAtoms(itrZ, Q::Int; io=Object)
 
     return listAtoms(itrZ.start,itrZ.stop, Q; io)
 

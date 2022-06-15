@@ -59,11 +59,11 @@ function _infoElement(Z::Int)
 end
 #...............................................................................
 """
-    listElement(Z::Int; io=stdout)
+    listElement(Z::Int; io=Object)
 
 Properties of element with atomic number `Z`.
 
-Output options: `stdout` (default), `String`, `Info`.
+Output options: `Object` (default), `String`, `Info`.
 #### Example:
 ```
 listElement(1; io=Info)
@@ -74,9 +74,9 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listElement(Z::Int; io=stdout)
+function listElement(Z::Int; io=Object)
 
-    io === stdout && return _stdElement(Z, A, Q)
+    io === Object && return _stdElement(Z, A, Q)
     io === String && return _strElement(Z)
     io === Info && return _infoElement(Z)
 
@@ -108,7 +108,7 @@ listElements(1:3; io=Info)
     atomic weight (relative atomic mass): 6.94
 ```
 """
-function listElements(Z1::Int, Z2::Int; io=stdout)
+function listElements(Z1::Int, Z2::Int; io=Object)
 
     o = []
 
@@ -120,7 +120,7 @@ function listElements(Z1::Int, Z2::Int; io=stdout)
     return o
 
 end
-function listElements(itrZ; io=stdout)
+function listElements(itrZ; io=Object)
 
     return listElements(itrZ.start,itrZ.stop; io)
 
