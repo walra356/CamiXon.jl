@@ -79,7 +79,7 @@ Properties of atom with atomic number `Z`, atomic mass number `A`, ionic charge 
 
 #### Example:
 ```
-listAtom(1, 3, 0; format=Info)
+listAtom(1, 3, 0; fmt=Info)
 Element: hydrogen
     symbol: H
     element: tritium
@@ -87,11 +87,11 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listAtom(Z::Int, A::Int, Q::Int; format=Object)
+function listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 
-    format === Object && return _stdAtom(Z, A, Q)
-    format === String && return _strAtom(Z, A, Q)
-    format === Info && return _infoAtom(Z, A, Q)
+    fmt === Object && return _stdAtom(Z, A, Q)
+    fmt === String && return _strAtom(Z, A, Q)
+    fmt === Info && return _infoAtom(Z, A, Q)
 
     return error("Error: invalid output type")
 
@@ -106,7 +106,7 @@ Properties of atoms with atomic number in the range `Z1:Z3` and ionic charge `Q`
 listAtoms(1,3,0) == listAtoms(1:3,0)
   true
 
-listAtoms(1:1, 0; format=Info);
+listAtoms(1:1, 0; fmt=Info);
   Atom: hydrogen, neutral atom
     symbol: ¹H
     atomic charge: Z = 1
@@ -121,13 +121,13 @@ listAtoms(1:1, 0; format=Info);
     Rydberg charge: Zc = 1
 ```
 """
-function listAtoms(Z1::Int, Z2::Int, Q::Int; format=Object)
+function listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 
     o = []
 
     for Z=Z1:Z2
         for A=1:3Z
-            next = listAtom(Z, A, Q; format)
+            next = listAtom(Z, A, Q; fmt)
             isnothing(next) ? false : push!(o, next)
         end
     end
@@ -135,9 +135,9 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; format=Object)
     return o
 
 end
-function listAtoms(itrZ, Q::Int; format=Object)
+function listAtoms(itrZ, Q::Int; fmt=Object)
 
-    return listAtoms(itrZ.start,itrZ.stop, Q; format)
+    return listAtoms(itrZ.start,itrZ.stop, Q; fmt)
 
 end
 #...............................................................................
@@ -172,7 +172,7 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    msg && println("Atom created: " * listAtom(Z, A, Q; format=String) )
+    msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
 

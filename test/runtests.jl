@@ -17,13 +17,13 @@ using Test
     @test strRational(-5) == "-5"
     @test bohrformula(2, 4) == -1//8
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
-    @test listElement(1; format=String) == "H, hydrogen, Z=1, weight=1.008"
-    @test listElements(1:2; format=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]
+    @test listElement(1; fmt=String) == "H, hydrogen, Z=1, weight=1.008"
+    @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
-    @test listIsotope(2,3; format=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"
-    @test listIsotope(2,3; format=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
-    @test listAtom(1,3,1; format=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2"
-    @test listAtoms(2:2,0; format=String) == ["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1"]
+    @test listIsotope(2,3; fmt=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"
+    @test listIsotope(2,3; fmt=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
+    @test listAtom(1,3,1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2"
+    @test listAtoms(2:2,0; fmt=String) == ["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1"]
     @test castAtom(Z=1, A=1, Q=0, msg=false) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)

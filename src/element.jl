@@ -59,14 +59,14 @@ function _infoElement(Z::Int)
 end
 #...............................................................................
 """
-    listElement(Z::Int; format=Object)
+    listElement(Z::Int; fmt=Object)
 
 Properties of element with atomic number `Z`.
 
 Output options: `Object` (default), `String`, `Info`.
 #### Example:
 ```
-listElement(1; format=Info)
+listElement(1; fmt=Info)
 Element: hydrogen
     symbol: H
     element: tritium
@@ -74,11 +74,11 @@ Element: hydrogen
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listElement(Z::Int; format=Object)
+function listElement(Z::Int; fmt=Object)
 
-    format === Object && return _stdElement(Z, A, Q)
-    format === String && return _strElement(Z)
-    format === Info && return _infoElement(Z)
+    fmt === Object && return _stdElement(Z, A, Q)
+    fmt === String && return _strElement(Z)
+    fmt === Info && return _infoElement(Z)
 
     return error("Error: invalid output type")
 
@@ -90,7 +90,7 @@ end
 listElements(1,3) == listElements(1:3)
   true
 
-listElements(1:3; format=Info)
+listElements(1:3; fmt=Info)
   Element: hydrogen
     symbol: H
     name: hydrogen
@@ -108,21 +108,21 @@ listElements(1:3; format=Info)
     atomic weight (relative atomic mass): 6.94
 ```
 """
-function listElements(Z1::Int, Z2::Int; format=Object)
+function listElements(Z1::Int, Z2::Int; fmt=Object)
 
     o = []
 
     for Z=Z1:Z2
-        next = listElement(Z; format)
+        next = listElement(Z; fmt)
         isnothing(next) ? false : push!(o, next)
     end
 
     return o
 
 end
-function listElements(itrZ; format=Object)
+function listElements(itrZ; fmt=Object)
 
-    return listElements(itrZ.start,itrZ.stop; format)
+    return listElements(itrZ.start,itrZ.stop; fmt)
 
 end
 # ------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ function castElement(;Z=1, msg=true)
 
     (name, symbol, weight) = element
 
-    msg && println("Element created: " * listElement(Z; format=String) )
+    msg && println("Element created: " * listElement(Z; fmt=String) )
 
     return Element(name, symbol, weight)
 

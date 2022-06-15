@@ -131,14 +131,14 @@ function _infoIsotope(Z::Int, A::Int)
 end
 # ..............................................................................
 """
-    listIsotope(Z::Int, A::Int; format=Object)
+    listIsotope(Z::Int, A::Int; fmt=Object)
 
 Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 
 Output options: `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
-listIsotope(1,3; format=Info)
+listIsotope(1,3; fmt=Info)
   Isotope: tritium-3
     symbol: ³T
     element: tritium
@@ -155,19 +155,19 @@ listIsotope(1,3; format=Info)
     lifetime: 12.33 years
 ```
 """
-function listIsotope(Z::Int, A::Int; format=Object)
+function listIsotope(Z::Int, A::Int; fmt=Object)
 
-    format === Object && return _stdIsotope(Z, A)
-    format === String && return _strIsotope(Z, A)
-    format === Latex && return _texIsotope(Z, A)
-    format === Info && return _infoIsotope(Z, A)
+    fmt === Object && return _stdIsotope(Z, A)
+    fmt === String && return _strIsotope(Z, A)
+    fmt === Latex && return _texIsotope(Z, A)
+    fmt === Info && return _infoIsotope(Z, A)
 
     return error("Error: unknown output type")
 
 end
 # ..............................................................................
 """
-    listIsotopes(Z1::Int, Z2::Int; format=Object)
+    listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 
 All isotopes with atomic number from `Z1` to `Z2`.
 
@@ -177,7 +177,7 @@ Output options: `Object` (default), `String`, `Latex`, `Info`.
 listIsotopes(1,3) == listIsotopes(1:3)
  true
 
-listIsotopes(1:2; format=Object)
+listIsotopes(1:2; fmt=Object)
 5-element Vector{Any}:
  Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
  Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1//1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
@@ -186,13 +186,13 @@ listIsotopes(1:2; format=Object)
  Isotope("⁴He", "helium", 2, 4, 2, 1.6755, 4.002603254, 0//1, 1, 1.0e100, 0.0, 0.0, 99.9998)
 ```
 """
-function listIsotopes(Z1::Int, Z2::Int; format=Object)
+function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 
     o = []
 
     for Z=Z1:Z2
         for A=1:3Z
-            next = listIsotope(Z, A; format)
+            next = listIsotope(Z, A; fmt)
             isnothing(next) ? false : push!(o, next)
         end
     end
@@ -200,9 +200,9 @@ function listIsotopes(Z1::Int, Z2::Int; format=Object)
     return o
 
 end
-function listIsotopes(itrZ; format=Object)
+function listIsotopes(itrZ; fmt=Object)
 
-    return listIsotopes(itrZ.start, itrZ.stop; format=Object)
+    return listIsotopes(itrZ.start, itrZ.stop; fmt=Object)
 
 end
 
@@ -260,7 +260,7 @@ function castIsotope(;Z=1, A=1, msg=true)
 
     o = Isotope(symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra)
 
-    msg && println("Isotope created: " * listIsotope(Z, A ; format=String))
+    msg && println("Isotope created: " * listIsotope(Z, A ; fmt=String))
 
     return o
 

@@ -84,9 +84,15 @@ Atom
 Orbit
 SpinOrbit
 Term
+listElement(Z::Int; fmt=Object)
+listElements(Z1::Int, Z2::Int; fmt=Object)
 castElement(;Z=1, msg=true)
+listIsotope(Z::Int, A::Int; fmt=Object)
+listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 castIsotope(;Z=1, A=1, msg=true)
+listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
+listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 castAtom(;Z=1, A=1, Q=0, msg=true)
 castOrbit(;n=1, ℓ=0, msg=true)
 createSpinOrbit(o::Orbit; up=true, msg=true)
@@ -247,7 +253,7 @@ fits_rename_key(filename::String, hduindex::Int, keyold::String, keynew::String)
 
 ```@docs
 FORTRAN_format
-cast_FORTRAN_format(str::String)
+cast_FORTRAN_fmt(str::String)
 cast_FORTRAN_datatype(str::String)
 ```
 
