@@ -107,24 +107,24 @@ function _infoIsotope(Z::Int, A::Int)
     dict = dictIsotopes
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
-    strπ = isotope.π == 1 ? "⁺" : "⁻"
+    strπ = isotope.π == 1 ? "even" : "odd"
     strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
     strT½ = isotope.T½ == 1e100 ? "stable" : repr(isotope.T½) * " years"
 
     str = "Isotope: " * isotope.name * "-" * repr(isotope.A)
-    str *= "\n    symbol: " * isotope.symbol
-    str *= "\n    element: " * isotope.name
-    str *= "\n    atomic number: Z = " * repr(isotope.Z)
-    str *= "\n    atomic mass number: A = " * repr(isotope.A)
-    str *= "\n    neutron number: N = " * repr(isotope.N)
-    str *= "\n    rms nuclear charge radius: R = " * repr(isotope.R) * " fm"
-    str *= "\n    atomic mass: M = " * repr(isotope.M) * " amu"
-    str *= "\n    nuclear spin: I = " * strRational(isotope.I) * " ħ"
-    str *= "\n    parity of nuclear state: π = " * strπ
-    str *= "\n    nuclear magnetic dipole moment: μI = " * repr(isotope.mdm) * "μN"
-    str *= "\n    nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * "barn"
-    str *= "\n    relative abundance: RA = " * strRA
-    str *= "\n    lifetime: " * strT½
+    str *= "\n  symbol: " * isotope.symbol
+    str *= "\n  element: " * isotope.name
+    str *= "\n  atomic number: Z = " * repr(isotope.Z)
+    str *= "\n  atomic mass number: A = " * repr(isotope.A)
+    str *= "\n  neutron number: N = " * repr(isotope.N)
+    str *= "\n  rms nuclear charge radius: R = " * repr(isotope.R) * " fm"
+    str *= "\n  atomic mass: M = " * repr(isotope.M) * " amu"
+    str *= "\n  nuclear spin: I = " * strRational(isotope.I) * " ħ"
+    str *= "\n  parity of nuclear state: π = " * strπ
+    str *= "\n  nuclear magnetic dipole moment: μI = " * repr(isotope.mdm) * " μN"
+    str *= "\n  nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * " barn"
+    str *= "\n  relative abundance: RA = " * strRA
+    str *= "\n  lifetime: " * strT½
 
     return println(str)
 
@@ -148,7 +148,7 @@ listIsotope(1,3; fmt=Info)
     rms nuclear charge radius: R = 1.7591 fm
     atomic mass: M = 3.016049281 amu
     nuclear spin: I = 1/2 ħ
-    parity of nuclear state: π = ⁺
+    parity of nuclear state: π = even
     nuclear magnetic dipole moment: μI = 2.97896246μN
     nuclear electric quadrupole moment: Q = 0.0barn
     relative abundance: RA = trace
@@ -177,14 +177,12 @@ Output options: `Object` (default), `String`, `Latex`, `Info`.
 listIsotopes(1,3) == listIsotopes(1:3)
  true
 
-listIsotopes(1:2; fmt=Object)
-5-element Vector{Any}:
- Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
- Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1//1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
- Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
- Isotope("³He", "helium", 2, 3, 1, 1.9661, 3.016029322, 1//2, 1, 1.0e100, -2.12762531, 0.0, 0.0002)
- Isotope("⁴He", "helium", 2, 4, 2, 1.6755, 4.002603254, 0//1, 1, 1.0e100, 0.0, 0.0, 99.9998)
-```
+ listIsotopes(1:1; fmt=Info)
+ 3-element Vector{Any}:
+  Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+  Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
+  Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
+ ```
 """
 function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 
@@ -230,8 +228,8 @@ Create Isotope with fields
 isotope = castIsotope(Z=1, A=3, msg=false)
   Isotope("³T", tritium, 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
-isotope.ra
-  99.9855
+isotope.T½
+  12.33
 
 castIsotope(Z=1,A=3);
   Isotope created: tritium-3
