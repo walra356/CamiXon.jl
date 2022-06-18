@@ -377,6 +377,7 @@ Application:
 
 ```@docs
 isforward(notation)
+isregular(ordering)
 fdiff_weight(k::Int, j::Int)
 ```
 

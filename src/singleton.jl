@@ -6,6 +6,12 @@ struct fwd
 struct bwd
     end
 
+struct reg
+    end
+
+struct rev
+    end
+
 struct Object
     end
 
@@ -32,6 +38,27 @@ function isforward(notation)
     notation === bwd && return false
 
     error("Error: unknown fdiff notation type")
+
+end
+# ============================= End ============================================
+
+# ============================= isregular(ordering) ============================
+"""
+
+function isregular(ordering)
+
+Boolean status of ordering, with options: `reg` and `rev`.
+#### Example:
+isregular(reg)
+  true
+"""
+function isregular(ordering)
+
+    ordering === reg && return true
+
+    ordering === rev && return false
+
+    error("Error: unknown fdiff ordering type")
 
 end
 # ============================= End ===========================

@@ -27,19 +27,43 @@ end
 # ============== fdiff_expansion_weights(coeffs, fwd) ==========================
 
 # ..............................................................................
-function fwd_expansion_weights(coeffs)
+function reg_fwd_expansion_weights(coeffs)
 
     k = Base.length(coeffs)-1
 
-    return [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j) for p=j:k]) for j=0:k]
+    o = [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j) for p=j:k]) for j=0:k]
+
+    return o
 
 end
 # ..............................................................................
-function bwd_expansion_weights(coeffs)
+function rev_fwd_expansion_weights(coeffs)
 
     k = Base.length(coeffs)-1
 
-    return [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
+    o = [Base.sum([coeffs[p+1] * fdiff_weight(p, p-j) for p=j:k]) for j=k:-1:0]
+
+    return o
+
+end
+# ..............................................................................
+function reg_bwd_expansion_weights(coeffs)
+
+    k = Base.length(coeffs)-1
+
+    o = [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=0:k]
+
+    return o
+
+end
+# ..............................................................................
+function rev_bwd_expansion_weights(coeffs)
+
+    k = Base.length(coeffs)-1
+
+    o = [sum([coeffs[p+1] * fdiff_weight(p, j) for p=j:k]) for j=k:-1:0]
+
+    return o
 
 end
 # ..............................................................................
@@ -100,8 +124,25 @@ bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
 """
 function fdiff_expansion_weights(coeffs, notation=bwd)
 
-    o = CamiXon.isforward(notation) ? fwd_expansion_weights(coeffs) :
-                                      bwd_expansion_weights(coeffs)
+    o = CamiXon.isforward(notation) ? reg_fwd_expansion_weights(coeffs) :
+                                      rev_bwd_expansion_weights(coeffs)
+end
+
+
+function fdiff_expansion_weights0(coeffs, notation=bwd, ordering=rev)
+
+    if isforward(notation)
+
+        o = isregular(ordering) ? reg_fwd_expansion_weights(coeffs) : 
+                                  rev_fwd_expansion_weights(coeffs)
+    else
+
+        o = isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
+                                  rev_bwd_expansion_weights(coeffs)
+    end
+
+    return o
+
 end
 
 # =========== fdiff_expansion(coeffs, f, notation=fwd) =========================

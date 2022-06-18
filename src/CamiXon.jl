@@ -14,6 +14,7 @@ export strRational
 export fwd
 export bwd
 export isforward
+export isregular
 export Object
 export Info
 export Latex
