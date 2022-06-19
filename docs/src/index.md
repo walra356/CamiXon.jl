@@ -675,22 +675,24 @@ Rewriting the r.h.s. as a single summation in powers of ``∇`` for given value
 of ``n`` and ``x`` we obtain an expression of the form
 
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=1}^{k}l_{p}^{\prime}(x)∇^{p}f[n]+⋯,
+\frac{df}{dx}[n+x]=\sum_{p=1}^{k}β_p(x)∇^{p}f[n]+⋯,
 ```
 
-where ``l_{p}^{\prime}(x)`` represents the *finite-difference expansion
-coefficients* for *lagrangian differentiation* at position ``n+x``. These
+where ``β_p(x)`` represents the *finite-difference expansion coefficients*
+for *lagrangian differentiation* at position ``n+x``. These
 coefficients are determined numerically by polynomial multiplication after
-adding the ``p=0`` term, ``l_{0}^{\prime}(x)\equiv 0``, to the first sum.
+adding the (vanishing) ``p=0`` term to the first sum. Hence, ``β_p(x)\equiv 0``.
 The corresponding coefficient vector is generated in *forward order* by the
 function [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref). Evaluating
 the finite-difference expansion up to order ``k`` we obtain
 
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=0}^{k}l_{p}^{\prime}(x)∇^{p}f[n]=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j],
+\frac{df}{dx}[n+x]
+=\sum_{p=0}^{k}l_{p}^{\prime}(x)∇^{p}f[n]
+=\sum_{j=0}^{k}s_{j}^{k}(x)f[n-j],
 ```
 
-where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}l_{p}^{\prime}(x)c_{j}^{p}`` are the
+where the ``s_{j}^{k}(x)=\sum_{p=j}^{k}β_p(x)c_{j}^{p}`` are the
 ``k^{th}``-order lagrangian differentiation weights.  After changing dummy
 index to reverse the summation from backward to forward order the expansion
 becomes
