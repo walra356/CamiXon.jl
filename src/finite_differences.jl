@@ -305,7 +305,7 @@ function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T<:Real, V<:R
     k > 0 || error("Error: k ≥ 1 required for lagrangian interpolation")
     n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
     α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
-    o = fdiff_expansion(α, f[n:n+k], fwd)
+    o = fdiff_expansion(α, f[n:n+k], fwd, reg)
 
     return o
 
