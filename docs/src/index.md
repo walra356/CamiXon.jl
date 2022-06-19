@@ -550,6 +550,12 @@ F_j^k(x)= \sum_{p=j}^{k} (-1)^k α_p(x) c_j^p
 are the *lagrangian interpolation weights* corresponding to the point
 ``f[n-x]``.
 
+Symmetry relation:
+
+```math
+\bar{F}^k(-k-x) = F^k(x)
+```
+
 Functions:
 
 [`fdiff_expansion_weights(coeffs, fwd, reg)`](@ref)
@@ -587,6 +593,7 @@ where
 ```math
 β_p(x) ≡ (x)_p/p! = (-1)^p α_p(x)
 ```
+
 is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
 interval ``-k ≤x ≤0\ \ (n-k \le n+x \le n)``, with
@@ -606,15 +613,29 @@ f[n+x] =\sum_{p=0}^{k}β_p(x)∇^pf[n]
 = B^k(x) ⋅ f[n:-1:n-k],
 ```
 
-where the ``k+1`` *weights* ``B^k_j(x)= \sum_{p=j}^{k} β_p(x) c_j^p`` are the
-corresponding *lagrangian interpolation weights*.  After changing dummy index
-to obtain forward order the expansion becomes
+where the ``k+1`` *weights*
+
+```math
+B^k_j(x)= \sum_{p=j}^{k} β_p(x) c_j^p
+```
+
+are the corresponding *lagrangian interpolation weights*.  After changing dummy
+index (to obtain forward ordering of the function vector) the expansion becomes
+
 ```math
 f[n+x]
 =\sum_{p=0}^{k}β_p(x)∇^pf[n]
 = \sum_{j=0}^{k}B_{k-j}^k(x)f[n-k+j]
 =\bar{B}^k(x) ⋅ f[n-k:n].
 ```
+
+Symmetry relations:
+
+```math
+B^k(x) = F^k(x)
+\bar{B}^k(-k-x) = F^k(x)
+```
+
 
 Function:
 
