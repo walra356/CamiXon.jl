@@ -13,6 +13,8 @@ export strRational
 
 export fwd
 export bwd
+export reg
+export rev
 export isforward
 export isregular
 export Object
