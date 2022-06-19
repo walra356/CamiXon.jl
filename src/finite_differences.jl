@@ -316,10 +316,10 @@ end
 @doc raw"""
     fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 
-Finite-difference expansion coefficient vector ``[β_0(x),\ ⋯,\ β_p(x)]``
+Finite-difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
 defining ``k^{th}``-order lagrangian *differentiation*
 of the tabulated analytic function ``f(n+x)`` at position ``x``,
-    
+
 ```math
 \frac{df}{dx}[n+x]=\sum_{p=0}^kβ_p(x)∇^{p}f[n]
 ```
