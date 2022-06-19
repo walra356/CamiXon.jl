@@ -58,8 +58,8 @@ using Test
     @test fdiff_expansion_weights([0,1,2,3,4,5],fwd,reg) ==  [-3, 15, -33, 37, -21, 5]
     @test fdiff_expansion_weights([0,1,2,3,4,5],bwd,rev) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_weights([0,1,2,3,4,5]) == [-5, 29, -69, 85, -55, 15]
-    @test fdiff_expansion([1,-1,1,-1],[1,4,9,16],fwd) == 0
-    @test fdiff_expansion([1,1,1,1],[1,4,9,16],bwd) == 25
+    @test fdiff_expansion([1,-1,1,-1],[1,4,9,16],fwd,reg) == 0
+    @test fdiff_expansion([1,1,1,1],[1,4,9,16],bwd,rev) == 25
     @test fdiff_expansion([1,1,1,1],[1,4,9,16]) == 25
     @test fdiff_expansion_coeffs_differentiation(2,0) == [0.0, 1.0, 0.5]
     @test fdiff_differentiation([0.0, 1, 4, 9, 16, 25]; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
