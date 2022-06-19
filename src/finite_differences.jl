@@ -68,7 +68,7 @@ function rev_bwd_expansion_weights(coeffs)
 end
 # ..............................................................................
 @doc raw"""
-    fdiff_expansion_weights(coeffs[, notation=bwd])
+    fdiff_expansion_weights(coeffs[, notation=bwd[, ordering=rev]])
 
 Expansion weights corresponding to the expansion coefficients `coeffs` of
 a finite difference expansion.
@@ -115,25 +115,25 @@ where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied to define the expansion.
 #### Example:
 ```
 k=5
-α = β = UnitRange(0,k)
-nFk = fdiff_expansion_weights(α, fwd); println("nFk = $(nFk)")
-bBk = fdiff_expansion_weights(β); println("bBk = $(bBk)")
-  nFk = [-3, 15, -33, 37, -21, 5]
-  bBk = [-5, 29, -69, 85, -55, 15]
+x = 1
+α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
+β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
+Fk = fdiff_expansion_weights(α, fwd, reg); println("Fk = $(Fk)")
+Bk = fdiff_expansion_weights(β); println("Bk = $(Bk)")
+  Fk = [6, -15, 20, -15, 6, -1]
+  Bk = [6, -15, 20, -15, 6, -1]
+
+x = -k-1
+β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
+revBk = fdiff_expansion_weights(β); println("revBk = $(revBk)")
+  revBk = [6, -15, 20, -15, 6, -1]
 ```
 """
-function fdiff_expansion_weights(coeffs, notation=bwd)
-
-    o = CamiXon.isforward(notation) ? reg_fwd_expansion_weights(coeffs) :
-                                      rev_bwd_expansion_weights(coeffs)
-end
-
-
-function fdiff_expansion_weights0(coeffs, notation=bwd, ordering=rev)
+function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
     if isforward(notation)
 
-        o = isregular(ordering) ? reg_fwd_expansion_weights(coeffs) : 
+        o = isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
                                   rev_fwd_expansion_weights(coeffs)
     else
 
