@@ -709,7 +709,7 @@ Functions:
 `` → B^k(x) ≡ [B^k_0(x),⋯\ B^k_k(x)]``
 
 [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
-`` → \bar{B}^k(x) ≡ [\bar{B}^k_k(x),⋯\ \bar{B}^k_0(x)]``
+`` → \bar{B}^k(x) ≡ [B^k_k(x),⋯\ B^k_0(x)]``
 
 where
 
