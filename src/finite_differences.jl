@@ -149,7 +149,7 @@ end
 
 # ..............................................................................
 @doc raw"""
-    fdiff_expansion(coeffs, f, notation=bwd)
+    fdiff_expansion(coeffs, f[, notation=bwd[, ordering=rev]])
 
 Finite difference expansion of the analytical function f(x) tabulated
 in *forward order* (growing index) at ``k+1`` positions on a uniform grid.
@@ -192,7 +192,7 @@ at ``k+1`` points, `f=[1,4,9,16]`.
 α=[1,-1,1,-1]
 β=[1,1,1,1]
 f=[1,4,9,16]
-fdiff_expansion(α, f, fwd)      # n=1, f[n]=1, f[n-1] → 0
+fdiff_expansion(α, f, fwd, reg)      # n=1, f[n]=1, f[n-1] → 0
  0
 
 fdiff_expansion(β, f)           # n=4, f[n]=16, f[n+1] → 25

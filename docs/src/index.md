@@ -488,7 +488,7 @@ where the `coeffs`  ``  β ≡ [β_0,⋯\ β_k]`` define the expansion.
 
 ```@docs
 fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
-fdiff_expansion(coeffs, f, notation=bwd)
+fdiff_expansion(coeffs, f, notation=bwd, ordering=rev)
 ```
 
 ### Lagrangian interpolation
