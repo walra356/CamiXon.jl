@@ -677,8 +677,8 @@ where ``β_p(x)`` represents the *finite-difference expansion coefficients*
 for *lagrangian differentiation* at position ``n+x``. These
 coefficients are determined numerically by polynomial multiplication. As the
 expansion algorith requires the presentce of a ``β_0(x)`` coefficient we add
-a ``p=0`` term with ``β_p(x)\equiv 0``. The corresponding coefficient vector is
-given by the function [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref).
+a (vanishing) ``p=0`` term, ``β_0(x)\equiv 0``. The corresponding coefficient
+vector is given by [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref).
 Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
@@ -701,7 +701,7 @@ dummy index to reverse the summation the expansion becomes
 
 ```math
 \frac{df}{dx}[n+x]]
-= \sum_{j=0}^{k}s^k_x[j]f[n-k+j]
+=\sum_{j=0}^{k}\bar{B}^k_j(x)f[n-k+j]
 =\bar{B}^k(x) ⋅ f[n-k:n],
 ```
 
@@ -711,10 +711,10 @@ the function [`fdiff_expansion_weights(coeffs, bwd, rev)`](@ref).
 Functions:
 
 `β` = [`fdiff_expansion_coeffs_differentiation(k, x)`](@ref)
-``→ [l_0^{\prime}(x),⋯\ l_k^{\prime}(x)]``
+``→ [β_0(x),⋯\ β_k(x)]``
 
-[`fdiff_expansion_weights(β, bwd, rev)`](@ref)
-``s^k_x[j] ≡ → [s_k^k(x),⋯\ s_0^k(x)]``
+`\bar{B}^k(x)` = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
+`` → [\bar{B}^k_k(x),⋯\ \bar{B}^k_0(x)]``
 
 ```@docs
 fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
