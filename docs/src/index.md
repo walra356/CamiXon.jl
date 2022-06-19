@@ -633,9 +633,11 @@ Symmetry relations:
 
 ```math
 B^k(x) = F^k(x)
-\bar{B}^k(-k-x) = F^k(x)
 ```
 
+```math
+\bar{B}^k(-k-x) = F^k(x)
+```
 
 Function:
 
