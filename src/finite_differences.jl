@@ -24,7 +24,7 @@ function fdiff_weight(k::Int, j::Int)
 
 end
 
-# ============== fdiff_expansion_weights(coeffs, fwd) ==========================
+# ============== fdiff_expansion_weights(coeffs, bwd, rev) =====================
 
 # ..............................................................................
 function reg_fwd_expansion_weights(coeffs)
@@ -88,7 +88,7 @@ expansion coefficients ``α ≡ [α_0^k,⋯\ α_k^k]`` of the ``k^{th}``-order
 where ``f[n:n+k]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(α, fwd)`](@ref)
+[`fdiff_expansion_weights(α, fwd, reg)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
 where `` α ≡ [α_0,⋯\ α_k]`` has to be supplied to define the expansion.
@@ -108,7 +108,7 @@ the ``k^{th}``-order *backward-difference* expansion,
 where ``f[n-k:n]`` are elements of the
 analytic function ``f`` tabulated in *forward* order.
 
-[`fdiff_expansion_weights(β, bwd)`](@ref)
+[`fdiff_expansion_weights(β, bwd, rev)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
 where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied to define the expansion.
@@ -369,7 +369,7 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     m = (l÷(k+1))*(k+1)
 
     β = [fdiff_expansion_coeffs_differentiation(k, x) for x=-k:0]
-    w = [fdiff_expansion_weights(β[i], bwd) for i ∈ eachindex(β)]
+    w = [fdiff_expansion_weights(β[i]) for i ∈ eachindex(β)]
 
     f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
 
@@ -408,7 +408,7 @@ function create_lagrange_differentiation_matrix(k::Int)
 
     for i=0:k
         coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k,-k+i)
-        m[1+i,1:k+1] = fdiff_expansion_weights(coeffs, bwd)
+        m[1+i,1:k+1] = fdiff_expansion_weights(coeffs)
     end
 
     return m

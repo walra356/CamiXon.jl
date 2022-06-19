@@ -55,8 +55,8 @@ using Test
     @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
     @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
     @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
-    @test fdiff_expansion_weights([0,1,2,3,4,5],fwd) ==  [-3, 15, -33, 37, -21, 5]
-    @test fdiff_expansion_weights([0,1,2,3,4,5],bwd) == [-5, 29, -69, 85, -55, 15]
+    @test fdiff_expansion_weights([0,1,2,3,4,5],fwd,reg) ==  [-3, 15, -33, 37, -21, 5]
+    @test fdiff_expansion_weights([0,1,2,3,4,5],bwd,rev) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion_weights([0,1,2,3,4,5]) == [-5, 29, -69, 85, -55, 15]
     @test fdiff_expansion([1,-1,1,-1],[1,4,9,16],fwd) == 0
     @test fdiff_expansion([1,1,1,1],[1,4,9,16],bwd) == 25
