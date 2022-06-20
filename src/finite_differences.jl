@@ -244,11 +244,11 @@ f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 #### Examples:
 ```
 k = 5; x = 1
-l = fdiff_expansion_coeffs_interpolation(k, x, fwd); println(l)
-  [1, -1, 1, -1, 1, -1]
+α = fdiff_expansion_coeffs_interpolation(k, x, fwd); println("α = $α")
+  α = [1, -1, 1, -1, 1, -1]
 
-l = fdiff_expansion_coeffs_interpolation(k, x, bwd); println(l)
-  [1, 1, 1, 1, 1, 1]
+β = fdiff_expansion_coeffs_interpolation(k, x, bwd); println("β = $β")
+  β = [1, 1, 1, 1, 1, 1]
 ```
 """
 function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
