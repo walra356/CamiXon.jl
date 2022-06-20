@@ -3,23 +3,24 @@
 @doc raw"""
     fdiff_expansion_coeffs_adams_moulton(k [; T=Int])
 
-``k^{th}``-order Adams-Moulton expansion coefficients,
+Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
+defining ``k^{th}``-order Adams-Moulton expansion,
 
 ```math
--\frac{∇}{ln(1-∇)} = \sum_{p=0}^{\infty}b_p∇^p= 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯.
+-\frac{∇}{ln(1-∇)}
+= \sum_{p=0}^{\infty}β_p∇^p
+= 1 - \frac{1}{2}∇ - \frac{1}{12}∇^2 - \frac{1}{24}∇^3 +⋯.
 ```
-The weights are stored in *forward* order: ``[b_0^k,⋯\ b_k^k]`` -
-order of use in summation.
 #### Examples:
 ```
 k = 5
-b = fdiff_expansion_coeffs_adams_moulton(k::Int); println(b)
+β = fdiff_expansion_coeffs_adams_moulton(k::Int); println(b)
  Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
 
-D = denominator(gcd(b)); println(D)
+D = denominator(gcd(β)); println(D)
  1440
 
-o = convert(Vector{Int},(b .* D)); println(o)
+o = convert(Vector{Int},(β .* D)); println(o)
  [1440, -720, -120, -60, -38, -27]
 ```
 """
