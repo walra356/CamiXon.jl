@@ -19,7 +19,9 @@ using Test
     @test get(dictAtomicNumbers, "Rb", nothing) == 37
     @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
+    @test listElement("H") == listElement(1)
     @test listElement(1; fmt=String) == "H, hydrogen, Z=1, weight=1.008"
+    @test listElements(1,3) == listElements(1:3)
     @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]
     @test castIsotope(Z=1,A=1,msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
     @test listIsotope(2,3; fmt=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"

@@ -58,8 +58,8 @@ function _infoElement(Z::Int)
 end
 #...............................................................................
 """
-    listElement(Z::Int; fmt=Object)
-    listElement(elt::String; fmt=Object)
+    listElement(Z::Int[; fmt=Object])
+    listElement(elt::String[; fmt=Object])
 
 Properties of element with atomic number `Z`.
 
@@ -99,6 +99,9 @@ function listElement(elt::String; fmt=Object)
 end
 #...............................................................................
 """
+    listElements(Z1::Int, Z2::Int[; fmt=Object])
+    listElements(itrZ::UnitRange{Int}[; fmt=Object])
+
 #### Example
 ```
 listElements(1,3) == listElements(1:3)
@@ -131,7 +134,7 @@ function listElements(Z1::Int, Z2::Int; fmt=Object)
     return o
 
 end
-function listElements(itrZ; fmt=Object)
+function listElements(itrZ::UnitRange{Int}; fmt=Object)
 
     return listElements(itrZ.start,itrZ.stop; fmt)
 
