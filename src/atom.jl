@@ -171,7 +171,7 @@ atom
 
 atom.isotope.T½
   12.33
-  ```
+```
 """
 function castAtom(;Z=1, A=1, Q=0, msg=true)
 
