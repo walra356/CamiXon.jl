@@ -36,7 +36,7 @@ function _strElement(Z::Int)
 
     str = element.symbol
     str *= ", " * element.name
-    str *= ", Z=" * element.Z
+    str *= ", Z=$Z"
     str *= ", weight=" * repr(element.weight)
 
     return str
@@ -67,7 +67,7 @@ Output options: `Object` (default), `String`, `Info`.
 ```
 listElement("H") == listElement(1)
   true
-  
+
 listElement(1; fmt=Info)
   Element: hydrogen
     symbol: H
