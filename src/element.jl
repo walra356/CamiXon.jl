@@ -65,6 +65,9 @@ Properties of element with atomic number `Z`.
 Output options: `Object` (default), `String`, `Info`.
 #### Example:
 ```
+listElement("H") == listElement(1)
+  true
+  
 listElement(1; fmt=Info)
   Element: hydrogen
     symbol: H
@@ -73,6 +76,17 @@ listElement(1; fmt=Info)
 ```
 """
 function listElement(Z::Int; fmt=Object)
+
+    fmt === Object && return _stdElement(Z)
+    fmt === String && return _strElement(Z)
+    fmt === Info && return _infoElement(Z)
+
+    return error("Error: invalid output type")
+
+end
+function listElement(elt::String; fmt=Object)
+
+    Z = get(dictAtomicNumbers, elt, nothing)
 
     fmt === Object && return _stdElement(Z)
     fmt === String && return _strElement(Z)
