@@ -865,6 +865,7 @@ strRational(i::T) where T<:Union{Rational{Int}, Int}
 ## Dicts
 
 ```@docs
+dictAtomicNumbers
 dictElements
 dictIsotopes
 ```

@@ -36,7 +36,7 @@ function _strElement(Z::Int)
 
     str = element.symbol
     str *= ", " * element.name
-    str *= ", Z=$Z"
+    str *= ", Z=" * element.Z
     str *= ", weight=" * repr(element.weight)
 
     return str
@@ -74,7 +74,7 @@ listElement(1; fmt=Info)
 """
 function listElement(Z::Int; fmt=Object)
 
-    fmt === Object && return _stdElement(Z, A, Q)
+    fmt === Object && return _stdElement(Z)
     fmt === String && return _strElement(Z)
     fmt === Info && return _infoElement(Z)
 

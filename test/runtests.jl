@@ -16,6 +16,8 @@ using Test
     @test frac(-5//2) == "-⁵/₂"
     @test strRational(-5) == "-5"
     @test bohrformula(2, 4) == -1//8
+    @test get(dictAtomicNumbers, "Rb", nothing) == 37
+    @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test listElement(1; fmt=String) == "H, hydrogen, Z=1, weight=1.008"
     @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026" ]

@@ -34,6 +34,7 @@ export calibrationReport
 
 export bohrformula
 export Element
+export dictAtomicNumbers
 export dictElements
 export listElement
 export listElements

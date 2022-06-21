@@ -200,7 +200,7 @@ function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 end
 function listIsotopes(itrZ; fmt=Object)
 
-    return listIsotopes(itrZ.start, itrZ.stop; fmt=Object)
+    return listIsotopes(itrZ.start, itrZ.stop; fmt)
 
 end
 
