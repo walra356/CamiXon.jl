@@ -74,12 +74,16 @@ function _infoAtom(Z::Int, A::Int, Q::Int)
 end
 #...............................................................................
 """
-    listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
+    listAtom(Z::Int, A::Int, Q::Int[; fmt=Object])
+    listAtom(elt::String, A::Int, Q::Int[; fmt=Object])
 
 Properties of atom with atomic number `Z`, atomic mass number `A`,
 ionic charge `Q`.
 #### Example:
 ```
+listAtom("H", 3, 0) == listAtom(1, 3, 0)
+  true
+
 listAtom(1, 3, 0; fmt=Info)
 Element: hydrogen
     symbol: H
@@ -97,9 +101,22 @@ function listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
     return error("Error: invalid output type")
 
 end
+function listAtom(elt::String, A::Int, Q::Int; fmt=Object)
+
+    dict = dictAtomicNumbers
+    Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
+
+    fmt === Object && return _stdAtom(Z, A, Q)
+    fmt === String && return _strAtom(Z, A, Q)
+    fmt === Info && return _infoAtom(Z, A, Q)
+
+    return error("Error: invalid output type")
+
+end
 #...............................................................................
 """
-    listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
+    listAtoms(Z1::Int, Z2::Int, Q::Int[; fmt=Object])
+    listAtoms(itrZ::UnitRange{Int}, Q::Int[; fmt=Object])
 
 Properties of atoms with atomic number in the range `Z1:Z3` and
 ionic charge `Q`.
@@ -137,7 +154,7 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
     return o
 
 end
-function listAtoms(itrZ, Q::Int; fmt=Object)
+function listAtoms(itrZ::UnitRange{Int}, Q::Int; fmt=Object)
 
     return listAtoms(itrZ.start,itrZ.stop, Q; fmt)
 
