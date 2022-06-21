@@ -59,6 +59,7 @@ end
 #...............................................................................
 """
     listElement(Z::Int; fmt=Object)
+    listElement(elt::String; fmt=Object)
 
 Properties of element with atomic number `Z`.
 
@@ -86,7 +87,8 @@ function listElement(Z::Int; fmt=Object)
 end
 function listElement(elt::String; fmt=Object)
 
-    Z = get(dictAtomicNumbers, elt, nothing)
+    dict = dictAtomicNumbers
+    Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
     fmt === Object && return _stdElement(Z)
     fmt === String && return _strElement(Z)
