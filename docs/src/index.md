@@ -85,6 +85,7 @@ Orbit
 SpinOrbit
 Term
 listElement(Z::Int; fmt=Object)
+listElement(elt::String; fmt=Object)
 listElements(Z1::Int, Z2::Int; fmt=Object)
 castElement(;Z=1, msg=true)
 listIsotope(Z::Int, A::Int; fmt=Object)
