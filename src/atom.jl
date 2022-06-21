@@ -4,10 +4,10 @@
     Atom(Z, A, Q, Zc, element, isotope)
 
 Type with fields:
-* `     .Z`:  atomic number (`::Int`)
-* `     .A`:  atomic mass number in amu (`::Int`)
-* `     .Q`:  ionic charge in a.u. (`::Int`)
-* `    .Zc`:  Rydberg charge in a.u. (`::Int`)
+* `      .Z`:  atomic number (`::Int`)
+* `      .A`:  atomic mass number in amu (`::Int`)
+* `      .Q`:  ionic charge in a.u. (`::Int`)
+* `     .Zc`:  Rydberg charge in a.u. (`::Int`)
 * `.element`:  (`::Element`)
 * `.isotope`:  (`::Isotope`)
 
@@ -65,18 +65,19 @@ function _infoAtom(Z::Int, A::Int, Q::Int)
     strN = Q ≠ 0 ? " ion" : ", neutral atom"
 
     str = "Atom: " * atom.isotope.name * strN
-    str *= "\n    symbol: " * atom.isotope.symbol * strQ
-    str *= "\n    atomic charge: Z = $Z"
-    str *= "\n    Rydberg charge: Zc = $(Q+1)"
+    str *= "\n  symbol: " * atom.isotope.symbol * strQ
+    str *= "\n  atomic charge: Z = $Z"
+    str *= "\n  Rydberg charge: Zc = $(Q+1)"
 
     return println(str)
 
 end
 #...............................................................................
 """
+    listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 
-Properties of atom with atomic number `Z`, atomic mass number `A`, ionic charge `Q`.
-
+Properties of atom with atomic number `Z`, atomic mass number `A`,
+ionic charge `Q`.
 #### Example:
 ```
 listAtom(1, 3, 0; fmt=Info)
@@ -98,9 +99,10 @@ function listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 end
 #...............................................................................
 """
+    listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 
-Properties of atoms with atomic number in the range `Z1:Z3` and ionic charge `Q`.
-
+Properties of atoms with atomic number in the range `Z1:Z3` and
+ionic charge `Q`.
 #### Example
 ```
 listAtoms(1,3,0) == listAtoms(1:3,0)
@@ -146,12 +148,12 @@ end
     castAtom(;Z=1, A=1, Q=0, msg=true)
 
 Create Atom with fields:
-* `     .Z`:  atomic number (`::Int`)
-* `     .A`:  atomic mass number in amu (`::Int`)
-* `     .Q`:  ionic charge in a.u. (`::Int`)
-* `    .Zc`:  Rydberg charge in a.u. (`::Int`)
-*`.element`:  (`::Element`)
-*`.isotope`:  (`::Isotope`)
+* `      .Z`:  atomic number (`::Int`)
+* `      .A`:  atomic mass number in amu (`::Int`)
+* `      .Q`:  ionic charge in a.u. (`::Int`)
+* `     .Zc`:  Rydberg charge in a.u. (`::Int`)
+* `.element`:  (`::Element`)
+* `.isotope`:  (`::Isotope`)
 #### Examples:
 ```
 castAtom(Z=1, A=1, Q=0, msg=false)
