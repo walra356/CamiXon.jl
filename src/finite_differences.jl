@@ -272,11 +272,14 @@ end
 Finite difference lagrangian interpolation (by default *third* order) in
 between the elements of the analytic function `f` (uniformly tabulated in
 *forward* order starting at `x = x1` for position `x` in
-*fractional-index units*). The interpolation points lie on a polynomial curve
-of ``k^{th}`` degree (by default *third* degree) running through ``k+1`` points
-of the tabulated function. Outside the tabulated range, the output
-is a continuation of the lagrangian polynomial defined by the first/last
+*fractional-index units*). The interpolation points lie on a Lagrange
+polynomial of degree ``k`` (by default *third* degree) running through ``k+1``
+sunsequenct points of the tabulated function. Outside the tabulated range, the
+output is a continuation of the lagrangian polynomial defined by the first/last
 ``k+1`` tabulated points.
+
+Beware that the interpolation becomes inaccurate if the tabulated function
+cannot be approximated by a polynomial of degree ``k``.
 #### Examples:
 ```
 f = [1,2,3,4,5,6,7]
@@ -307,6 +310,65 @@ function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T<:Real, V<:R
     n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
     α = fdiff_expansion_coeffs_interpolation(k, n-x, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)
+
+    return o
+
+end
+# ======================== fdiff_lagrangian_next(f[; sense=fwd[, k=3]) ======================
+
+#........................................................................................
+function _forward_extrapolation(f::Vector{T}; k=3) where T<:Real
+
+    l = length(f)
+    k = min(k,l-1)
+    k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
+    β = fdiff_expansion_coeffs_interpolation(k, 1, bwd)
+    o = fdiff_expansion(β, f[l-k:l], bwd)
+
+    return o
+
+end
+#........................................................................................
+function _backward_extrapolation(f::Vector{T}; k=3) where T<:Real
+
+    l = length(f)
+    k = min(k,l-1)
+    k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
+    α = fdiff_expansion_coeffs_interpolation(k, 1, fwd)
+    o = fdiff_expansion(α, f[1:k+1], fwd)
+
+    return o
+
+end
+#........................................................................................
+@doc raw"""
+    fdiff_lagrangian_next(f::Vector{T}[; sense=fwd[, k=3]) where T<:Real
+
+Finite difference lagrangian extrapolation of the analytic function `f`
+(uniformly tabulated in *forward* order). The next value lies on a Lagrange
+polynomial of degree ``k`` (by default *third* degree) running through the last
+(sense=fwd) or first (sense= bwd) ``k+1`` tabulated points.
+
+Beware that Lagrange extrapolation becomes inaccurate if the tabulated function
+cannot be approximated by a polynomial of degree ``k``.
+#### Examples:
+```
+f = [1,4,9,16,25,36,49]; println("f = $f")
+o = fdiff_lagrangian_next(f; sense=fwd, k=2); println("next_fwd = $o")
+o = fdiff_lagrangian_next(f; sense=bwd, k=2); println("next_bwd = $o")
+  f = [1, 4, 9, 16, 25, 36, 49]
+  next_fwd = 64
+  next_bwd = 0
+```
+In this example the result is exact because the function is quadratic and
+the expansion is third order - see Figure below.
+
+![Image](./assets/Lagrange_polynomial_extrapolation.png)
+"""
+function fdiff_lagrangian_next(f::Vector{T}; sense=fwd, k=3) where T<:Real
+
+    o = isforward(sense) ? _forward_extrapolation(f; k) :
+                          _backward_extrapolation(f; k)
 
     return o
 

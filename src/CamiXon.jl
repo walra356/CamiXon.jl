@@ -70,6 +70,7 @@ export fdiff_expansion
 export fwd_diff_expansion_weights
 export fdiff_expansion_coeffs_interpolation
 export fdiff_interpolation
+export fdiff_lagrangian_next
 export fdiff_expansion_coeffs_differentiation
 export fdiff_differentiation
 export create_lagrange_differentiation_matrix
