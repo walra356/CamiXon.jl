@@ -215,7 +215,7 @@ end
 # ==============================================================================
 
 @doc raw"""
-    fdiff_expansion_coeffs_interpolation(k::Int, x::T, fwd) where T<:Real
+    fdiff_expansion_coeffs_interpolation(k::Int, x::T, bwd) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
 lagrangian interpolation of the tabulated analytic function ``f(n+x)``
