@@ -145,11 +145,11 @@ function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
 end
 
-# =========== fdiff_expansion(coeffs, f, notation=fwd) =========================
+# =========== fdiff_expansion(coeffs, f, notation=bwd) =========================
 
 # ..............................................................................
 @doc raw"""
-    fdiff_expansion(coeffs, f[, notation=bwd[, ordering=rev]])
+    fdiff_expansion(coeffs, f[, notation=bwd])
 
 Finite difference expansion of the analytical function f(x) tabulated
 in *forward order* (growing index) at ``k+1`` positions on a uniform grid.
@@ -252,7 +252,7 @@ k = 5; x = 1
   β = [1, 1, 1, 1, 1, 1]
 ```
 """
-function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
+function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=bwd) where T<:Real
 
     sgn = notation === fwd ? -1 : notation === bwd ? 1 :
                                   error("Error: unknown notation type")

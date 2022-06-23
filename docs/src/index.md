@@ -646,7 +646,7 @@ where
 `` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
 
 ```@docs
-fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=fwd) where T<:Real
+fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=bwd) where T<:Real
 fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T <: Real, V <: Real}
 ```
 

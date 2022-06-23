@@ -24,20 +24,20 @@ struct Latex
 # ============================= isforward(notation) ===========================
 
 """
-    function isforward(notation)
+    function isforward(val)
 
-Boolean status of notation, with options: `fwd` and `bwd`.
+Boolean status of val, with options: `fwd` and `bwd`.
 #### Example:
 isforward(fwd)
   true
 """
-function isforward(notation)
+function isforward(val)
 
     notation === fwd && return true
 
     notation === bwd && return false
 
-    error("Error: unknown fdiff notation type")
+    error("Error: invalid value of val (options: fwd, bwd)")
 
 end
 # ============================= End ============================================
