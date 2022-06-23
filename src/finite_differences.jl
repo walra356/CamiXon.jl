@@ -203,8 +203,9 @@ the expansion is third order (lagrangian expansion is based on the polynomial
 of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
 function).
 """
-function fdiff_expansion(coeffs, f, notation=bwd, ordering=rev)
+function fdiff_expansion(coeffs, f, notation=bwd)
 
+    ordering = isforward(notation) ? reg : rev
     w = fdiff_expansion_weights(coeffs, notation, ordering)
 
     return w ⋅ f
