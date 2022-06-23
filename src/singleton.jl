@@ -33,9 +33,9 @@ isforward(fwd)
 """
 function isforward(val)
 
-    notation === fwd && return true
+    val === fwd && return true
 
-    notation === bwd && return false
+    val === bwd && return false
 
     error("Error: invalid value of val (options: fwd, bwd)")
 
