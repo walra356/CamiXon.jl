@@ -360,8 +360,8 @@ o = fdiff_lagrangian_next(f; sense=bwd, k=2); println("next_bwd = $o")
   next_fwd = 64
   next_bwd = 0
 ```
-In this example the result is exact because the function is quadratic and
-the expansion is third order - see Figure below.
+In this example the result is exact because both the function and
+the expansion are quadratic - see Figure below.
 
 ![Image](./assets/Lagrange_polynomial_extrapolation.png)
 """
