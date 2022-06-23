@@ -26,10 +26,12 @@ struct Latex
 """
     function isforward(val)
 
-Boolean status of val, with options: `fwd` and `bwd`.
+Boolean status of `val`, with options: `fwd` (forward) and `bwd` (backward).
 #### Example:
+```
 isforward(fwd)
   true
+ ```
 """
 function isforward(val)
 
@@ -44,21 +46,22 @@ end
 
 # ============================= isregular(ordering) ============================
 """
+    function isregular(val)
 
-function isregular(ordering)
-
-Boolean status of ordering, with options: `reg` and `rev`.
+Boolean status of `val`, with options: `reg` (regular) and `rev` (reversed).
 #### Example:
+```
 isregular(reg)
   true
+```
 """
-function isregular(ordering)
+function isregular(val)
 
-    ordering === reg && return true
+    val === reg && return true
 
-    ordering === rev && return false
+    val === rev && return false
 
-    error("Error: unknown fdiff ordering type")
+    error("Error: invalid value of val (options: reg, rev)")
 
 end
 # ============================= End ===========================
