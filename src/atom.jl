@@ -206,7 +206,7 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
 end
 function castAtom(elt::String; A=1, Q=0, msg=true)
 
-    dict = dictAtomicNumbers0
+    dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
                 return error("Error: element $(elt) - not found in `dictAtomNumbers`")
 
