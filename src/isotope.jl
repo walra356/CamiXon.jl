@@ -206,8 +206,21 @@ end
 
 # ================= castIsotope(;Z=1, A=1, msg=true) ===========================
 
+#...............................................................................
+function _filter_isotopes(elt::String, A::Int)
+
+    elt == "D" && return  A == 2 ? 2 :
+                          error("Error: A = 2 expected for isotope $(elt) ")
+    elt == "T" && return  A == 3 ? 3 :
+                          error("Error: A = 3 expected for isotope $(elt) ")
+
+    return A
+
+end
+#...............................................................................
 """
     castIsotope(;Z=1, A=1, msg=true)
+    castIsotope(elt::String; A=1, msg=true)
 
 Create Isotope with fields
 * `     .symbol`: symbol (`::String`)
@@ -225,6 +238,9 @@ Create Isotope with fields
 * `     .T½`:  lifetime in years (`::Float64`)
 #### Examples:
 ```
+castIsotope("Rb"; A=87, msg=false) == castIsotope(Z=37, A=87, msg=false)
+  true
+
 isotope = castIsotope(Z=1, A=3, msg=false)
   Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
@@ -263,3 +279,26 @@ function castIsotope(;Z=1, A=1, msg=true)
     return o
 
 end
+function castIsotope(elt::String; A=1, msg=true)
+
+    dict = dictAtomicNumbers
+    Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
+        return error("Error: element $(elt) - not found in `dictAtomNumbers`")
+
+    A = _filter_isotopes(elt, A)
+
+    dict = dictIsotopes
+    isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
+    error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
+
+    (symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra) = isotope
+
+    o = Isotope(symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra)
+
+    msg && println("Isotope created: " * listIsotope(Z, A ; fmt=String))
+
+    return o
+
+end
+
+# ============================== end ===========================================

@@ -163,6 +163,7 @@ end
 
 """
     castAtom(;Z=1, A=1, Q=0, msg=true)
+    castAtom(elt::String; A=1, Q=0, msg=true)
 
 Create Atom with fields:
 * `      .Z`:  atomic number (`::Int`)
@@ -173,7 +174,10 @@ Create Atom with fields:
 * `.isotope`:  (`::Isotope`)
 #### Examples:
 ```
-castAtom(Z=1, A=1, Q=0, msg=false)
+castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
+  true
+
+castAtom(Z=1, A=3, Q=0, msg=false)
   Atom(1, 3, 0, 1, Element("hydrogen", "H", 1.008), Isotope("³T", "tritium",
   1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing))
 
@@ -194,6 +198,20 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
 
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
+
+    msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
+
+    return Atom(Z, A, Q, 1+Q, element, isotope)
+
+end
+function castAtom(elt::String; A=1, Q=0, msg=true)
+
+    dict = dictAtomicNumbers0
+    Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
+                return error("Error: element $(elt) - not found in `dictAtomNumbers`")
+
+    element = castElement(;Z, msg)
+    isotope = castIsotope(elt; A, msg)
 
     msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
 

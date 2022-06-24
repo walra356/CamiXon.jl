@@ -142,6 +142,7 @@ end
 # ------------------------------------------------------------------------------
 """
     castElement(;Z=1, msg=true)
+    castElement(elt::String; msg=true)
 
 Create Atom with fields
 * `  .name`:  name of element
@@ -149,6 +150,9 @@ Create Atom with fields
 * `.weight`:  relative atomic mass (atomic weight)
 #### Example:
 ```
+castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
+  true
+
 element = castElement(;Z=1, msg=true)
 element
   Element created: H, hydrogen, Z=1, weight=1.008
@@ -168,4 +172,22 @@ function castElement(;Z=1, msg=true)
     return Element(name, symbol, weight)
 
 end
+function castElement(elt::String; msg=true)
+
+    dict = dictAtomicNumbers
+    Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
+                return error("Error: element $(elt) - not found in `dictAtomNumbers`")
+
+    dict = dictElements
+    element = Z ∈ keys(dict) ? get(dict, Z, nothing) :
+              return error("Error: element Z = $Z - not found in `dictElements`")
+
+    (name, symbol, weight) = element
+
+    msg && println("Element created: " * listElement(Z; fmt=String) )
+
+    return Element(name, symbol, weight)
+
+end
+
 # ================================ End =========================================
