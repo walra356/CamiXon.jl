@@ -91,7 +91,8 @@ analytic function ``f`` tabulated in *forward* order.
 [`fdiff_expansion_weights(α, fwd, reg)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where `` α ≡ [α_0,⋯\ α_k]`` has to be supplied to define the expansion.
+where `` α ≡ [α_0,⋯\ α_k]`` has to be supplied in combination with `fwd` to
+indicate that the weights must be evaluated in forward-difference notation.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -111,7 +112,8 @@ analytic function ``f`` tabulated in *forward* order.
 [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied to define the expansion.
+where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied in combination with `bwd` to
+indicate that the weights must be evaluated in backward-difference notation.
 #### Example:
 ```
 k=5
@@ -119,13 +121,13 @@ x = 1
 α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
 β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
 Fk = fdiff_expansion_weights(α, fwd, reg); println("Fk = $(Fk)")
-Bk = fdiff_expansion_weights(β); println("Bk = $(Bk)")
+Bk = fdiff_expansion_weights(β, bwd, reg); println("Bk = $(Bk)")
   Fk = [6, -15, 20, -15, 6, -1]
   Bk = [6, -15, 20, -15, 6, -1]
 
 x = -k-1
 β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
-revBk = fdiff_expansion_weights(β); println("revBk = $(revBk)")
+revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
   revBk = [6, -15, 20, -15, 6, -1]
 ```
 """
@@ -212,19 +214,40 @@ function fdiff_expansion(coeffs, f, notation=bwd)
 
 end
 
-# ==============================================================================
+# ======= fdiff_expansion_coeffs_interpolation(k, x, notation=bwd) =============
 
+#...............................................................................
+function fwd_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
+
+    o = Base.ones(T,k+1)
+    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
+             (for p=1:k; o[p+1] = -o[p]*(x+p-1)/p end)
+
+    return o
+
+end
+#...............................................................................
+function bwd_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
+
+    o = Base.ones(T,k+1)
+    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
+             (for p=1:k; o[p+1] = o[p]*(x+p-1)/p end)
+
+    return o
+
+end
+#...............................................................................
 @doc raw"""
-    fdiff_expansion_coeffs_interpolation(k::Int, x::T, bwd) where T<:Real
+    fdiff_expansion_coeffs_interpolation(k::Int, x::T [, notation=bwd]) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
-lagrangian interpolation of the tabulated analytic function ``f(n+x)``
-at offset position ``x`` with respect to position ``n``.
+lagrangian interpolation any tabulated analytic function ``f[n]``
+at offset ``x`` with respect to index position ``n``.
 
 **Forward difference notation** (`notation = fwd`)
 
 ```math
-f[n-x] = (1 + ∇)^{-x} f[n] \equiv \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
+f[n-x] = (1 + Δ)^{-x} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
 ```
 where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ x\le 0``;
@@ -236,7 +259,7 @@ extrapolation to ``x\ge 0``.
 **Backward difference notation** (`notation = bwd`)
 
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
+f[n+x] = (1 - ∇)^{-x} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
 [`fdiff_expansion_coeffs_interpolation(k, x, bwd)`](@ref)
@@ -254,13 +277,8 @@ k = 5; x = 1
 """
 function fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=bwd) where T<:Real
 
-    sgn = notation === fwd ? -1 : notation === bwd ? 1 :
-                                  error("Error: unknown notation type")
-
-    o = Base.ones(T,k+1)
-    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
-             (for p=1:k; o[p+1] = sgn*o[p]*(x+p-1)/p end)
-
+    o = isforward(notation) ? fwd_expansion_coeffs_interpolation(k, x) :
+                              bwd_expansion_coeffs_interpolation(k, x)
     return o
 
 end
@@ -271,8 +289,8 @@ end
 
 Finite difference lagrangian interpolation (by default *third* order) in
 between the elements of the analytic function `f` (uniformly tabulated in
-*forward* order starting at `x = x1` for position `x` in
-*fractional-index units*). The interpolation points lie on a Lagrange
+*forward* order starting at `x = x1` for real position `x` in
+*index units*). The interpolation points lie on a Lagrange
 polynomial of degree ``k`` (by default *third* degree) running through ``k+1``
 sunsequenct points of the tabulated function. Outside the tabulated range, the
 output is a continuation of the lagrangian polynomial defined by the first/last
@@ -399,6 +417,7 @@ function fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
 #   in interval -k ≤ x ≤ 0
 # ==============================================================================
     a = Base.prepend!([1//i for i=1:k],[0//1])
+    x == 0 && return a
     b = CamiXon.fdiff_expansion_coeffs_interpolation(k, x, bwd)
 
     a,b = Base.promote(a,b)

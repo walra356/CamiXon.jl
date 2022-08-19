@@ -610,7 +610,7 @@ finite-difference expansion up to order ``k`` we obtain
 ```math
 f[n+x] =\sum_{p=0}^{k}β_p(x)∇^pf[n]
 = \sum_{j=0}^{k}B^k_j(x)f[n-j]
-= B^k(x) ⋅ f[n:-1:n-k],
+= \bar{B}^k(x) ⋅ f[n-k:n],
 ```
 
 where the ``k+1`` *weights*
@@ -619,20 +619,16 @@ where the ``k+1`` *weights*
 B^k_j(x)= \sum_{p=j}^{k} β_p(x) c_j^p
 ```
 
-are the corresponding *lagrangian interpolation weights*.  After changing dummy
-index (to obtain forward ordering of the function vector) the expansion becomes
-
-```math
-f[n+x]
-=\sum_{p=0}^{k}β_p(x)∇^pf[n]
-= \sum_{j=0}^{k}B_{k-j}^k(x)f[n-k+j]
-=\bar{B}^k(x) ⋅ f[n-k:n].
-```
+are the corresponding *lagrangian interpolation weights*.  
 
 Symmetry relations:
 
 ```math
 B^k(x) = F^k(x) = \bar{B}^k(-k-x)
+```
+
+```math
+\bar{B}^k(x) = B^k(-k-x)
 ```
 
 Function:
