@@ -31,7 +31,7 @@ Boolean status of `val`, with options: `fwd` (forward) and `bwd` (backward).
 ```
 isforward(fwd)
   true
- ```
+```
 """
 function isforward(val)
 

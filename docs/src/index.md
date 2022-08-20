@@ -51,7 +51,9 @@ the far field. The price we pay is that the radial Schrödinger equation has to
 be solved numerically by radial integration. Our strategy is to use both
 *inward* and *outward* integration and match the two branches by
 *equating the two solutions* for the *wavefunction*, ``χ(ρ)``, and its
-*derivative*, ``χ^′(ρ)``, at a point near the classical turning point of the radial motion of the electron. The basics of the solution can be found in the book *Atomic Structure Theory* by Walter R.Johnson.
+*derivative*, ``χ^′(ρ)``, at a point near the classical turning point of the
+radial motion of the electron. The basics of the solution can be found in the
+book *Atomic Structure Theory* by Walter R. Johnson.
 
 #### Illustration: the hydrogen 3d orbital
 
@@ -371,7 +373,7 @@ relation
 c_{k-j}^k=(-1)^k c_j^k.
 ```
 
-Application:  
+Coefficients:  
 
 [`fdiff_weight(k,j)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
@@ -431,12 +433,13 @@ f[n+k]
 \end{array}\right].
 ```
 
-Application:
+Coefficients:
 
 [`fdiff_expansion_weights(coeffs, fwd, reg)`](@ref)
 ``→ F^k ≡ [F_0^k,⋯\ F_k^k]``,
 
-where the `coeffs` ``  α ≡ [α_0,⋯\ α_k]`` define the expansion.
+where the `coeffs` ``  α ≡ [α_0,⋯\ α_k]`` are user supplied to define the
+expansion.
 
 **Backward difference notation**
 
@@ -479,19 +482,20 @@ the weights in backward order.
 In general there is *no simple symmetry relation* between
 ``B^k`` and ``F^k``.
 
-Application:
+Coefficients:
 
 [`fdiff_expansion_weights(coeffs, bwd, rev)`](@ref)
 `` → \bar{B}^{k} ≡ [B_k^k,⋯\ B_0^k]``,
 
-where the `coeffs`  ``  β ≡ [β_0,⋯\ β_k]`` define the expansion.
+where the `coeffs`  ``  β ≡ [β_0,⋯\ β_k]`` are user supplied to
+define the expansion.
 
 ```@docs
 fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 fdiff_expansion(coeffs, f, notation=bwd)
 ```
 
-### Lagrangian interpolation
+### Lagrange-polynomial interpolation
 
 This section build on the finite difference expansion methods
 
@@ -511,60 +515,59 @@ f[n+2] = (1 + Δ)^{-2} f[n] \equiv \sum_{p=0}^{\infty}(-1)^p pΔ^p f[n],
 ```math
 \vdots
 ```
-
 which can be generalized to the form of *lagrangian interpolation*,
 
 ```math
-f[n-x] = (1 + Δ)^{-x} f[n] \equiv \sum_{p=0}^{\infty} α_p(x) Δ^p f[n],
+f[n-ν] = (1 + Δ)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} α_p(ν) Δ^p f[n],
 ```
 where
 
 ```math
-α_p(x) ≡ (-1)^p(x)_p/p!
+α_p(ν) ≡ (-1)^p(ν)_p/p!
 ```
 is the ``p^{th}``-order *finite-difference
 expansion coefficient for lagrangian lagrangian_extrapolation* over the
-interval ``-k ≤x ≤0\ \ (n \le n-x \le n+k)``,
+interval ``-k ≤ν ≤0\ \ (n \le n-ν \le n+k)``,
 
 ```math
-(x)_{p}=\begin{cases}
+(ν)_{p}=\begin{cases}
 1 & p=0\\
-x(x+1)(x+2)\cdots(x+p-1) & p>0
+ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
 being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math
-f[n-x] =\sum_{p=0}^{k}α_p(x)Δ^pf[n]
-=\sum_{j=0}^{k}F_j^k(x)f[n+j]
-=F^k(x) \cdot f[n:n+k],
+f[n-ν] =\sum_{p=0}^{k}α_p(ν)Δ^pf[n]
+=\sum_{j=0}^{k}F_j^k(ν)f[n+j]
+=F^k(ν) \cdot f[n:n+k],
 ```
 
 where the ``k+1`` *weights*
 
 ```math
-F_j^k(x)= \sum_{p=j}^{k} (-1)^k α_p(x) c_j^p
-=\sum_{p=j}^{k} (-1)^j \binom{p}{j}(x)_p/p!
+F_j^k(ν)= \sum_{p=j}^{k} (-1)^k α_p(ν) c_j^p
+=\sum_{p=j}^{k} (-1)^j \binom{p}{j}(ν)_p/p!
 ```
 are the *lagrangian interpolation weights* corresponding to the point
-``f[n-x]``.
+``f[n-ν]``.
 
 Symmetry relation:
 
 ```math
-\bar{F}^k(-k-x) = F^k(x)
+\bar{F}^k(-k-ν) = F^k(ν)
 ```
 
 Functions:
 
 [`fdiff_expansion_weights(coeffs, fwd, reg)`](@ref)
-`` → F^k(x) ≡ [F^k_0(x),⋯\ F^k_k]``,
+`` → F^k(ν) ≡ [F^k_0(ν),⋯\ F^k_k]``,
 
 where
 
-`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x, fwd)`](@ref)
-`` → α(x) ≡ [α_0(x),⋯\ α_k(x)]`` defines the expansion.
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, fwd)`](@ref)
+`` → α(ν) ≡ [α_0(ν),⋯\ α_k(ν)]`` defines the expansion.
 
 **Backward difference notation**
 
@@ -572,7 +575,7 @@ Starting from the relation
 ```math
 f[n]=(1-∇)f[n+1].
 ```
-we obtain by formal inversion of the operator 
+we obtain by formal inversion of the operator
 ```math
 f[n+1] = (1 - ∇)^{-1} f[n] \equiv \sum_{p=0}^{\infty}∇^p f[n],
 ```
@@ -586,37 +589,37 @@ f[n+2] = (1 - ∇)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 which can be generalized to the form of *lagrangian interpolation*,
 
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] \equiv \sum_{p=0}^{\infty} β_p(x) ∇^p f[n],
+f[n+ν] = (1 - ∇)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} β_p(ν) ∇^p f[n],
 ```
 where
 
 ```math
-β_p(x) ≡ (x)_p/p! = (-1)^p α_p(x)
+β_p(ν) ≡ (ν)_p/p! = (-1)^p α_p(ν)
 ```
 
 is the ``p^{th}``-order *finite-differenc expansion coefficient for
-lagrangian_extrapolation* over the interval ``-k ≤x ≤0\ \ (n-k \le n+x \le n)``,
+lagrangian_extrapolation* over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
 with
 
 ```math
-(x)_{p}=\begin{cases}
+(ν)_{p}=\begin{cases}
 1 & p=0\\
-x(x+1)(x+2)\cdots(x+p-1) & p>0
+ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
 being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
 finite-difference expansion up to order ``k`` we obtain
 
 ```math
-f[n+x] =\sum_{p=0}^{k}β_p(x)∇^pf[n]
-= \sum_{j=0}^{k}B^k_j(x)f[n-j]
-= \bar{B}^k(x) ⋅ f[n-k:n],
+f[n+ν] =\sum_{p=0}^{k}β_p(ν)∇^pf[n]
+= \sum_{j=0}^{k}B^k_j(ν)f[n-j]
+= \bar{B}^k(ν) ⋅ f[n-k:n],
 ```
 
 where the ``k+1`` *weights*
 
 ```math
-B^k_j(x)= \sum_{p=j}^{k} β_p(x) c_j^p
+B^k_j(ν)= \sum_{p=j}^{k} β_p(ν) c_j^p
 ```
 
 are the corresponding *lagrangian interpolation weights*.  
@@ -624,26 +627,26 @@ are the corresponding *lagrangian interpolation weights*.
 Symmetry relations:
 
 ```math
-B^k(x) = F^k(x) = \bar{B}^k(-k-x)
+B^k(ν) = F^k(ν) = \bar{B}^k(-k-ν)
 ```
 
 ```math
-\bar{B}^k(x) = B^k(-k-x)
+\bar{B}^k(ν) = B^k(-k-ν)
 ```
 
 Function:
 
 [`fdiff_expansion_weights(coeffs, bwd, rev)`](@ref)
-`` → \bar{B}^k(x) ≡ [B_k^k(x),⋯\ B_0^k(x)]``,
+`` → \bar{B}^k(ν) ≡ [B_k^k(ν),⋯\ B_0^k(ν)]``,
 
 where
 
-`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, x, bwd)`](@ref)
-`` → β ≡ [β_0(x),⋯\ β_k(x)]`` defines the expansion.
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, bwd)`](@ref)
+`` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` defines the expansion.
 
 ```@docs
-fdiff_expansion_coeffs_interpolation(k::Int, x::T, notation=bwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T <: Real, V <: Real}
+fdiff_expansion_coeffs_interpolation(k::Int, ν::T, notation=bwd) where T<:Real
+fdiff_interpolation(f::Vector{T}, ν::V, ν1=1; k=3) where {T <: Real, V <: Real}
 fdiff_lagrangian_next(f::Vector{T}; sense=fwd, k=3) where T<:Real
 ```
 
