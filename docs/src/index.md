@@ -528,8 +528,8 @@ where
 ```math
 α_p(ν) ≡ (-1)^p(ν)_p/p!
 ```
-is the ``p^{th}``-order *finite-difference
-expansion coefficient for lagrangian lagrangian interpolation over the
+is the ``p^{th}``-order *finite-difference expansion coefficient*
+for lagrangian lagrangian interpolation over the
 interval ``-k ≤ν ≤0\ \ (n \le n-ν \le n+k)``,
 
 ```math
@@ -606,8 +606,8 @@ where
 β_p(ν) ≡ (ν)_p/p! = (-1)^p α_p(ν)
 ```
 
-is the ``p^{th}``-order *finite-difference expansion coefficient for
-lagrangian interpolation* over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
+is the ``p^{th}``-order *finite-difference expansion coefficient* for
+lagrangian interpolation over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
 with
 
 ```math
