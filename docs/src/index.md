@@ -526,7 +526,7 @@ where
 α_p(ν) ≡ (-1)^p(ν)_p/p!
 ```
 is the ``p^{th}``-order *finite-difference
-expansion coefficient for lagrangian lagrangian_extrapolation* over the
+expansion coefficient for lagrangian lagrangian interpolation over the
 interval ``-k ≤ν ≤0\ \ (n \le n-ν \le n+k)``,
 
 ```math
@@ -559,15 +559,16 @@ Symmetry relation:
 \bar{F}^k(-k-ν) = F^k(ν)
 ```
 
-Functions:
+Weight functions:
 
 [`fdiff_expansion_weights(coeffs, fwd, reg)`](@ref)
 `` → F^k(ν) ≡ [F^k_0(ν),⋯\ F^k_k]``,
 
-where
+where the vector
 
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, fwd)`](@ref)
-`` → α(ν) ≡ [α_0(ν),⋯\ α_k(ν)]`` defines the expansion.
+`` → α(ν) ≡ [α_0(ν),⋯\ α_k(ν)]``  contains the coefficients of the
+lagrangian-interpolation expansion.
 
 **Backward difference notation**
 
@@ -607,7 +608,7 @@ with
 ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)) for integral ``p``.
+being the Pochhammer symbol ([`pochhammer`](@ref)).
 Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
@@ -634,15 +635,16 @@ B^k(ν) = F^k(ν) = \bar{B}^k(-k-ν)
 \bar{B}^k(ν) = B^k(-k-ν)
 ```
 
-Function:
+Weight function:
 
 [`fdiff_expansion_weights(coeffs, bwd, rev)`](@ref)
 `` → \bar{B}^k(ν) ≡ [B_k^k(ν),⋯\ B_0^k(ν)]``,
 
-where
+where the vector
 
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, bwd)`](@ref)
-`` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` defines the expansion.
+`` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` contains the coefficients of the
+lagrangian-interpolation expansion.
 
 ```@docs
 fdiff_expansion_coeffs_interpolation(k::Int, ν::T, notation=bwd) where T<:Real

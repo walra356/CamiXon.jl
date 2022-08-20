@@ -238,31 +238,31 @@ function bwd_expansion_coeffs_interpolation(k::Int, x::T) where T<:Real
 end
 #...............................................................................
 @doc raw"""
-    fdiff_expansion_coeffs_interpolation(k::Int, x::T [, notation=bwd]) where T<:Real
+    fdiff_expansion_coeffs_interpolation(k::Int, ν::T [, notation=bwd]) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
 lagrangian interpolation any tabulated analytic function ``f[n]``
-at offset ``x`` with respect to index position ``n``.
+at offset ``ν`` with respect to index position ``n``.
 
 **Forward difference notation** (`notation = fwd`)
 
 ```math
-f[n-x] = (1 + Δ)^{-x} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
+f[n-ν] = (1 + Δ)^{-ν} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
 ```
-where ``(x)_{p}`` is the [`pochhammer`](@ref) symbol.
-Interpolation corresponds to the interval ``-k\le\ x\le 0``;
-extrapolation to ``x\ge 0``.
+where ``(ν)_{p}`` is the [`pochhammer`](@ref) symbol.
+Interpolation corresponds to the interval ``-k\le\ ν\le 0``;
+extrapolation to ``ν\ge 0``.
 
-[`fdiff_expansion_coeffs_interpolation(k, x, fwd)`](@ref)
+[`fdiff_expansion_coeffs_interpolation(k, ν, fwd)`](@ref)
 → ``α^k ≡ [α_0,⋯\ α_k]``
 
 **Backward difference notation** (`notation = bwd`)
 
 ```math
-f[n+x] = (1 - ∇)^{-x} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
+f[n+ν] = (1 - ∇)^{-ν} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
-[`fdiff_expansion_coeffs_interpolation(k, x, bwd)`](@ref)
+[`fdiff_expansion_coeffs_interpolation(k, ν, bwd)`](@ref)
 → ``β^k ≡ [β_0,⋯\ β_k]``
 
 #### Examples:
