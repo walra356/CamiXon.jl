@@ -495,7 +495,7 @@ fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 fdiff_expansion(coeffs, f, notation=bwd)
 ```
 
-### Lagrange-polynomial interpolation
+### Lagrange-polynomial interpolation/extrapolation
 
 This section build on the finite difference expansion methods
 
@@ -515,7 +515,10 @@ f[n+2] = (1 + Δ)^{-2} f[n] \equiv \sum_{p=0}^{\infty}(-1)^p pΔ^p f[n],
 ```math
 \vdots
 ```
-which can be generalized to the form of *lagrangian interpolation*,
+where ``k`` is called the order of the expansion and ``n`` is the reference
+index. For interpolation position ``n-ν`` (where ν may be *real* valued in
+index units) these expansions can be generalized to the form of
+*lagrangian interpolation*,
 
 ```math
 f[n-ν] = (1 + Δ)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} α_p(ν) Δ^p f[n],
@@ -535,8 +538,10 @@ interval ``-k ≤ν ≤0\ \ (n \le n-ν \le n+k)``,
 ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
-finite-difference expansion up to order ``k`` we obtain
+being the Pochhammer symbol ([`pochhammer`](@ref)). For ``ν`` outside the
+interpolation interval the method corresponds to *extrapolation* along the
+Lagrange polynomial. Evaluating the finite-difference expansion up to
+order ``k`` we obtain
 
 ```math
 f[n-ν] =\sum_{p=0}^{k}α_p(ν)Δ^pf[n]
@@ -587,7 +592,10 @@ f[n+2] = (1 - ∇)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 \vdots
 ```
 
-which can be generalized to the form of *lagrangian interpolation*,
+where ``k`` is called the order of the expansion and ``n`` is the reference
+index. For interpolation position ``n-ν`` (where ν may be *real* valued in
+index units) these expansions can be generalized to the form of
+*lagrangian interpolation*,
 
 ```math
 f[n+ν] = (1 - ∇)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} β_p(ν) ∇^p f[n],
@@ -598,8 +606,8 @@ where
 β_p(ν) ≡ (ν)_p/p! = (-1)^p α_p(ν)
 ```
 
-is the ``p^{th}``-order *finite-differenc expansion coefficient for
-lagrangian_extrapolation* over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
+is the ``p^{th}``-order *finite-difference expansion coefficient for
+lagrangian interpolation* over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
 with
 
 ```math
@@ -608,8 +616,10 @@ with
 ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)).
-Evaluating the finite-difference expansion up to order ``k`` we obtain
+being the Pochhammer symbol ([`pochhammer`](@ref)). For ``ν`` outside the
+interpolation interval the method corresponds to *extrapolation* along the
+Lagrange polynomial. Evaluating the finite-difference expansion up to
+order ``k`` we obtain
 
 ```math
 f[n+ν] =\sum_{p=0}^{k}β_p(ν)∇^pf[n]
