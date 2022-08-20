@@ -638,7 +638,7 @@ end
 @doc raw"""
     pochhammer(x::T, p::Int) where T<:Real
 
-Pochhammer symbol ``(x)_{p}``,
+Pochhammer symbol ``(x)_{p}`` for integral ``p``,
 ```math
 (x)_{p}=\begin{cases}
 1 & p=0\\

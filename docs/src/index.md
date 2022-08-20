@@ -607,8 +607,8 @@ with
 ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). Evaluating the
-finite-difference expansion up to order ``k`` we obtain
+being the Pochhammer symbol ([`pochhammer`](@ref)) for integral ``p``.
+Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
 f[n+ν] =\sum_{p=0}^{k}β_p(ν)∇^pf[n]
