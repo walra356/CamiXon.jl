@@ -657,7 +657,7 @@ where the vector
 lagrangian-interpolation expansion.
 
 ```@docs
-fdiff_expansion_coeffs_interpolation(k::Int, ν::T, notation=bwd) where T<:Real
+fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd) where T<:Real
 fdiff_interpolation(f::Vector{T}, ν::V, ν1=1; k=3) where {T <: Real, V <: Real}
 fdiff_lagrangian_next(f::Vector{T}; sense=fwd, k=3) where T<:Real
 ```

@@ -59,9 +59,9 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
     @test [fdiff_weight(5,j) for j=0:5] == [1, -5, 10, -10, 5, -1]
     @test isforward(fwd) == true
-    @test fdiff_expansion_coeffs_interpolation(5, 1) == [1, 1, 1, 1, 1, 1]
-    @test fdiff_expansion_coeffs_interpolation(5, 1, fwd) == [1, -1, 1, -1, 1, -1]
-    @test fdiff_expansion_coeffs_interpolation(5, 1, bwd) == [1, 1, 1, 1, 1, 1]
+    @test fdiff_expansion_coeffs_interpolation(-1, 5) == [1, 1, 1, 1, 1, 1]
+    @test fdiff_expansion_coeffs_interpolation(-1, 5, bwd) == [1, 1, 1, 1, 1, 1]
+    @test fdiff_expansion_coeffs_interpolation(1, 5, fwd) == [1, -1, 1, -1, 1, -1]
     @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
     @test fdiff_lagrangian_next([1,4,9,16,25,36,49]) == 64
     @test fdiff_lagrangian_next([1,4,9,16,25,36,49]; sense=bwd) == 0
