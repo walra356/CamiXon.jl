@@ -652,7 +652,7 @@ Weight function:
 
 where the vector
 
-`coeffs = `[`fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(Δx, k=3, notation=bwd)`](@ref)
 `` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` contains the coefficients of the
 lagrangian-interpolation expansion.
 
