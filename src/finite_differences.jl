@@ -343,7 +343,7 @@ function _forward_extrapolation(f::Vector{T}; k=3) where T<:Real
     l = length(f)
     k = min(k,l-1)
     k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
-    β = fdiff_expansion_coeffs_interpolation(1, k, bwd)
+    β = fdiff_expansion_coeffs_interpolation(-1, k, bwd)
     o = fdiff_expansion(β, f[l-k:l], bwd)
 
     return o
@@ -355,7 +355,7 @@ function _backward_extrapolation(f::Vector{T}; k=3) where T<:Real
     l = length(f)
     k = min(k,l-1)
     k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
-    α = fdiff_expansion_coeffs_interpolation(-1, k, fwd)
+    α = fdiff_expansion_coeffs_interpolation(1, k, fwd)
     o = fdiff_expansion(α, f[1:k+1], fwd)
 
     return o
