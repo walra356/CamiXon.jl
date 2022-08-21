@@ -652,7 +652,7 @@ Weight function:
 
 where the vector
 
-`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, bwd)`](@ref)
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd)`](@ref)
 `` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` contains the coefficients of the
 lagrangian-interpolation expansion.
 
@@ -725,11 +725,11 @@ Functions:
 
 where
 
-[`fdiff_expansion_coeffs_differentiation(k, x)`](@ref)
+[`fdiff_expansion_coeffs_differentiation(Δx, k)`](@ref)
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``.
 
 ```@docs
-fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```

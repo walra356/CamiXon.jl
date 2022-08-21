@@ -245,7 +245,7 @@ lagrangian interpolation any tabulated analytic function ``f[n]``
 at offset ``Δν`` with respect to index position ``n``, which is positive for
 increasing index and negative for decreasing index.
 
-**Forward difference notation** (`notation = fwd`, Δν = -ν)
+**Forward difference notation** (`notation = fwd`, `Δν = -ν`)
 
 ```math
 f[n-ν] = (1 + Δ)^{-ν} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
@@ -257,7 +257,7 @@ extrapolation to ``ν\ge 0``.
 [`fdiff_expansion_coeffs_interpolation(Δν, k, fwd)`](@ref)
 → ``α^k ≡ [α_0,⋯\ α_k]``
 
-**Backward difference notation** (`notation = bwd`, Δν = ν)
+**Backward difference notation** (`notation = bwd`, `Δν = ν`)
 
 ```math
 f[n+ν] = (1 - ∇)^{-ν} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
@@ -398,30 +398,32 @@ end
 # ============== fdiff_expansion_coeffs_differentiation(k, x) =================
 
 @doc raw"""
-    fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+    fdiff_expansion_coeffs_differentiation(Δν::T [, k=3]) where T<:Real
 
-Finite-difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
-defining ``k^{th}``-order lagrangian *differentiation*
-of the tabulated analytic function ``f(n+x)`` at position ``x``,
+Finite-difference expansion coefficient vector ``β ≡ [β_0(Δν),\ ⋯,\ β_p(Δν)]``
+defining ``k^{th}``-order lagrangian *differentiation* of the tabulated
+analytic function ``f[n]`` at offset ``Δν`` (with respect to index
+position ``n``), which is positive for increasing index and negative for
+decreasing index.
 
 ```math
-\frac{df}{dx}[n+x]=\sum_{p=0}^kβ_p(x)∇^{p}f[n]
+\frac{df}{dx}[n+Δν]=\sum_{p=0}^kβ_p(Δν)∇^{p}f[n]
 ```
 #### Example:
 ```
-k = 2; x = 0
-o = fdiff_expansion_coeffs_differentiation(k,x); println(o)
+k = 2; Δν = 0
+o = fdiff_expansion_coeffs_differentiation(Δν, k); println(o)
  [0.0, 1.0, -1.5]
 ```
 """
-function fdiff_expansion_coeffs_differentiation(k::Int, x::T) where T<:Real
+function fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
 # ==============================================================================
 #   finite difference expansion coeffs for differentiation
 #   in interval -k ≤ x ≤ 0
 # ==============================================================================
     a = Base.prepend!([1//i for i=1:k],[0//1])
     x == 0 && return a
-    b = CamiXon.fdiff_expansion_coeffs_interpolation(k, x, bwd)
+    b = CamiXon.fdiff_expansion_coeffs_interpolation(Δx, k)
 
     a,b = Base.promote(a,b)
 
