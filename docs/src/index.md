@@ -497,7 +497,7 @@ fdiff_expansion(coeffs, f, notation=bwd)
 
 ### Lagrange-polynomial interpolation/extrapolation
 
-This section build on the finite difference expansion methods
+The Lagrange polynomial of degree k on a uniform grid is the polynomial running through k+1 subsequent points on the grid. We derive expressions for interpolation/extrapolation in both forward- and backward-difference notation. Beware that Lagrange interpolation becomes inaccurate if the tabulated function cannot be approximated by a polynomial of degree k.
 
 **Forward difference notation**
 
