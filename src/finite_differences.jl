@@ -456,7 +456,7 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     k > 1 || error("Error: k ≥ 2 required for lagrangian differentiation")
     m = (l÷(k+1))*(k+1)
 
-    β = [fdiff_expansion_coeffs_differentiation(Δx, k) for Δx=-k:0]
+    β = [fdiff_expansion_coeffs_differentiation(Δx, k) for x=-k:0]
     w = [fdiff_expansion_weights(β[i]) for i ∈ eachindex(β)]
 
     f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])

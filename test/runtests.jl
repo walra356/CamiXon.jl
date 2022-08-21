@@ -62,7 +62,7 @@ using Test
     @test fdiff_expansion_coeffs_interpolation(-1, 5) == [1, 1, 1, 1, 1, 1]
     @test fdiff_expansion_coeffs_interpolation(-1, 5, bwd) == [1, 1, 1, 1, 1, 1]
     @test fdiff_expansion_coeffs_interpolation(1, 5, fwd) == [1, -1, 1, -1, 1, -1]
-    @test [fdiff_interpolation([1,2,3,4], x) for x=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+    @test [fdiff_interpolation(Δx, [1,2,3,4]) for Δx=1:0.5:4] == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
     @test fdiff_lagrangian_next([1,4,9,16,25,36,49]) == 64
     @test fdiff_lagrangian_next([1,4,9,16,25,36,49]; sense=bwd) == 0
     @test fdiff_lagrangian_next([1,4,9,16,25,36,49]; sense=fwd) == 64
