@@ -422,7 +422,7 @@ function fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
 #   in interval -k ≤ x ≤ 0
 # ==============================================================================
     a = Base.prepend!([1//i for i=1:k],[0//1])
-    x == 0 && return a
+    Δx == 0 && return a
     b = CamiXon.fdiff_expansion_coeffs_interpolation(Δx, k)
 
     a,b = Base.promote(a,b)
