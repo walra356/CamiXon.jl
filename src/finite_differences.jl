@@ -245,7 +245,7 @@ lagrangian interpolation any tabulated analytic function ``f[n]``
 at offset ``Δν`` with respect to index position ``n``, which is positive for
 increasing index and negative for decreasing index.
 
-**Forward difference notation** (`notation = fwd`, `Δν = -ν`)
+**Forward difference notation** (`notation = fwd`)
 
 ```math
 f[n-ν] = (1 + Δ)^{-ν} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
@@ -255,27 +255,43 @@ Interpolation corresponds to the interval ``-k\le\ ν\le 0``;
 extrapolation to ``ν\ge 0``.
 
 [`fdiff_expansion_coeffs_interpolation(Δν, k, fwd)`](@ref)
-→ ``α^k ≡ [α_0,⋯\ α_k]``
+→ ``α^k(ν) ≡ [α_0(ν),⋯\ α_k(ν)]``
 
-**Backward difference notation** (`notation = bwd`, `Δν = ν`)
+Offset convention: ``Δν = -ν`` with respect to index ``n`` in tabulated
+interval ``f[n:n+k]``
+
+**Backward difference notation** (`notation = bwd`)
 
 ```math
 f[n+ν] = (1 - ∇)^{-ν} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
 [`fdiff_expansion_coeffs_interpolation(Δν, k, bwd)`](@ref)
-→ ``β^k ≡ [β_0,⋯\ β_k]``
+→ ``β^k(ν) ≡ [β_0(ν),⋯\ β_k(ν)]``
+
+Offset convention: ``Δν = ν`` with respect to index ``n`` in tabulated
+interval ``f[n-k:n]``
 
 #### Examples:
 ```
 k = 5
-Δν = 1 # raise index by 1 in forward-difference notation (Δν = -ν)
+Δν = -1
 α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
-  α = [1, -1, 1, -1, 1, -1]
-
-Δν = -1 # lower index by 1 in backward-difference notation (Δν = ν)
 β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+  α = [1, 1, 0, 0, 0, 0]
   β = [1, 1, 1, 1, 1, 1]
+
+Δν = 0
+α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
+β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+  α = [1, 0, 0, 0, 0, 0]
+  β = [1, 0, 0, 0, 0, 0]
+
+Δν = 1
+α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
+β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+  α = [1, -1, 1, -1, 1, -1]
+  β = [1, -1, 0, 0, 0, 0]
 ```
 """
 function fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd) where T<:Real
