@@ -360,7 +360,7 @@ where ``∇`` is the backward difference operator.  By a formal inversion
 procedure we find
 
 ```math
-f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f[x],
+f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f[n],
 ```
 
 where ``∇^k`` is the  ``k^{th}``-*order backward difference* defined as
