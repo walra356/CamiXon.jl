@@ -119,10 +119,10 @@ indicate that the weights must be evaluated in backward-difference notation.
 Consider the expansions,
 
 ```math
-f[n-1]=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f[n].
+f[n-1]=(1+Δ)^{-1}f[n]=(1-Δ+Δ^2-Δ^3+⋯)f[n].
 ```
 ```math
-f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f[n],
+f[n+1]=(1-∇)^{-1}f[n]=(1+∇+∇^2+∇^3+⋯)f[n],
 ```
 ```
 α = [1,-1,1,-1,1]
@@ -131,6 +131,10 @@ Fk = fdiff_expansion_weights(α, fwd, reg); println("Fk = $(Fk)")
 Bk = fdiff_expansion_weights(β, bwd, reg); println("Bk = $(Bk)")
 revFk = fdiff_expansion_weights(α, fwd, rev); println("revFk = $(revFk)")
 revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
+  Fk = [5, -10, 10, -5, 1]
+  Bk = [5, -10, 10, -5, 1]
+  revFk = [1, -5, 10, -10, 5]
+  revBk = [1, -5, 10, -10, 5]
 ```
 """
 function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
