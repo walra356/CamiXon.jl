@@ -248,28 +248,28 @@ increasing index and negative for decreasing index.
 **Forward difference notation** (`notation = fwd`)
 
 ```math
-f[n-ν] = (1 + Δ)^{-ν} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
+f[n-σ] = (1 + Δ)^{-σ} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
 ```
-where ``(ν)_{p}`` is the [`pochhammer`](@ref) symbol.
-Interpolation corresponds to the interval ``-k\le\ ν\le 0``;
-extrapolation to ``ν\ge 0``.
+where ``(σ)_{p}`` is the [`pochhammer`](@ref) symbol.
+Interpolation corresponds to the interval ``-k\le\ σ\le 0``;
+extrapolation to ``σ\ge 0``.
 
 [`fdiff_expansion_coeffs_interpolation(Δν, k, fwd)`](@ref)
-→ ``α^k(ν) ≡ [α_0(ν),⋯\ α_k(ν)]``
+→ ``α^k(σ) ≡ [α_0(σ),⋯\ α_k(σ)]``
 
-Offset convention: ``Δν = -ν`` with respect to index ``n`` in tabulated
+Offset convention: ``Δν = -σ`` with respect to index ``n`` in tabulated
 interval ``f[n:n+k]``
 
 **Backward difference notation** (`notation = bwd`)
 
 ```math
-f[n+ν] = (1 - ∇)^{-ν} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
+f[n+σ] = (1 - ∇)^{-σ} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
 [`fdiff_expansion_coeffs_interpolation(Δν, k, bwd)`](@ref)
-→ ``β^k(ν) ≡ [β_0(ν),⋯\ β_k(ν)]``
+→ ``β^k(σ) ≡ [β_0(σ),⋯\ β_k(σ)]``
 
-Offset convention: ``Δν = ν`` with respect to index ``n`` in tabulated
+Offset convention: ``Δν = σ`` with respect to index ``n`` in tabulated
 interval ``f[n-k:n]``
 
 #### Examples:

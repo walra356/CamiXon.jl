@@ -516,63 +516,63 @@ f[n+2] = (1 + Δ)^{-2} f[n] \equiv \sum_{p=0}^{\infty}(-1)^p pΔ^p f[n],
 \vdots
 ```
 where ``k`` is called the order of the expansion and ``n`` is the reference
-index. For interpolation position ``n-ν`` (where ν may be *real* valued in
+index. For interpolation position ``n-σ`` (where σ may be *real* valued in
 index units) these expansions can be generalized to the form of
 *lagrangian interpolation*,
 
 ```math
-f[n-ν] = (1 + Δ)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} α_p(ν) Δ^p f[n],
+f[n-σ] = (1 + Δ)^{-σ} f[n] \equiv \sum_{p=0}^{\infty} α_p(σ) Δ^p f[n],
 ```
 where
 
 ```math
-α_p(ν) ≡ (-1)^p(ν)_p/p!
+α_p(σ) ≡ (-1)^p(σ)_p/p!
 ```
 is the ``p^{th}``-order *finite-difference expansion coefficient*
 for lagrangian lagrangian interpolation over the
-interval ``-k ≤ν ≤0\ \ (n \le n-ν \le n+k)``,
+interval ``-k ≤σ ≤0\ \ (n \le n-σ \le n+k)``,
 
 ```math
-(ν)_{p}=\begin{cases}
+(σ)_{p}=\begin{cases}
 1 & p=0\\
-ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
+σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). For ``ν`` outside the
+being the Pochhammer symbol ([`pochhammer`](@ref)). For ``σ`` outside the
 interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
 
 ```math
-f[n-ν] =\sum_{p=0}^{k}α_p(ν)Δ^pf[n]
-=\sum_{j=0}^{k}F_j^k(ν)f[n+j]
-=F^k(ν) \cdot f[n:n+k],
+f[n-σ] =\sum_{p=0}^{k}α_p(σ)Δ^pf[n]
+=\sum_{j=0}^{k}F_j^k(σ)f[n+j]
+=F^k(σ) \cdot f[n:n+k],
 ```
 
 where the ``k+1`` *weights*
 
 ```math
-F_j^k(ν)= \sum_{p=j}^{k} (-1)^k α_p(ν) c_j^p
-=\sum_{p=j}^{k} (-1)^j \binom{p}{j}(ν)_p/p!
+F_j^k(σ)= \sum_{p=j}^{k} (-1)^k α_p(σ) c_j^p
+=\sum_{p=j}^{k} (-1)^j \binom{p}{j}(σ)_p/p!
 ```
 are the *lagrangian interpolation weights* corresponding to the point
-``f[n-ν]``.
+``f[n-σ]``.
 
 Symmetry relation:
 
 ```math
-\bar{F}^k(-k-ν) = F^k(ν)
+\bar{F}^k(-k-σ) = F^k(σ)
 ```
 
 Weight functions:
 
 [`fdiff_expansion_weights(coeffs, fwd, reg)`](@ref)
-`` → F^k(ν) ≡ [F^k_0(ν),⋯\ F^k_k]``,
+`` → F^k(σ) ≡ [F^k_0(σ),⋯\ F^k_k]``,
 
 where the vector
 
-`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, ν, fwd)`](@ref)
-`` → α(ν) ≡ [α_0(ν),⋯\ α_k(ν)]``  contains the coefficients of the
+`coeffs = `[`fdiff_expansion_coeffs_interpolation(k, σ, fwd)`](@ref)
+`` → α(σ) ≡ [α_0(σ),⋯\ α_k(σ)]``  contains the coefficients of the
 lagrangian-interpolation expansion.
 
 **Backward difference notation**
@@ -593,44 +593,44 @@ f[n+2] = (1 - ∇)^{-2} f[n] \equiv \sum_{p=0}^{\infty}p∇^p f[n],
 ```
 
 where ``k`` is called the order of the expansion and ``n`` is the reference
-index. For interpolation position ``n-ν`` (where ν may be *real* valued in
+index. For interpolation position ``n-σ`` (where σ may be *real* valued in
 index units) these expansions can be generalized to the form of
 *lagrangian interpolation*,
 
 ```math
-f[n+ν] = (1 - ∇)^{-ν} f[n] \equiv \sum_{p=0}^{\infty} β_p(ν) ∇^p f[n],
+f[n+σ] = (1 - ∇)^{-σ} f[n] \equiv \sum_{p=0}^{\infty} β_p(σ) ∇^p f[n],
 ```
 where
 
 ```math
-β_p(ν) ≡ (ν)_p/p! = (-1)^p α_p(ν)
+β_p(σ) ≡ (σ)_p/p! = (-1)^p α_p(σ)
 ```
 
 is the ``p^{th}``-order *finite-difference expansion coefficient* for
-lagrangian interpolation over the interval ``-k ≤ν ≤0\ \ (n-k \le n+ν \le n)``,
+lagrangian interpolation over the interval ``-k ≤σ ≤0\ \ (n-k \le n+σ \le n)``,
 with
 
 ```math
-(ν)_{p}=\begin{cases}
+(σ)_{p}=\begin{cases}
 1 & p=0\\
-ν(ν+1)(ν+2)\cdots(ν+p-1) & p>0
+σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). For ``ν`` outside the
+being the Pochhammer symbol ([`pochhammer`](@ref)). For ``σ`` outside the
 interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
 
 ```math
-f[n+ν] =\sum_{p=0}^{k}β_p(ν)∇^pf[n]
-= \sum_{j=0}^{k}B^k_j(ν)f[n-j]
-= \bar{B}^k(ν) ⋅ f[n-k:n],
+f[n+σ] =\sum_{p=0}^{k}β_p(σ)∇^pf[n]
+= \sum_{j=0}^{k}B^k_j(σ)f[n-j]
+= \bar{B}^k(σ) ⋅ f[n-k:n],
 ```
 
 where the ``k+1`` *weights*
 
 ```math
-B^k_j(ν)= \sum_{p=j}^{k} β_p(ν) c_j^p
+B^k_j(σ)= \sum_{p=j}^{k} β_p(σ) c_j^p
 ```
 
 are the corresponding *lagrangian interpolation weights*.  
@@ -638,27 +638,27 @@ are the corresponding *lagrangian interpolation weights*.
 Symmetry relations:
 
 ```math
-B^k(ν) = F^k(ν) = \bar{B}^k(-k-ν)
+B^k(σ) = F^k(σ) = \bar{B}^k(-k-σ)
 ```
 
 ```math
-\bar{B}^k(ν) = B^k(-k-ν)
+\bar{B}^k(σ) = B^k(-k-σ)
 ```
 
 Weight function:
 
 [`fdiff_expansion_weights(coeffs, bwd, rev)`](@ref)
-`` → \bar{B}^k(ν) ≡ [B_k^k(ν),⋯\ B_0^k(ν)]``,
+`` → \bar{B}^k(σ) ≡ [B_k^k(σ),⋯\ B_0^k(σ)]``,
 
 where the vector
 
 `coeffs = `[`fdiff_expansion_coeffs_interpolation(Δx, k=3, notation=bwd)`](@ref)
-`` → β ≡ [β_0(ν),⋯\ β_k(ν)]`` contains the coefficients of the
+`` → β ≡ [β_0(σ),⋯\ β_k(σ)]`` contains the coefficients of the
 lagrangian-interpolation expansion.
 
 ```@docs
 fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, ν::V, ν1=1; k=3) where {T <: Real, V <: Real}
+fdiff_interpolation(f::Vector{T}, σ::V, σ1=1; k=3) where {T <: Real, V <: Real}
 fdiff_lagrangian_next(f::Vector{T}; sense=fwd, k=3) where T<:Real
 ```
 
