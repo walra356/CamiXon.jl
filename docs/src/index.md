@@ -328,7 +328,7 @@ where ``Δ`` is the forward difference operator. By a formal inversion
 procedure we find
 
 ```math
-f[n-1]=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f[n],
+f[n-1]=(1+Δ)^{-1}f[n]=(1-Δ+Δ^2-Δ^3+⋯)f[n],
 ```
 
 where ``Δ^k`` is the  ``k^{th}``-*order forward difference* defined as
@@ -360,7 +360,7 @@ where ``∇`` is the backward difference operator.  By a formal inversion
 procedure we find
 
 ```math
-f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f[n],
+f[n+1]=(1-∇)^{-1}f[n]=(1+∇+∇^2+∇^3+⋯)f[n],
 ```
 
 where ``∇^k`` is the  ``k^{th}``-*order backward difference* defined as

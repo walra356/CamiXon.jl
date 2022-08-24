@@ -115,20 +115,22 @@ analytic function ``f`` tabulated in *forward* order.
 where `` β ≡ [β_0,⋯\ β_k]`` has to be supplied in combination with `bwd` to
 indicate that the weights must be evaluated in backward-difference notation.
 #### Example:
+
+Consider the expansions,
+
+```math
+f[n-1]=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f[n].
 ```
-k=5
-x = 1
-α = fdiff_expansion_coeffs_interpolation(k, x, fwd)
-β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
+```math
+f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f[n],
+```
+```
+α = [1,-1,1,-1,1]
+β = [1,1,1,1,1]
 Fk = fdiff_expansion_weights(α, fwd, reg); println("Fk = $(Fk)")
 Bk = fdiff_expansion_weights(β, bwd, reg); println("Bk = $(Bk)")
-  Fk = [6, -15, 20, -15, 6, -1]
-  Bk = [6, -15, 20, -15, 6, -1]
-
-x = -k-1
-β = fdiff_expansion_coeffs_interpolation(k, x, bwd)
+revFk = fdiff_expansion_weights(α, fwd, rev); println("revFk = $(revFk)")
 revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
-  revBk = [6, -15, 20, -15, 6, -1]
 ```
 """
 function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
