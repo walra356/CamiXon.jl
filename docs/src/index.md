@@ -328,10 +328,10 @@ where ``Δ`` is the forward difference operator. By a formal inversion
 procedure we find
 
 ```math
-f(x-1)=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x),
+f[n-1]=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x),
 ```
 
-where ``Δ^k`` is the  ``k^{th}``-*order forward difference*. It is defined as
+where ``Δ^k`` is the  ``k^{th}``-*order forward difference* defined as
 a *weighted sum* over the function values ``f[n:n+k]`` (involving
 ``k+1`` points),
 
@@ -360,10 +360,10 @@ where ``∇`` is the backward difference operator.  By a formal inversion
 procedure we find
 
 ```math
-f(x+1)=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
+f[n+1]=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
 ```
 
-where ``∇^k`` is the  ``k^{th}``-*order backward difference*, defined as
+where ``∇^k`` is the  ``k^{th}``-*order backward difference* defined as
 a *weighted sum* over the function values tabulated in backward order,
 ``f[n:-1:n-k]`` (involving ``k+1`` points),
 
