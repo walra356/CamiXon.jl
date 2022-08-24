@@ -324,9 +324,16 @@ values on the grid is defined as
 Δ f[n] = f[n+1]-f[n],
 ```
 
-where ``Δ`` is the forward difference operator. In this notation,
-the  ``k^{th}``-*order forward difference* involves ``k+1`` points and is
-defined as a *weighted sum* over the function values ``f[n:n+k]``,
+where ``Δ`` is the forward difference operator. By a formal inversion  
+procedure we find
+
+```math
+f(x-1)=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x),
+```
+
+where ``Δ^k`` is the  ``k^{th}``-*order forward difference*. It is defined as
+a *weighted sum* over the function values ``f[n:n+k]`` (involving
+``k+1`` points),
 
 ```math
 Δ^k f[n] = c_{k}^kf[n] + c_{k-1}^kf[n+1] + ⋯  + f[n+k]
@@ -349,10 +356,16 @@ values on the grid is defined as
 ∇ f[n] = f[n]-f[n-1],
 ```
 
-where ``∇`` is the backward difference operator. In this notation,
-the ``k^{th}``-*order backward difference* (which involves ``k+1`` points) is
-defined as a *weighted sum* over the function values tabulated in backward
-order, ``f[n:-1:n-k]``,
+where ``∇`` is the backward difference operator.  By a formal inversion  
+procedure we find
+
+```math
+f(x+1)=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
+```
+
+where ``∇^k`` is the  ``k^{th}``-*order backward difference*, defined as
+a *weighted sum* over the function values tabulated in backward order,
+``f[n:-1:n-k]`` (involving ``k+1`` points),
 
 ```math
 ∇^k f[n] = f[n] + c_1^kf[n-1] + ⋯ + c_k^kf[n-k]
