@@ -128,12 +128,15 @@ f[n+1]=(1-∇)^{-1}f[n]=(1+∇+∇^2+∇^3+⋯)f[n],
 α = [1,-1,1,-1,1]
 β = [1,1,1,1,1]
 Fk = fdiff_expansion_weights(α, fwd, reg); println("Fk = $(Fk)")
-Bk = fdiff_expansion_weights(β, bwd, reg); println("Bk = $(Bk)")
-revFk = fdiff_expansion_weights(α, fwd, rev); println("revFk = $(revFk)")
-revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
   Fk = [5, -10, 10, -5, 1]
+
+Bk = fdiff_expansion_weights(β, bwd, reg); println("Bk = $(Bk)")
   Bk = [5, -10, 10, -5, 1]
+
+revFk = fdiff_expansion_weights(α, fwd, rev); println("revFk = $(revFk)")
   revFk = [1, -5, 10, -10, 5]
+
+revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
   revBk = [1, -5, 10, -10, 5]
 ```
 """
@@ -193,18 +196,17 @@ f(x-1)=(1+Δ)^{-1}=(1-Δ+Δ^2-Δ^3+⋯)f(x).
 ```math
 f(x+1)=(1-∇)^{-1}=(1+∇+∇^2+∇^3+⋯)f(x),
 ```
-To third order `(k=3)` the forward- and backward-difference coefficient vectors
-are `α=[1,-1,1,-1]` and `β=[1,1,1,1]`, respectively. We tabulate the function
-at ``k+1`` points, `f=[1,4,9,16]`.
+To fourth order `(k=4)` the forward- and backward-difference coefficient vectors
+are `α=[1,-1,1,-1,1]` and `β=[1,1,1,1,1]`, respectively. We tabulate the function
+at ``k+1`` points, `f=[1,4,9,16,25]`.
 ```
-α=[1,-1,1,-1]
-β=[1,1,1,1]
-f=[1,4,9,16]
-fdiff_expansion(α, f, fwd)      # n=1, f[n]=1, f[n-1] → 0
- 0
-
-fdiff_expansion(β, f)           # n=4, f[n]=16, f[n+1] → 25
- 25
+α = [1,-1,1,-1,1]
+β = [1,1,1,1,1]
+f = [1,4,9,16,25]
+o = fdiff_expansion(α, f, fwd); println("f[0] = $(o)")
+  f[0] = 0
+o = fdiff_expansion(β, f, bwd); println("f[6] = $(o)")
+  f[6] = 36
 ```
 In this case the result is exact because the function is quadratic and
 the expansion is third order (lagrangian expansion is based on the polynomial
