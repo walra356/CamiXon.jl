@@ -205,6 +205,7 @@ at ``k+1`` points, `f=[1,4,9,16,25]`.
 f = [1,4,9,16,25]
 o = fdiff_expansion(α, f, fwd); println("f[0] = $(o)")
   f[0] = 0
+  
 o = fdiff_expansion(β, f, bwd); println("f[6] = $(o)")
   f[6] = 36
 ```
