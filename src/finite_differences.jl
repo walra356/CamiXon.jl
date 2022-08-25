@@ -221,10 +221,9 @@ o = fdiff_expansion(β, f, bwd); println("f[6] = $(o)")
 o = revBk ⋅ f; println("revBk ⋅ f = $(o)")
   revBk ⋅ f = 36
 ```
-In this case the result is exact because the function is quadratic and
-the expansion is third order (lagrangian expansion is based on the polynomial
-of ``k^{th}`` degree running through the ``k+1`` points of the tabulated
-function).
+In these cases the results are exact because the function is quadratic and
+the expansion is third order (based on the polynomial of ``k^{th}`` degree
+running through the ``k+1`` points of the tabulated function).
 """
 function fdiff_expansion(coeffs, f, notation=bwd)
 
