@@ -68,7 +68,7 @@ export fdiff_weight
 export fdiff_expansion_weights
 export fdiff_expansion
 export fwd_diff_expansion_weights
-export fdiff_expansion_coeffs_interpolation
+export fdiff_interpolation_expansion_coeffs
 export fdiff_interpolation
 export fdiff_lagrangian_next
 export fdiff_expansion_coeffs_differentiation

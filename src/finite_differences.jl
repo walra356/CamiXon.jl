@@ -234,7 +234,7 @@ function fdiff_expansion(coeffs, f, notation=bwd)
 
 end
 
-# ======= fdiff_expansion_coeffs_interpolation(k, x, notation=bwd) =============
+# ======= fdiff_interpolation_expansion_coeffs(k, x, notation=bwd) =============
 
 #...............................................................................
 function fwd_expansion_coeffs_interpolation(x::T, k=3) where T<:Real
@@ -258,7 +258,7 @@ function bwd_expansion_coeffs_interpolation(x::T, k=3) where T<:Real
 end
 #...............................................................................
 @doc raw"""
-    fdiff_expansion_coeffs_interpolation(Δν::T [, k=3 [, notation=bwd]]) where T<:Real
+    fdiff_interpolation_expansion_coeffs(Δν::T [, k=3 [, notation=bwd]]) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
 lagrangian interpolation any tabulated analytic function ``f[n]``
@@ -274,7 +274,7 @@ where ``(σ)_{p}`` is the [`pochhammer`](@ref) symbol.
 Interpolation corresponds to the interval ``-k\le\ σ\le 0``;
 extrapolation to ``σ\ge 0``.
 
-[`fdiff_expansion_coeffs_interpolation(Δν, k, fwd)`](@ref)
+[`fdiff_interpolation_expansion_coeffs(Δν, k, fwd)`](@ref)
 → ``α^k(σ) ≡ [α_0(σ),⋯\ α_k(σ)]``
 
 Offset convention: ``Δν = -σ`` with respect to index ``n`` in tabulated
@@ -286,7 +286,7 @@ interval ``f[n:n+k]``
 f[n+σ] = (1 - ∇)^{-σ} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
 ```
 
-[`fdiff_expansion_coeffs_interpolation(Δν, k, bwd)`](@ref)
+[`fdiff_interpolation_expansion_coeffs(Δν, k, bwd)`](@ref)
 → ``β^k(σ) ≡ [β_0(σ),⋯\ β_k(σ)]``
 
 Offset convention: ``Δν = σ`` with respect to index ``n`` in tabulated
@@ -296,25 +296,25 @@ interval ``f[n-k:n]``
 ```
 k = 5
 Δν = -1
-α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
-β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+α = fdiff_interpolation_expansion_coeffs(Δν, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(Δν, k, bwd); println("β = $β")
   α = [1, 1, 0, 0, 0, 0]
   β = [1, 1, 1, 1, 1, 1]
 
 Δν = 0
-α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
-β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+α = fdiff_interpolation_expansion_coeffs(Δν, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(Δν, k, bwd); println("β = $β")
   α = [1, 0, 0, 0, 0, 0]
   β = [1, 0, 0, 0, 0, 0]
 
 Δν = 1
-α = fdiff_expansion_coeffs_interpolation(Δν, k, fwd); println("α = $α")
-β = fdiff_expansion_coeffs_interpolation(Δν, k, bwd); println("β = $β")
+α = fdiff_interpolation_expansion_coeffs(Δν, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(Δν, k, bwd); println("β = $β")
   α = [1, -1, 1, -1, 1, -1]
   β = [1, -1, 0, 0, 0, 0]
 ```
 """
-function fdiff_expansion_coeffs_interpolation(Δx::T, k=3, notation=bwd) where T<:Real
+function fdiff_interpolation_expansion_coeffs(Δx::T, k=3, notation=bwd) where T<:Real
 
     o = isforward(notation) ? fwd_expansion_coeffs_interpolation(-Δx, k) :
                               bwd_expansion_coeffs_interpolation(Δx, k)
@@ -365,7 +365,7 @@ function fdiff_interpolation(f::Vector{T}, x::V, x1=1; k=3) where {T<:Real, V<:R
     x = x - x1 + 1
     k > 0 || error("Error: k ≥ 1 required for lagrangian interpolation")
     n = x < 1 ? 1 : x < l-k ? floor(Int,x) : l-k
-    α = fdiff_expansion_coeffs_interpolation(n-x, k, fwd)
+    α = fdiff_interpolation_expansion_coeffs(n-x, k, fwd)
     o = fdiff_expansion(α, f[n:n+k], fwd)
 
     return o
@@ -379,7 +379,7 @@ function _forward_extrapolation(f::Vector{T}; k=3) where T<:Real
     l = length(f)
     k = min(k,l-1)
     k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
-    β = fdiff_expansion_coeffs_interpolation(-1, k, bwd)
+    β = fdiff_interpolation_expansion_coeffs(-1, k, bwd)
     o = fdiff_expansion(β, f[l-k:l], bwd)
 
     return o
@@ -391,7 +391,7 @@ function _backward_extrapolation(f::Vector{T}; k=3) where T<:Real
     l = length(f)
     k = min(k,l-1)
     k > 0 || error("Error: degree k ≥ 1 required for Lagrange polynomial")
-    α = fdiff_expansion_coeffs_interpolation(1, k, fwd)
+    α = fdiff_interpolation_expansion_coeffs(1, k, fwd)
     o = fdiff_expansion(α, f[1:k+1], fwd)
 
     return o
@@ -459,7 +459,7 @@ function fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
 # ==============================================================================
     a = Base.prepend!([1//i for i=1:k],[0//1])
     Δx == 0 && return a
-    b = CamiXon.fdiff_expansion_coeffs_interpolation(Δx, k)
+    b = CamiXon.fdiff_interpolation_expansion_coeffs(Δx, k)
 
     a,b = Base.promote(a,b)
 
