@@ -518,7 +518,7 @@ Starting from the relation
 ```math
 f[n]=(1+Δ)f[n+1],
 ```
-we obtain by formal inversion of the operator
+we obtain by formal operator inversion
 ```math
 f[n+1] = (1 + Δ)^{-1} f[n] \equiv \sum_{p=0}^{\infty}(-1)^p Δ^p f[n],
 ```
@@ -594,7 +594,7 @@ Starting from the relation
 ```math
 f[n]=(1-∇)f[n+1].
 ```
-we obtain by formal inversion of the operator
+we obtain by formal operator inversion
 ```math
 f[n+1] = (1 - ∇)^{-1} f[n] \equiv \sum_{p=0}^{\infty}∇^p f[n],
 ```
