@@ -237,7 +237,7 @@ end
 # ======= fdiff_interpolation_expansion_coeffs(k, x, notation=bwd) =============
 
 #...............................................................................
-function fwd_expansion_coeffs_interpolation(x::T, k=3) where T<:Real
+function fwd_interpolation_expansion_coeffs(x::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
     x == 0 ? (for p=2:k+1; o[p] = 0 end) :
@@ -247,7 +247,7 @@ function fwd_expansion_coeffs_interpolation(x::T, k=3) where T<:Real
 
 end
 #...............................................................................
-function bwd_expansion_coeffs_interpolation(x::T, k=3) where T<:Real
+function bwd_interpolation_expansion_coeffs(x::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
     x == 0 ? (for p=2:k+1; o[p] = 0 end) :
@@ -316,8 +316,8 @@ k = 5
 """
 function fdiff_interpolation_expansion_coeffs(Δx::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_expansion_coeffs_interpolation(-Δx, k) :
-                              bwd_expansion_coeffs_interpolation(Δx, k)
+    o = isforward(notation) ? fwd_interpolation_expansion_coeffs(-Δx, k) :
+                              bwd_interpolation_expansion_coeffs(Δx, k)
     return o
 
 end
