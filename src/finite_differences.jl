@@ -240,7 +240,7 @@ end
 function fwd_interpolation_expansion_coeffs(Δν::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
-    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
+    Δν == 0 ? (for p=2:k+1; o[p] = 0 end) :
              (for p=1:k; o[p+1] = o[p]*(Δν-p+1)/p end)
 
     return o
@@ -250,7 +250,7 @@ end
 function bwd_interpolation_expansion_coeffs(Δν::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
-    x == 0 ? (for p=2:k+1; o[p] = 0 end) :
+    Δν == 0 ? (for p=2:k+1; o[p] = 0 end) :
              (for p=1:k; o[p+1] = o[p]*(p-Δν-1)/p end)
 
     return o
