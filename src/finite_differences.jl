@@ -496,7 +496,7 @@ o = fdiff_expansion_coeffs_differentiation(Δν, k); println(o)
  [0.0, 1.0, -1.5]
 ```
 """
-function fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
+function fdiff_expansion_coeffs_differentiation(Δν::T, k=3) where T<:Real
 # ==============================================================================
 #   finite difference expansion coeffs for differentiation
 #   in interval -k ≤ x ≤ 0
