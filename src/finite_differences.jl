@@ -403,7 +403,7 @@ f3 = [fdiff_interpolation(f, ν; k=3) for ν=1:0.5:9]
   [-64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0, 3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
 ```
 In the latter case the result is exact because the function is cubic and
-the expansion is third order - see Figure below.
+the expansion is third order - see Figure below. 
 
 ![Image](./assets/lagrangian_interpolation.png)
 """
