@@ -479,17 +479,29 @@ end
 @doc raw"""
     fdiff_differentiation_expansion_coeffs(Δν::T [, k=3 [, notation=bwd]]) where T<:Real
 
-Finite-difference expansion coefficient vector ``β ≡ [β_0(Δν),\ ⋯,\ β_p(Δν)]``
-defining ``k^{th}``-order lagrangian *differentiation* of the tabulated
-analytic function ``f[n]`` at offset ``Δν`` (with respect to index
-position ``n``), which is positive for increasing index and negative for
-decreasing index.
+Finite-difference expansion coefficient vector defining ``k^{th}``-order
+lagrangian *differentiation* of the tabulated analytic function ``f[n]``
+at offset ``Δν`` (with respect to index position ``n``), which is positive
+for increasing index and negative for decreasing index.
 
 **Forward difference notation** (`notation = fwd`)
 
 ```math
-\frac{df}{dx}[n+Δν]=\sum_{p=0}^kβ_p(Δν)∇^{p}f[n]
+\frac{df}{dν}[n+Δν]=\sum_{p=0}^kα_p(Δν)Δ^{p}f[n]
 ```
+
+Offset convention: ``Δν = -σ`` with respect to index ``n`` in tabulated
+interval ``f[n:n+k]``
+
+**Backward difference notation** (`notation = bwd`)
+
+```math
+\frac{df}{dν}[n+Δν]=\sum_{p=0}^kβ_p(Δν)∇^{p}f[n]
+```
+where ``β ≡ [β_0(Δν),\ ⋯,\ β_p(Δν)]``
+
+Offset convention: ``Δν = σ`` with respect to index ``n`` in tabulated
+interval ``f[n-k:n]``
 #### Example:
 ```
 k = 2; Δν = 0
