@@ -212,18 +212,19 @@ f = [1,4,9,16,25]
 o = fdiff_expansion(α, f, fwd); println("f[0] = $(o)")
   f[0] = 0
 
-o = Fk ⋅ f; println("Fk ⋅ f = $(o)")
-  Fk ⋅ f = 0
+fdiff_expansion(α, f, fwd) == Fk ⋅ f == fdiff_interpolation(f, 0)
+  true
 
 o = fdiff_expansion(β, f, bwd); println("f[6] = $(o)")
   f[6] = 36
 
-o = revBk ⋅ f; println("revBk ⋅ f = $(o)")
-  revBk ⋅ f = 36
+fdiff_expansion(β, f, bwd) == revBk ⋅ f == fdiff_interpolation(f, length(f)+1)
+  true
 ```
 In these cases the results are exact because the function is quadratic and
 the expansion is third order (based on the polynomial of ``k^{th}`` degree
-running through the ``k+1`` points of the tabulated function).
+running through the ``k+1`` points of the tabulated function). Note the
+relation with [`fdiff_interpolation(f, ν, k=3)`](@ref).
 """
 function fdiff_expansion(coeffs, f, notation=bwd)
 
