@@ -702,7 +702,7 @@ for *lagrangian differentiation* at position ``n+x``. These
 coefficients are determined numerically by polynomial multiplication. As the
 expansion algorith requires the presentce of a ``β_0(x)`` coefficient we add
 a (vanishing) ``p=0`` term, ``β_0(x)\equiv 0``. The corresponding coefficient
-vector is given by [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref).
+vector is given by [`fdiff_differentiation_expansion_coeffs(k,x)`](@ref).
 Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
@@ -737,11 +737,11 @@ Functions:
 
 where
 
-[`fdiff_expansion_coeffs_differentiation(Δx, k)`](@ref)
+[`fdiff_differentiation_expansion_coeffs(Δx, k)`](@ref)
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``.
 
 ```@docs
-fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
+fdiff_differentiation_expansion_coeffs(Δx::T, k=3) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```

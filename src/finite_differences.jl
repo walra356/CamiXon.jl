@@ -342,8 +342,8 @@ function bwd_interpolation_expansion_weights(Δν::T, k=3, ordering=rev) where T
 
     return o
 
-end#...............................................................................
-
+end
+#...............................................................................
 function fdiff_interpolation_expansion_weights(Δx::T, k=3, notation=bwd, ordering=rev) where T<:Real
 
     o = isforward(notation) ? fwd_interpolation_expansion_weights(-Δν, k, ordering) :
@@ -351,8 +351,6 @@ function fdiff_interpolation_expansion_weights(Δx::T, k=3, notation=bwd, orderi
     return o
 
 end
-
-
 function fdiff_interpolation_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
     if isforward(notation)
@@ -422,10 +420,64 @@ function fdiff_interpolation(f::Vector{T}, ν::V; k=3) where {T<:Real, V<:Real}
 
 end
 
-# ============== fdiff_expansion_coeffs_differentiation(k, x) =================
+# ============== fdiff_differentiation_expansion_coeffs(k, x) =================
+
+#...............................................................................
+function fwd_differentiation_expansion_coeffs(Δν::T, k=3) where T<:Real
+# ==============================================================================
+#   Forward difference expansion coefficients for differentiation of an
+#   analytic function f(x) tabulated under the convention f[n,n+k] and
+#   evaluated at the interpolation position n+Δν.
+# ==============================================================================
+    Float = (Float64,Float32,Float16)
+
+    o = T ∈ Float ? Base.ones(T,k+1) :
+                    T <: Rational{}  ? Base.ones(T,k+1) :
+                                       Base.ones(Rational{T},k+1)
+    for i=1:k
+        o[i+1] = iseven(i) ? i : -i
+    end
+
+    a = 1 ./ o; a[1] = 0
+
+    Δν == 0 && return a
+    α = fdiff_interpolation_expansion_coeffs(Δν, k, fwd)
+
+    a,α = Base.promote(a,α)
+
+    return polynom_product_expansion(a, α, k)
+
+end
+#...............................................................................
+function bwd_differentiation_expansion_coeffs(Δν::T, k=3) where T<:Real
+# ==============================================================================
+#   Backward difference expansion coefficients for differentiation of an
+#   analytic function f(x) tabulated under the convention f[n-k,n] and
+#   evaluated at the interpolation position n+Δν.
+# ==============================================================================
+    Float = (Float64,Float32,Float16)
+
+    o = T ∈ Float ? Base.ones(T,k+1) :
+                    T <: Rational{}  ? Base.ones(T,k+1) :
+                                       Base.ones(Rational{T},k+1)
+    for i=1:k
+        o[i+1] = i
+    end
+
+    b = 1 ./ o; b[1] = 0
+
+    Δν == 0 && return b
+    β = fdiff_interpolation_expansion_coeffs(Δν, k, bwd)
+
+    b,β = Base.promote(b,β)
+
+    return polynom_product_expansion(b, β, k)
+
+end
+#...............................................................................
 
 @doc raw"""
-    fdiff_expansion_coeffs_differentiation(Δν::T [, k=3]) where T<:Real
+    fdiff_differentiation_expansion_coeffs(Δν::T [, k=3 [, notation=bwd]]) where T<:Real
 
 Finite-difference expansion coefficient vector ``β ≡ [β_0(Δν),\ ⋯,\ β_p(Δν)]``
 defining ``k^{th}``-order lagrangian *differentiation* of the tabulated
@@ -433,28 +485,23 @@ analytic function ``f[n]`` at offset ``Δν`` (with respect to index
 position ``n``), which is positive for increasing index and negative for
 decreasing index.
 
+**Forward difference notation** (`notation = fwd`)
+
 ```math
 \frac{df}{dx}[n+Δν]=\sum_{p=0}^kβ_p(Δν)∇^{p}f[n]
 ```
 #### Example:
 ```
 k = 2; Δν = 0
-o = fdiff_expansion_coeffs_differentiation(Δν, k); println(o)
+o = fdiff_differentiation_expansion_coeffs(Δν, k); println(o)
  [0.0, 1.0, -1.5]
 ```
 """
-function fdiff_expansion_coeffs_differentiation(Δν::T, k=3) where T<:Real
-# ==============================================================================
-#   finite difference expansion coeffs for differentiation
-#   in interval -k ≤ x ≤ 0
-# ==============================================================================
-    a = Base.prepend!([1//i for i=1:k],[0//1])
-    Δν == 0 && return a
-    b = CamiXon.fdiff_interpolation_expansion_coeffs(Δν, k)
+function fdiff_differentiation_expansion_coeffs(Δν::T, k=3, notation=bwd) where T<:Real
 
-    a,b = Base.promote(a,b)
-
-    return CamiXon.polynom_product_expansion(a, b, k)
+    o = isforward(notation) ? fwd_differentiation_expansion_coeffs(Δν, k) :
+                              bwd_differentiation_expansion_coeffs(Δν, k)
+    return o
 
 end
 
@@ -483,7 +530,7 @@ function fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
     k > 1 || error("Error: k ≥ 2 required for lagrangian differentiation")
     m = (l÷(k+1))*(k+1)
 
-    β = [fdiff_expansion_coeffs_differentiation(-x, k) for x=-k:0]
+    β = [fdiff_differentiation_expansion_coeffs(-x, k) for x=-k:0]
     w = [fdiff_expansion_weights(β[i]) for i ∈ eachindex(β)]
 
     f′= vec([f[n:n+k] ⋅ w[i] for i ∈ eachindex(w), n=1:k+1:m])
@@ -522,7 +569,7 @@ function create_lagrange_differentiation_matrix(k::Int)
     m = Matrix{Rational{Int}}(undef,k+1,k+1)
 
     for i=0:k
-        coeffs = CamiXon.fdiff_expansion_coeffs_differentiation(k-i,k)
+        coeffs = CamiXon.fdiff_differentiation_expansion_coeffs(k-i,k)
         m[1+i,1:k+1] = fdiff_expansion_weights(coeffs)
     end
 
