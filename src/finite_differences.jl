@@ -262,36 +262,38 @@ end
     fdiff_interpolation_expansion_coeffs(Δν::T [, k=3 [, notation=bwd]]) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
-lagrangian interpolation any tabulated analytic function ``f[n]``
-at offset ``Δν`` with respect to index position ``n``, which is positive for
-increasing index and negative for decreasing index.
+(default *third* order) Lagrange-polynomial interpolation of a tabulated
+analytic function ``f[1:N]`` at offset ``Δν`` with respect to index
+position ``n``, which is positive for increasing index and negative for
+decreasing index.
 
 **Forward difference notation** (`notation = fwd`)
 
+In this case we consider the tabulated interval ``f[n:n+k]``. The interpolated
+value ``f[n+Δν]`` is given by the forward-difference expansion
+
 ```math
-f[n-σ] = (1 + Δ)^{-σ} f[n] = \sum_{p=0}^k α_p Δ^p f[n] + ⋯,
+f[n+Δν] = \sum_{p=0}^k α_p(-Δν) Δ^p f[n] + ⋯,
 ```
-where ``(σ)_{p}`` is the [`pochhammer`](@ref) symbol.
-Interpolation corresponds to the interval ``-k\le\ σ\le 0``;
-extrapolation to ``σ\ge 0``.
+where
 
-[`fdiff_interpolation_expansion_coeffs(Δν, k, fwd)`](@ref)
-→ ``α^k(σ) ≡ [α_0(σ),⋯\ α_k(σ)]``
-
-Offset convention: ``Δν = -σ`` with respect to index ``n`` in tabulated
-interval ``f[n:n+k]``
+[`fdiff_interpolation_expansion_coeffs(-Δν, k, fwd)`](@ref)
+`` → α(-Δν) ≡ [α_0(-Δν),⋯\ α_k(-Δν)]``  contains the coefficients of the
+forward-difference expansion.
 
 **Backward difference notation** (`notation = bwd`)
 
+In this case we consider the tabulated interval ``f[n-k:n]``. The interpolated
+value ``f[n+Δν]`` is given by the backward-difference expansion
+
 ```math
-f[n+σ] = (1 - ∇)^{-σ} f[n] = \sum_{p=0}^k β_p ∇^p f[n] + ⋯,
+f[n+Δν] = \sum_{p=0}^k β_p(Δν) ∇^p f[n] + ⋯,
 ```
+where
 
 [`fdiff_interpolation_expansion_coeffs(Δν, k, bwd)`](@ref)
-→ ``β^k(σ) ≡ [β_0(σ),⋯\ β_k(σ)]``
-
-Offset convention: ``Δν = σ`` with respect to index ``n`` in tabulated
-interval ``f[n-k:n]``
+`` → β(Δν) ≡ [β_0(Δν),⋯\ β_k(Δν)]``  contains the coefficients of the
+backward-difference expansion.
 
 #### Examples:
 ```

@@ -584,7 +584,7 @@ Weight functions:
 
 where the vector
 
-`coeffs = `[`fdiff_interpolation_expansion_coeffs(k, σ, fwd)`](@ref)
+`coeffs = `[`fdiff_interpolation_expansion_coeffs(σ, k, fwd)`](@ref)
 `` → α(σ) ≡ [α_0(σ),⋯\ α_k(σ)]``  contains the coefficients of the
 lagrangian-interpolation expansion.
 
@@ -665,13 +665,14 @@ Weight function:
 
 where the vector
 
-`coeffs = `[`fdiff_interpolation_expansion_coeffs(Δν, k=3, notation=bwd)`](@ref)
+`coeffs = `[`fdiff_interpolation_expansion_coeffs(σ, k=3, notation=bwd)`](@ref)
 `` → β ≡ [β_0(σ),⋯\ β_k(σ)]`` contains the coefficients of the
 lagrangian-interpolation expansion.
 
 ```@docs
 fdiff_interpolation_expansion_coeffs(Δν::T, k=3, notation=bwd) where T<:Real
 fdiff_interpolation(f::Vector{T}, ν::V; k=3) where {T<:Real, V<:Real}
+fdiff_lagrangian_next(f::Vector{T}; sense=fwd, k=3) where T<:Real
 ```
 
 ### Lagrangian differentiation
@@ -702,7 +703,7 @@ for *lagrangian differentiation* at position ``n+x``. These
 coefficients are determined numerically by polynomial multiplication. As the
 expansion algorith requires the presentce of a ``β_0(x)`` coefficient we add
 a (vanishing) ``p=0`` term, ``β_0(x)\equiv 0``. The corresponding coefficient
-vector is given by [`fdiff_differentiation_expansion_coeffs(k,x)`](@ref).
+vector is given by [`fdiff_expansion_coeffs_differentiation(k,x)`](@ref).
 Evaluating the finite-difference expansion up to order ``k`` we obtain
 
 ```math
@@ -737,11 +738,11 @@ Functions:
 
 where
 
-[`fdiff_differentiation_expansion_coeffs(Δx, k)`](@ref)
+[`fdiff_expansion_coeffs_differentiation(Δx, k)`](@ref)
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``.
 
 ```@docs
-fdiff_differentiation_expansion_coeffs(Δx::T, k=3) where T<:Real
+fdiff_expansion_coeffs_differentiation(Δx::T, k=3) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
