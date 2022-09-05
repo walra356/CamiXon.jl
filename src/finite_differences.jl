@@ -279,7 +279,8 @@ where
 
 [`fdiff_interpolation_expansion_coeffs(-Δν, k, fwd)`](@ref)
 `` → α(-Δν) ≡ [α_0(-Δν),⋯\ α_k(-Δν)]``  contains the coefficients of the
-forward-difference expansion.
+forward-difference expansion for the offset ``Δν`` with respect to
+index position ``n``.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -293,7 +294,8 @@ where
 
 [`fdiff_interpolation_expansion_coeffs(Δν, k, bwd)`](@ref)
 `` → β(Δν) ≡ [β_0(Δν),⋯\ β_k(Δν)]``  contains the coefficients of the
-backward-difference expansion.
+backward-difference expansion for the offset ``Δν`` with respect to
+index position ``n``..
 
 #### Examples:
 ```
