@@ -275,12 +275,10 @@ value ``f[n+Δν]`` is given by the forward-difference expansion
 ```math
 f[n+Δν] = \sum_{p=0}^k α_p(-Δν) Δ^p f[n] + ⋯,
 ```
-where
+where the expansion coefficients are given by
 
-[`fdiff_interpolation_expansion_coeffs(-Δν, k, fwd)`](@ref)
-`` → α(-Δν) ≡ [α_0(-Δν),⋯\ α_k(-Δν)]``  contains the coefficients of the
-forward-difference expansion for the offset ``Δν`` with respect to
-index position ``n``.
+[`fdiff_interpolation_expansion_coeffs(Δν, k, fwd)`](@ref)
+`` → α(-Δν) ≡ [α_0(-Δν),⋯\ α_k(-Δν)]``.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -290,12 +288,10 @@ value ``f[n+Δν]`` is given by the backward-difference expansion
 ```math
 f[n+Δν] = \sum_{p=0}^k β_p(Δν) ∇^p f[n] + ⋯,
 ```
-where
+where the expansion coefficients are given by
 
 [`fdiff_interpolation_expansion_coeffs(Δν, k, bwd)`](@ref)
-`` → β(Δν) ≡ [β_0(Δν),⋯\ β_k(Δν)]``  contains the coefficients of the
-backward-difference expansion for the offset ``Δν`` with respect to
-index position ``n``..
+`` → β(Δν) ≡ [β_0(Δν),⋯\ β_k(Δν)]``.
 
 #### Examples:
 ```
