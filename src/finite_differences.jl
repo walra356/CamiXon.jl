@@ -391,17 +391,19 @@ f = [1,4,9,16,25,36,49]
 [fdiff_interpolation(f, ν; k=3) for ν=1:0.5:7]
  [1.0, 2.25, 4.0, 6.25, 9.0, 12.25, 16.0, 20.25, 25.0, 30.25, 36.0, 42.25, 49.0]
 
-f = [x^3 for x=-4:2]
-f1 = [fdiff_interpolation(f, ν; k=1) for ν=1:0.5:9]
-f2 = [fdiff_interpolation(f, ν; k=2) for ν=1:0.5:9]
-f3 = [fdiff_interpolation(f, ν; k=3) for ν=1:0.5:9]
-[f1,f2,f3]
- 3-element Vector{Vector{Float64}}:
-  [-64.0, -45.5, -27.0, -17.5, -8.0, -4.5, -1.0, -0.5, 0.0, 0.5, 1.0, 4.5, 8.0, 11.5, 15.0, 18.5, 22.0]
-  [-64.0, -43.25, -27.0, -16.0, -8.0, -3.75, -1.0, -0.5, 0.0, -0.25, 1.0, 3.75, 8.0, 13.75, 21.0, 29.75, 40.0]
-  [-64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0, 3.375, 8.0, 15.625, 27.0, 42.875, 64.0]
+ f = [x^3 for x=-4:2]
+ f1(ν) = fdiff_interpolation(f, ν; k=1)
+ f2(ν) = fdiff_interpolation(f, ν; k=2)
+ f3(ν) = fdiff_interpolation(f, ν; k=3)
+ [[f1(ν),f2(ν),f3(ν)] for ν=1:0.5:9]
+   [[-64.0, -64.0, -64.0], [-45.5, -43.25, -42.875], [-27.0, -27.0, -27.0],
+   [-17.5, -16.0, -15.625], [-8.0, -8.0, -8.0], [-4.5, -3.75, -3.375],
+   [-1.0, -1.0, -1.0], [-0.5, -0.5, -0.125], [0.0, 0.0, 0.0],
+   [0.5, -0.25, 0.125], [1.0, 1.0, 1.0], [4.5, 3.75, 3.375], [8.0, 8.0, 8.0],
+   [11.5, 13.75, 15.625], [15.0, 21.0, 27.0], [18.5, 29.75, 42.875],
+   [22.0, 40.0, 64.0]]
 ```
-In the latter case the result is exact because the function is cubic and
+The result for f3(ν) is exact because the function is cubic and
 the expansion is third order - see Figure below. The tabulated function is
 given by the black points. The interpolation and extrapolation points are red.
 
