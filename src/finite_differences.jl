@@ -263,7 +263,7 @@ end
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
 (default *third* order) Lagrange-polynomial interpolation of a tabulated
-analytic function ``f[1:N]`` at offset ``o`` with respect to index
+analytic function ``f[n]`` at offset ``o`` with respect to index
 position ``n``, which is positive for increasing index and negative for
 decreasing index.
 
@@ -278,7 +278,9 @@ f[n+o] = \sum_{p=0}^k α_p(-o) Δ^p f[n] + ⋯,
 where the expansion coefficients are given by
 
 [`fdiff_interpolation_expansion_coeffs(o, k, fwd)`](@ref)
-`` → α(-o) ≡ [α_0(-o),⋯\ α_k(-o)]``.
+`` → α(-o) ≡ [α_0(-o),⋯\ α_k(-o)]``. In forward difference notation the range
+``0\leq o\leq k`` corresponds to interpolation and the ranges ``o<0`` and
+``o>k`` to extrapolation.
 
 **Backward difference notation** (`notation = bwd`)
 
@@ -291,7 +293,9 @@ f[n+o] = \sum_{p=0}^k β_p(o) ∇^p f[n] + ⋯,
 where the expansion coefficients are given by
 
 [`fdiff_interpolation_expansion_coeffs(o, k, bwd)`](@ref)
-`` → β(o) ≡ [β_0(o),⋯\ β_k(o)]``.
+`` → β(o) ≡ [β_0(o),⋯\ β_k(o)]``. In backward difference notation the range
+``-k\leq o\leq0`` corresponds to interpolation and the ranges
+``o<-k`` and ``o>0`` to extrapolation.
 
 #### Examples:
 ```
@@ -344,7 +348,7 @@ function bwd_interpolation_expansion_weights(o::T, k=3, ordering=rev) where T<:R
 
 end
 #...............................................................................
-function fdiff_interpolation_expansion_weights(Δx::T, k=3, notation=bwd, ordering=rev) where T<:Real
+function fdiff_interpolation_expansion_weights(o::T, k=3, notation=bwd, ordering=rev) where T<:Real
 
     o = isforward(notation) ? fwd_interpolation_expansion_weights(-o, k, ordering) :
                               bwd_interpolation_expansion_weights(o, k, ordering)

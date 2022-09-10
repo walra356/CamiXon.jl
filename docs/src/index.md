@@ -737,11 +737,11 @@ Functions:
 
 where
 
-[`fdiff_differentiation_expansion_coeffs(Δx, k)`](@ref)
+[`fdiff_differentiation_expansion_coeffs(o, k)`](@ref)
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``.
 
 ```@docs
-fdiff_differentiation_expansion_coeffs(Δx::T, k=3) where T<:Real
+fdiff_differentiation_expansion_coeffs(o::T, k=3) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
