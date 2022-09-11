@@ -671,7 +671,7 @@ lagrangian-interpolation expansion.
 
 ```@docs
 fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, ν::V; k=3) where {T<:Real, V<:Real}
+fdiff_interpolation(f::Vector{T}, η::V; k=3) where {T<:Real, V<:Real}
 ```
 
 ### Lagrangian differentiation
