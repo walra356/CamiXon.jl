@@ -437,14 +437,14 @@ function fwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
-    o = T ∈ Float ? Base.ones(T,k+1) :
+    a = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
                                        Base.ones(Rational{T},k+1)
     for i=1:k
-        o[i+1] = iseven(i) ? i : -i
+        a[i+1] = iseven(i) ? i : -i
     end
 
-    a = 1 ./ o; a[1] = 0
+    a = 1 ./ a; a[1] = 0
 
     η == 0 && return a
     α = fdiff_interpolation_expansion_coeffs(η, k, fwd)
@@ -463,14 +463,14 @@ function bwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
-    o = T ∈ Float ? Base.ones(T,k+1) :
+    b = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
                                        Base.ones(Rational{T},k+1)
     for i=1:k
-        o[i+1] = i
+        b[i+1] = i
     end
 
-    b = 1 ./ o; b[1] = 0
+    b = 1 ./ b; b[1] = 0
 
     η == 0 && return b
     β = fdiff_interpolation_expansion_coeffs(η, k, bwd)
