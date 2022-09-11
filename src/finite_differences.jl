@@ -238,91 +238,91 @@ end
 # ======= fdiff_interpolation_expansion_coeffs(k, x, notation=bwd) =============
 
 #...............................................................................
-function fwd_interpolation_expansion_coeffs(η::T, k=3) where T<:Real
+function fwd_interpolation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
-    η == 0 ? (for p=2:k+1; o[p] = 0 end) :
-             (for p=1:k; o[p+1] = o[p]*(η-p+1)/p end)
+    ξ == 0 ? (for p=2:k+1; o[p] = 0 end) :
+             (for p=1:k; o[p+1] = o[p]*(ξ-p+1)/p end)
 
     return o
 
 end
 #...............................................................................
-function bwd_interpolation_expansion_coeffs(η::T, k=3) where T<:Real
+function bwd_interpolation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
-    η == 0 ? (for p=2:k+1; o[p] = 0 end) :
-             (for p=1:k; o[p+1] = o[p]*(p-η-1)/p end)
+    ξ == 0 ? (for p=2:k+1; o[p] = 0 end) :
+             (for p=1:k; o[p+1] = o[p]*(p-ξ-1)/p end)
 
     return o
 
 end
 #...............................................................................
 @doc raw"""
-    fdiff_interpolation_expansion_coeffs(η::T [, k=3 [, notation=bwd]]) where T<:Real
+    fdiff_interpolation_expansion_coeffs(ξ::T [, k=3 [, notation=bwd]]) where T<:Real
 
 Finite-difference expansion coefficient vector defining the ``k^{th}``-order
 (default *third* order) Lagrange-polynomial interpolation of a tabulated
-analytic function ``f[n]`` at offset ``η`` with respect to index
+analytic function ``f[n]`` at offset ``ξ`` with respect to index
 position ``n``, which is positive for increasing index and negative for
 decreasing index.
 
 **Forward difference notation** (`notation = fwd`)
 
 In this case we consider the tabulated interval ``f[n:n+k]``. The interpolated
-value ``f[n+η]`` is given by the forward-difference expansion
+value ``f[n+ξ]`` is given by the forward-difference expansion
 
 ```math
-f[n+η] = \sum_{p=0}^k α_p(-η) Δ^p f[n] + ⋯,
+f[n+ξ] = \sum_{p=0}^k α_p(-ξ) Δ^p f[n] + ⋯,
 ```
 where the expansion coefficients are given by
 
-[`fdiff_interpolation_expansion_coeffs(η, k, fwd)`](@ref)
-`` → α(-η) ≡ [α_0(-η),⋯\ α_k(-η)]``. In this notation the range
-``0\leq η\leq k`` corresponds to interpolation and the ranges ``η<0`` and
-``η>k`` to extrapolation.
+[`fdiff_interpolation_expansion_coeffs(ξ, k, fwd)`](@ref)
+`` → α(-ξ) ≡ [α_0(-ξ),⋯\ α_k(-ξ)]``. In this notation the range
+``0\leq ξ\leq k`` corresponds to interpolation and the ranges ``ξ<0`` and
+``ξ>k`` to extrapolation.
 
 **Backward difference notation** (`notation = bwd`)
 
 In this case we consider the tabulated interval ``f[n-k:n]``. The interpolated
-value ``f[n+η]`` is given by the backward-difference expansion
+value ``f[n+ξ]`` is given by the backward-difference expansion
 
 ```math
-f[n+η] = \sum_{p=0}^k β_p(η) ∇^p f[n] + ⋯,
+f[n+ξ] = \sum_{p=0}^k β_p(ξ) ∇^p f[n] + ⋯,
 ```
 where the expansion coefficients are given by
 
-[`fdiff_interpolation_expansion_coeffs(η, k, bwd)`](@ref)
-`` → β(η) ≡ [β_0(η),⋯\ β_k(η)]``. In this notation the range
-``-k\leq η\leq0`` corresponds to interpolation and the ranges
-``η<-k`` and ``η>0`` to extrapolation.
+[`fdiff_interpolation_expansion_coeffs(ξ, k, bwd)`](@ref)
+`` → β(ξ) ≡ [β_0(ξ),⋯\ β_k(ξ)]``. In this notation the range
+``-k\leq ξ\leq0`` corresponds to interpolation and the ranges
+``ξ<-k`` and ``ξ>0`` to extrapolation.
 
 #### Examples:
 ```
 k = 5
-η = -1
-α = fdiff_interpolation_expansion_coeffs(η, k, fwd); println("α = $α")
-β = fdiff_interpolation_expansion_coeffs(η, k, bwd); println("β = $β")
+ξ = -1
+α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(ξ, k, bwd); println("β = $β")
   α = [1, 1, 0, 0, 0, 0]
   β = [1, 1, 1, 1, 1, 1]
 
-η = 0
-α = fdiff_interpolation_expansion_coeffs(η, k, fwd); println("α = $α")
-β = fdiff_interpolation_expansion_coeffs(η, k, bwd); println("β = $β")
+ξ = 0
+α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(ξ, k, bwd); println("β = $β")
   α = [1, 0, 0, 0, 0, 0]
   β = [1, 0, 0, 0, 0, 0]
 
-η = 1
-α = fdiff_interpolation_expansion_coeffs(η, k, fwd); println("α = $α")
-β = fdiff_interpolation_expansion_coeffs(η, k, bwd); println("β = $β")
+ξ = 1
+α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd); println("α = $α")
+β = fdiff_interpolation_expansion_coeffs(ξ, k, bwd); println("β = $β")
   α = [1, -1, 1, -1, 1, -1]
   β = [1, -1, 0, 0, 0, 0]
 ```
 """
-function fdiff_interpolation_expansion_coeffs(η::T, k=3, notation=bwd) where T<:Real
+function fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_interpolation_expansion_coeffs(-η, k) :
-                              bwd_interpolation_expansion_coeffs(η, k)
+    o = isforward(notation) ? fwd_interpolation_expansion_coeffs(-ξ, k) :
+                              bwd_interpolation_expansion_coeffs(ξ, k)
     return o
 
 end
@@ -330,28 +330,28 @@ end
 # ============== fdiff_interpolation_expansion_weights(coeffs) =================
 
 #...............................................................................
-function fwd_interpolation_expansion_weights(η::T, k=3, ordering=reg) where T<:Real
+function fwd_interpolation_expansion_weights(ξ::T, k=3, ordering=reg) where T<:Real
 
-    α = fdiff_interpolation_expansion_coeffs(η, k, fwd)
+    α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd)
     o = fdiff_expansion_weights(α, fwd, ordering)
 
     return o
 
 end
 #...............................................................................
-function bwd_interpolation_expansion_weights(η::T, k=3, ordering=rev) where T<:Real
+function bwd_interpolation_expansion_weights(ξ::T, k=3, ordering=rev) where T<:Real
 
-    β = fdiff_interpolation_expansion_coeffs(η, k, bwd)
+    β = fdiff_interpolation_expansion_coeffs(ξ, k, bwd)
     o = fdiff_expansion_weights(β, bwd, ordering)
 
     return o
 
 end
 #...............................................................................
-function fdiff_interpolation_expansion_weights(η::T, k=3, notation=bwd, ordering=rev) where T<:Real
+function fdiff_interpolation_expansion_weights(ξ::T, k=3, notation=bwd, ordering=rev) where T<:Real
 
-    o = isforward(notation) ? fwd_interpolation_expansion_weights(-η, k, ordering) :
-                              bwd_interpolation_expansion_weights(η, k, ordering)
+    o = isforward(notation) ? fwd_interpolation_expansion_weights(-ξ, k, ordering) :
+                              bwd_interpolation_expansion_weights(ξ, k, ordering)
     return o
 
 end
@@ -426,14 +426,14 @@ function fdiff_interpolation(f::Vector{T}, ν::V; k=3) where {T<:Real, V<:Real}
 
 end
 
-# ============== fdiff_differentiation_expansion_coeffs(η, k) =================
+# ============== fdiff_differentiation_expansion_coeffs(ξ, k) =================
 
 #...............................................................................
-function fwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
+function fwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 # ==============================================================================
 #   Forward difference expansion coefficients for differentiation of an
 #   analytic function f(x) tabulated under the convention f[n,n+k] and
-#   evaluated at the interpolation position n+η.
+#   evaluated at the interpolation position n+ξ.
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
@@ -446,8 +446,8 @@ function fwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
 
     a = 1 ./ a; a[1] = 0
 
-    η == 0 && return a
-    α = fdiff_interpolation_expansion_coeffs(η, k, fwd)
+    ξ == 0 && return a
+    α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd)
 
     a,α = Base.promote(a,α)
 
@@ -455,11 +455,11 @@ function fwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
 
 end
 #...............................................................................
-function bwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
+function bwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 # ==============================================================================
 #   Backward difference expansion coefficients for differentiation of an
 #   analytic function f(x) tabulated under the convention f[n-k,n] and
-#   evaluated at the interpolation position n+η.
+#   evaluated at the interpolation position n+ξ.
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
@@ -472,8 +472,8 @@ function bwd_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
 
     b = 1 ./ b; b[1] = 0
 
-    η == 0 && return b
-    β = fdiff_interpolation_expansion_coeffs(η, k, bwd)
+    ξ == 0 && return b
+    β = fdiff_interpolation_expansion_coeffs(ξ, k, bwd)
 
     b,β = Base.promote(b,β)
 
@@ -483,42 +483,42 @@ end
 #...............................................................................
 
 @doc raw"""
-    fdiff_differentiation_expansion_coeffs(η::T [, k=3 [, notation=bwd]]) where T<:Real
+    fdiff_differentiation_expansion_coeffs(ξ::T [, k=3 [, notation=bwd]]) where T<:Real
 
 Finite-difference expansion coefficient vector defining ``k^{th}``-order
 lagrangian *differentiation* of the tabulated analytic function ``f[n]``
-at offset ``η`` (with respect to index position ``n``), which is positive
+at offset ``ξ`` (with respect to index position ``n``), which is positive
 for increasing index and negative for decreasing index.
 
 **Forward difference notation** (`notation = fwd`)
 
 ```math
-\frac{df}{dν}[n+η]=\sum_{p=0}^kα_p(η)Δ^{p}f[n]
+\frac{df}{dν}[n+ξ]=\sum_{p=0}^kα_p(ξ)Δ^{p}f[n]
 ```
 
-Offset convention: ``η = -σ`` with respect to index ``n`` in tabulated
+Offset convention: ``ξ = -σ`` with respect to index ``n`` in tabulated
 interval ``f[n:n+k]``
 
 **Backward difference notation** (`notation = bwd`)
 
 ```math
-\frac{df}{dν}[n+η]=\sum_{p=0}^kβ_p(η)∇^{p}f[n]
+\frac{df}{dν}[n+ξ]=\sum_{p=0}^kβ_p(ξ)∇^{p}f[n]
 ```
-where ``β(η) ≡ [β_0(η),\ ⋯,\ β_p(η)]``
+where ``β(ξ) ≡ [β_0(ξ),\ ⋯,\ β_p(ξ)]``
 
-Offset convention: ``η = σ`` with respect to index ``n`` in tabulated
+Offset convention: ``ξ = σ`` with respect to index ``n`` in tabulated
 interval ``f[n-k:n]``
 #### Example:
 ```
-k = 2; η = 0
-o = fdiff_differentiation_expansion_coeffs(η, k); println(o)
+k = 2; ξ = 0
+o = fdiff_differentiation_expansion_coeffs(ξ, k); println(o)
  [0.0, 1.0, -1.5]
 ```
 """
-function fdiff_differentiation_expansion_coeffs(η::T, k=3, notation=bwd) where T<:Real
+function fdiff_differentiation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_differentiation_expansion_coeffs(η, k) :
-                              bwd_differentiation_expansion_coeffs(η, k)
+    o = isforward(notation) ? fwd_differentiation_expansion_coeffs(ξ, k) :
+                              bwd_differentiation_expansion_coeffs(ξ, k)
     return o
 
 end

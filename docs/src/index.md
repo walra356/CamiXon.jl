@@ -670,7 +670,7 @@ where the vector
 lagrangian-interpolation expansion.
 
 ```@docs
-fdiff_interpolation_expansion_coeffs(η::T, k=3, notation=bwd) where T<:Real
+fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 fdiff_interpolation(f::Vector{T}, ν::V; k=3) where {T<:Real, V<:Real}
 ```
 
@@ -741,7 +741,7 @@ where
 ``→ β ≡ [β_0(x),⋯\ β_k(x)]``.
 
 ```@docs
-fdiff_differentiation_expansion_coeffs(η::T, k=3) where T<:Real
+fdiff_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 fdiff_differentiation(f::Vector{T}; k=3) where T<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
