@@ -278,7 +278,7 @@ f[n+o] = \sum_{p=0}^k α_p(-o) Δ^p f[n] + ⋯,
 where the expansion coefficients are given by
 
 [`fdiff_interpolation_expansion_coeffs(o, k, fwd)`](@ref)
-`` → α(-o) ≡ [α_0(-o),⋯\ α_k(-o)]``. In forward difference notation the range
+`` → α(-o) ≡ [α_0(-o),⋯\ α_k(-o)]``. In this notation the range
 ``0\leq o\leq k`` corresponds to interpolation and the ranges ``o<0`` and
 ``o>k`` to extrapolation.
 
@@ -293,7 +293,7 @@ f[n+o] = \sum_{p=0}^k β_p(o) ∇^p f[n] + ⋯,
 where the expansion coefficients are given by
 
 [`fdiff_interpolation_expansion_coeffs(o, k, bwd)`](@ref)
-`` → β(o) ≡ [β_0(o),⋯\ β_k(o)]``. In backward difference notation the range
+`` → β(o) ≡ [β_0(o),⋯\ β_k(o)]``. In this notation the range
 ``-k\leq o\leq0`` corresponds to interpolation and the ranges
 ``o<-k`` and ``o>0`` to extrapolation.
 
@@ -437,14 +437,14 @@ function fwd_differentiation_expansion_coeffs(o::T, k=3) where T<:Real
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
-    o = T ∈ Float ? Base.ones(T,k+1) :
+    a = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
                                        Base.ones(Rational{T},k+1)
     for i=1:k
-        o[i+1] = iseven(i) ? i : -i
+        a[i+1] = iseven(i) ? i : -i
     end
 
-    a = 1 ./ o; a[1] = 0
+    a = 1 ./ a; a[1] = 0
 
     o == 0 && return a
     α = fdiff_interpolation_expansion_coeffs(o, k, fwd)
@@ -463,14 +463,14 @@ function bwd_differentiation_expansion_coeffs(o::T, k=3) where T<:Real
 # ==============================================================================
     Float = (Float64,Float32,Float16)
 
-    o = T ∈ Float ? Base.ones(T,k+1) :
+    b = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
                                        Base.ones(Rational{T},k+1)
     for i=1:k
-        o[i+1] = i
+        b[i+1] = i
     end
 
-    b = 1 ./ o; b[1] = 0
+    b = 1 ./ b; b[1] = 0
 
     o == 0 && return b
     β = fdiff_interpolation_expansion_coeffs(o, k, bwd)
@@ -517,9 +517,9 @@ o = fdiff_differentiation_expansion_coeffs(o, k); println(o)
 """
 function fdiff_differentiation_expansion_coeffs(o::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_differentiation_expansion_coeffs(o, k) :
+    out = isforward(notation) ? fwd_differentiation_expansion_coeffs(o, k) :
                               bwd_differentiation_expansion_coeffs(o, k)
-    return o
+    return out
 
 end
 
