@@ -110,7 +110,8 @@ function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 
     r′= grid.r′
 
-    f′ = fdiff_differentiation(f; k)
+    l = length(f)
+    f′= [fdiff_differentiation(f, v; k) for v=1:l]
 
     return f′ ./ r′
 
