@@ -534,14 +534,14 @@ the analytic function ``f``, tabulated in forward order on a uniform grid.
 ```
 f = [x^3 for x=-5:5]; println(round.(Int,f))
 l = length(f)
-f′ = [fdiff_differentiation1(f, v) for v=1:l]; println(round.(Int,f′))
+f′ = [fdiff_differentiation(f, v) for v=1:l]; println(round.(Int,f′))
   [-125, -64, -27, -8, -1, 0, 1, 8, 27, 64, 125]
   [75, 48, 27, 12, 3, 0, 3, 12, 27, 48, 75]
 
-f′= fdiff_differentiation1(f, 1) ; println("f′(1) = $(f′))
+f′= fdiff_differentiation(f, 1) ; println("f′(1) = $(f′))
   f′(1) = 75//1
 
-f′= fdiff_differentiation1(f, 6.5) ; println("f′(6.5) = $(f′)")
+f′= fdiff_differentiation(f, 6.5) ; println("f′(6.5) = $(f′)")
     f′(6.5) = 0.75
 ```
 For a cubic function the third-order lagrangian differentiation is exact -
