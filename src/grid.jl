@@ -89,6 +89,43 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
 
 end
 
+# =============== findIndex(rval, grid) ========================================
+
+@doc raw"""
+    findIndex(rval::T, grid::Grid{T}) where T<:Number
+
+The grid index corresponding to the grid position `rval`.
+#### Example:
+```
+h = 0.1
+r0 = 1.0
+grid = castGrid(1, 4, Float64; h, r0)
+r = grid.r; println("r[3] = $(r[3])")
+  Grid created: exponential, Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
+  r[3] = 0.22140275816016985
+
+findIndex(0.222, grid)
+  3
+```
+"""
+function findIndex(rval::T, grid::Grid{T}) where T<:Number
+# ==============================================================================
+#  grid index of rval, e.g., rval -> classical turning point
+# ==============================================================================
+    N = grid.N
+    r = grid.r
+
+    r[1] ≤ rval ≤ r[end] || error("Error: radial distance in a.u. outside grid range")
+
+    n = N
+    while rval < r[n]     # below classical threshhold
+        n > 1 ? n -= 1 : break
+    end
+
+    return n
+
+end
+
 # =============== grid_differentiation(f, grid; k=3)) ======================
 
 @doc raw"""

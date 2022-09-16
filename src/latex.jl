@@ -111,7 +111,7 @@ function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
     return println(o)
 
 end
-function latexIsotopeTable(itrZ; continuation=false)
+function latexIsotopeTable(itrZ::; continuation=false)
 
     return latexIsotopeTable(itrZ.start, irZ.stop; continuation=false)
 

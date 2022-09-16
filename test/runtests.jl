@@ -10,6 +10,7 @@ using Test
     grid = autoGrid(atom, orbit, codata, Float64);
     def = castDef(grid, atom, orbit);
     @test grid.name == "exponential"
+    @test findIndex(0.0042, grid) == 10
     @test def.atom.element.name == "hydrogen"
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"

@@ -98,6 +98,7 @@ export Grid
 export gridname
 export gridfunction
 export castGrid
+export findIndex
 export autoRmax
 export autoNtot
 export autoPrecision
