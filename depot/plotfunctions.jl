@@ -331,7 +331,7 @@ end
 
 # =========================================================================================================================
 
-function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=true) where T<:Real
+function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where T<:Real
 
     r = grid.r
     k = def.k
@@ -345,32 +345,45 @@ function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=
 
     itr = 1:k+1
 
-    (ylabelP, ylabelQ, Z) = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(r,Z))
+    (ylabelP1, ylabelQ1, Z1) = ("χ(r)", "dχ/dr", Z)
+    (ylabelP2, ylabelQ2, Z2) = ("ψ(r)", "dψ/dr", wavefunction(r,Z))
 
 
     R = [r[n] for n ∈ itr]
-    P = [real(Z[n]) for n ∈ itr]
-    Q = [imag(Z[n]) for n ∈ itr]
+    P1 = [real(Z1[n]) for n ∈ itr]
+    Q1 = [imag(Z1[n]) for n ∈ itr]
+    P2 = [real(Z2[n]) for n ∈ itr]
+    Q2 = [imag(Z2[n]) for n ∈ itr]
 
     symbol = def.atom.element.symbol
       name = def.orbit.name
 
     fig = Figure()
 
-    attr1 = set_attributes(fig; title = "OUTSCH: " * ylabelP * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelP )
-    attr2 = set_attributes(fig; title = "OUTSCH: " * ylabelQ * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelQ )
+    attr1a = set_attributes(fig; title = "OUTSCH: " * ylabelP1 * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelP1 )
+    attr1b = set_attributes(fig; title = "OUTSCH: " * ylabelQ1 * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelQ1 )
+    attr2a = set_attributes(fig; title = "OUTSCH: " * ylabelP2 * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelP2 )
+    attr2b = set_attributes(fig; title = "OUTSCH: " * ylabelQ2 * " on Grid[$(itr)]", xlabel = "r (a.u.)", ylabel = ylabelQ2 )
 
     ax0 = Label(fig; text = symbol * ": " * name, textsize = 24,  color=:gray)
-    ax1 = Axis(fig; attr1...)                   # create axes, add atrributes
-    ax2 = Axis(fig; attr2...)                   # create axes, add atrributes
+    ax1a = Axis(fig; attr1a..., yticks = P1)                   # create axes, add attributes
+    ax1b = Axis(fig; attr1b..., yticks = Q1)                   # create axes, add attributes 
+    ax2a = Axis(fig; attr2a..., yticks = P2)                   # create axes, add attributes
+    ax2b = Axis(fig; attr2b..., yticks = Q2)                   # create axes, add attributes 
 
-    lines!(ax1, R  , P, markersize = 1, color=:gray90)
-    scatter!(ax1, R, P, markersize = 2, color=:black)
-    lines!(ax2, R  , Q, markersize = 1, color=:gray90)
-    scatter!(ax2, R, Q, markersize = 2, color=:black)
+    lines!(ax1a, R  , P1, markersize = 1, color=:gray90)
+    scatter!(ax1a, R, P1, markersize = 2, color=:black)
+    lines!(ax1b, R  , Q1, markersize = 1, color=:gray90)
+    scatter!(ax1b, R, Q1, markersize = 2, color=:black)
+    lines!(ax2a, R  , P2, markersize = 1, color=:gray90)
+    scatter!(ax2a, R, P2, markersize = 2, color=:black)
+    lines!(ax2b, R  , Q2, markersize = 1, color=:gray90)
+    scatter!(ax2b, R, Q2, markersize = 2, color=:black)
 
-    fig[1,1] = ax1                                      # create layout and show figure
-    fig[1,2] = ax2                                      # create layout and show figure
+    fig[1,1] = ax1a                                      # create layout and show figure
+    fig[1,2] = ax1b                                      # create layout and show figure
+    fig[2,1] = ax2a                                      # create layout and show figure
+    fig[2,2] = ax2b                                      # create layout and show figure
     fig[0,:] = ax0
 
     return fig

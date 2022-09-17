@@ -47,8 +47,8 @@ end
 @doc raw"""
     OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
-Solution of the Schrödinger for the first `k`` point on the `grid`, where ``k``
-is the Adams-Moulton order.
+Solution of the Schrödinger for the first ``k`` points on the `grid`, where
+``k`` is the Adams-Moulton order.
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0, msg=true)
@@ -71,6 +71,7 @@ Z = OUTSCH(grid, def, adams.σ);
   Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
   Def created for hydrogen 75s on exponential grid in Float64
 ```
+For hydrogen 75s this is illustrated in the figure below.
 
 ![Image](./assets/outsch_H_75s.png)
 """
