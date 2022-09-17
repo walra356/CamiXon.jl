@@ -94,7 +94,7 @@ end
 @doc raw"""
     findIndex(rval::T, grid::Grid{T}) where T<:Number
 
-The grid index corresponding to the grid position `rval`.
+The grid index corresponding to the position `rval` on the `grid`.
 #### Example:
 ```
 h = 0.1

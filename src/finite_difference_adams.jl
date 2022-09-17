@@ -1,7 +1,7 @@
-# ========================= fdiff_expansion_coeffs_adams_moulton(k) ===========
+# ========================= fdiff_adams_moulton_expansion_coeffs(k) ===========
 
 @doc raw"""
-    fdiff_expansion_coeffs_adams_moulton(k [; T=Int])
+    fdiff_adams_moulton_expansion_coeffs(k [; T=Int])
 
 Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
 defining ``k^{th}``-order Adams-Moulton expansion,
@@ -14,7 +14,7 @@ defining ``k^{th}``-order Adams-Moulton expansion,
 #### Examples:
 ```
 k = 5
-β = fdiff_expansion_coeffs_adams_moulton(k::Int); println(b)
+β = fdiff_adams_moulton_expansion_coeffs(k::Int); println(b)
  Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
 
 D = denominator(gcd(β)); println(D)
@@ -24,7 +24,7 @@ o = convert(Vector{Int},(β .* D)); println(o)
  [1440, -720, -120, -60, -38, -27]
 ```
 """
-function fdiff_expansion_coeffs_adams_moulton(k::Int; T=Int)
+function fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int)
 # ==============================================================================
 #   Adams-Moulton expansion coefficients
 # ==============================================================================
@@ -75,7 +75,7 @@ divisor. By default the output is in Float64, optionally the output is rational,
 """
 function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
-    β = CamiXon.fdiff_expansion_coeffs_adams_moulton(k; T)
+    β = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; T)
 
     o = fdiff_expansion_weights(β)
 
@@ -90,10 +90,10 @@ function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, 
 
 end
 
-# ======================== fdiff_expansion_coeffs_adams_bashford(k) ===========
+# ======================== fdiff_adams_bashford_expansion_coeffs(k) ===========
 
 @doc raw"""
-    fdiff_expansion_coeffs_adams_bashford(k [; T=Int])
+    fdiff_adams_bashford_expansion_coeffs(k [; T=Int])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
@@ -105,17 +105,17 @@ order of use in summation.
 #### Examples:
 ```
 k = 5
-o = fdiff_expansion_coeffs_adams_bashford(k); println(o)
+o = fdiff_adams_bashford_expansion_coeffs(k); println(o)
  Rational{Int64}[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
 ```
 """
-function fdiff_expansion_coeffs_adams_bashford(k::Int; T=Int)
+function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int)
 # ==============================================================================
 #   Adams-Bashford expansion coefficients
 # ==============================================================================
     a = Base.ones(Rational{T},k+1)
 
-    b = CamiXon.fdiff_expansion_coeffs_adams_moulton(k; T)
+    b = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; T)
     o = CamiXon.polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))

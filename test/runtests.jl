@@ -78,8 +78,8 @@ using Test
     @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
     @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
-    @test fdiff_expansion_coeffs_adams_moulton(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
-    @test fdiff_expansion_coeffs_adams_bashford(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
+    @test fdiff_adams_moulton_expansion_coeffs(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
+    @test fdiff_adams_bashford_expansion_coeffs(5) == [1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
     @test gridname(2) == "quasi-exponential"
     @test [gridfunction(2, n-1, 0.1; p = 1) for n=1:5] ==  [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
     @test [gridfunction(1, n-1, 0.1) for n=1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]

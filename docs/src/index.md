@@ -202,7 +202,7 @@ INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
-solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
 
 ## FITS
@@ -808,7 +808,7 @@ where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point
 
 Function:
 
-`β` = [`fdiff_expansion_coeffs_adams_bashford(k)`](@ref)
+`β` = [`fdiff_adams_bashford_expansion_coeffs(k)`](@ref)
  ``→ [B_k^k(x),⋯\ B_0^k(x)]``
 
 `adams_bashford_integration_weights`
@@ -816,7 +816,7 @@ Function:
  ``→ [A_k^k(x),⋯\ A_0^k(x)]``
 
 ```@docs
-fdiff_expansion_coeffs_adams_bashford(k::Int)
+fdiff_adams_bashford_expansion_coeffs(k::Int)
 ```
 
 ### Adams-Moulton expansion
@@ -838,7 +838,7 @@ y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 
 where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*,
 rational numbers generated numerically by the function
-[`fdiff_expansion_coeffs_adams_moulton(k)`](@ref). Extracting the greatest
+[`fdiff_adams_moulton_expansion_coeffs(k)`](@ref). Extracting the greatest
 common denominator, ``1/D``, the step becomes
 
 ```math
@@ -864,7 +864,7 @@ where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
 
 Functions:
 
-`β` = [`fdiff_expansion_coeffs_adams_moulton(k)`](@ref) ``→ [b_0,⋯\ b_k]``
+`β` = [`fdiff_adams_moulton_expansion_coeffs(k)`](@ref) ``→ [b_0,⋯\ b_k]``
 
 `adams_moulton_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
@@ -874,7 +874,7 @@ Functions:
 ``→ [a_k^k,⋯\ a_0^k]``
 
 ```@docs
-fdiff_expansion_coeffs_adams_moulton(k::Int)
+fdiff_adams_moulton_expansion_coeffs(k::Int)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 

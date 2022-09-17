@@ -73,9 +73,9 @@ export fdiff_interpolation
 export fdiff_differentiation_expansion_coeffs
 export fdiff_differentiation
 export create_lagrange_differentiation_matrix
-export fdiff_expansion_coeffs_adams_moulton
+export fdiff_adams_moulton_expansion_coeffs
 export create_adams_moulton_weights
-export fdiff_expansion_coeffs_adams_bashford
+export fdiff_adams_bashford_expansion_coeffs
 export trapezoidal_weights
 export trapezoidal_integration
 
@@ -92,7 +92,7 @@ export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized
 export get_nodes
-export solve_adams_moulton
+export adams_moulton_solve
 
 export Grid
 export gridname

@@ -190,13 +190,13 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
 end
 
-# =============== solve_adams_moulton(E, grid, def, adams) =====================
+# =============== adams_moulton_solve(E, grid, def, adams) =====================
 
 @doc raw"""
-    solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+    adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 
 """
-function solve_adams_moulton(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 
      adams = updateAdams!(adams, E, grid, def)
          Z = adams_moulton_outward(def, adams)
