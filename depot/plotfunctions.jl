@@ -331,8 +331,10 @@ end
 
 # =========================================================================================================================
 
-function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where T<:Real
+function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,900))) where T<:Real
 
+    set_theme!(theme)
+    
     r = grid.r
     k = def.k
     l = k+1
@@ -346,7 +348,7 @@ function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where T<
     itr = 1:k+1
 
     (ylabelP1, ylabelQ1, Z1) = ("χ(r)", "dχ/dr", Z)
-    (ylabelP2, ylabelQ2, Z2) = ("ψ(r)", "dψ/dr", wavefunction(r,Z))
+    (ylabelP2, ylabelQ2, Z2) = ("ψ(r)", "dψ/dr", wavefunction(Z, grid))
 
 
     R = [r[n] for n ∈ itr]
@@ -457,7 +459,7 @@ function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::De
     1 ≤ Nstart ≤ N || error("Error: Nstart outside index range 1:$(N)")
     1 ≤ Nstop  ≤ N || error("Error: Nstop outside index range 1:$(N)")
 
-    ylabel1, ylabel2, Z = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(r,Z))
+    ylabel1, ylabel2, Z = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(Z, grid))
     ylabelA, ylabelB = reduced ? ("χ(n)", "dχ/dr") :  ("ψ(n)", "dψ/dr")
 
     header = reduced ? "reduced wavefunction" :  "full wavefunction"
@@ -538,7 +540,7 @@ function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T};
        Nb = def.pos.Nb
         N = def.pos.N
 
-    ylabel1, ylabel2, Z = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(r,Z))
+    ylabel1, ylabel2, Z = reduced ? ("χ(r)", "dχ/dr", Z) :  ("ψ(r)", "dψ/dr", wavefunction(Z,grid))
 
     header = reduced ? "reduced wavefunction" :  "full wavefunction"
     P = real(Z)
