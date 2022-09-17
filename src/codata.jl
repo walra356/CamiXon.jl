@@ -372,7 +372,7 @@ default input: Hartree
 #### Example:
 ```
 codata = castCodata(2018)
-calibrationReport1(1.1, 1.0, codata; unitIn="Hartree")
+calibrationReport(1.1, 1.0, codata; unitIn="Hartree")
   calibration report (Float64):
   Ecal = 1.0 Hartree
   E = 1.1 Hartree

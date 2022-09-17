@@ -47,6 +47,32 @@ end
 @doc raw"""
     OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
+Solution of the Schrödinger for the first `k`` point on the `grid`, where ``k``
+is the Adams-Moulton order.
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0, msg=true)
+orbit = castOrbit(n=75, ℓ=0)
+kwargs = (p=0, coords=[], Nmul=1, epn=5, k=7,)
+setT = Float64
+Ecal = convert(setT, bohrformula(atom.Z, orbit.n))
+grid = autoGrid(atom, orbit, codata, setT; kwargs..., msg=true)
+def = castDef(grid, atom, orbit)
+E = initE(def; E=Ecal)
+adams = castAdams(E, grid, def)
+Z = OUTSCH(grid, def, adams.σ);
+  Element created: H, hydrogen, Z=1, weight=1.008
+  Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
+  Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
+  Orbital: 75s
+    principal quantum number: n = 75
+    radial quantum number: n′ = 74 (number of nodes in radial wavefunction)
+    orbital angular momentum of valence electron: ℓ = 0
+  Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
+  Def created for hydrogen 75s on exponential grid in Float64
+```
+
+![Image](./assets/outsch_H_75s.png)
 """
 function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 

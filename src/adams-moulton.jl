@@ -86,8 +86,6 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 
 end
 
-
-
 # ======================= adams_moulton_outward ================================
 
 @doc raw"""
