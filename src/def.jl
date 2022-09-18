@@ -76,14 +76,15 @@ end
 
 # ================== castDef(grid, atom::Atom, orbit::Orbit) =================
 
-function _defspecs(grid, atom, orbit)
+function _defspecs(grid, atom, orbit, wkb)
 
     g = grid.name
     T = grid.T
     a = atom.element.name
     o = orbit.name
+    strWKB = wkb ? "(WKB Ansatz requested)" : ""
 
-    return "Def created for $a $o on $g grid in $T"
+    return "Def created for $a $o on $g grid in $T $(strWKB)"
 
 end
 # ..............................................................................
@@ -134,7 +135,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing, wkb=false
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
-    println(_defspecs(grid, atom, orbit))
+    println(_defspecs(grid, atom, orbit, wkb))
 
     return Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
