@@ -1,6 +1,6 @@
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
+    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, wkb::Bool)
 
 Type with fields:
 * `   .Na`: grid index of last leading point (`::Int`)
