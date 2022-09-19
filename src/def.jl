@@ -4,9 +4,9 @@
 
 Type with fields:
 * `   .Na`: grid index of last leading point (`::Int`)
-* `.Nlctp`: grid index of classical turning point (`::Int`)
+* `.Nlctp`: grid index of lower classical turning point (`::Int`)
 * ` .Nmin`: grid index of (screened) potential minimum (`::Int`)
-* `.Nuctp`: grid index of classical turning point (`::Int`)
+* `.Nuctp`: grid index of upper classical turning point (`::Int`)
 * `   .Nb`: grid index first trailing point (`::Int`)
 * `    .N`: grid index last point (`::Int`)
 * `.nodes`: number of nodes  (`::Int`)
@@ -322,19 +322,19 @@ function get_Nuctp(E::T, def::Def{T}) where T<:Real
 
 end
 
-# ======================= get_nodes(Z, def) ==============================
+# ======================= count_nodes(Z, def) ==============================
 
 @doc raw"""
-    get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+    count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Number of nodes (excluding the origin) of the reduced radial wavefunction
 χ(r) = real(Z).
 """
-function get_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+function count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
     Na = def.pos.Na
-    Nb = def.pos.Nb
-    c = [sign(real(Z[n])*real(Z[n+2])) for n=Na:2:Nb-2]
+    Nuctp = def.pos.Nuctp
+    c = [sign(real(Z[n])*real(Z[n+2])) for n=Na:2:Nuctp-3] # need not all points to only count nodes
     c = findall(x -> x == -1, c)
 
     nodes = length(c)

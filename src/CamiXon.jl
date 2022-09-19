@@ -91,7 +91,7 @@ export INSCH
 export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized
-export get_nodes
+export count_nodes
 export adams_moulton_solve
 
 export Grid
