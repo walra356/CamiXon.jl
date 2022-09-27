@@ -36,7 +36,7 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     G = matG(E, grid, def)
     σ = matσ(E, grid, def)
     M = matMinv(E, grid, def, am[end])
-    Z = wkb ? OUTSCH_WKB(E, grid, def) : OUTSCH(grid, def, σ)
+    Z = OUTSCH_WKB(E, grid, def, σ)
 
     return Adams(G, σ, M, Z)
 

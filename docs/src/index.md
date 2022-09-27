@@ -185,7 +185,7 @@ matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 ```
 
 ### Adams
