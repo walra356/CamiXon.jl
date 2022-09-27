@@ -156,9 +156,6 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
         _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
     end
 
-    #ΔQ = imag(Z[Nuctp]) - sgn * imag(Z2[1]) / real(Z2[1])
-    #Z[Nuctp:N] = sgn * Z2[1:N-Nuctp+1] / real(Z2[1]) # set amplitude at c.t.p. to +1 or -1
-
     norm = abs(real(Z2[1]))
     Z2 /= norm
     Z2 *= sgn             # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)

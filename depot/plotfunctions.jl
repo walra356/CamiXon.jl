@@ -186,7 +186,7 @@ end
 function _zone_color(zone::Int)
 
     zone == 1 && return :Black
-    zone == 2 && return :Skyblue
+    zone == 2 && return :Black
     zone == 3 && return :Royalblue
     zone == 4 && return :Red
     zone == 5 && return :Indianred
@@ -198,12 +198,12 @@ end
 
 function _zone_markersize(zone::Int)
 
-    zone == 1 && return 2.5
-    zone == 2 && return 2.0
+    zone == 1 && return 1.5
+    zone == 2 && return 1.5
     zone == 3 && return 1.5
     zone == 4 && return 1.5
-    zone == 5 && return 2.0
-    zone == 6 && return 2.5
+    zone == 5 && return 1.5
+    zone == 6 && return 1.5
 
     error("Error: color zone index outside of range 1:6")
 

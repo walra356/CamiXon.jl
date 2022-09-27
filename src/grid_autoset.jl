@@ -127,26 +127,26 @@ end
 # .......................... autoNtot(orbit) ...................................
 
 @doc raw"""
-    autoNtot(orbit::Orbit)
+    autoNtot(orbit::Orbit, Nboost=1)
 
 Total number of gridpoints (rule of thumb value)
 ### Example:
 ```
-orbit = castOrbit(1,0)
+orbit = castOrbit(n=1, ℓ=0)
 autoNtot(orbit)
  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
 
  100
 ```
 """
-function autoNtot(orbit::Orbit)
+function autoNtot(orbit::Orbit, Nboost=1)
 # ==============================================================================
 #  Total number of grid points
 # ==============================================================================
 
     n = orbit.n
 
-    Ntot = (50 + 50 * n)
+    Ntot = (50 + 50 * n * Nboost)
 
     return Ntot
 
@@ -160,8 +160,8 @@ end
 Floating point precision (rule of thumb value)
 ### Example:
 ```
-atom = castAtom(1)
-orbit = castOrbit(1,0)
+atom = castAtom(Z=1)
+orbit = castOrbit(n=1,ℓ=0)
 Rmax = autoRmax(atom, orbit)
 autoPrecision(Rmax, orbit)
  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.0, I = 1//2, gI = 5.5)
@@ -219,17 +219,17 @@ end
 ```math
     f[n] = \text{exp}(h(n-1)) - 1.0
 ```
-* `ID = 2`: quasi-exponential grid function (linear grid for p = 1),
+* `ID = 2`: quasi-exponential grid function degree `p` (linear grid for `p = 1`),
 ```math
     f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + ⋯ + \frac{1}{p!}(h(n-1))^p
 ```
-* `ID = 3`: polynomial grid function based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
+* `ID = 3`: polynomial grid function of degree `p = length(c)` based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
 ```math
     f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
 ```
 * `ID = 4`: linear grid function,
 ```math
-    f[n] = (n-1) * h
+    f[n] = h(n-1)
 ```
 #### Examples:
 ```
@@ -264,7 +264,7 @@ end
 # =autoGrid(atom,orbit,codata,T; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true) =
 
 @doc raw"""
-    autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+    autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nboost=1, epn=7, k=7, msg=true)
 
 Automatic setting of grid parameters. Important cases:
 * `p=0` (exponential grid default)
@@ -282,7 +282,7 @@ plot_gridfunction(1:grid.N, grid; title="")
 ```
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true)
+function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 
     T ∈ [Float64,BigFloat] || println("Warning (autoGrid): grid.T = $T => Float64 (by automatic type promotion)")
 
@@ -290,7 +290,7 @@ function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coord
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
          (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
 
-    Ntot = autoNtot(orbit) * Nmul
+    Ntot = autoNtot(orbit, Nboost)
     Rmax = autoRmax(atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
