@@ -127,7 +127,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     n = def.pos.Nlctp
 
     # n > 0 || error("Error: OUTSCH_WKB requires non-zero lower classical turning point")
-    n > 0 || OUTSCH(grid, def, σ)
+    n > 0 || return OUTSCH(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
     I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
@@ -138,7 +138,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 
     #Na > k+1 || error("Error: Na ≤ k+1 (quasi-classical approximation marginal)")
-    Na > k+1 || OUTSCH(grid, def, σ)
+    Na > k+1 || return OUTSCH(grid, def, σ)
 
     return P .+ im * Q
 

@@ -170,7 +170,7 @@ plot_potentials(E, grid, def)
 
 ```@docs
 Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing, wkb=false) where T <: Real
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <: Real
 initE(def::Def{T}; E=nothing) where T<:Real
 get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real

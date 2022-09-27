@@ -1,6 +1,6 @@
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, wkb::Bool)
+    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
 * `   .Na`: grid index of last leading point (`::Int`)
@@ -10,7 +10,6 @@ Type with fields:
 * `   .Nb`: grid index first trailing point (`::Int`)
 * `    .N`: grid index last point (`::Int`)
 * `.nodes`: number of nodes  (`::Int`)
-* `  .wkb`: use WKB Ansatz  (`::Bool`)
 
 Mutable struct to hold special grid indices as well as the number of nodes;
 `Pos` is one of the fields of the [`Def`](@ref) object
@@ -33,7 +32,6 @@ mutable struct Pos
     Nb::Int
     N::Int
     nodes::Int
-    wkb::Bool
 end
 
 # ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============
@@ -76,24 +74,23 @@ end
 
 # ================== castDef(grid, atom::Atom, orbit::Orbit) =================
 
-function _defspecs(grid, atom, orbit, wkb)
+function _defspecs(grid, atom, orbit)
 
     g = grid.name
     T = grid.T
     a = atom.element.name
     o = orbit.name
-    strWKB = wkb ? "(WKB Ansatz requested)" : ""
 
-    return "Def created for $a $o on $g grid in $T $(strWKB)"
+    return "Def created for $a $o on $g grid"
 
 end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit[; scr=nothing[, wkb=false]]) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit[; scr=nothing]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
-Optional: scr (supply screening array); wkb (use WKB Ansatz true/false)
+Optional: scr (supply screening array)
 #### Example:
 ```
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
@@ -107,7 +104,7 @@ def = castDef(grid, atom, orbit);
     Def created for Hydrogen 7d on exponential grid in Float64
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing, wkb=false) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit) # reference arrays
 # ================================================================================
@@ -131,11 +128,11 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing, wkb=false
     o1 = [fill(convert(T,0), (2,2)) for n=1:N]
     o2 = [fill(convert(T,0), (2,2)) for n=1:N]
     o3 = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, wkb)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, wkb)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
-    println(_defspecs(grid, atom, orbit, wkb))
+    println(_defspecs(grid, atom, orbit))
 
     return Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 

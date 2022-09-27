@@ -31,7 +31,6 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     def.pos.Nmin = get_Nmin(def)
     def.pos.Nlctp = get_Nlctp(E, def)
     def.pos.Nuctp = get_Nuctp(E, def)
-    wkb = def.pos.wkb
 
     G = matG(E, grid, def)
     σ = matσ(E, grid, def)
