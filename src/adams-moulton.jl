@@ -292,7 +292,7 @@ convergence goal `Δν` is reached in `imax` iterations.
 
 #### Example:
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
@@ -349,7 +349,7 @@ varied until the wavefunction has the correct number of nodes.
 
 #### Example:
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")

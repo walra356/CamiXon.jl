@@ -326,15 +326,34 @@ end
 
 Number of nodes (excluding the origin) of the reduced radial wavefunction
 χ(r) = real(Z).
+
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0, msg=false);
+orbit = castOrbit(n=3, ℓ=2, msg=false);
+setT = Float64;
+grid = autoGrid(atom, orbit, codata, setT; Nboost=1, epn=5, k=7, msg=false);
+def = castDef(grid, atom, orbit)
+    Def created for hydrogen 3d on exponential grid
+
+E = convert(setT, bohrformula(atom.Z, orbit.n));
+adams = castAdams(E, grid, def);
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+
+o = count_nodes(Z, def); println("node count: $o nodes")
+    node count: 0 nodes
+```
 """
 function count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
     Na = def.pos.Na
     Nuctp = def.pos.Nuctp
-    c = [sign(real(Z[n])*real(Z[n+2])) for n=Na:2:Nuctp-3] # need not all points to only count nodes
-    c = findall(x -> x == -1, c)
-
-    nodes = length(c)
+    nodes = 0
+    for n=Na+1:Nuctp-1
+        if real(Z[n-1])*real(Z[n]) < 0
+            nodes += 1
+        end
+    end
 
     return nodes
 
