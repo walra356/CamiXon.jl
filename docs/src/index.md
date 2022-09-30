@@ -206,7 +206,7 @@ adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Rea
 adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
-wavefunction(Z::Vector{Complex{T}}, grid::Grid{T})
+wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 data_hydrogen(; n=3, ℓ=2)
 ```
 
