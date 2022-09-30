@@ -285,6 +285,31 @@ end
 @doc raw"""
     adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
+Solves the Schrödinger equation for an atom defined by `def` for energy `E`
+on grid the `grid` with the Adams-Moulton method defined by `adams`; `E` is
+chosen in an iteration procedure until convergence is reached within the
+convergence goal `Δν` is reached in `imax` iterations.
+
+#### Example:
+```
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
+E = 1.5Ecal
+msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
+println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+    Ecal = -0.5; E = -0.75; 0 nodes
+
+plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+```
+NB. `plot_wavefunction` can be found in the CamiXon.depot. The output is shown
+in the figure below.
+
+![Image](./assets/hydrogen-1s-prepared.png)
 """
 function adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
@@ -318,6 +343,34 @@ end
 @doc raw"""
     adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 
+Solves the Schrödinger equation for an atom defined by `def` for energy `E`
+on grid the `grid` with the Adams-Moulton method defined by `adams`. `E` is
+varied until the wavefunction has the correct number of nodes.
+
+#### Example:
+```
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
+E = 1.5Ecal
+msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
+println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+    Ecal = -0.5; E = -0.75; 0 nodes
+
+msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν=Value(1,"MHz"), imax=25)
+println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
+    Ecal = -0.5; E = -0.49999997841850014; 0 nodes
+
+plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+```
+NB. `plot_wavefunction` can be found in the CamiXon.depot. The output is shown
+in the figure below.
+
+![Image](./assets/hydrogen-1s.png)
 """
 function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 
@@ -361,6 +414,29 @@ end
 @doc raw"""
     adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
 
+Solves the Schrödinger equation for an atom defined by `def` for energy `E`
+on grid the `grid` with the Adams-Moulton method defined by `adams`.
+`Δν`: convergence goal
+`imax`: maximum number of iterations
+
+#### Example:
+```
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+E = 1.5Ecal
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+
+plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+```
+NB. `plot_wavefunction` can be found in the CamiXon.depot. Its output is shown
+in the figure below.
+
+![Image](./assets/hydrogen-1s.png)
 """
 function adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
 
@@ -389,11 +465,12 @@ end
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
 
-####Example:
+#### Example:
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
     Orbital: 1s
         principal quantum number: n = 1
@@ -402,7 +479,9 @@ plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
     Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 ```
-NB. `plot_wavefunction()` can be found in the CamiXon.depot directory.
+NB. `plot_wavefunction` can be found in the CamiXon.depot. Its output is shown
+in the figure below.
+
 ![Image](./assets/hydrogen-1s.png)
 """
 function data_hydrogen(; n=3, ℓ=2)
