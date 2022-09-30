@@ -388,22 +388,6 @@ end
 
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
-
-####Example:
-```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
-E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
-    Orbital: 1s
-        principal quantum number: n = 1
-        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
-    Def created for hydrogen 1s on exponential grid
-```
-NB. `plot_wavefunction()` can be found in the CamiXon.depot directory.
-![Image](./assets/hydrogen-1s.png)
 """
 function data_hydrogen(; n=3, ℓ=2)
 
