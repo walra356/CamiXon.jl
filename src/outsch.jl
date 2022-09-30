@@ -1,7 +1,4 @@
-# ======================== OUTSCH(grid, def, σ) ================================
-
-
-# ============================= OUTSCH sector ==================================
+# ======================== OUTSCH(E, grid, def, σ) ================================
 
 function _matOUTSCH(k::Int, matLD::Matrix{T}, matσ::Vector{Matrix{T}}) where T<:Real
 
@@ -33,15 +30,15 @@ function _vecOUTSCH(k::Int, matLD::Matrix{T}, p::T, q::T) where T<:Real
 
 end
 # ..................................................................................
-function _update_Z!(Z::Vector{Complex{T}}, o::Vector{Complex{T}}, Na::Int, k::Int) where T<:Real
-
-    for n=Na:Na+k
-        Z[n] = o[n-Na+1]
-    end
-
-    return Z
-
-end
+#function _update_Z!(Z::Vector{Complex{T}}, o::Vector{Complex{T}}, Na::Int, k::Int) where T<:Real
+#
+#    for n=Na:Na+k
+#        Z[n] = o[n-Na+1]
+#    end
+#
+#    return Z
+#
+#end
 # ..............................................................................
 
 @doc raw"""
@@ -114,10 +111,10 @@ end
 # ..............................................................................
 
 @doc raw"""
-    OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
 """
-function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
     N = grid.N
     r = grid.r
@@ -126,7 +123,6 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     s = def.scr
     n = def.pos.Nlctp
 
-    # n > 0 || error("Error: OUTSCH_WKB requires non-zero lower classical turning point")
     n > 0 || return OUTSCH(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
@@ -137,7 +133,6 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 
-    #Na > k+1 || error("Error: Na ≤ k+1 (quasi-classical approximation marginal)")
     Na > k+1 || return OUTSCH(grid, def, σ)
 
     return P .+ im * Q

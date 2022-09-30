@@ -208,3 +208,229 @@ function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) whe
     return adams, ΔE, Z
 
 end
+
+# ======================= adams_moulton_master sector ==========================
+
+# ..............................................................................
+function _set_bounds!(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    n′= def.orbit.n′     # radial quantum number (number of nodes)
+
+    (Emin, E, Emax, ΔE) = init
+
+    Z = adams.Z
+
+    nodes = def.pos.nodes
+
+    i = 0
+    while nodes ≠ n′
+        if nodes < n′
+            Emin = max(E,Emin)
+            E = T(0.9E)
+        else
+            Emax = min(E,Emax)
+            E = T(1.1E)
+        end
+        adams, ΔE, Z = adams_moulton_solve(E, grid, def, adams)
+        nodes = def.pos.nodes = count_nodes(Z, def)
+        i += 1
+    end
+
+    init = (Emin, E, Emax, ΔE)
+
+    return i, def, adams, init, Z
+
+end
+# ..............................................................................
+function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prepare") where T<:Real
+
+    nodes = def.pos.nodes
+       n′ = def.orbit.n′
+
+    nodes == n′ || error("Error: nodes condition violated (nodes = $(nodes) ≠  $(n′)")
+
+    (Emin, E, Emax, ΔE) = init
+
+    Nuctp = def.pos.Nuctp
+    Ntot = def.pos.N
+    cnts = "iterations"
+    imax = modus == "prepare" ? "" : i > imax-1 ? "(maximum value)" : ""
+    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (absolute convergence error)\n"
+    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " (relative convergence error)\n"
+
+    msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "): \nnode condition satified after "
+    msg *= "$i " * cnts * imax
+    msg *= ": nodes = $(nodes), "
+    msg *= "Nuctp = $(Nuctp), "
+    msg *= "Ntot = $(Ntot) \n"
+    msg *= @sprintf "E = %.17g %s\n" E "Hartree"
+    msg *= strΔE
+    msg *= strΔErel
+
+end
+# ..............................................................................
+function _strΔt(tstop::T, tstart::T) where T<:Real
+
+    Δt = tstop-tstart
+    str = Δt > 1.0  ? (repr(Δt, context=:compact => true) * " sec")      :
+          Δt > 1e-3 ? (repr(Δt*1e3, context=:compact => true) * " msec") :
+                      (repr(Δt*1e6, context=:compact => true) * " μsec")
+    return str
+
+end
+# ..............................................................................
+
+# ============================ adams_moulton_prepare ===========================
+
+@doc raw"""
+    adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
+function adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    n′= def.orbit.n′
+    N = def.pos.N
+    v = def.pot
+    s = def.scr
+
+    pot = v .+ s
+
+    Emax = pot[N]
+    Emin = minimum(pot[2:N])
+
+    adams, ΔE, Z = adams_moulton_solve(E, grid, def, adams)
+
+    nodes = def.pos.nodes = count_nodes(Z, def)
+    nodes > n′ ? Emax = E : nodes < n′ ? Emin = E : false
+
+    init = (Emin, E, Emax, ΔE)
+
+    i, def, adams, init, Z = _set_bounds!(init, grid, def, adams)
+
+    msg = _message(i, 0, init, def; modus="prepare")
+
+    return msg, adams, init, Z
+
+end
+
+# ========================= adams_moulton_iterate ==============================
+
+@doc raw"""
+    adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
+
+"""
+function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
+
+    n′= def.orbit.n′  # radial quantum number (number of nodes)
+
+    (Emin, E, Emax, ΔE) = init
+
+    test = convertUnit(Δν.val, codata; unitIn=Δν.unit, unitOut="Hartree")
+
+    test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
+
+    i=0
+    while abs(ΔE) > test
+        adams, ΔE′, Z = adams_moulton_solve(E, grid, def, adams)
+        nodes = def.pos.nodes = count_nodes(Z, def)
+        if nodes > n′
+            Emax = min(E,Emax)
+            E = (E-ΔE+Emax)/2
+        elseif nodes < n′
+            Emin = max(E,Emin)
+            E = (E-ΔE+Emin)/2
+        else
+            ΔE=ΔE′
+            E = iseven(nodes) ? E+ΔE : E-ΔE
+        end
+        i = i < imax ? i+1 : break
+    end
+
+    init = (Emin, E, Emax, ΔE)
+
+    def.pos.nodes = count_nodes(adams.Z, def)
+
+    msg = _message(i, imax, init, def; modus="iterate")
+
+    return msg, adams, init, adams.Z
+
+end
+
+# ===================== adams_moulton_master ===================================
+
+@doc raw"""
+    adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+
+"""
+function adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+
+    t1 = time()
+    msg && println("\nt = " * _strΔt(t1,t1))
+    msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
+    t2 = time()
+    msg && println(msg1 * "\n" * "preparation time: " * _strΔt(t2,t1))
+    msg && println("\nt = " * _strΔt(t2,t1))
+    msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν, imax)
+    t3 = time()
+    msg && println(msg2 * "\n" * "iteration time: " * _strΔt(t3,t2))
+    msg && println("\nt = " * _strΔt(t3,t1))
+
+    (Emin, E, Emax, ΔE) = init
+
+    return E, def, adams, Z
+
+end
+
+# ========================= test_hydrogen(; n=3, ℓ=2) ==========================
+
+@doc raw"""
+    data_hydrogen(; n=3, ℓ=2)
+
+Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
+and rotational quantum number `ℓ`.
+
+####Example:
+```
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+E = 1.5Ecal
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+```
+NB. `plot_wavefunction()` can be found in the CamiXon.depot directory.
+![Image](./assets/hydrogen-1s.png)
+"""
+function data_hydrogen(; n=3, ℓ=2)
+
+    atom = castAtom(;Z=1, A=1, Q=0, msg=false)
+    orbit = castOrbit(; n, ℓ)
+    grid = autoGrid(atom, orbit, codata, Float64; msg=true)
+    def = castDef(grid, atom, orbit)
+    E = convert(grid.T, bohrformula(atom.Z, orbit.n))
+    adams = castAdams(E, grid, def)
+
+    return E, grid, def, adams
+
+end
+
+function wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+
+    χ = real(Z)
+    χ′= imag(Z)
+    r = grid.r
+
+    ψ = χ ./ r
+    ψ′= (χ′ .- χ ./ r) ./ r
+
+    ψ[1] = fdiff_interpolation(ψ[2:end], 0) # extrapolate to r=0 to handle division by "zero"
+    ψ′[1] = fdiff_interpolation(ψ′[2:end], 0)
+
+
+    return ψ + im * ψ′
+
+end

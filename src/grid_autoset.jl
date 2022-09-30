@@ -179,7 +179,7 @@ function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 
     mytype = Rmax^(ℓ+1) == Inf ? BigFloat : T
 
-    mytype ≠ T && println("\nWarning: overflow protection - changed to BigFloat (Rmax^(ℓ+1) => Inf)\n")
+    mytype ≠ T && println("\nWarning: changed to BigFloat - overflow expected (Rmax^(ℓ+1) => Inf)\n")
 
     return mytype
 

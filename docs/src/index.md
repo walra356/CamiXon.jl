@@ -185,7 +185,7 @@ matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 ```
 
 ### Adams
@@ -203,6 +203,11 @@ adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<
 adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
+adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+wavefunction(Z::Vector{Complex{T}}, grid::Grid{T})
+data_hydrogen(; n=3, ℓ=2)
 ```
 
 ## FITS

@@ -165,7 +165,7 @@ struct Codata
 
 end
 
-# ========================= createCodata(year) =================================
+# ========================= castCodata(year) =================================
 
 @doc raw"""
     castCodata(year::Int)
@@ -310,7 +310,7 @@ default input: Hartree
 default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
-codata = createCodata(2018)
+codata = castCodata(2018)
 convertUnit(1, codata; unitIn="Hz", unitOut="Joule")
   6.62607015e-34
 
@@ -401,9 +401,9 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     msg *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
     msg *= @sprintf "E = %.17g %s \n" E unitIn
     msg *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
-                    "absolute accuracy: ΔE = 0 (exact within $T precision)\n"
+                    "absolute accuracy: ΔE = 0 (exact under $T precision)\n"
     msg *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
-                    "relative accuracy: ΔE/E = 0 (exact within $T precision)\n"
+                    "relative accuracy: ΔE/E = 0 (exact under $T precision)\n"
 
     return println(msg)
 

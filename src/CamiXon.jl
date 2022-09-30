@@ -83,7 +83,6 @@ export matG
 export matσ
 export matMinv
 export OUTSCH
-export OUTSCH_WKB
 export Adams
 export castAdams
 export updateAdams!
@@ -93,6 +92,11 @@ export adams_moulton_outward
 export adams_moulton_normalized
 export count_nodes
 export adams_moulton_solve
+export adams_moulton_prepare
+export adams_moulton_iterate
+export adams_moulton_master
+export data_hydrogen
+export wavefunction
 
 export Grid
 export gridname

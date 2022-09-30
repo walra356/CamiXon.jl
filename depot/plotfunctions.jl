@@ -198,12 +198,12 @@ end
 
 function _zone_markersize(zone::Int)
 
-    zone == 1 && return 1.5
-    zone == 2 && return 1.5
+    zone == 1 && return 2.0
+    zone == 2 && return 2.0
     zone == 3 && return 1.5
     zone == 4 && return 1.5
     zone == 5 && return 1.5
-    zone == 6 && return 1.5
+    zone == 6 && return 2.0
 
     error("Error: color zone index outside of range 1:6")
 
@@ -331,9 +331,9 @@ end
 
 # =========================================================================================================================
 
-function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,900))) where T<:Real
+function plot_OUTSCH(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,900)) ) where T<:Real
 
-    set_theme!(theme)
+    set_theme!(theme)    
     
     r = grid.r
     k = def.k
@@ -394,7 +394,10 @@ end
 
 # =========================================================================================================================
 
-function plot_endpoints(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where T<:Real
+function plot_endpoints(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; resolution = (900,600)) where T<:Real
+
+    theme = Theme(fontsize = 10, resolution)
+    set_theme!(theme)
 
     r = grid.r
     k = def.k
@@ -444,7 +447,9 @@ function plot_endpoints(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}) where
 end
 
 # ===============================================================================
-function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::Def{T}, Z::Vector{Complex{T}}; reduced=true) where T <: Real
+function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::Def{T}, Z::Vector{Complex{T}}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
+
+    set_theme!(theme)
 
         r = grid.r
         k = def.k
@@ -520,18 +525,20 @@ function plot_wavefunction(Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::De
     return fig
 
 end
-function plot_wavefunction(itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}, Z::Vector{Complex{T}}; reduced=true) where T <: Real
+function plot_wavefunction(itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}, Z::Vector{Complex{T}}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
 
     Nstart = itr.start
     Nstop  = itr.stop
 
-    return plot_wavefunction(Nstart, Nstop, E, grid, def, Z; reduced)
+    return plot_wavefunction(Nstart, Nstop, E, grid, def, Z; theme, reduced)
 
 end
 
 # =========================================================================================================================
 
-function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; reduced=true) where T <: Real
+function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
+
+    set_theme!(theme)
 
         r = grid.r
       pos = def.pos
