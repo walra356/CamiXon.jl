@@ -198,8 +198,12 @@ E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(
     Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 
-println("k + 1 = $(grid.k+1); Na = $(def.pos.Na)")
+Na = get_Na(Z, def)
+println("k + 1 = $(grid.k+1); Na = $Na")
     k + 1 = 8; Na = 8
+
+Na == def.pos.Na
+    true
 ```
 """
 function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
@@ -237,6 +241,9 @@ E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(
 Nb = get_Nb(Z, def)
 println("N - k - 1 = $(grid.N-grid.k-1); Nb = $Nb")
     N - k - 1 = 92; Nb = 92
+
+Nb == def.pos.Nb
+    true
 ```
 """
 function get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
