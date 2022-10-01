@@ -264,7 +264,7 @@ end
 # =autoGrid(atom,orbit,codata,T; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true) =
 
 @doc raw"""
-    autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nboost=1, epn=7, k=7, msg=true)
+    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, coords=[], Nboost=1, epn=7, k=7, msg=true)
 
 Automatic setting of grid parameters. Important cases:
 * `p=0` (exponential grid default)
@@ -276,13 +276,13 @@ NB. plot_gridfunction is not part of the package
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
 codata = castCodata(2018)
-grid = autoGrid(atom, orbit, codata, Float64)
+grid = autoGrid(atom, orbit, Float64)
 plot_gridfunction(1:grid.N, grid; title="")
   create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
 ```
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 
     T ∈ [Float64,BigFloat] || println("Warning (autoGrid): grid.T = $T => Float64 (by automatic type promotion)")
 

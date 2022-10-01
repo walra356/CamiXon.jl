@@ -40,19 +40,20 @@ end
     Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
-* `    .T`: gridType (`::Type`)
-* ` .atom`: atom object (`::Atom`)
-* `.orbit`: orbit object (`::Orbit`)
-* `  .pot`: tabulated potential function (`::Vector{T}`)
-* `  .scr`: tabulated screening function (`::Vector{T}`)
-* `   .o1`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
-* `   .o2`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
-* `   .o3`: vector of unit-filled matrices (`::Vector{Matrix{T}}`)
-* `  .pos`: object containing Na, Nlctp, Nmin, Nuctp, Nb, N and nodes (`::Pos`)
-* `  .epn`: number of endpoints trapezoidal correction - must be odd (`::Int`)
-* `    .k`: Adams-Moulton order (`::Int`)
-* `   .am`: Adams-Moulton weight coefficients (`::Vector{T}`)
-* `.matLD`: Lagrangian differentiation matrix (`::Matrix{T}`)
+* `     .T`: gridType (`::Type`)
+* `  .atom`: atom object (`::Atom`)
+* ` .orbit`: orbit object (`::Orbit`)
+* `.codata`: codata object (`::Codata`)
+* `   .pot`: tabulated potential function (`::Vector{T}`)
+* `   .scr`: tabulated screening function (`::Vector{T}`)
+* `    .o1`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
+* `    .o2`: vector of zero-filled matrices (`::Vector{Matrix{T}}`)
+* `    .o3`: vector of unit-filled matrices (`::Vector{Matrix{T}}`)
+* `   .pos`: object containing Na, Nlctp, Nmin, Nuctp, Nb, N and nodes (`::Pos`)
+* `   .epn`: number of endpoints trapezoidal correction - must be odd (`::Int`)
+* `     .k`: Adams-Moulton order (`::Int`)
+* `    .am`: Adams-Moulton weight coefficients (`::Vector{T}`)
+* ` .matLD`: Lagrangian differentiation matrix (`::Matrix{T}`)
 
 The object `Def` is best created with the function [`castDef`](@ref).
 """
@@ -60,6 +61,7 @@ struct Def{T}
     T::Type
     atom::Atom
     orbit::Orbit
+    codata::Codata
     pot::Vector{T}          # tabulated potential function
     scr::Vector{T}          # tabulated screening function
     o1::Vector{Matrix{T}}   # vector of zero-filled matrices
@@ -72,7 +74,7 @@ struct Def{T}
     matLD::Matrix{T}        # Lagrangian differentiation matrix
 end
 
-# ================== castDef(grid, atom::Atom, orbit::Orbit) =================
+# ========= castDef(grid, atom::Atom, orbit::Orbit, codata::Codata) ============
 
 function _defspecs(grid, atom, orbit)
 
@@ -86,7 +88,7 @@ function _defspecs(grid, atom, orbit)
 end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit[; scr=nothing]) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata[; scr=nothing]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
@@ -96,17 +98,17 @@ Optional: scr (supply screening array)
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
 orbit = castOrbit(n=7, ℓ=2)
 codata = castCodata(2018)
-grid = autoGrid(atom, orbit, codata, Float64)
-def = castDef(grid, atom, orbit);
+grid = autoGrid(atom, orbit, Float64)
+def = castDef(grid, atom, orbit, codata);
     Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
     Orbit created: 7d - (n = 7, n′ = 4, ℓ = 2)
     Grid created: exponential, Float64, Rmax = 207.0 (a.u.), Ntot = 400, h = 0.025, r0 = 0.00939821
     Def created for Hydrogen 7d on exponential grid in Float64
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing) where T <: Real
 # ================================================================================
-# castDef(grid, atom, orbit) # reference arrays
+# castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
     N = grid.N
     r = grid.r
@@ -134,7 +136,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <
 
     println(_defspecs(grid, atom, orbit))
 
-    return Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
+    return Def(T, atom, orbit, codata, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 end
 
@@ -148,8 +150,8 @@ codata = castCodata(2018)
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
 orbit = castOrbit(n=1, ℓ=0)
 Ecal = convert(Float64, bohrformula(atom.Z, orbit.n))
-grid = autoGrid(atom, orbit, codata; msg=false)
-def = castDef(grid, atom, orbit)
+grid = autoGrid(atom, orbit; msg=false)
+def = castDef(grid, atom, orbit, codata)
   Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
   Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
 
@@ -332,8 +334,8 @@ Number of nodes (excluding the origin) of the reduced radial wavefunction
 atom = castAtom(Z=1, A=1, Q=0, msg=false);
 orbit = castOrbit(n=3, ℓ=2, msg=false);
 setT = Float64;
-grid = autoGrid(atom, orbit, codata, setT; Nboost=1, epn=5, k=7, msg=false);
-def = castDef(grid, atom, orbit)
+grid = autoGrid(atom, orbit, setT; Nboost=1, epn=5, k=7, msg=false);
+def = castDef(grid, atom, orbit, codata)
     Def created for hydrogen 3d on exponential grid
 
 E = convert(setT, bohrformula(atom.Z, orbit.n));

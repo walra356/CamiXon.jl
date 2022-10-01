@@ -53,8 +53,8 @@ orbit = castOrbit(n=75, ℓ=0)
 kwargs = (p=0, coords=[], Nmul=1, epn=5, k=7,)
 setT = Float64
 Ecal = convert(setT, bohrformula(atom.Z, orbit.n))
-grid = autoGrid(atom, orbit, codata, setT; kwargs..., msg=true)
-def = castDef(grid, atom, orbit)
+grid = autoGrid(atom, orbit, setT; kwargs..., msg=true)
+def = castDef(grid, atom, orbit, codata)
 E = initE(def; E=Ecal)
 adams = castAdams(E, grid, def)
 Z = OUTSCH(grid, def, adams.σ);

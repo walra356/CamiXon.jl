@@ -375,10 +375,11 @@ in the figure below.
 function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 
     n′= def.orbit.n′  # radial quantum number (number of nodes)
+    c = def.codata
 
     (Emin, E, Emax, ΔE) = init
 
-    test = convertUnit(Δν.val, codata; unitIn=Δν.unit, unitOut="Hartree")
+    test = convertUnit(Δν.val; unitIn=Δν.unit, unitOut="Hartree", codata=c)
 
     test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
 
@@ -460,7 +461,7 @@ end
 # ========================= data_hydrogen(; n=3, ℓ=2) ==========================
 
 @doc raw"""
-    data_hydrogen(; n=3, ℓ=2)
+    data_hydrogen(; n=3, ℓ=2, codata=codata)
 
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
@@ -484,12 +485,12 @@ in the figure below.
 
 ![Image](./assets/hydrogen-1s.png)
 """
-function data_hydrogen(; n=3, ℓ=2)
+function data_hydrogen(; n=3, ℓ=2, codata=codata)
 
     atom = castAtom(;Z=1, A=1, Q=0, msg=false)
     orbit = castOrbit(; n, ℓ)
-    grid = autoGrid(atom, orbit, codata, Float64; msg=true)
-    def = castDef(grid, atom, orbit)
+    grid = autoGrid(atom, orbit, Float64; msg=true)
+    def = castDef(grid, atom, orbit, codata)
     E = convert(grid.T, bohrformula(atom.Z, orbit.n))
     adams = castAdams(E, grid, def)
 
