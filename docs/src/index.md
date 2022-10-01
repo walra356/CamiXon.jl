@@ -73,7 +73,7 @@ NamedValue
 castNamedValue(val::Value; name=" ", comment=" ")
 castCodata(year::Int)
 listCodata(codata::Codata)
-convertUnit(val; unitIn="Hartree", unitOut="xHz", codata=codata)
+convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
 

@@ -37,8 +37,8 @@ using Test
     @test createSpinOrbit(orbit; msg=false) == SpinOrbit("1s↑", 1, 0, 0, 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
     @test createTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
-    @test convertUnit(1; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
-    @test convertUnit(1) == Value(6.579683920501762, "PHz")
+    @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
+    @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1,"Hz")) == "1 Hz"
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]

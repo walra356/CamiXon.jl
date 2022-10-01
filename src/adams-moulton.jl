@@ -375,11 +375,11 @@ in the figure below.
 function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 
     n′= def.orbit.n′  # radial quantum number (number of nodes)
-    c = def.codata
+    codata = def.codata
 
     (Emin, E, Emax, ΔE) = init
 
-    test = convertUnit(Δν.val; unitIn=Δν.unit, unitOut="Hartree", codata=c)
+    test = convertUnit(Δν.val, codata; unitIn=Δν.unit, unitOut="Hartree")
 
     test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
 
@@ -461,7 +461,7 @@ end
 # ========================= data_hydrogen(; n=3, ℓ=2) ==========================
 
 @doc raw"""
-    data_hydrogen(; n=3, ℓ=2, codata=codata)
+    data_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
@@ -485,7 +485,7 @@ in the figure below.
 
 ![Image](./assets/hydrogen-1s.png)
 """
-function data_hydrogen(; n=3, ℓ=2, codata=codata)
+function data_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
     atom = castAtom(;Z=1, A=1, Q=0, msg=false)
     orbit = castOrbit(; n, ℓ)

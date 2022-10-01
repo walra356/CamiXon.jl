@@ -298,10 +298,10 @@ function listCodata(codata::Codata)
 
 end
 
-# ===== convertUnit(val; unitIn="kHz", unitOut="xHz", codata=codata) ===========
+# ===== convertUnit(val, codata; unitIn="kHz", unitOut="xHz") ===========
 
 @doc raw"""
-    convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
+    convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 
 Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, Joule, and eV
 
@@ -311,20 +311,20 @@ default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
 codata = castCodata(2018)
-convertUnit(1; unitIn="Hz", unitOut="Joule")
+convertUnit(1, codata; unitIn="Hz", unitOut="Joule")
   6.62607015e-34
 
-convertUnit(1; unitIn="Hartree", unitOut="Hz")
+convertUnit(1, codata; unitIn="Hartree", unitOut="Hz")
   Value(6.57968392050182e15, "Hz")
 
-f = convertUnit(1) # default input (Hartree) and output (xHz)
+f = convertUnit(1, codata) # default input (Hartree) and output (xHz)
 strf = strValue(f)
   "6.57968 PHz"
 ```
 """
-function convertUnit(val; unitIn="Hartree", unitOut="xHz", codata=codata)
+function convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 # ==============================================================================
-#  convertUnit(val; unitIn="kHz", unitOut="MHz")
+#  convertUnit(val, codata; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
     U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz"]
         push!(U,"Hartree")
@@ -392,7 +392,7 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
 
-    Δf = convertUnit(ΔE)
+    Δf = convertUnit(ΔE, codata)
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
