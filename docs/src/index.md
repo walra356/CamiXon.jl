@@ -73,7 +73,7 @@ NamedValue
 castNamedValue(val::Value; name=" ", comment=" ")
 castCodata(year::Int)
 listCodata(codata::Codata)
-convertUnit(val, codata::Codata; unitIn="Hartree", unitOut="xHz")
+convertUnit(val; unitIn="Hartree", unitOut="xHz", codata=codata)
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
 ```
 
@@ -118,7 +118,7 @@ autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, codata::Codata, T::Type ; p=0, coords=[], Nboost=1, epn=7, k=7, msg=true)
+autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
 ```
@@ -154,8 +154,8 @@ NB. plot_potentials is not part of the package
 atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
 orbit = castOrbit(n=7, ℓ=2)
 codata = castCodata(2018)
-grid = autoGrid(atom, orbit, codata, Float64)
-def = castDef(grid, atom, orbit)
+grid = autoGrid(atom, orbit, Float64)
+def = castDef(grid, atom, orbit, codata)
 E = convert(grid.T,bohrformula(atom.Z, orbit.n))
 @printf "E = %.15g %s \n" E "Hartree"
 adams = castAdams(E, grid, def)
@@ -170,7 +170,7 @@ plot_potentials(E, grid, def)
 
 ```@docs
 Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit; scr=nothing) where T <: Real
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing) where T <: Real
 initE(def::Def{T}; E=nothing) where T<:Real
 get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
