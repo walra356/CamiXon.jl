@@ -261,22 +261,23 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
 
 end
 
-# =autoGrid(atom,orbit,codata,T; p=0, coords=[], Nmul=1, epn=7, k=7, msg=true) =
+# = autoGrid(atom, orbit, T; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true) ===
 
 @doc raw"""
-    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, coords=[], Nboost=1, epn=7, k=7, msg=true)
+    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 
 Automatic setting of grid parameters. Important cases:
 * `p=0` (exponential grid default)
 * `p=1` (linear grid)
 * `p>1` (quasi-exponential grid)
 #### Example:
-NB. plot_gridfunction is not part of the package
+NB. plot_gridfunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in CamiXon.
 ```
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
 codata = castCodata(2018)
-grid = autoGrid(atom, orbit, Float64)
+grid = autoGrid(atom, orbit, Float64);
 plot_gridfunction(1:grid.N, grid; title="")
   create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
 ```

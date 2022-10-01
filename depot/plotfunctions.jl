@@ -77,7 +77,9 @@ function find_energy_interval(Emin, Emax, def::Def{T}) where T <: Number
 
 end
 # .............................................................................
-function plot_potentials(E::T, grid::Grid{T}, def::Def{T}) where T <: Number
+function plot_potentials(E::T, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,600))) where T <: Real
+
+    set_theme!(theme)    
 
          N = grid.N
          r = grid.r

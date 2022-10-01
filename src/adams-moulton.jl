@@ -291,6 +291,8 @@ chosen in an iteration procedure until convergence is reached within the
 convergence goal `Δν` is reached in `imax` iterations.
 
 #### Example:
+NB. plot_wavefunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in the package.
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -306,9 +308,6 @@ println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
 
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```
-NB. `plot_wavefunction` can be found in the CamiXon.depot. The output is shown
-in the figure below.
-
 ![Image](./assets/hydrogen-1s-prepared.png)
 """
 function adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
@@ -348,6 +347,8 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`. `E` is
 varied until the wavefunction has the correct number of nodes.
 
 #### Example:
+NB. plot_wavefunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in the package.
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -367,9 +368,6 @@ println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
 
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```
-NB. `plot_wavefunction` can be found in the CamiXon.depot. The output is shown
-in the figure below.
-
 ![Image](./assets/hydrogen-1s.png)
 """
 function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
@@ -421,6 +419,8 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 `imax`: maximum number of iterations
 
 #### Example:
+NB. plot_wavefunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in the package.
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -434,9 +434,6 @@ plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
     Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 ```
-NB. `plot_wavefunction` can be found in the CamiXon.depot. Its output is shown
-in the figure below.
-
 ![Image](./assets/hydrogen-1s.png)
 """
 function adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
@@ -467,6 +464,8 @@ Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
 
 #### Example:
+NB. plot_wavefunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in the package.
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -480,9 +479,6 @@ plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
     Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 ```
-NB. `plot_wavefunction` can be found in the CamiXon.depot. Its output is shown
-in the figure below.
-
 ![Image](./assets/hydrogen-1s.png)
 """
 function data_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))

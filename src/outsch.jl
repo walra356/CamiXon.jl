@@ -42,36 +42,71 @@ end
 # ..............................................................................
 
 @doc raw"""
-    OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
 Solution of the Schrödinger for the first ``k`` points on the `grid`, where
-``k`` is the Adams-Moulton order.
-#### Example:
-```
-atom = castAtom(Z=1, A=1, Q=0, msg=true)
-orbit = castOrbit(n=75, ℓ=0)
-kwargs = (p=0, coords=[], Nmul=1, epn=5, k=7,)
-setT = Float64
-Ecal = convert(setT, bohrformula(atom.Z, orbit.n))
-grid = autoGrid(atom, orbit, setT; kwargs..., msg=true)
-def = castDef(grid, atom, orbit, codata)
-E = initE(def; E=Ecal)
-adams = castAdams(E, grid, def)
-Z = OUTSCH(grid, def, adams.σ);
-  Element created: H, hydrogen, Z=1, weight=1.008
-  Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
-  Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
-  Orbital: 75s
-    principal quantum number: n = 75
-    radial quantum number: n′ = 74 (number of nodes in radial wavefunction)
-    orbital angular momentum of valence electron: ℓ = 0
-  Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
-  Def created for hydrogen 75s on exponential grid in Float64
-```
-For hydrogen 75s this is illustrated in the figure below.
+``k`` is the Adams-Moulton order. The WKB solution for energy `E` is used
+when the WKB approximation is valid (for nonzero angular momentum at distances
+below the inner classical turning point - ictp)
 
-![Image](./assets/outsch_H_75s.png)
+NB. The plot functions require CairoMakie (not included in CamiXon) to be
+installed. For the code see `plotfunctions.jl` in the CamiXon.depot directory.
+#### Example:
+NB. plot_wavefunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+which is not included in the package.
+```
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Z = OUTSCH(Ecal, grid, def, adams.σ)
+println("\nZ: standard Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+
+    Z: standard Ansatz for wavefunction (n < Na=8))
+
+Ecal, grid, def, adams = data_hydrogen(n=10, ℓ=5)
+Z = OUTSCH(Ecal, grid, def, adams.σ);
+println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
+    Orbital: 10h
+        principal quantum number: n = 10
+        radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 5
+    Grid created: exponential, Float64, Rmax = 360.0 a.u., Ntot = 550, h = 0.0181818, r0 = 0.0163447
+    Def created for hydrogen 10h on exponential grid
+
+    Z: WKB Ansatz for wavefunction (n < Na=70))
+
+plot_wavefunction(1:def.pos.Na, E, grid, def, Z; reduced=true)
+```
+![Image](./assets/OUTSCH_H1_10h.png)
 """
+function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+
+    N = grid.N
+    r = grid.r
+    k = grid.k
+    v = def.pot
+    s = def.scr
+    n = def.pos.Nlctp
+
+    n > 0 || return OUTSCH(grid, def, σ)
+
+    p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
+    I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
+    P = exp.(-I) ./ sqrt.(p[1:n])                            # WKB solution
+    P = append!(P,zeros(N-n))
+    Q = grid_differentiation(P, grid)
+
+    Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
+
+    Na > k+1 || return OUTSCH(grid, def, σ)
+
+    return P .+ im * Q
+
+end
 function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
@@ -106,35 +141,5 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     def.pos.Na = k+1
 
     return Z
-
-end
-# ..............................................................................
-
-@doc raw"""
-    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-
-"""
-function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-
-    N = grid.N
-    r = grid.r
-    k = grid.k
-    v = def.pot
-    s = def.scr
-    n = def.pos.Nlctp
-
-    n > 0 || return OUTSCH(grid, def, σ)
-
-    p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
-    I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
-    P = exp.(-I) ./ sqrt.(p[1:n])                            # WKB solution
-    P = append!(P,zeros(N-n))
-    Q = grid_differentiation(P, grid)
-
-    Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
-
-    Na > k+1 || return OUTSCH(grid, def, σ)
-
-    return P .+ im * Q
 
 end
