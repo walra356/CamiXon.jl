@@ -149,7 +149,7 @@ The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
-NB. `plot_potentials` (see `plot_functions.jl` in `CamiXon.depot`) uses
+NB. `plot_potentials` (see `plot_functions`.jl` in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
 codata = castCodata(2018)

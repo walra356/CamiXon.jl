@@ -271,7 +271,7 @@ Automatic setting of grid parameters. Important cases:
 * `p=1` (linear grid)
 * `p>1` (quasi-exponential grid)
 #### Example:
-NB. plot_gridfunction (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
+NB. plot_gridfunction (see `plot_functions`.jl in CamiXon.depot) uses CairoMakie,
 which is not included in CamiXon.
 ```
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
