@@ -9,9 +9,15 @@ using Test
     codata = castCodata(2018);
     grid = autoGrid(atom, orbit, Float64);
     def = castDef(grid, atom, orbit, codata);
+    E = convert(grid.T, bohrformula(atom.Z, orbit.n));
+    adams = castAdams(E, grid, def);
+    E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 10
     @test def.atom.element.name == "hydrogen"
+    @test def.pos.Na == 8
+    @test def.pos.Nb == 92
+    @test Z[50] ≈ 0.9161632121992154 + 1.4868742544447744im
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"

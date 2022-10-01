@@ -187,6 +187,20 @@ end
 Grid index of the starting point for outward numerical integration. This is
 ``k+1`` or the first point where the integration threshold value (1.0e-10)
 is exceeded.
+#### Example:
+```
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+
+println("k + 1 = $(grid.k+1); Na = $(def.pos.Na)")
+    k + 1 = 8; Na = 8
+```
 """
 function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 # ==============================================================================
@@ -207,8 +221,20 @@ end
 @doc raw"""
     get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
-Grid index of the stopping for outward numerical integration. This is ``N-k``
+Grid index of the stopping for outward numerical integration. This is ``N-k-1``
 or the last point where the integration threshold value (1.0e-10) is exceeded.
+#### Example:
+Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    Def created for hydrogen 1s on exponential grid
+
+println("N - k - 1 = $(grid.N-grid.k-1); Nb = $(def.pos.Nb)")
+    N - k - 1 = 92; Nb = 92
 """
 function get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 # ==============================================================================
