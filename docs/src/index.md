@@ -152,20 +152,26 @@ the field `def.Z` the solution as a discrete function of `N` elements.
 NB. plot_potentials (see plot_functions.jl in CamiXon.depot) uses CairoMakie,
 which is not included in the package.
 ```
-atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713)
-orbit = castOrbit(n=7, ℓ=2)
 codata = castCodata(2018)
+atom = castAtom(Z=1, A=1, Q=0)
+orbit = castOrbit(n=7, ℓ=2)
 grid = autoGrid(atom, orbit, Float64)
 def = castDef(grid, atom, orbit, codata)
 E = convert(grid.T,bohrformula(atom.Z, orbit.n))
 @printf "E = %.15g %s \n" E "Hartree"
 adams = castAdams(E, grid, def)
 plot_potentials(E, grid, def)
-  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
-  Orbit created: 7d - (n = 7, n′ = 4, ℓ = 2)
-  create exponential Grid: Float64, Rmax = 207.0 (a.u.), Ntot = 400, h = 0.025, r0 = 0.00939821
-  E = -0.0102040816326531 Hartree
-  Nlctp = 234, Nmin = 259, Nuctp = 369 (Ructp = 93.0059202490 a.u.)
+    Element created: H, hydrogen, Z=1, weight=1.008
+    Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
+    Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
+    Orbital: 7d
+        principal quantum number: n = 7
+        radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 2
+    Grid created: exponential, Float64, Rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
+    Def created for hydrogen 7d on exponential grid
+    E = -0.0102040816326531 Hartree
+    Nlctp = 234, Nmin = 259, Nuctp = 369 (Ructp = 93.0059202490 a.u.)
 ```
 ![Image](./assets/potential.png)
 
