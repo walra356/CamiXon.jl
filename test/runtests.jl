@@ -17,6 +17,9 @@ using Test
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
     @test def.pos.Nb == 92
+    @test get_Na(Z, def) == 8
+    @test get_Nb(Z, def) == 92
+    @test get_Nuctp(E, def) == 66
     @test Z[50] ≈ 0.9161632121992154 + 1.4868742544447744im
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
