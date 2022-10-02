@@ -63,7 +63,7 @@ end
 
 Properties of element with atomic number `Z`.
 
-Output options: `Object` (default), `String`, `Info`.
+Output options (fmt): `Object` (default), `String`, `Info`.
 #### Example:
 ```
 listElement("H") == listElement(1)

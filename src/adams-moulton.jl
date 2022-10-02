@@ -468,24 +468,25 @@ NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
 Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
-E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
     Orbital: 1s
         principal quantum number: n = 1
         radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 0
     Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
+
+E = 1.5Ecal
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+
+plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
-function data_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
+function data_hydrogen(; n=3, ℓ=2, msg=false, codata=castCodata(2018))
 
-    atom = castAtom(;Z=1, A=1, Q=0, msg=false)
-    orbit = castOrbit(; n, ℓ)
-    grid = autoGrid(atom, orbit, Float64; msg=true)
+    atom = castAtom(;Z=1, A=1, Q=0, msg)
+    orbit = castOrbit(; n, ℓ, msg)
+    grid = autoGrid(atom, orbit, Float64; msg)
     def = castDef(grid, atom, orbit, codata)
     E = convert(grid.T, bohrformula(atom.Z, orbit.n))
     adams = castAdams(E, grid, def)

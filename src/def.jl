@@ -111,7 +111,7 @@ def = castDef(grid, atom, orbit, codata);
     Def created for hydrogen 7d on exponential grid
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
