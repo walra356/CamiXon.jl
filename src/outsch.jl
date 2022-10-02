@@ -55,7 +55,7 @@ installed. For the code see `plotfunctions.jl` in the CamiXon.depot directory.
 NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 Z = OUTSCH(Ecal, grid, def, adams.σ)
 println("\nZ: standard Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
     Orbital: 1s
@@ -67,7 +67,7 @@ println("\nZ: standard Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
 
     Z: standard Ansatz for wavefunction (n < Na=8))
 
-Ecal, grid, def, adams = data_hydrogen(n=10, ℓ=5)
+Ecal, grid, def, adams = demo_hydrogen(n=10, ℓ=5)
 Z = OUTSCH(Ecal, grid, def, adams.σ);
 println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
     Orbital: 10h

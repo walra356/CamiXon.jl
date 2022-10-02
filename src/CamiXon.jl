@@ -95,7 +95,7 @@ export adams_moulton_solve
 export adams_moulton_prepare
 export adams_moulton_iterate
 export adams_moulton_master
-export data_hydrogen
+export demo_hydrogen
 export wavefunction
 
 export Grid
