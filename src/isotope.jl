@@ -135,7 +135,7 @@ end
 
 Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 
-Output options: `Object` (default), `String`, `Latex`, `Info`.
+Output options (fmt): `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
 listIsotope(1,3; fmt=Info)

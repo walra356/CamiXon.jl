@@ -100,7 +100,10 @@ end
 #...............................................................................
 """
     listElements(Z1::Int, Z2::Int[; fmt=Object])
-    listElements(itrZ::UnitRange{Int}[; fmt=Object])
+
+Properties of a range of elements with atomic number `Z1` - `Z2`.
+
+Output options (fmt): `Object` (default), `String`, `Info`.    
 
 #### Example
 ```
