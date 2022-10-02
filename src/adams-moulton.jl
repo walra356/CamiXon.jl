@@ -294,7 +294,7 @@ convergence goal `Δν` is reached in `imax` iterations.
 NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
@@ -350,7 +350,7 @@ varied until the wavefunction has the correct number of nodes.
 NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
@@ -422,7 +422,7 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 
@@ -455,10 +455,10 @@ function adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), 
 
 end
 
-# ========================= data_hydrogen(; n=3, ℓ=2) ==========================
+# ========================= demo_hydrogen(; n=3, ℓ=2) ==========================
 
 @doc raw"""
-    data_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
+    demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
@@ -467,7 +467,7 @@ and rotational quantum number `ℓ`.
 NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
 CairoMakie, which is not included in the package.
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
     Orbital: 1s
         principal quantum number: n = 1
         radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
@@ -482,12 +482,12 @@ plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
-function data_hydrogen(; n=3, ℓ=2, msg=false, codata=castCodata(2018))
+function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
-    atom = castAtom(;Z=1, A=1, Q=0, msg)
-    orbit = castOrbit(; n, ℓ, msg)
-    grid = autoGrid(atom, orbit, Float64; msg)
-    def = castDef(grid, atom, orbit, codata)
+    atom = castAtom(;Z=1, A=1, Q=0, msg=false)
+    orbit = castOrbit(; n, ℓ, msg=false)
+    grid = autoGrid(atom, orbit, Float64; msg=false)
+    def = castDef(grid, atom, orbit, codata; msg=true )
     E = convert(grid.T, bohrformula(atom.Z, orbit.n))
     adams = castAdams(E, grid, def)
 

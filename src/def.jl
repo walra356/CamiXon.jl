@@ -83,12 +83,12 @@ function _defspecs(grid, atom, orbit)
     a = atom.element.name
     o = orbit.name
 
-    return "Def created for $a $o on $g grid"
+    return "Def created for $a $o on $g grid of $(grid.N) points"
 
 end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata[]; scr=nothing]) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata[; scr=nothing[, msg=true]]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
@@ -189,7 +189,7 @@ Grid index of the starting point for outward numerical integration. This is
 is exceeded.
 #### Example:
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Orbital: 1s
         principal quantum number: n = 1
@@ -229,7 +229,7 @@ Grid index of the stopping for outward numerical integration. This is N-k-1
 or the last point where the integration threshold value (1.0e-10) is exceeded.
 #### Example:
 ```
-Ecal, grid, def, adams = data_hydrogen(n=1, ℓ=0)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Orbital: 1s
         principal quantum number: n = 1
