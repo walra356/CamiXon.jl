@@ -598,10 +598,6 @@ function create_lagrange_differentiation_matrix(k::Int)
 
 end
 
-# ================ fdiff_expansion_coeffs_array_differentiation(k, m) =========
-
-
-
 # =========== trapezoidal_weights(k; rationalize=false, devisor=false) =========
 
 @doc raw"""

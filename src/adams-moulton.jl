@@ -56,6 +56,7 @@ function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     return o
 
 end
+
 @doc raw"""
     matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 

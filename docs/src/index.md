@@ -192,7 +192,6 @@ count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
-OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 ```
 
