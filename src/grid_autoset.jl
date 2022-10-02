@@ -103,12 +103,17 @@ Largest relevant radial distance in a.u. (rule of thumb value)
 #### Example:
 ```
 codata = castCodata(2018)
-atom = castAtom(Z=1, Q=0, M=1.00782503223, I=1//2, gI=5.585694713; msg=true)
+atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=1, ℓ=0)
 rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
-  Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.00782503223, I = 1//2, gI = 5.585694713)
-  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
-  rmax = 63.0 a.u.
+    Element created: H, hydrogen, Z=1, weight=1.008
+    Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
+    Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    rmax = 63.0 a.u.
 ```
 """
 function autoRmax(atom::Atom, orbit::Orbit)
@@ -163,11 +168,15 @@ Floating point precision (rule of thumb value)
 atom = castAtom(Z=1)
 orbit = castOrbit(n=1,ℓ=0)
 Rmax = autoRmax(atom, orbit)
-autoPrecision(Rmax, orbit)
- Atom created: Hydrogen - ¹H (Z = 1, Zc = 1, Q = 0, M = 1.0, I = 1//2, gI = 5.5)
- Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
-
- Float64
+o = autoPrecision(Rmax, orbit); println("precision = $o")
+    Element created: H, hydrogen, Z=1, weight=1.008
+    Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
+    Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
+    Orbital: 1s
+        principal quantum number: n = 1
+        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+        orbital angular momentum of valence electron: ℓ = 0
+    precision = Float64
 ```
 """
 function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
@@ -194,7 +203,7 @@ Step size parameter (h) and range parameter (r0) (rule of thumb values).
 ### Example:
 ```
 (h, r0) = autoSteps(1, 100, 100)
- (0.1, 0.004540199100968777)
+    (0.1, 0.004540199100968777)
 ```
 """
 function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
@@ -271,12 +280,12 @@ Automatic setting of grid parameters. Important cases:
 * `p=1` (linear grid)
 * `p>1` (quasi-exponential grid)
 #### Example:
-NB. plot_gridfunction (see `plot_functions`.jl in CamiXon.depot) uses CairoMakie,
-which is not included in CamiXon.
+NB. `plot_gridfunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 ```
+codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
-codata = castCodata(2018)
 grid = autoGrid(atom, orbit, Float64);
 plot_gridfunction(1:grid.N, grid; title="")
   create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883

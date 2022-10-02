@@ -79,7 +79,7 @@ end
 Properties of atom with atomic number `Z`, atomic mass number `A`,
 ionic charge `Q`.
 
-Output options (fmt): `Object` (default), `String`, `Info`.
+Output options: `fmt` =  `Object` (default), `String`, `Info`.
 #### Example:
 ```
 listAtom("H", 3, 0) == listAtom(1, 3, 0)
@@ -121,7 +121,7 @@ end
 Properties of atoms with atomic number in the range `Z1:Z3` and
 ionic charge `Q`.
 
-Output options (fmt): `Object` (default), `String`, `Info`.
+Output options: `fmt` =  `Object` (default), `String`, `Info`.
 #### Example
 ```
 listAtoms(1,3,0) == listAtoms(1:3,0)

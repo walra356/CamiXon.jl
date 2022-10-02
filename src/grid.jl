@@ -31,10 +31,10 @@ struct Grid{T}
     k::Int
 end
 
-# ====== castGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=7, k=7) ====
+# ====== castGrid(ID, T, N; h=1, r0=0.01,  p=5, coords=[0,1], epn=5, k=7) ====
 
 """
-    castGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+    castGrid(ID::Int, N::Int, T::Type; h=1, r0=1,  p=5, coords=[0,1], epn=5, k=7, msg=true)
 
 Method to create the Grid object
 

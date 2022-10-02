@@ -63,7 +63,7 @@ end
 
 Properties of element with atomic number `Z`.
 
-Output options (fmt): `Object` (default), `String`, `Info`.
+Output options: `fmt` =  `Object` (default), `String`, `Info`.
 #### Example:
 ```
 listElement("H") == listElement(1)
@@ -101,9 +101,9 @@ end
 """
     listElements(Z1::Int, Z2::Int[; fmt=Object])
 
-Properties of a range of elements with atomic number `Z1` - `Z2`.
+Properties of elements with atomic number in the range `Z1:Z2`.
 
-Output options (fmt): `Object` (default), `String`, `Info`.    
+Output options: `fmt` =  `Object` (default), `String`, `Info`.
 
 #### Example
 ```

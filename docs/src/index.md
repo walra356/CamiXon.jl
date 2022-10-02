@@ -112,7 +112,7 @@ functions of `N` elements representing the grid function and its derivative.
 Grid{T}
 gridname(ID::Int)
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=7, k=7, msg=true)
+castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=7, msg=true)
 findIndex(rval::T, grid::Grid{T}) where T<:Number
 autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
@@ -149,8 +149,8 @@ The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
-NB. `plot_potentials` (see `plot_functions`.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the package.
+NB. `plot_potentials` (see `plot_functions.jl`` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 ```
 codata = castCodata(2018)
 atom = castAtom(Z=1, A=1, Q=0)

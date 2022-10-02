@@ -291,9 +291,8 @@ chosen in an iteration procedure until convergence is reached within the
 convergence goal `Δν` is reached in `imax` iterations.
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
-CairoMakie, which is not included in the package.
-```
+NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
@@ -347,8 +346,8 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`. `E` is
 varied until the wavefunction has the correct number of nodes.
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
-CairoMakie, which is not included in the package.
+NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -419,8 +418,8 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 `imax`: maximum number of iterations
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
-CairoMakie, which is not included in the package.
+NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 E = 1.5Ecal
@@ -464,8 +463,8 @@ Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions`.jl in `CamiXon.depot`) uses
-CairoMakie, which is not included in the package.
+NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
+CairoMakie, which is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
     Orbital: 1s
