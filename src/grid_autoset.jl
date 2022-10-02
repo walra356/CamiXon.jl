@@ -281,14 +281,15 @@ Automatic setting of grid parameters. Important cases:
 * `p>1` (quasi-exponential grid)
 #### Example:
 NB. `plot_gridfunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
+`CairoMakie`, which is not included in the `CamiXon` package.
 ```
 codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
 grid = autoGrid(atom, orbit, Float64);
+    Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
+
 plot_gridfunction(1:grid.N, grid; title="")
-  create exponential Grid: Float64, Rmax = 16935.0 (a.u.), Ntot = 3800, h = 0.00263158, r0 = 0.768883
 ```
 ![Image](./assets/exponential_grid.png)
 """

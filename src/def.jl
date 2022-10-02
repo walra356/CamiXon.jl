@@ -108,7 +108,7 @@ def = castDef(grid, atom, orbit, codata);
         radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 2
     Grid created: exponential, Float64, Rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
-    Def created for hydrogen 7d on exponential grid
+    Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
 function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
@@ -156,7 +156,7 @@ atom = castAtom(Z=1, A=1, Q=0; msg=false)
 orbit = castOrbit(n=1, ℓ=0; msg=false)
 grid = autoGrid(atom, orbit, Float64; msg=false)
 def = castDef(grid, atom, orbit, codata);
-    Def created for hydrogen 1s on exponential grid
+    Def created for hydrogen 1s on exponential grid of 100 points
 
 E = initE(def); println("E = $E")
     E = -0.03508495857961283
@@ -185,7 +185,7 @@ end
     get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Grid index of the starting point for outward numerical integration. This is
-``k+1`` or the first point where the integration threshold value (1.0e-10)
+`k+1` or the first point where the integration threshold value (1.0e-10)
 is exceeded.
 #### Example:
 ```
@@ -225,7 +225,7 @@ end
 @doc raw"""
     get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
-Grid index of the stopping for outward numerical integration. This is N-k-1
+Grid index of the stopping for outward numerical integration. This is `N-k-1`
 or the last point where the integration threshold value (1.0e-10) is exceeded.
 #### Example:
 ```
@@ -266,7 +266,7 @@ end
     get_Nmin(def::Def{T}) where T<:Real
 
 Grid index of the minimum of the screened potential curve. By definition
-`get_Nmin(def) = 1` for zero orbital angular momentum (``ℓ=0``).
+`get_Nmin(def) = 1` for zero orbital angular momentum (`ℓ=0`).
 """
 function get_Nmin(def::Def{T}) where T<:Real
 # ==============================================================================
@@ -293,7 +293,7 @@ end
 
 Grid index of the *lower classical turning point * of the screened potential
 curve. By definition `get_Nlctp(E, def) = 2` for zero orbital angular
-momentum (``ℓ=0``).
+momentum (`ℓ=0`).
 """
 function get_Nlctp(E::T, def::Def{T}) where T<:Real
 # ==============================================================================
@@ -368,10 +368,9 @@ Number of nodes (excluding the origin) of the reduced radial wavefunction
 ```
 atom = castAtom(Z=1, A=1, Q=0, msg=false);
 orbit = castOrbit(n=3, ℓ=2, msg=false);
-setT = Float64;
-grid = autoGrid(atom, orbit, setT; Nboost=1, epn=5, k=7, msg=false);
-def = castDef(grid, atom, orbit, codata)
-    Def created for hydrogen 3d on exponential grid
+grid = autoGrid(atom, orbit, Float64; Nboost=1, epn=5, k=7, msg=false);
+def = castDef(grid.T, atom, orbit, codata);
+    Def created for hydrogen 3d on exponential grid of 200 points
 
 E = convert(setT, bohrformula(atom.Z, orbit.n));
 adams = castAdams(E, grid, def);

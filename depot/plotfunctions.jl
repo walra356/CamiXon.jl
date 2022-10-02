@@ -1,6 +1,8 @@
 # ===================== plot_gridfunction(itr, grid; title=nothing) ===========
 
-function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; title=nothing) where T <: Number
+function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; theme = Theme(fontsize = 10, resolution = (900,600)), title=nothing) where T <: Number
+
+    set_theme!(theme)    
 
     N = grid.N
     1 ≤ itr.start ≤ N || error("Error: Nstart outside index range 1:$(N)")

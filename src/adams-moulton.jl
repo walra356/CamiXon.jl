@@ -292,17 +292,14 @@ convergence goal `Δν` is reached in `imax` iterations.
 
 #### Example:
 NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
+`CairoMakie`, which is not included in the `CamiXon` package.
+
+```
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
+    Def created for hydrogen 1s on exponential grid of 100 points
+
 E = 1.5Ecal
-msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
-println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
-    Orbital: 1s
-        principal quantum number: n = 1
-        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
-    Def created for hydrogen 1s on exponential grid
+msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams);
     Ecal = -0.5; E = -0.75; 0 nodes
 
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
@@ -347,18 +344,15 @@ varied until the wavefunction has the correct number of nodes.
 
 #### Example:
 NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
+`CairoMakie`, which is not included in the `CamiXon` package.
+
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
-E = 1.5Ecal
-msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
+    Def created for hydrogen 1s on exponential grid of 100 points
+
+E = 1.5Ecal;
+msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams);
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
-    Orbital: 1s
-        principal quantum number: n = 1
-        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
-    Def created for hydrogen 1s on exponential grid
     Ecal = -0.5; E = -0.75; 0 nodes
 
 msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν=Value(1,"MHz"), imax=25)
@@ -419,19 +413,14 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 
 #### Example:
 NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
+`CairoMakie`, which is not included in the `CamiXon` package.
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
-E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
+    Def created for hydrogen 1s on exponential grid of 100 points
 
+E = 1.5Ecal;
+E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
-    Orbital: 1s
-        principal quantum number: n = 1
-        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
-    Def created for hydrogen 1s on exponential grid
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
@@ -464,15 +453,10 @@ and rotational quantum number `ℓ`.
 
 #### Example:
 NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
+`CairoMakie`, which is not included in the `CamiXon` package.
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
-    Orbital: 1s
-        principal quantum number: n = 1
-        radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
-    Def created for hydrogen 1s on exponential grid
+Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
+    Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal
 E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);

@@ -53,7 +53,7 @@ NB. The plot functions require CairoMakie (not included in CamiXon) to be
 installed. For the code see `plotfunctions.jl` in the CamiXon.depot directory.
 #### Example:
 NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-CairoMakie, which is not included in the `CamiXon` package.
+`CairoMakie`, which is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 Z = OUTSCH(Ecal, grid, def, adams.σ)
