@@ -422,12 +422,12 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal;
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
-function adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
 
     t1 = time()
     msg && println("\nt = " * _strΔt(t1,t1))
@@ -462,7 +462,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 
 plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
 ```

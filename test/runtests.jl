@@ -11,7 +11,7 @@ using Test
     def = castDef(grid, atom, orbit, codata);
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
     adams = castAdams(E, grid, def);
-    E, def, adams, Z = adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+    E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 10
     @test def.atom.element.name == "hydrogen"
