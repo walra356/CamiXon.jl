@@ -92,7 +92,7 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     s = def.scr
     n = def.pos.Nlctp
 
-    n > 0 || return OUTSCH(grid, def, σ)
+    n > 0 || return OUTSCH0(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
     I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
@@ -102,12 +102,34 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 
-    Na > k+1 || return OUTSCH(grid, def, σ)
+    Na > k+1 || return OUTSCH0(grid, def, σ)
 
     return P .+ im * Q
 
 end
-function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+function OUTSCH0(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+
+        r = grid.r
+        k = def.k
+        N = def.pos.N
+        ℓ = def.orbit.ℓ
+        n′= def.orbit.n′
+     Zval = def.atom.Z
+
+    Z = zeros(Complex{T},N)
+
+    P = real(Z)
+    Q = imag(Z)
+
+    P[1:k+1] = [r[n]^(ℓ+1) - Zval/(n′+ℓ+1)*r[n]^(ℓ+2)  for n=1:k+1]
+    Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - (ℓ+2)*Zval/(n′+ℓ+1)*r[n]^(ℓ+1) for n=1:k+1]
+
+    def.pos.Na = k+1
+
+    return P .+ im * Q
+
+end
+function OUTSCH_kanweg(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
         k = def.k
