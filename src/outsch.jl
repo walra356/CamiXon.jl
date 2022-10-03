@@ -92,7 +92,7 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     s = def.scr
     n = def.pos.Nlctp
 
-    n > 0 || return OUTSCH0(grid, def, σ)
+    n > 0 || return OUTSCH(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
     I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
@@ -102,7 +102,7 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 
-    Na > k+1 || return OUTSCH0(grid, def, σ)
+    Na > k+1 || return OUTSCH(grid, def, σ)
 
     return P .+ im * Q
 
