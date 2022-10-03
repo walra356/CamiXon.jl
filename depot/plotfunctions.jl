@@ -1,3 +1,54 @@
+# =============================================================================
+function plot_tabulated_function(Nstart::Int, Nstop::Int, f::Vector{T}, grid::Grid{T}; title=nothing, theme = Theme(fontsize = 10, resolution = (900,350)))  where T <: Real
+
+    set_theme!(theme)
+
+        r = grid.r
+        N = grid.N
+        n = [i for i=1:N]
+
+    1 ≤ Nstart ≤ N || error("Error: Nstart outside index range 1:$(N)")
+    1 ≤ Nstop  ≤ N || error("Error: Nstop outside index range 1:$(N)")
+
+    ylabel1 = ("f(r)") 
+    ylabel2 = ("f(n)")
+
+    itr0 = Nstart:Nstop
+
+    fig = Figure()
+
+    attr1 = set_attributes(fig; title = ylabel1 * " on Grid[$(itr0)]", xlabel = "r (a.u.)", ylabel = ylabel1)
+    attr2 = set_attributes(fig; title = ylabel2 * " on Grid[$(itr0)]", xlabel = "n", ylabel = ylabel2)
+
+    ax0 = Label(fig; text = title, textsize = 24,  color=:gray)
+    ax1 = Axis(fig; attr1...)
+    ax2 = Axis(fig; attr2...)
+
+    lines!(ax1, r[itr0], f[itr0], markersize = 1, color=:gray90)
+    lines!(ax2, n[itr0], f[itr0], markersize = 1, color=:gray90)
+
+    lines!(ax1, r[itr0], f[itr0], markersize = 1, color=:gray90)
+    scatter!(ax1, r[itr0], f[itr0], markersize = 2)
+
+    lines!(ax2, n[itr0], f[itr0], markersize = 1, color=:gray90)
+    scatter!(ax2, n[itr0], f[itr0], markersize = 2)
+
+    fig[1,1] = ax1
+    fig[1,2] = ax2
+    fig[0,:] = ax0
+
+    return fig
+
+end
+function plot_tabulated_function(itr::UnitRange{Int}, f::Vector{T}, grid::Grid{T}; title=nothing, theme = Theme(fontsize = 10, resolution = (900,350)))  where T <: Real
+
+    Nstart = itr.start
+    Nstop  = itr.stop
+
+    return plot_tabulated_function(Nstart, Nstop, f, grid; title, theme)
+
+end
+
 # ===================== plot_gridfunction(itr, grid; title=nothing) ===========
 
 function plot_gridfunction(itr::UnitRange{Int}, grid::Grid{T}; theme = Theme(fontsize = 10, resolution = (900,600)), title=nothing) where T <: Number
@@ -616,6 +667,7 @@ function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T};
 end
 
 println("Included:
+plot_tabulated_function(Nstart, Nstop, f, grid; title, theme)
 plot_gridfunction(Nstart, Nstop, grid; title='')
 plot_potentials(E, grid, def)
 plot_wavefunction(Nstart, Nstop, E, grid, def, Z; reduced=true)

@@ -375,6 +375,8 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
 
     test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
 
+    Z = adams.Z
+
     i=0
     while abs(ΔE) > test
         adams, ΔE′, Z = adams_moulton_solve(E, grid, def, adams)
@@ -394,11 +396,11 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
 
     init = (Emin, E, Emax, ΔE)
 
-    def.pos.nodes = count_nodes(adams.Z, def)
+    def.pos.nodes = count_nodes(Z, def)
 
     msg = _message(i, imax, init, def; modus="iterate")
 
-    return msg, adams, init, adams.Z
+    return msg, adams, init, Z
 
 end
 
