@@ -375,7 +375,7 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
 
     test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
 
-    Z = adams.Z
+    #Z = adams.Z
 
     i=0
     while abs(ΔE) > test
@@ -396,18 +396,18 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
 
     init = (Emin, E, Emax, ΔE)
 
-    def.pos.nodes = count_nodes(Z, def)
+    def.pos.nodes = count_nodes(adams.Z, def)
 
     msg = _message(i, imax, init, def; modus="iterate")
 
-    return msg, adams, init, Z
+    return msg, adams, init, adams.Z
 
 end
 
 # ===================== adams_moulton_master ===================================
 
 @doc raw"""
-    adams_moulton_master(E, codata, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+    adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
 
 Solves the Schrödinger equation for an atom defined by `def` for energy `E`
 on grid the `grid` with the Adams-Moulton method defined by `adams`.
