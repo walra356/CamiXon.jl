@@ -1066,6 +1066,69 @@ function polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:
 
 end
 
+# ============================== triangle(a, b, c) =============================
+
+@doc raw"""
+    function triangle(a, b, c)
+
+Triangle coefficient for a triangle of sides `a`, `b` and `c`.
+
+#### Example:
+```
+triangle(3, 4, 5)
+    1//180180
+
+triangle(1//2, 1, 1.5)
+    1//12
+```
+"""
+function triangle(a::Real, b::Real, c::Real)
+
+    (a,b,c) = promote(a,b,c)
+
+    isinteger(a + b + c) || return 0
+
+    A = Int(a + b - c)
+    B = Int(b + c - a)
+    C = Int(c + a - b)
+
+    A = A ≥ 0 ? factorialbig(A) : return 0
+    B = B ≥ 0 ? factorialbig(B) : return 0
+    C = C ≥ 0 ? factorialbig(C) : return 0
+
+    num = A * B * C
+    den = factorialbig(Int(a+b+c+1))
+
+    return num//den
+
+end
+
+# ============================== istriangle(a, b, c) =============================
+
+@doc raw"""
+    function istriangle(a::Real, b::Real, c::Real)::Bool
+
+Triangle condition for a triangle of sides `a`, `b` and `c`.
+
+#### Example:
+```
+istriangle(3, 4, 5)
+    true
+
+istriangle(1//2, 1, 1.5)
+    true
+```
+"""
+function istriangle(a::Real, b::Real, c::Real)::Bool
+
+    Δ = triangle(a,b,c)
+
+    valid = Δ > 0 ? true : false
+
+    return valid
+
+end
+
 # ...................... texp(x, p) .........................................
 
 function _texp_int(x, p::Int)

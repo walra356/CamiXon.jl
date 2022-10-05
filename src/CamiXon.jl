@@ -166,6 +166,8 @@ export log10_mantissa
 export pascal_triangle
 export pascal_next
 export pochhammer
+export triangle
+export istriangle
 export polynomial
 export polynom_derivative
 export polynom_derivatives

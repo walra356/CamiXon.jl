@@ -217,6 +217,12 @@ wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 demo_hydrogen(; n=3, ℓ=2)
 ```
 
+## Coulomb integrals
+
+### Angular integrals
+
+## The ``a^k(l,m_l, l′,m_(l′))`` integrals
+
 ## FITS
 
 FITS stands for 'Flexible Image Transport System'. This is an open standard origionally developed for the astronomy community to store telescope images together with tables of spectral information. Over the years it has developed into a scientific standard - http://fits.gsfc.nasa.gov/iaufwg.
@@ -307,6 +313,8 @@ permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 pascal_triangle(nmax::Int)
 pascal_next(a::Vector{Int})
 pochhammer(x::T, p::Int) where T<:Real
+triangle(a::Real, b::Real, c::Real)
+istriangle(a::Real, b::Real, c::Real)::Bool
 polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
