@@ -1069,7 +1069,7 @@ end
 # ============================== triangle(a, b, c) =============================
 
 @doc raw"""
-    function triangle(a, b, c)
+    function triangle(a::Real, b::Real, c::Real)
 
 Triangle coefficient for a triangle of sides `a`, `b` and `c`.
 
