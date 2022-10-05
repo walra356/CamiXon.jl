@@ -69,6 +69,8 @@ using Test
     @test find_last([:📑,:📌,:📢,:📌,:📞]) == find_last([1,2,3,2,5]) == find_last("aβcβd")
     @test [fdiff_weight(5,j) for j=0:5] == [1, -5, 10, -10, 5, -1]
     @test isforward(fwd) == true
+    @test istriangle(1//2, 1, 1.5) == true
+    @test triangle(1//2, 1, 1.5) == 1//12
     @test fdiff_interpolation_expansion_coeffs(-1, 5) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(-1, 5, bwd) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(1, 5, fwd) == [1, -1, 1, -1, 1, -1]
