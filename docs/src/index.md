@@ -221,7 +221,7 @@ demo_hydrogen(; n=3, ℓ=2)
 
 ### Angular integrals
 
-## The ``a^k(l,m_l, l′,m_(l′))`` integrals
+#### The ``a^k(l, m_l, l^′, m_{l^′})`` integrals
 
 ## FITS
 
