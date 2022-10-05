@@ -1103,10 +1103,10 @@ function triangle(a::Real, b::Real, c::Real)
 
 end
 
-# ============================== istriangle(a, b, c) =============================
+# ============================ istriangle(a, b, c) =============================
 
 @doc raw"""
-    function istriangle(a::Real, b::Real, c::Real)::Bool
+    function istriangle(a::Real, b::Real, c::Real)
 
 Triangle condition for a triangle of sides `a`, `b` and `c`.
 
@@ -1119,7 +1119,7 @@ istriangle(1//2, 1, 1.5)
     true
 ```
 """
-function istriangle(a::Real, b::Real, c::Real)::Bool
+function istriangle(a::Real, b::Real, c::Real)
 
     Δ = triangle(a,b,c)
 

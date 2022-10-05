@@ -314,7 +314,7 @@ pascal_triangle(nmax::Int)
 pascal_next(a::Vector{Int})
 pochhammer(x::T, p::Int) where T<:Real
 triangle(a::Real, b::Real, c::Real)
-istriangle(a::Real, b::Real, c::Real)::Bool
+istriangle(a::Real, b::Real, c::Real)
 polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
