@@ -104,6 +104,8 @@ bohrformula(Z::Int, n::Int)
 
 ## Angular momentum
 
+### Vector-coupling coefficients
+
 ```@docs
 threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
 ```

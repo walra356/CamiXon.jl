@@ -86,6 +86,12 @@ m_{1} & m_{2} & m_{3}
 ```
 o = threeJsymbol(3, 0, 4, -1, 5, 1; msg=true); println(" = $o")
     -√(361/30030) = -0.10964174397241236
+
+threeJsymbol(3, 0, 4, -1, 5, 1)
+    -0.10964174397241236
+
+threeJsymbol(0, 0, 0, 0, 0, 0)
+    1.0
 ```
 """
 function threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
@@ -104,13 +110,40 @@ function threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real
     sgn_racah = sign(R)
     sgn = sgn_phase * sgn_racah
 
-    msg && println((sgn < 0 ? "-" : "") * "√(" * strRational(A) * ")")
+    msg && print((sgn < 0 ? "-" : "") * "√(" * strRational(A) * ")")
 
     return sgn * sqrt(A)
 
 end
 
-function CGC(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
+# =============== CGC(j1, m1, j2, m2l, J, M; msg=false) ========================
+
+@doc raw"""
+    CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
+
+Clebsch-Gordan coefficient (CGC). This is a vector-coupling coefficient in
+Dirac notation. The CGCs are zero unless ``Δ(j_{1},j_{2},j_{3})>0``
+(triangle inequality holds) and ``M=m_{1}+m_{2}``. The relation to the
+Wigner 3j symbols is given by:
+
+```math
+\langle j_{1}m_{1};j_{2}m_{2}|JM\rangle\equiv
+(-1)^{j_{1}-j_{2}+M}\sqrt{2J+1}\left(\begin{array}{ccc}
+j_{1} & j_{2} & J\\
+m_{1} & m_{2} & -M
+\end{array}\right)
+```
+#### Example:
+```
+j1=3; m1=0
+j2=4; m2=-1
+J=5; M=-1
+o = CGC(j1, m1, j2, m2, J, M; msg=true); println(" = $o")
+o = CGC(j1, m1, j2, m2, J, M); println(o)
+o = (-1)^(j1-j2+M) * sqrt(2J+1) * threeJsymbol(j1, m1, j2, m2, J, -M); println(o)
+```
+"""
+function CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
 
     (j1,m1,j2,m2,J,M) = promote(j1,m1,j2,m2,J,M)
 
@@ -124,7 +157,7 @@ function CGC(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=fal
         S = R * R
         A = Δ * T * S
         s = sign(R) < 0 ? "-" : ""
-        println(s * "√(" * strRational(A * (2J+1)) * ")")
+        print(s * "√(" * strRational(A * (2J+1)) * ")")
     end
 
     return sgn * sqrt(2J+1) * tJs
