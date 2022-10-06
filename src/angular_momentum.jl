@@ -61,9 +61,9 @@ end
 @doc raw"""
     threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
 
-Wigner 3j symbol. This is a vector coupling coefficient with optimal symmetry
-properties. The 3j symbols are zero unless ``Δ(j_{1},j_{2},j_{3})>0`` (i.e.,
-the triangle inequality holds) and ``m_{1}+m_{2}+m_{3}=0``. The implementation
+Wigner 3j symbol. This is a vector coupling coefficient with optimized symmetry
+properties. The 3j symbols are zero unless ``Δ(j_{1},j_{2},j_{3})>0``
+(triangle inequality holds) and ``m_{1}+m_{2}+m_{3}=0``. The implementation
 is based on the Racah formula:
 
 ```math
