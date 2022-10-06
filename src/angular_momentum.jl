@@ -62,23 +62,26 @@ end
     threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
 
 Wigner 3j symbol. This is a vector coupling coefficient with optimal symmetry
-properties.
+properties. The 3j symbols are zero unless ``Δ(j_{1},j_{2},j_{3})>0`` (i.e.,
+the triangle inequality holds) and ``m_{1}+m_{2}+m_{3}=0``. The implementation
+is based on the Racah formula:
+
 ```math
 \left(\begin{array}{ccc}
-j_{1} & j_{2} & J\\
-m_{1} & m_{2} & -M
-\end{array}\right)=(-1)^{j_{1}-j_{2}+M}\sqrt{\Delta(j_{1}j_{2}J)}\\\times
+j_{1} & j_{2} & j_{3}\\
+m_{1} & m_{2} & m_{3}
+\end{array}\right)=
+(-1)^{j_{1}-j_{2}-m_{3}}\sqrt{\Delta(j_{1}j_{2}J)}\\\times
 \sqrt{\left(j_{1}+m_{1}\right)!
 \left(j_{1}-m_{1}\right)!
 \left(j_{2}+m_{2}\right)!
 \left(j_{2}-m_{2}\right)!
-\left(J+M\right)!
-\left(J-M\right)!}
-\\\times\sum_{t}\frac{(-)^{t}}{t!(J-j_{2}+t+m_{1})!
-(J-j_{1}+t-m_{2})!
-(j_{1}+j_{2}-J-t)!(j_{1}-t-m_{1})!(j_{2}-t+m_{2})!}
+\left(j_{3}+m_{3}\right)!
+\left(j_{3}-m_{3}\right)!}
+\\\times\sum_{t}\frac{(-)^{t}}{t!(j_{3}-j_{2}+t+m_{1})!
+(j_{3}-j_{1}+t-m_{2})!
+(j_{1}+j_{2}-j_{3}-t)!(j_{1}-t-m_{1})!(j_{2}-t+m_{2})!}
 ```
-
 #### Example:
 ```
 o = threeJsymbol(3, 0, 4, -1, 5, 1; msg=true); println(" = $o")
