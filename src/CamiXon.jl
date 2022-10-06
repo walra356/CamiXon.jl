@@ -153,6 +153,8 @@ export find_all
 export find_first
 export find_last
 
+export threeJsymbol
+
 export bernoulli_numbers
 export VectorRational
 export normalize_VectorRational
@@ -167,7 +169,7 @@ export log10_mantissa
 export pascal_triangle
 export pascal_next
 export pochhammer
-export triangle
+export triangle_coefficient
 export istriangle
 export polynomial
 export polynom_derivative
@@ -191,6 +193,7 @@ include("finite_difference_adams.jl")
 include("element.jl")
 include("isotope.jl")
 include("atom.jl")
+include("angular_momentum.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")

@@ -120,6 +120,7 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test bernoulli_numbers(10) == [1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1, 5//66]
+    @test factorialbig(21) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
     @test harmonic_number(12) == 86021//27720

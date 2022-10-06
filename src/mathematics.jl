@@ -741,7 +741,7 @@ end
 # ============================== triangle_coefficient(a, b, c) =============================
 
 @doc raw"""
-    function triangle_coefficient(a::Real, b::Real, c::Real)
+    triangle_coefficient(a::Real, b::Real, c::Real)
 
 Triangle coefficient for a triangle of sides `a`, `b` and `c`.
 
@@ -778,7 +778,7 @@ end
 # ============================ istriangle(a, b, c) =============================
 
 @doc raw"""
-    function istriangle(a::Real, b::Real, c::Real)
+    istriangle(a::Real, b::Real, c::Real)
 
 Triangle condition for a triangle of sides `a`, `b` and `c`.
 

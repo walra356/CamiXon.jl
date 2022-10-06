@@ -102,6 +102,12 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 bohrformula(Z::Int, n::Int)
 ```
 
+## Angular momentum
+
+```@docs
+threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
+```
+
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform
