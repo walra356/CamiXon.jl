@@ -302,6 +302,7 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```@docs
 bernoulli_numbers(nmax::Int)
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
+factorialbig(n::Int)
 faulhaber_polynom(p::Int)
 faulhaber_summation(n::Int, p::Int; T=Int)
 harmonic_number(n::Int, p::Int)
@@ -313,7 +314,7 @@ permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 pascal_triangle(nmax::Int)
 pascal_next(a::Vector{Int})
 pochhammer(x::T, p::Int) where T<:Real
-triangle(a::Real, b::Real, c::Real)
+triangle_coefficient(a::Real, b::Real, c::Real)
 istriangle(a::Real, b::Real, c::Real)
 polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
 polynom_derivative(coords::Vector{<:Number})

@@ -66,6 +66,40 @@ function bernoulli_numbers(nmax::Int)       # short argument: better performance
 
 end
 
+# ==================================== factorialbig(n) =========================
+
+@doc raw"""
+    factorialbig(n::Int)
+
+The product of all *positive* integers less than or equal to `n`,
+```math
+!(n)=n(n-1)(n-2)⋯1.
+```
+By definition
+```math
+!(0)=1
+```
+For *negative* integers the factorial is zero.
+#### Examples:
+```
+factorialbig(20)==factorial(20)
+    true
+
+factorialbig(21)
+    51090942171709440000
+
+factorial(21)
+    OverflowError: 21 is too large to look up in the table; consider using `factorial(big(21))` instead
+```
+"""
+function factorialbig(n::Int)
+
+    n > 20 || return factorial(n)
+
+    return factorial(big(n))
+
+end
+
 # ==================================== faulhaber_polynom(p) ====================
 
 @doc raw"""
@@ -704,6 +738,68 @@ function pochhammer(x::T, p::Int) where T<:Real
     return o
 
 end
+# ============================== triangle_coefficient(a, b, c) =============================
+
+@doc raw"""
+    function triangle_coefficient(a::Real, b::Real, c::Real)
+
+Triangle coefficient for a triangle of sides `a`, `b` and `c`.
+
+#### Example:
+```
+triangle_coefficient(3, 4, 5)
+    1//180180
+
+triangle_coefficient(1//2, 1, 1.5)
+    1//12
+```
+"""
+function triangle_coefficient(a::Real, b::Real, c::Real)
+
+    (a,b,c) = promote(a,b,c)
+
+    isinteger(a + b + c) || return 0
+
+    A = Int(a + b - c)
+    B = Int(b + c - a)
+    C = Int(c + a - b)
+
+    A = A ≥ 0 ? factorialbig(A) : return 0
+    B = B ≥ 0 ? factorialbig(B) : return 0
+    C = C ≥ 0 ? factorialbig(C) : return 0
+
+    num = A * B * C
+    den = factorialbig(Int(a+b+c+1))
+
+    return num//den
+
+end
+
+# ============================ istriangle(a, b, c) =============================
+
+@doc raw"""
+    function istriangle(a::Real, b::Real, c::Real)
+
+Triangle condition for a triangle of sides `a`, `b` and `c`.
+
+#### Example:
+```
+istriangle(3, 4, 5)
+    true
+
+istriangle(1//2, 1, 1.5)
+    true
+```
+"""
+function istriangle(a::Real, b::Real, c::Real)
+
+    Δ = triangle_coefficient(a,b,c)
+
+    valid = Δ > 0 ? true : false
+
+    return valid
+
+end
 
 # ==================================== polynomial(c,x;deriv) ============================================================
 
@@ -1063,69 +1159,6 @@ function polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:
     end
 
     return o
-
-end
-
-# ============================== triangle(a, b, c) =============================
-
-@doc raw"""
-    function triangle(a::Real, b::Real, c::Real)
-
-Triangle coefficient for a triangle of sides `a`, `b` and `c`.
-
-#### Example:
-```
-triangle(3, 4, 5)
-    1//180180
-
-triangle(1//2, 1, 1.5)
-    1//12
-```
-"""
-function triangle(a::Real, b::Real, c::Real)
-
-    (a,b,c) = promote(a,b,c)
-
-    isinteger(a + b + c) || return 0
-
-    A = Int(a + b - c)
-    B = Int(b + c - a)
-    C = Int(c + a - b)
-
-    A = A ≥ 0 ? factorialbig(A) : return 0
-    B = B ≥ 0 ? factorialbig(B) : return 0
-    C = C ≥ 0 ? factorialbig(C) : return 0
-
-    num = A * B * C
-    den = factorialbig(Int(a+b+c+1))
-
-    return num//den
-
-end
-
-# ============================ istriangle(a, b, c) =============================
-
-@doc raw"""
-    function istriangle(a::Real, b::Real, c::Real)
-
-Triangle condition for a triangle of sides `a`, `b` and `c`.
-
-#### Example:
-```
-istriangle(3, 4, 5)
-    true
-
-istriangle(1//2, 1, 1.5)
-    true
-```
-"""
-function istriangle(a::Real, b::Real, c::Real)
-
-    Δ = triangle(a,b,c)
-
-    valid = Δ > 0 ? true : false
-
-    return valid
 
 end
 

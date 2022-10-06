@@ -157,6 +157,7 @@ export bernoulli_numbers
 export VectorRational
 export normalize_VectorRational
 export canonical_partitions
+export factorialbig
 export faulhaber_polynom
 export faulhaber_summation
 export harmonic_number
