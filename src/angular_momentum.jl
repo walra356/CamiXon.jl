@@ -141,6 +141,9 @@ J=5; M=-1
 o = CGC(j1, m1, j2, m2, J, M; msg=true); println(" = $o")
 o = CGC(j1, m1, j2, m2, J, M); println(o)
 o = (-1)^(j1-j2+M) * sqrt(2J+1) * threeJsymbol(j1, m1, j2, m2, J, -M); println(o)
+    -√(361/2730) = -0.36364052611670256
+    -0.36364052611670256
+    -0.36364052611670256
 ```
 """
 function CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
