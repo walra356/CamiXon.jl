@@ -71,6 +71,8 @@ using Test
     @test isforward(fwd) == true
     @test istriangle(1//2, 1, 1.5) == true
     @test triangle_coefficient(1//2, 1, 1.5) == 1//12
+    @test threeJsymbol(3, 0, 4, -1, 5, 1) == -0.10964174397241236
+    @test CGC(3, 0, 4, -1, 5, -1) == -0.36364052611670256
     @test fdiff_interpolation_expansion_coeffs(-1, 5) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(-1, 5, bwd) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(1, 5, fwd) == [1, -1, 1, -1, 1, -1]
