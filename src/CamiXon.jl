@@ -154,6 +154,7 @@ export find_first
 export find_last
 
 export threeJsymbol
+export CGC
 
 export bernoulli_numbers
 export VectorRational
