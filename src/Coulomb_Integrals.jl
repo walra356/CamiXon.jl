@@ -4,8 +4,8 @@
 Angular coefficient for the *direct* Coulomb integral:
 
 ```math
-a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(-)^{m_{l}+m_{l^{\prime}}}(2l+1)(2l^{\prime}+1)
-\left(\begin{array}{ccc}
+a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(-)^{m_{l}+m_{l^{\prime}}}
+(2l+1)(2l^{\prime}+1)\left(\begin{array}{ccc}
 l & k & l\\
 0 & 0 & 0
 \end{array}\right)\left(\begin{array}{ccc}
@@ -18,7 +18,6 @@ l^{\prime} & k & l^{\prime}\\
 l^{\prime} & k & l^{\prime}\\
 -m_{l^{\prime}} & 0 & m_{l^{\prime}}
 \end{array}\right)
-(j_{1}+j_{2}-j_{3}-t)!(j_{1}-t-m_{1})!(j_{2}-t+m_{2})!}
 ```
 #### Example:
 ```

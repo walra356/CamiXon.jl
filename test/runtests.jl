@@ -71,8 +71,8 @@ using Test
     @test isforward(fwd) == true
     @test istriangle(1//2, 1, 1.5) == true
     @test triangle_coefficient(1//2, 1, 1.5) == 1//12
-    @test threeJsymbol(3, 0, 4, -1, 5, 1) == -0.10964174397241236
-    @test CGC(3, 0, 4, -1, 5, -1) == -0.36364052611670256
+    @test threeJsymbol(3, 0, 4, -1, 5, 1) ≈ -0.10964174397241236
+    @test CGC(3, 0, 4, -1, 5, -1) ≈ -0.36364052611670256
     @test a_coeff(2,1,1,2,2) == 2//35
     @test b_coeff(1,1,1,2,2) == 2//5
     @test a_coeff(6,3,2,3,-1) == -250//20449
