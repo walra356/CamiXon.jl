@@ -1,5 +1,7 @@
 # ========= threeJsymbol(j1, m1, j2, m2, j3, m3; msg=false) ====================
 
+# ========= threeJsymbol(j1, m1, j2, m2, j3, m3; msg=false) ====================
+
 # ........................................................
 function _threeJroot2(j1, m1, j2, m2, J, M)
 
@@ -10,12 +12,12 @@ function _threeJroot2(j1, m1, j2, m2, J, M)
     e = Int(J + M)
     f = Int(J - M)
 
-    a = a ≥ 0 ? factorialbig(a) : return 0
-    b = b ≥ 0 ? factorialbig(b) : return 0
-    c = c ≥ 0 ? factorialbig(c) : return 0
-    d = d ≥ 0 ? factorialbig(d) : return 0
-    e = e ≥ 0 ? factorialbig(e) : return 0
-    f = f ≥ 0 ? factorialbig(f) : return 0
+    a = a ≥ 0 ? factorial(big(a)) : return 0
+    b = b ≥ 0 ? factorial(big(b)) : return 0
+    c = c ≥ 0 ? factorial(big(c)) : return 0
+    d = d ≥ 0 ? factorial(big(d)) : return 0
+    e = e ≥ 0 ? factorial(big(e)) : return 0
+    f = f ≥ 0 ? factorial(big(f)) : return 0
 
     return a * b * c * d * e * f
 
@@ -29,28 +31,24 @@ function _Racah_denom(j1, m1, j2, m2, J, t:: Int)
     d = Int(j1 - t - m1)
     e = Int(j2 - t + m2)
 
-    a = a ≥ 0 ? factorialbig(a) : return 0
-    b = b ≥ 0 ? factorialbig(b) : return 0
-    c = c ≥ 0 ? factorialbig(c) : return 0
-    d = d ≥ 0 ? factorialbig(d) : return 0
-    e = e ≥ 0 ? factorialbig(e) : return 0
-    t = t ≥ 0 ? factorialbig(t) : return 0
+    a = a ≥ 0 ? factorial(big(a)) : return 0
+    b = b ≥ 0 ? factorial(big(b)) : return 0
+    c = c ≥ 0 ? factorial(big(c)) : return 0
+    d = d ≥ 0 ? factorial(big(d)) : return 0
+    e = e ≥ 0 ? factorial(big(e)) : return 0
 
-    return a * b * c * d * e * t
+    return a * b * c * d * e * factorial(big(t))
 
 end
 # ........................................................
 function _Racah_sum(j1, m1, j2, m2, J)
 
-    o = 0
-    t = 0
+    o = big(0)
 
-    while t < 25
+    for t=0:(j1+j2-J)
         sign = iseven(t) ? 1 : -1
         d = _Racah_denom(j1, m1, j2, m2, J, t)
-        d > 0 || break
-        o += (sign//d)
-        t += 1
+        o += d > 0 ? sign//d : 0
     end
 
     return o

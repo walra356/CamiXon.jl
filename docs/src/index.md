@@ -230,7 +230,10 @@ demo_hydrogen(; n=3, ℓ=2)
 
 ### Angular integrals
 
-#### The ``a^k(l, m_l, l^′, m_{l^′})`` integrals
+```@docs
+a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+```
 
 ## FITS
 

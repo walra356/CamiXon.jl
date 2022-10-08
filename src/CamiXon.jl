@@ -155,6 +155,8 @@ export find_last
 
 export threeJsymbol
 export CGC
+export a_coeff
+export b_coeff
 
 export bernoulli_numbers
 export VectorRational
@@ -202,6 +204,7 @@ include("outsch.jl")
 include("adams.jl")
 include("insch.jl")
 include("adams-moulton.jl")
+include("Coulomb_Integrals.jl")
 include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
