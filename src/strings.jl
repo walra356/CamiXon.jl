@@ -149,7 +149,8 @@ strRational(-5//2)
   "-5"
 ```
 """
-function strRational(i::T) where T<:Union{Rational{Int}, Int}
+function strRational(i::T) where T<:Union{Rational{}, Int, BigInt}
+
 
     isinteger(i) && return repr(i)
 

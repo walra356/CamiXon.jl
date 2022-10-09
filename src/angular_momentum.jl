@@ -1,7 +1,5 @@
 # ========= threeJsymbol(j1, m1, j2, m2, j3, m3; msg=false) ====================
 
-# ========= threeJsymbol(j1, m1, j2, m2, j3, m3; msg=false) ====================
-
 # ........................................................
 function _threeJroot2(j1, m1, j2, m2, J, M)
 
