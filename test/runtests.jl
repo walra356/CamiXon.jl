@@ -25,6 +25,7 @@ using Test
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
     @test strRational(-5) == "-5"
+    @test strRational(-5//2) == "-5/2"
     @test bohrformula(2, 4) == -1//8
     @test get(dictAtomicNumbers, "Rb", nothing) == 37
     @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
