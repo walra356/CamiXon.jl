@@ -171,15 +171,19 @@ polynonials of degree ``d=0,\ 1,⋯\ k-1``, where ``k=`` `grid.epn`.
 For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Example:
 ```
-f1s(r) = 2.0*r*exp(-r)  # hydrogen 1s wavefunction (reduced and unit normalized)
-N = 1000
+f1s(r) = 2.0*r*exp(-r);  # hydrogen 1s wavefunction (reduced and unit normalized)
+N = 1000;
 grid = castGrid(1, N, Float64; h=0.01, r0=0.005)
-r = grid.r
-f2 = [f1s(r[n])^2 for n=1:N]
-norm = grid_trapezoidal_integral(f2, 1:N, grid)
-  create exponential Grid: Float64, Rmax = 110.127 (a.u.), Ntot = 1000, h = 0.01, r0 = 0.005
+    create exponential Grid: Float64, Rmax = 110.127 (a.u.), Ntot = 1000, h = 0.01, r0 = 0.005
 
-  1.0
+r = grid.r;
+f2 = [f1s(r[n])^2 for n=1:N];
+grid_trapezoidal_integral(f2, 1:N, grid) == grid_trapezoidal_integral(f2, 1, N, grid)
+    true
+
+norm = grid_trapezoidal_integral(f2, 1:N, grid)
+
+    1.0
 ```
 """
 function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
