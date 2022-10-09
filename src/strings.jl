@@ -149,15 +149,15 @@ strRational(-5//2)
   "-5"
 ```
 """
-function strRational(i::T) where T<:Union{Rational{}, Int, BigInt}
+function strRational(n::T) where T<:Union{Rational{}, Int, BigInt}
 
 
-    isinteger(i) && return repr(i)
+    isinteger(n) && return repr(n)
 
-    sgn = i < 0 ? "-" : ""
+    sgn = n < 0 ? "-" : ""
 
-    num = repr(numerator(abs(i)))
-    den = repr(denominator(abs(i)))
+    num = repr(numerator(abs(n)))
+    den = repr(denominator(abs(n)))
 
     return sgn * num *  '/' * den
 
