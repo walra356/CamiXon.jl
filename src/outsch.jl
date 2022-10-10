@@ -42,7 +42,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}}; new=true)) where T<:Real
 
 Solution of the Schrödinger for the first ``k`` points on the `grid`, where
 ``k`` is the Adams-Moulton order. The WKB solution for energy `E` is used
@@ -124,8 +124,11 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     P = real(Z)
     Q = imag(Z)
 
-    P[1:k+1] = [r[n]^(ℓ+1) - Zval/(n′+ℓ+1)*r[n]^(ℓ+2)  for n=1:k+1]
-    Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - (ℓ+2)*Zval/(n′+ℓ+1)*r[n]^(ℓ+1) for n=1:k+1]
+    #P[1:k+1] = [r[n]^(ℓ+1) - Zval/(n′+ℓ+1)*r[n]^(ℓ+2)  for n=1:k+1]
+    #Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - (ℓ+2)*Zval/(n′+ℓ+1)*r[n]^(ℓ+1) for n=1:k+1]
+
+    P[1:k+1] = [r[n]^(ℓ+1) * exp(-Zval/(n′+ℓ+1)*r[n]) for n=1:k+1]
+    Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - r[n]^(ℓ+1)*exp(-Zval/(n′+ℓ+1)*r[n])*Zval/(n′+ℓ+1) for n=1:k+1]
 
     def.pos.Na = k+1
 

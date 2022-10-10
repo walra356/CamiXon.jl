@@ -610,9 +610,11 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     ylabel1a, ylabel1b, Z1 = reduced ? ("χ1(r)", "dχ1/dr", Z1) :  ("ψ1(r)", "dψ1/dr", wavefunction(Z1, grid))
     ylabel2a, ylabel2b, Z2 = reduced ? ("χ2(r)", "dχ2/dr", Z2) :  ("ψ2(r)", "dψ2/dr", wavefunction(Z2, grid))
     ylabel3a, ylabel3b, Z3 = reduced ? ("χ2(r)-χ1(r)", "d(χ2-χ1)/dr", Z2) :  ("ψ2(r)-ψ1(r)", "d(ψ2-ψ1)/dr", wavefunction(Z3, grid))
+    ylabel4a, ylabel4b, Z4 = reduced ? ("χ2(r)/χ1(r)-1", "d(χ2/χ1)/dr", Z2) :  ("ψ2(r)/ψ1(r)", "d(ψ2/ψ1)/dr", wavefunction(Z3, grid))
     ylabel1A, ylabel1B = reduced ? ("χ1(n)", "dχ1/dr") :  ("ψ1(n)", "dψ1/dr")
     ylabel2A, ylabel2B = reduced ? ("χ2(n)", "dχ2/dr") :  ("ψ2(n)", "dψ2/dr")
-    ylabel3A, ylabel3B = reduced ? ("χ2(n)-χ1(n)", "d(χ2-χ1)/dr") :  ("ψ2(n)-ψ1(n)", "d(ψ2-ψ1)/dr")
+    ylabel3A, ylabel3B = reduced ? ("χ2(n)-χ1(r)", "d(χ2-χ1)/dr") :  ("ψ2(n)-ψ1(n)", "d(ψ2-ψ1)/dr")
+    ylabel4A, ylabel4B = reduced ? ("χ2(n)/χ1(r)-1", "d(χ2/χ1)/dr") :  ("ψ2(n)/ψ1(n)-1", "d(ψ2/ψ1)/dr")
 
     header = reduced ? "reduced wavefunction" :  "full wavefunction"
 
@@ -627,7 +629,13 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     
     P3 = P2 .- P1
     Q3 = Q2 .- Q1
-
+    
+    P4 = P2 ./ P1 .- 1
+    Q4 = Q2 ./ Q1 .- 1
+    
+    P4[1] = ((P1[1] == 0) | (P2[1] == 0)) ? fdiff_interpolation(P4[2:k+1], 0) : P4[1]
+    Q4[1] = ((Q1[1] == 0) | (Q2[1] == 0)) ? fdiff_interpolation(Q4[2:k+1], 0) : Q4[1]
+    
     P10 = P1
     Q10 = Q1
     
@@ -636,6 +644,9 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     
     P30 = P3
     Q30 = Q3
+    
+    P40 = P4
+    Q40 = Q4
     
 
     r = convert.(Float64,r)
@@ -660,6 +671,10 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     attr3A = set_attributes(fig; title = ylabel3A, xlabel = "n", ylabel = ylabel3A)
     attr3b = set_attributes(fig; title = ylabel3b, xlabel = "r (a.u.)", ylabel = ylabel3b)
     attr3B = set_attributes(fig; title = ylabel3B, xlabel = "n", ylabel = ylabel3B)
+    attr4a = set_attributes(fig; title = ylabel4a, xlabel = "r (a.u.)", ylabel = ylabel4a)
+    attr4A = set_attributes(fig; title = ylabel4A, xlabel = "n", ylabel = ylabel4A)
+    attr4b = set_attributes(fig; title = ylabel4b, xlabel = "r (a.u.)", ylabel = ylabel4b)
+    attr4B = set_attributes(fig; title = ylabel4B, xlabel = "n", ylabel = ylabel4B)
 
     ax0 = Label(fig; text = symbol * ": " * name * " on Grid[$(itr0)]", textsize = 24,  color=:gray)
     ax1a = Axis(fig; attr1a...)
@@ -674,6 +689,11 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     ax3A = Axis(fig; attr3A...)
     ax3b = Axis(fig; attr3b...)
     ax3B = Axis(fig; attr3B...)
+    ax4a = Axis(fig; attr4a...)
+    ax4A = Axis(fig; attr4A...)
+    ax4b = Axis(fig; attr4b...)
+    ax4B = Axis(fig; attr4B...)
+
 
     lines!(ax1a, r[itr0], P1[itr0] , markersize = 1, color=:gray90)
     lines!(ax1A, n[itr0], P10[itr0], markersize = 1, color=:gray90)
@@ -687,6 +707,10 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
     lines!(ax3A, n[itr0], P30[itr0], markersize = 1, color=:gray90)
     lines!(ax3b, r[itr0], Q3[itr0] , markersize = 1, color=:gray90)
     lines!(ax3B, n[itr0], Q30[itr0], markersize = 1, color=:gray90)
+    lines!(ax4a, r[itr0], P4[itr0] , markersize = 1, color=:gray90)
+    lines!(ax4A, n[itr0], P40[itr0], markersize = 1, color=:gray90)
+    lines!(ax4b, r[itr0], Q4[itr0] , markersize = 1, color=:gray90)
+    lines!(ax4B, n[itr0], Q40[itr0], markersize = 1, color=:gray90)
 
     lines!(ax1a, r[itr0], P1[itr0], markersize = 1, color=:gray90)
     _scatterX!(ax1a, r, P1, itr0, def)
@@ -723,29 +747,45 @@ function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, N
 
     lines!(ax3B, n[itr0], Q30[itr0], markersize = 1, color=:gray90)
     _scatterX!(ax3B, n, Q30, itr0, def)
+    
+    lines!(ax4a, r[itr0], P4[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax4a, r, P4, itr0, def)
+
+    lines!(ax4A, n[itr0], P40[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax4A, n, P40, itr0, def)
+
+    lines!(ax4b, r[itr0], Q4[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax4b, r, Q4, itr0, def)
+
+    lines!(ax4B, n[itr0], Q40[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax4B, n, Q40, itr0, def)
 
     fig[1,1] = ax1a
     fig[2,1] = ax2a
     fig[3,1] = ax3a
+    fig[4,1] = ax4a
     
     fig[1,2] = ax1A
     fig[2,2] = ax2A
     fig[3,2] = ax3A
+    fig[4,2] = ax4A
  
     fig[1,3] = ax1b
     fig[2,3] = ax2b   
-    fig[3,3] = ax3b
+    fig[3,3] = ax3b   
+    fig[4,3] = ax4b
     
     fig[1,4] = ax1B
     fig[2,4] = ax2B
     fig[3,4] = ax3B
+    fig[4,4] = ax4B
     
     fig[0,:] = ax0
 
     return fig
 
 end
-function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
+function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,900)), reduced=true) where T <: Real
 
     Nstart = itr.start
     Nstop  = itr.stop
