@@ -10,6 +10,7 @@ Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 #IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 #LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+RelocatableFolders = "05181044-ff0b-4ac5-8273-598c1e38db00"
 
 [compat]
 #IntervalSets = "0.6.0"
