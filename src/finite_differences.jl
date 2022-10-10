@@ -613,7 +613,7 @@ where ``k`` is *odd*. The rule is exact for polynonials of degree ``d=0,\ 1,
 ⋯,\ k-1``. For ``k=1`` the rule reduces to the ordinary trapezoidal rule.
 By default the output is in Float64, optionally the output is rational, with or
 without specification of the gcd devisor.
-#### Example::
+#### Example:
 ```
 [trapezoidal_weights(k; rationalize=true, devisor=true) for k=1:2:9]
 5-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:

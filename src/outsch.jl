@@ -83,7 +83,7 @@ plot_wavefunction(1:def.pos.Na, E, grid, def, Z; reduced=true)
 ```
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
-function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}; new=true) where T<:Real
 
     N = grid.N
     r = grid.r
@@ -91,6 +91,8 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     v = def.pot
     s = def.scr
     n = def.pos.Nlctp
+
+    new || return OUTSCH_WalterJohnson(grid, def, σ)
 
     n > 0 || return OUTSCH(grid, def, σ)
 
@@ -130,7 +132,7 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     return P .+ im * Q
 
 end
-function OUTSCH_kanweg(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+function OUTSCH_WalterJohnson(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
         k = def.k

@@ -1,5 +1,5 @@
 # =============================================================================
-function plot_tabulated_function(Nstart::Int, Nstop::Int, f::Vector{T}, grid::Grid{T}; title=nothing, theme = Theme(fontsize = 10, resolution = (900,350)))  where T <: Real
+function plot_tabulated_function(Nstart::Int, Nstop::Int, f::Vector{T}, grid::Grid{T}; title="", theme = Theme(fontsize = 10, resolution = (900,350)))  where T <: Real
 
     set_theme!(theme)
 
@@ -589,6 +589,171 @@ function plot_wavefunction(itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}
 
 end
 
+# ===============================================================================
+function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, Nstart::Int, Nstop::Int, E::T, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,900)), reduced=true) where T <: Real
+
+    set_theme!(theme)
+
+        r = grid.r
+        k = def.k
+       Na = def.pos.Na
+    Nuctp = def.pos.Nuctp
+       Nb = def.pos.Nb
+        N = def.pos.N
+
+    println()
+    println("wavefunction color coding based on k+1 = $(k+1), Na = $(def.pos.Na), Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N-k = $(def.pos.N-k), N = $(def.pos.N)")
+
+    1 ≤ Nstart ≤ N || error("Error: Nstart outside index range 1:$(N)")
+    1 ≤ Nstop  ≤ N || error("Error: Nstop outside index range 1:$(N)")
+
+    ylabel1a, ylabel1b, Z1 = reduced ? ("χ1(r)", "dχ1/dr", Z1) :  ("ψ1(r)", "dψ1/dr", wavefunction(Z1, grid))
+    ylabel2a, ylabel2b, Z2 = reduced ? ("χ2(r)", "dχ2/dr", Z2) :  ("ψ2(r)", "dψ2/dr", wavefunction(Z2, grid))
+    ylabel3a, ylabel3b, Z3 = reduced ? ("χ2(r)-χ1(r)", "d(χ2-χ1)/dr", Z2) :  ("ψ2(r)-ψ1(r)", "d(ψ2-ψ1)/dr", wavefunction(Z3, grid))
+    ylabel1A, ylabel1B = reduced ? ("χ1(n)", "dχ1/dr") :  ("ψ1(n)", "dψ1/dr")
+    ylabel2A, ylabel2B = reduced ? ("χ2(n)", "dχ2/dr") :  ("ψ2(n)", "dψ2/dr")
+    ylabel3A, ylabel3B = reduced ? ("χ2(n)-χ1(n)", "d(χ2-χ1)/dr") :  ("ψ2(n)-ψ1(n)", "d(ψ2-ψ1)/dr")
+
+    header = reduced ? "reduced wavefunction" :  "full wavefunction"
+
+    A = _zone(Nstart, def)
+    B = _zone(Nstop, def)
+
+    P1 = convert.(Float64,real(Z1))
+    Q1 = convert.(Float64,imag(Z1))
+    
+    P2 = convert.(Float64,real(Z2))
+    Q2 = convert.(Float64,imag(Z2))
+    
+    P3 = P2 .- P1
+    Q3 = Q2 .- Q1
+
+    P10 = P1
+    Q10 = Q1
+    
+    P20 = P2
+    Q20 = Q2
+    
+    P30 = P3
+    Q30 = Q3
+    
+
+    r = convert.(Float64,r)
+    n = [i for i=1:N]
+
+    itr0 = Nstart:Nstop
+
+    symbol = def.atom.element.symbol
+      name = def.orbit.name
+
+    fig = Figure()
+
+    attr1a = set_attributes(fig; title = ylabel1a, xlabel = "r (a.u.)", ylabel = ylabel1a)
+    attr1A = set_attributes(fig; title = ylabel1A, xlabel = "n", ylabel = ylabel1A)
+    attr1b = set_attributes(fig; title = ylabel1b, xlabel = "r (a.u.)", ylabel = ylabel1b)
+    attr1B = set_attributes(fig; title = ylabel1B, xlabel = "n", ylabel = ylabel1B)
+    attr2a = set_attributes(fig; title = ylabel2a, xlabel = "r (a.u.)", ylabel = ylabel2a)
+    attr2A = set_attributes(fig; title = ylabel2A, xlabel = "n", ylabel = ylabel2A)
+    attr2b = set_attributes(fig; title = ylabel2b, xlabel = "r (a.u.)", ylabel = ylabel2b)
+    attr2B = set_attributes(fig; title = ylabel2B, xlabel = "n", ylabel = ylabel2B)
+    attr3a = set_attributes(fig; title = ylabel3a, xlabel = "r (a.u.)", ylabel = ylabel3a)
+    attr3A = set_attributes(fig; title = ylabel3A, xlabel = "n", ylabel = ylabel3A)
+    attr3b = set_attributes(fig; title = ylabel3b, xlabel = "r (a.u.)", ylabel = ylabel3b)
+    attr3B = set_attributes(fig; title = ylabel3B, xlabel = "n", ylabel = ylabel3B)
+
+    ax0 = Label(fig; text = symbol * ": " * name * " on Grid[$(itr0)]", textsize = 24,  color=:gray)
+    ax1a = Axis(fig; attr1a...)
+    ax1A = Axis(fig; attr1A...)
+    ax1b = Axis(fig; attr1b...)
+    ax1B = Axis(fig; attr1B...)
+    ax2a = Axis(fig; attr2a...)
+    ax2A = Axis(fig; attr2A...)
+    ax2b = Axis(fig; attr2b...)
+    ax2B = Axis(fig; attr2B...)
+    ax3a = Axis(fig; attr3a...)
+    ax3A = Axis(fig; attr3A...)
+    ax3b = Axis(fig; attr3b...)
+    ax3B = Axis(fig; attr3B...)
+
+    lines!(ax1a, r[itr0], P1[itr0] , markersize = 1, color=:gray90)
+    lines!(ax1A, n[itr0], P10[itr0], markersize = 1, color=:gray90)
+    lines!(ax1b, r[itr0], Q1[itr0] , markersize = 1, color=:gray90)
+    lines!(ax1B, n[itr0], Q10[itr0], markersize = 1, color=:gray90)
+    lines!(ax2a, r[itr0], P2[itr0] , markersize = 1, color=:gray90)
+    lines!(ax2A, n[itr0], P20[itr0], markersize = 1, color=:gray90)
+    lines!(ax2b, r[itr0], Q2[itr0] , markersize = 1, color=:gray90)
+    lines!(ax2B, n[itr0], Q20[itr0], markersize = 1, color=:gray90)
+    lines!(ax3a, r[itr0], P3[itr0] , markersize = 1, color=:gray90)
+    lines!(ax3A, n[itr0], P30[itr0], markersize = 1, color=:gray90)
+    lines!(ax3b, r[itr0], Q3[itr0] , markersize = 1, color=:gray90)
+    lines!(ax3B, n[itr0], Q30[itr0], markersize = 1, color=:gray90)
+
+    lines!(ax1a, r[itr0], P1[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax1a, r, P1, itr0, def)
+
+    lines!(ax1A, n[itr0], P10[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax1A, n, P10, itr0, def)
+
+    lines!(ax1b, r[itr0], Q1[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax1b, r, Q1, itr0, def)
+
+    lines!(ax1B, n[itr0], Q10[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax1B, n, Q10, itr0, def)
+    
+    lines!(ax2a, r[itr0], P2[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax2a, r, P2, itr0, def)
+
+    lines!(ax2A, n[itr0], P20[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax2A, n, P20, itr0, def)
+
+    lines!(ax2b, r[itr0], Q2[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax2b, r, Q2, itr0, def)
+
+    lines!(ax2B, n[itr0], Q20[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax2B, n, Q20, itr0, def)
+    
+    lines!(ax3a, r[itr0], P3[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax3a, r, P3, itr0, def)
+
+    lines!(ax3A, n[itr0], P30[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax3A, n, P30, itr0, def)
+
+    lines!(ax3b, r[itr0], Q3[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax3b, r, Q3, itr0, def)
+
+    lines!(ax3B, n[itr0], Q30[itr0], markersize = 1, color=:gray90)
+    _scatterX!(ax3B, n, Q30, itr0, def)
+
+    fig[1,1] = ax1a
+    fig[2,1] = ax2a
+    fig[3,1] = ax3a
+    
+    fig[1,2] = ax1A
+    fig[2,2] = ax2A
+    fig[3,2] = ax3A
+ 
+    fig[1,3] = ax1b
+    fig[2,3] = ax2b   
+    fig[3,3] = ax3b
+    
+    fig[1,4] = ax1B
+    fig[2,4] = ax2B
+    fig[3,4] = ax3B
+    
+    fig[0,:] = ax0
+
+    return fig
+
+end
+function compare_wavefunctions(Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, itr::UnitRange{Int}, E::T, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
+
+    Nstart = itr.start
+    Nstop  = itr.stop
+
+    return compare_wavefunctions(Z1, Z2, Nstart, Nstop, E, grid, def; theme, reduced)
+
+end
+
 # =========================================================================================================================
 
 function analyze_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}; theme = Theme(fontsize = 10, resolution = (900,600)), reduced=true) where T <: Real
@@ -671,5 +836,6 @@ plot_tabulated_function(Nstart, Nstop, f, grid; title, theme)
 plot_gridfunction(Nstart, Nstop, grid; title='')
 plot_potentials(E, grid, def)
 plot_wavefunction(Nstart, Nstop, E, grid, def, Z; reduced=true)
+compare_wavefunctions(Z1, Z2, Nstart, Nstop, E, grid, def; reduced=true)
 plot_endpoints(Z, grid, def)
 analyze_wavefunction(Z, grid, def; reduced=true)")
