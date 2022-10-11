@@ -289,8 +289,10 @@ orbit = castOrbit(n=75, ℓ=0, msg=false)
 grid = autoGrid(atom, orbit, Float64);
     Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
 
-plot_gridfunction(1:grid.N, grid; title="")
+plot_gridfunction(grid, 1:grid.N; title="")
 ```
+The plot is made using CairomMakie.
+NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
 function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
