@@ -206,6 +206,10 @@ function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) whe
      ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
      ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
 
+    for n ∈ eachindex(Z)
+        adams.Z[n] = Z[n]
+    end
+
     return adams, ΔE, Z
 
 end

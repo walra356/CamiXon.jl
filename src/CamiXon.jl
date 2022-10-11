@@ -83,7 +83,9 @@ export matG
 export matσ
 export matMinv
 export OUTSCH
-export OUTSCH_WalterJohnson
+export OUTSCH_WJ
+export OUTSCH_WKB
+export OUTSCH_hydrogenic
 export Adams
 export castAdams
 export updateAdams!

@@ -92,23 +92,13 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     s = def.scr
     Nlctp = def.pos.Nlctp
 
-    Nlctp > 0 || return OUTSCH(grid, def, σ)
+    o = Nlctp > 0 ? OUTSCH_WKB(grid, def, σ) : OUTSCH_WJ(grid, def, σ)
 
-    p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
-    I = [grid_trapezoidal_integral(p, i:Nlctp, grid) for i=1:Nlctp]  # quasi-classical integral
-    P = exp.(-I) ./ sqrt.(p[1:Nlctp])                            # WKB solution
-    P = append!(P,zeros(N-Nlctp))
-    Q = grid_differentiation(P, grid)
-
-    Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
-
-    Na > k+1 || return OUTSCH(grid, def, σ)
-
-    return P .+ im * Q
+    return o
 
 end
 # ..............................................................................
-function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+function OUTSCH_hydrogenic(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
         k = def.k
@@ -116,8 +106,6 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
         ℓ = def.orbit.ℓ
         n′= def.orbit.n′
      Zval = def.atom.Z
-
-    ℓ > 0 || OUTSCH_WalterJohnson(grid, def, σ)
 
     Z = zeros(Complex{T},N)
 
@@ -132,7 +120,30 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     return P .+ im * Q
 
 end
-function OUTSCH_WalterJohnson(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+# ..............................................................................
+function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+
+    N = grid.N
+    r = grid.r
+    k = grid.k
+    v = def.pot
+    s = def.scr
+    Nlctp = def.pos.Nlctp
+
+    p = sqrt.(abs.(v .+ s .- E))                                     # quasi-classical momentum
+    I = [grid_trapezoidal_integral(p, i:Nlctp, grid) for i=1:Nlctp]  # quasi-classical integral
+    P = exp.(-I) ./ sqrt.(p[1:Nlctp])                                # WKB solution
+    P = append!(P,zeros(N-Nlctp))
+    Q = grid_differentiation(P, grid)
+
+    Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
+
+    Na > k+1 || return OUTSCH_WalterJohnson(grid, def, σ)
+
+    return P .+ im * Q
+
+end
+function OUTSCH_WJ(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
         r = grid.r
         k = def.k
