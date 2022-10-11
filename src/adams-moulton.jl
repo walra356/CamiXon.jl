@@ -117,7 +117,7 @@ function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 
     norm = abs(real(Z[Nuctp]))
 
-    Z[1:Nuctp] /= norm         # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
+    Z[1:Nuctp] /= norm    # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
 
     def.pos.Na = get_Na(Z, def)
 
@@ -287,13 +287,10 @@ end
     adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 Solves the Schrödinger equation for an atom defined by `def` for energy `E`
-on grid the `grid` with the Adams-Moulton method defined by `adams`; `E` is
-chosen in an iteration procedure until convergence is reached within the
-convergence goal `Δν` is reached in `imax` iterations.
+on grid the `grid` with the Adams-Moulton method defined by `adams`. `E` is
+adjusted until the wavefunction has the correct number of `n′` nodes.
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
 
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
@@ -303,8 +300,11 @@ E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams);
     Ecal = -0.5; E = -0.75; 0 nodes
 
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, E, grid, def; reduced=false)
 ```
+The plot is made using CairomMakie. Note the discontinuity in the derivative.
+NB.: `plot_wavefunction` is not part of the `CamiXon` package.
+
 ![Image](./assets/hydrogen-1s-prepared.png)
 """
 function adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
@@ -340,13 +340,11 @@ end
     adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 
 Solves the Schrödinger equation for an atom defined by `def` for energy `E`
-on grid the `grid` with the Adams-Moulton method defined by `adams`. `E` is
-varied until the wavefunction has the correct number of nodes.
+on grid the `grid` with the Adams-Moulton method defined by `adams`; `E` is
+adjusted in an iteration procedure until convergence is reached within the
+convergence goal `Δν` is reached (limited to a maximum of `imax` iterations).
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
-
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
@@ -360,8 +358,11 @@ msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν=Value(
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
     Ecal = -0.5; E = -0.49999997841850014; 0 nodes
 
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, E, grid, def; reduced=false)
 ```
+The plot is made using CairomMakie.
+NB.: `plot_wavefunction` is not part of the `CamiXon` package.
+
 ![Image](./assets/hydrogen-1s.png)
 """
 function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
@@ -415,15 +416,15 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 `imax`: maximum number of iterations
 
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
+The plot is made using CairomMakie (NB.: `plot_wavefunction` is not included
+in the `CamiXon` package).
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal;
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, E, grid, def; reduced=false)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
@@ -464,7 +465,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
 E = 1.5Ecal
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 
-plot_wavefunction(1:def.pos.N, E, grid, def, Z; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, E, grid, def; reduced=false)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """

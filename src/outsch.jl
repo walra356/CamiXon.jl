@@ -1,4 +1,4 @@
-# ======================== OUTSCH(E, grid, def, σ) ================================
+# ======================== OUTSCH(E, grid, def, σ) =============================
 
 function _matOUTSCH(k::Int, matLD::Matrix{T}, matσ::Vector{Matrix{T}}) where T<:Real
 
@@ -18,7 +18,7 @@ function _matOUTSCH(k::Int, matLD::Matrix{T}, matσ::Vector{Matrix{T}}) where T<
     return mat
 
 end
-# ..................................................................................
+# ..............................................................................
 function _vecOUTSCH(k::Int, matLD::Matrix{T}, p::T, q::T) where T<:Real
 
         v = [matLD[2,1]]
@@ -79,7 +79,7 @@ println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
 
     Z: WKB Ansatz for wavefunction (n < Na=70))
 
-plot_wavefunction(1:def.pos.Na, E, grid, def, Z; reduced=true)
+plot_wavefunction(Z, 1:def.pos.Na, E, grid, def; reduced=true)
 ```
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
@@ -124,9 +124,6 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
     P = real(Z)
     Q = imag(Z)
 
-    #P[1:k+1] = [r[n]^(ℓ+1) - Zval/(n′+ℓ+1)*r[n]^(ℓ+2)  for n=1:k+1]
-    #Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - (ℓ+2)*Zval/(n′+ℓ+1)*r[n]^(ℓ+1) for n=1:k+1]
-
     P[1:k+1] = [r[n]^(ℓ+1) * exp(-Zval/(n′+ℓ+1)*r[n]) for n=1:k+1]
     Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - r[n]^(ℓ+1)*exp(-Zval/(n′+ℓ+1)*r[n])*Zval/(n′+ℓ+1) for n=1:k+1]
 
@@ -157,7 +154,7 @@ function OUTSCH_WalterJohnson(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}})
     u = inv(m) * v                          # solve 2dx2d set of equations
 
     for n=1:k
-        o[n+1] = u[n] + u[n+k]*im
+        o[n+1] = u[n] + im * u[n+k]
     end
 
     Z = zeros(Complex{T},N)

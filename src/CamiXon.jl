@@ -83,6 +83,7 @@ export matG
 export matσ
 export matMinv
 export OUTSCH
+export OUTSCH_WalterJohnson
 export Adams
 export castAdams
 export updateAdams!
