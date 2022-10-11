@@ -188,20 +188,22 @@ plot_potentials(E, grid, def)
 ```@docs
 Def{T}
 castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+```
+
+#### Seed Energy
+```@docs
 initE(def::Def{T}; E=nothing) where T<:Real
+```
+
+#### Def.Pos related functions
+
+```@docs
 get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
 get_Nmin(def::Def{T}) where T<:Real
 get_Nuctp(E::T, def::Def{T}) where T<:Real
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-```
-
-```@docs
-matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
-OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 ```
 
 ### Adams
@@ -214,16 +216,48 @@ the form of a tabulated function of `N` elements.
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+```
+
+#### Adams related functions
+
+```@docs
+matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+```
+
+#### Adams-Moulton numerical solution
+```@docs
+adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+```
+
+#### Radial integration - outward
+```@docs
+OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+```
+
+#### Radial integration - inward
+```@docs
 INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+```
+
+#### Radial integration - boundary condition and energy test 
+```@docs
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
-adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+```
+
+#### Adams-Moulton Master procedures
+```@docs
 adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
-wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 demo_hydrogen(; n=3, ℓ=2)
+```
+#### Wavefunction conversion
+```@docs
+wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 ```
 
 ## Coulomb integrals
