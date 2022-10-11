@@ -243,7 +243,7 @@ INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
-#### Radial integration - boundary condition and energy test 
+#### Radial integration - boundary condition and energy test
 ```@docs
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```
@@ -255,6 +255,7 @@ adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adam
 adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
 demo_hydrogen(; n=3, ℓ=2)
 ```
+
 #### Wavefunction conversion
 ```@docs
 wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
