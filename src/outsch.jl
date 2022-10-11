@@ -92,7 +92,7 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     s = def.scr
     Nlctp = def.pos.Nlctp
 
-    o = Nlctp > 0 ? OUTSCH_WKB(grid, def, σ) : OUTSCH_WJ(grid, def, σ)
+    o = Nlctp > 0 ? OUTSCH_WKB(E, grid, def, σ) : OUTSCH_WJ(grid, def, σ)
 
     return o
 
