@@ -83,23 +83,23 @@ plot_wavefunction(1:def.pos.Na, E, grid, def, Z; reduced=true)
 ```
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
-function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}; new=true) where T<:Real
+function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
     N = grid.N
     r = grid.r
     k = grid.k
     v = def.pot
     s = def.scr
-    n = def.pos.Nlctp
+    Nctp = def.pos.Nlctp
 
     new || return OUTSCH_WalterJohnson(grid, def, σ)
 
-    n > 0 || return OUTSCH(grid, def, σ)
+    Nctp > 0 || return OUTSCH(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
-    I = [grid_trapezoidal_integral(p, i:n, grid) for i=1:n]  # quasi-classical integral
-    P = exp.(-I) ./ sqrt.(p[1:n])                            # WKB solution
-    P = append!(P,zeros(N-n))
+    I = [grid_trapezoidal_integral(p, i:Nctp, grid) for i=1:Nctp]  # quasi-classical integral
+    P = exp.(-I) ./ sqrt.(p[1:Nctp])                            # WKB solution
+    P = append!(P,zeros(N-Nctp))
     Q = grid_differentiation(P, grid)
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
@@ -118,6 +118,8 @@ function OUTSCH(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
         ℓ = def.orbit.ℓ
         n′= def.orbit.n′
      Zval = def.atom.Z
+
+    ℓ > 0 || OUTSCH_WalterJohnson(grid, def, σ)
 
     Z = zeros(Complex{T},N)
 
