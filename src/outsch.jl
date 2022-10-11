@@ -138,7 +138,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
 
-    Na > k+1 || return OUTSCH_WalterJohnson(grid, def, σ)
+    Na > k+1 || return OUTSCH_WJ(grid, def, σ)
 
     return P .+ im * Q
 
