@@ -42,7 +42,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}}; new=true)) where T<:Real
+    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}})) where T<:Real
 
 Solution of the Schrödinger for the first ``k`` points on the `grid`, where
 ``k`` is the Adams-Moulton order. The WKB solution for energy `E` is used
@@ -90,16 +90,14 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
     k = grid.k
     v = def.pot
     s = def.scr
-    Nctp = def.pos.Nlctp
+    Nlctp = def.pos.Nlctp
 
-    new || return OUTSCH_WalterJohnson(grid, def, σ)
-
-    Nctp > 0 || return OUTSCH(grid, def, σ)
+    Nlctp > 0 || return OUTSCH(grid, def, σ)
 
     p = sqrt.(abs.(v .+ s .- E))                             # quasi-classical momentum
-    I = [grid_trapezoidal_integral(p, i:Nctp, grid) for i=1:Nctp]  # quasi-classical integral
-    P = exp.(-I) ./ sqrt.(p[1:Nctp])                            # WKB solution
-    P = append!(P,zeros(N-Nctp))
+    I = [grid_trapezoidal_integral(p, i:Nlctp, grid) for i=1:Nlctp]  # quasi-classical integral
+    P = exp.(-I) ./ sqrt.(p[1:Nlctp])                            # WKB solution
+    P = append!(P,zeros(N-Nlctp))
     Q = grid_differentiation(P, grid)
 
     Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
