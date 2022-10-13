@@ -13,13 +13,13 @@ using Test
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     @test grid.name == "exponential"
-    @test findIndex(0.0042, grid) == 10
+    @test findIndex(0.0042, grid) == 8
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
-    @test def.pos.Nb == 92
+    @test def.pos.Nb == 88
     @test get_Na(Z, def) == 8
-    @test get_Nb(Z, def) == 92
-    @test get_Nuctp(E, def) == 66
+    @test get_Nb(Z, def) == 88
+    @test get_Nuctp(E, def) == 64
     @test grid_trapezoidal_integral(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
@@ -109,7 +109,7 @@ using Test
     @test castGrid(3, 3, Float64; coords=[0,1,1/2,1/6,1/24], h=0.1, r0=1.0, msg=false).r == [0.0, 0.10517083333333334, 0.2214]
     grid = castGrid(4, 6, Float64; r0=1.0, h=1.0, msg=false);
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
-    @test autoRmax(atom, orbit) == 63.0
+    @test autoRmax(atom, orbit) == 84.0
     @test autoNtot(orbit,2) == 200
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
