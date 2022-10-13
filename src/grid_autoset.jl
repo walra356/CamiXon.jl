@@ -123,7 +123,7 @@ function autoRmax(atom::Atom, orbit::Orbit)
      n = orbit.n
     Zc = atom.Zc
 
-    Rmax = 3(n^2+20)/Zc
+    Rmax = 4(n^2+20)/Zc
 
     return Rmax
 
@@ -280,8 +280,6 @@ Automatic setting of grid parameters. Important cases:
 * `p=1` (linear grid)
 * `p>1` (quasi-exponential grid)
 #### Example:
-NB. `plot_gridfunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
 ```
 codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)

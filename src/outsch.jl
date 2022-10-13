@@ -49,11 +49,7 @@ Solution of the Schrödinger for the first ``k`` points on the `grid`, where
 when the WKB approximation is valid (for nonzero angular momentum at distances
 below the inner classical turning point - ictp)
 
-NB. The plot functions require CairoMakie (not included in CamiXon) to be
-installed. For the code see `plotfunctions.jl` in the CamiXon.depot directory.
 #### Example:
-NB. `plot_wavefunction` (see `plot_functions.jl` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
 Z = OUTSCH(Ecal, grid, def, adams.σ)
@@ -79,8 +75,10 @@ println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
 
     Z: WKB Ansatz for wavefunction (n < Na=70))
 
-plot_wavefunction(Z, 1:def.pos.Na, E, grid, def; reduced=true)
+plot_wavefunction(Z, 1:def.pos.Na, grid, def; reduced=true)
 ```
+The plot is made using `CairomMakie`.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
 function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
