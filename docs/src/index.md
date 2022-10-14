@@ -140,26 +140,12 @@ the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
 and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
 `grid`, `def` and `adams`.
 
-### Pos
-
-The `Pos` object serves within [`Def`](@ref) object to contain the position
-indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
-Adams-Moulton integration. These positions are contained in the fields
-`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
-Alternatively, they can be determined with the functions [`get_Na`](@ref),
-[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
-```@docs
-Pos
-```
-
 ### Def
 
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
-NB. `plot_potentials` (see `plot_functions.jl`` in `CamiXon.depot`) uses
-`CairoMakie`, which is not included in the `CamiXon` package.
 ```
 codata = castCodata(2018)
 atom = castAtom(Z=1, A=1, Q=0)
@@ -183,6 +169,8 @@ adams = castAdams(E, grid, def)
 plot_potentials(E, grid, def)
     Nlctp = 234, Nmin = 259, Nuctp = 369 (Ructp = 93.0059202490 a.u.)
 ```
+The plot is made using `CairomMakie`.
+NB.: `plot_potentials` is not included in the `CamiXon` package.
 ![Image](./assets/potential.png)
 
 ```@docs
@@ -190,14 +178,16 @@ Def{T}
 castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
 ```
 
-#### Seed Energy
-```@docs
-initE(def::Def{T}; E=nothing) where T<:Real
-```
+#### Pos and Pos-related functions
 
-#### Def.Pos related functions
-
+The `Pos` object serves within [`Def`](@ref) object to contain the position
+indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
+Adams-Moulton integration. These positions are contained in the fields
+`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
+Alternatively, they can be determined with the functions [`get_Na`](@ref),
+[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
 ```@docs
+Pos
 get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
@@ -216,6 +206,8 @@ the form of a tabulated function of `N` elements.
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+initE(def::Def{T}; E=nothing) where T<:Real
+```
 ```
 
 #### Adams related functions
@@ -226,7 +218,7 @@ matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 ```
 
-#### Adams-Moulton numerical solution
+#### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
 adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
@@ -243,9 +235,10 @@ INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
-#### Radial integration - boundary condition and energy test
+#### Radial integration - boundary condition applied and convergence test
 ```@docs
 adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Adams-Moulton Master procedures
@@ -361,8 +354,18 @@ permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 pascal_triangle(nmax::Int)
 pascal_next(a::Vector{Int})
 pochhammer(x::T, p::Int) where T<:Real
+laguerre_coords(n::T) where T<:Real
+generalized_laguerre_coords(n::Int, α::T) where T<:Real
 triangle_coefficient(a::Real, b::Real, c::Real)
 istriangle(a::Real, b::Real, c::Real)
+texp(x::T, a::T, p::Int) where T <: Real
+VectorRational
+normalize_VectorRational(vec::Vector{Rational{Int}})
+```
+
+### Polynom
+
+```@docs
 polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
@@ -372,9 +375,6 @@ polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
 polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
-texp(x::T, a::T, p::Int) where T <: Real
-VectorRational
-normalize_VectorRational(vec::Vector{Rational{Int}})
 ```
 
 ## Finite-difference methods
