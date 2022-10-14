@@ -193,6 +193,28 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
 end
 
+# =============== adams_moulton_patch(E, grid, def, adams) =====================
+
+@doc raw"""
+    adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+"""
+function adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    k = def.k
+
+    Z2 = copy(Z[2k:2k+1])
+
+    for n=2k:-1:1
+        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
+    end
+
+    Z[1:2k+1] = Z2
+
+    return Z
+
+end
+
 # =============== adams_moulton_solve(E, grid, def, adams) =====================
 
 @doc raw"""
@@ -202,7 +224,7 @@ Numerical solution of the 1D Schrödinger equation for the radial motion of a
 *valence* electron of energy `E`. Output: the improved `Adams` object, the
 energy convergence `ΔE`, and `Z`, where `P = real(Z)` is the *reduced* radial
 wavefunction and `Q = imag(Z)` its derivative.
-#Example:
+#### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0, msg=true)
 orbit = castOrbit(n=1, ℓ=0)

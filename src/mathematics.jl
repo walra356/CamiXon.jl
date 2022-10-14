@@ -611,6 +611,7 @@ function laguerre_coords(n::T) where T<:Real
     return coords
 
 end
+
 function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid)
 
     Zval = atom.Z
@@ -625,8 +626,8 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid)
 
     coords = convert.(BigFloat,generalized_laguerre_coords(n-ℓ-1), 2ℓ+1)
 
-    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * polynomial2(coords, a*r[i]; deriv=0) for i ∈ eachindex(r)]
-    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * polynomial2(coords, a*r[i]; deriv=0) + a*r[i]*polynomial2(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * polynomial(coords, a*r[i]; deriv=0) for i ∈ eachindex(r)]
+    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * polynomial(coords, a*r[i]; deriv=0) + a*r[i]*polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
     return P + im * Q
 
