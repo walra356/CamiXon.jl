@@ -93,6 +93,7 @@ export INSCH
 export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized
+export adams_moulton_patch
 export count_nodes
 export adams_moulton_solve
 export adams_moulton_prepare
@@ -175,6 +176,8 @@ export log10_mantissa
 export pascal_triangle
 export pascal_next
 export pochhammer
+export laguerre_coords
+export generalized_laguerre_coords
 export triangle_coefficient
 export istriangle
 export polynomial
@@ -219,6 +222,7 @@ include("plot_public_sector.jl")
 include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
 include("search_algorithms.jl")
+include("polynom.jl")
 include("mathematics.jl")
 
 end
