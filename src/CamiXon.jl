@@ -177,7 +177,9 @@ export pascal_triangle
 export pascal_next
 export pochhammer
 export laguerre_coords
+export laguerreL
 export generalized_laguerre_coords
+export generalized_laguerreL
 export triangle_coefficient
 export istriangle
 export polynomial

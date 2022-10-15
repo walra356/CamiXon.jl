@@ -592,10 +592,9 @@ end
 The coefficients of the Laguerre polynomals of degree `n`.
 
 ```math
-L_{n}(x)&=
-\frac{1}{n!}e^{x}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n})\\&=
-\sum_{m=0}^{n}(-1)^{m}\binom{n}{n-m}\frac{x^{m}}{m!}\\&=
-\sum_{m=0}^{n}\frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+    L_{n}(x)=\frac{1}{n!}e^{x}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n})\\
+    = \sum_{m=0}^{n}(-1)^{m}\binom{n}{n-m}\frac{x^{m}}{m!}\\
+    = \sum_{m=0}^{n}\frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
 ```
 #### Example:
 ```
@@ -617,9 +616,9 @@ end
 Generalized Laguerre polynomal of degree `n` for parameter `α`,
 
 ```math
-L_{n}^{\alpha}(x)&=
-\frac{1}{n!}e^{x}x^{-\alpha}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n+\alpha})\\&=
-\sum_{m=0}^{n}(-1)^{m}\binom{n+\alpha}{n-m}\frac{x^{m}}{m!}\\&=
+L_{n}^{\alpha}(x)=
+\frac{1}{n!}e^{x}x^{-\alpha}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n+\alpha})\\=
+\sum_{m=0}^{n}(-1)^{m}\binom{n+\alpha}{n-m}\frac{x^{m}}{m!}\\=
 \sum_{m=0}^{n}\frac{\Gamma(\alpha+n+1)}{\Gamma(\alpha+m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
 ```
 #### Example:

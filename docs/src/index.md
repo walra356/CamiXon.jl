@@ -347,14 +347,16 @@ faulhaber_summation(n::Int, p::Int; T=Int)
 harmonic_number(n::Int, p::Int)
 harmonic_number(n::Int)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
+laguerre_coords(n::T) where T<:Real
+laguerreL(n::Int, x::T) where T<:Real
+generalized_laguerre_coords(n::Int, α::T) where T<:Real
+generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
 log10_characteristic_power(x)
 log10_mantissa(x)
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
 pascal_triangle(nmax::Int)
 pascal_next(a::Vector{Int})
 pochhammer(x::T, p::Int) where T<:Real
-laguerre_coords(n::T) where T<:Real
-generalized_laguerre_coords(n::Int, α::T) where T<:Real
 triangle_coefficient(a::Real, b::Real, c::Real)
 istriangle(a::Real, b::Real, c::Real)
 texp(x::T, a::T, p::Int) where T <: Real
@@ -365,7 +367,7 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 ### Polynom
 
 ```@docs
-polynomial(coords::Vector{T}, x::T; deriv=0) where T<:Number
+polynomial(coords::Vector{T}, x::V; deriv=0) where {T <: Real, V <: Real}
 polynom_derivative(coords::Vector{<:Number})
 polynom_derivatives(coords::Vector{<:Number}; deriv=0)
 polynom_derivatives_all(coords::Vector{<:Number})
