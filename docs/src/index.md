@@ -364,14 +364,14 @@ normalize_VectorRational(vec::Vector{Rational{Int}})
 
 ```@docs
 polynomial(coords::Vector{T}, x::V; deriv=0) where {T <: Real, V <: Real}
-polynom_derivative(coords::Vector{<:Number})
-polynom_derivatives(coords::Vector{<:Number}; deriv=0)
-polynom_derivatives_all(coords::Vector{<:Number})
-polynom_power(coords::Vector{<:Number}, power::Int)
-polynom_powers(coords::Vector{<:Number}, pmax::Int)
-polynom_primitive(coeffs::Vector{<:Number})
-polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
-polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
+polynom_derivative(coords::Vector{T) where T<:Real
+polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
+polynom_derivatives_all(coords::Vector{T}) where T<:Real
+polynom_power(coords::Vector{T}, power::Int) where T<:Real
+polynom_powers(coords::Vector{T}, pmax::Int) where T<:Real
+polynom_primitive(coeffs::Vector{T}) where T<:Real
+polynom_product(a::Vector{T}, b::Vector{V})  where {T<:Real, V<:Real}
+polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Real
 ```
 
 #### Laguerre polynomials

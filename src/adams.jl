@@ -1,7 +1,7 @@
 # =========================== Adams sector =====================================
 
 @doc raw"""
-    Adams
+    Adams{T}
 
 * G: (`:Vector{Matrix{T}}`)
 * σ: (`:Vector{Matrix{T}}`)
