@@ -565,7 +565,8 @@ The coefficients of the generalized Laguerre polynomals of degree `n` for
 parameter `α`.
 
 ```math
-    c(n, α, m) = \frac{\Gamma(\alpha+n+1)}{\Gamma(\alpha+m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+    c(n, α)[m] = \frac{\Gamma(α+n+1)}{\Gamma(α+m+1)}
+    \frac{(-1)^{m}}{(n-m)!}\frac{1}{m!}
 ```
 #### Example:
 ```
@@ -589,7 +590,7 @@ end
 The coefficients of the Laguerre polynomals of degree `n`.
 
 ```math
-    c(n, m) = \frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+    c(n)[m] = \frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{1}{m!}
 ```
 #### Example:
 ```
@@ -611,12 +612,13 @@ end
 Generalized Laguerre polynomal of degree `n` for parameter `α`,
 
 ```math
-    L_{n}^{\alpha}(x)
-    = \frac{1}{n!}e^{x}x^{-\alpha}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n+\alpha})
-    = \sum_{m=0}^{n}(-1)^{m}\binom{n+\alpha}{n-m}\frac{x^{m}}{m!}
-    = \sum_{m=0}^{n}\frac{\Gamma(\alpha+n+1)}{\Gamma(\alpha+m+1)}
-    \frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+    L_{n}^{α}(x)
+    = \frac{1}{n!}e^{x}x^{-α}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n+α})
+    = \sum_{m=0}^{n}(-1)^{m}\binom{n+α}{n-m}\frac{x^{m}}{m!}
+    = \sum_{m=0}^{n}c(n,α)[m]x^{m}
 ```
+where ``c(n,α)[m]`` is the generalized Laguerre coordinate from
+[`generalized_laguerre_coords`](@ref).
 #### Example:
 ```
 (xmin, Δx, xmax) = (0, 0.1, 11)
@@ -651,9 +653,9 @@ Laguerre polynomal of degree `n`,
     L_{n}(x)
     = \frac{1}{n!}e^{x}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n})
     = \sum_{m=0}^{n}(-1)^{m}\binom{n}{n-m}\frac{x^{m}}{m!}
-    = \sum_{m=0}^{n}\frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}
-    \frac{x^{m}}{m!}
+    = \sum_{m=0}^{n}c(n)[m]x^{m}
 ```
+where ``c(n)[m]`` is the Laguerre coordinate from [`laguerre_coords`](@ref).
 #### Example:
 ```
 (xmin, Δx, xmax) = (0, 0.1, 11)
