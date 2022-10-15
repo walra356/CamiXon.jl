@@ -336,7 +336,7 @@ find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```
 
-## Math
+## Mathematics
 
 ```@docs
 bernoulli_numbers(nmax::Int)
@@ -347,10 +347,6 @@ faulhaber_summation(n::Int, p::Int; T=Int)
 harmonic_number(n::Int, p::Int)
 harmonic_number(n::Int)
 integer_partitions(n::Int, m=0; transpose=false, count=false)
-laguerre_coords(n::T) where T<:Real
-laguerreL(n::Int, x::T) where T<:Real
-generalized_laguerre_coords(n::Int, α::T) where T<:Real
-generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
 log10_characteristic_power(x)
 log10_mantissa(x)
 permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
@@ -364,7 +360,7 @@ VectorRational
 normalize_VectorRational(vec::Vector{Rational{Int}})
 ```
 
-### Polynom
+### Polynomials
 
 ```@docs
 polynomial(coords::Vector{T}, x::V; deriv=0) where {T <: Real, V <: Real}
@@ -376,6 +372,15 @@ polynom_powers(coords::Vector{<:Number}, pmax::Int)
 polynom_primitive(coeffs::Vector{<:Number})
 polynom_product(a::Vector{T}, b::Vector{T}) where T<:Number
 polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
+```
+
+#### Laguerre polynomials
+
+```@docs
+laguerre_coords(n::T) where T<:Real
+laguerreL(n::Int, x::T) where T<:Real
+generalized_laguerre_coords(n::Int, α::T) where T<:Real
+generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
 ```
 
 ## Finite-difference methods
