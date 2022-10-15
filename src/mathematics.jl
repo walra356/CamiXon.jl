@@ -1,3 +1,46 @@
+# ...................................................... VectorRational .........................................................
+
+@doc raw"""
+    VectorRational{T}
+
+Object to decompose a vector of rational numbers
+
+The fields are:
+* `.num::Vector{Int}``: vector of normalized numerators
+* `.den::Int`: common denominator
+* `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
+"""
+struct VectorRational{T}
+
+    num::Vector{T}
+    den::T
+    val::Vector{Rational{T}}
+
+end
+
+# ==================================== analyzeVectorRational(vec) =======================
+
+@doc raw"""
+    castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
+
+Decompose vector of rational numbers.
+#### Example:
+```
+v = [2//3,4//5]
+castVectorRational(v)
+    VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
+```
+"""
+function castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
+
+    val = Base.gcd(vec)
+    den = val.den
+    num = Base.convert(Vector{T}, (vec .* den))
+
+    return CamiXon.VectorRational(num, den, vec)
+
+end
+
 # ==================================== bernoulli_numbers(nmax) =================
 
 @doc raw"""
@@ -882,48 +925,5 @@ function texp(x::T, a::T, p::Int) where T <: Real
     V = typeof(x)
 
     return  V <: Rational ? _texp_int(x, p) : V <: Integer ? _texp_int(x, p) : _texp_real(x, p)
-
-end
-
-# ...................................................... VectorRational .........................................................
-
-@doc raw"""
-    VectorRational{T}
-
-Object to decompose a vector of rational numbers
-
-The fields are:
-* `.num::Vector{Int}``: vector of normalized numerators
-* `.den::Int`: common denominator
-* `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
-"""
-struct VectorRational{T}
-
-    num::Vector{T}
-    den::T
-    val::Vector{Rational{T}}
-
-end
-
-# ==================================== analyzeVectorRational(vec) =======================
-
-@doc raw"""
-    normalize_VectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
-
-Decompose vector of rational numbers.
-#### Example:
-```
-v = [2//3,4//5]
-normalize_VectorRational(v)
-    VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
-```
-"""
-function normalize_VectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
-
-    val = Base.gcd(vec)
-    den = val.den
-    num = Base.convert(Vector{T}, (vec .* den))
-
-    return CamiXon.VectorRational(num, den, vec)
 
 end
