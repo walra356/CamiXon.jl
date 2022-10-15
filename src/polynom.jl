@@ -64,7 +64,7 @@ polynom_derivative(coords)         # (first) derivative of polynomial `coords`
  4
 ```
 """
-function polynom_derivative(coords::Vector{<:Number})
+function polynom_derivative(coords::Vector{T}) where T<:Real
 
     k = Base.length(coords)
     k > 1 || return [0]
@@ -76,7 +76,7 @@ end
 # =============================== polynom_derivative(coords[,deriv=0]) =========
 
 @doc raw"""
-    polynom_derivatives(coords::Vector{<:Number}[;deriv=0])
+    polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
 
 Vector representation of derivatives of the polynomial `coords`.
 
@@ -104,7 +104,7 @@ polynom_derivatives(coords; deriv=2)        # second derivative of polynomial `c
  12
 ```
 """
-function polynom_derivatives(coords::Vector{<:Number}; deriv=0)
+function polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
 
     deriv < 0 && error("jwError: negative derivative not defined")
 
@@ -138,7 +138,7 @@ polynom_derivatives_all(coords)      # `all' (nontrivial) derivatives of polynom
  [24]
 ```
 """
-function polynom_derivatives_all(coords::Vector{<:Number})
+function polynom_derivatives_all(coords::Vector{T}) where T<:Real
 
     k = Base.length(coords)
 
@@ -177,7 +177,7 @@ polynom_power(coords,2)
  1
 ```
 """
-function polynom_power(coords::Vector{<:Number}, power::Int)
+function polynom_power(coords::Vector{T}, power::Int) where T<:Real
 
     power >= 0 || error("jwError: negative powers not allowed")
     power == 2 && return polynom_product(coords, coords)
@@ -215,7 +215,7 @@ polynom_powers(coords,3)
  [1, 3, 6, 7, 6, 3, 1]
 ```
 """
-function polynom_powers(coords::Vector{<:Number}, pmax::Int)
+function polynom_powers(coords::Vector{T}, pmax::Int) where T<:Real
 
     pmax > 0 || error("jwError: minimum power included is unity")
 
@@ -257,7 +257,7 @@ polynom_primitive(coords)
  1//5
 ```
 """
-function polynom_primitive(coords::Vector{<:Number})
+function polynom_primitive(coords::Vector{T}) where T<:Real
 
     d = [1//p for p ∈ Base.eachindex(coords)]
 
@@ -270,7 +270,7 @@ end
 # ==================================== polynom_product(a, b) ============================================================
 
 @doc raw"""
-    polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Number, V<:Number}
+    polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Real, V<:Real}
 
 Vector representation of the product of two polynomials, ``a`` and ``b`` which
 is a polynomial in a vector space of dimension ``d=m+n``,
@@ -295,7 +295,7 @@ consisting of the polynomial coefficients.
  [1, 0, 1, 2]
 ```
 """
-function polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Number, V<:Number}
+function polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Real, V<:Real}
 
     n = Base.length(a)
     m = Base.length(b)
@@ -319,7 +319,7 @@ end
 # ==================================== polynom_product_expansion(a, b, p) ============================================================
 
 @doc raw"""
-    polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
+    polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Real
 
 Vector representation of the product of two polynomials, ``a`` (of degree ``n``) and ``b`` (of degree ``m``), with ``m≤n``
 truncated at the order ``p`` is a polynomial in a vector space of dimension ``d=p+1``. If ``ab`` is the `polynom_product`,
@@ -336,7 +336,7 @@ o = expand_product(a, b, 4); println(o)
 
 ```
 """
-function polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Number
+function polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Real
 
     n = Base.length(a)
     m = Base.length(b)

@@ -888,7 +888,7 @@ end
 # ...................................................... VectorRational .........................................................
 
 @doc raw"""
-    VectorRational
+    VectorRational{T}
 
 Object to decompose a vector of rational numbers
 
@@ -897,32 +897,32 @@ The fields are:
 * `.den::Int`: common denominator
 * `.val::Vector{Rational}`: vector of rational numbers (simplified = not normalized)
 """
-struct VectorRational
+struct VectorRational{T}
 
-    num::Vector{Int}
-    den::Int
-    val::Vector{Rational{Int64}}
+    num::Vector{T}
+    den::T
+    val::Vector{Rational{T}}
 
 end
 
 # ==================================== analyzeVectorRational(vec) =======================
 
 @doc raw"""
-    normalize_VectorRational(vec::Vector{Rational{Int}})
+    normalize_VectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
 
 Decompose vector of rational numbers.
 #### Example:
 ```
 v = [2//3,4//5]
 normalize_VectorRational(v)
- VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
+    VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
 ```
 """
-function normalize_VectorRational(vec::Vector{Rational{Int}})
+function normalize_VectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
 
     val = Base.gcd(vec)
     den = val.den
-    num = Base.convert(Vector{Int},(vec .* den))
+    num = Base.convert(Vector{T}, (vec .* den))
 
     return CamiXon.VectorRational(num, den, vec)
 
