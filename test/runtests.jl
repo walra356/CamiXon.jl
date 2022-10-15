@@ -149,7 +149,7 @@ using Test
     @test generalized_laguerre_coords(8,3) == [165//1, -330//1, 231//1, -77//1, 55//4, -11//8, 11//144, -11//5040, 1//40320]
     @test laguerre_coords(8) == [1//1, -8//1, 14//1, -28//3, 35//12, -7//15, 7//180, -1//630, 1//40320]
     @test permutations_unique_count([[1,2,3],[2,3,1,4,3]],2) == 60
-    @test normalize_VectorRational([2//3,4//5]).num == [10,12]
+    @test castVectorRational([2//3,4//5]).num == [10,12]
     @test edges(1:5,2.5,2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4,2,6]) == [0, 4, 6, 12]
     @test stepcenters([4,2,6]) == [2.0, 5.0, 9.0]

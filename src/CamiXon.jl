@@ -164,7 +164,7 @@ export b_coeff
 
 export bernoulli_numbers
 export VectorRational
-export normalize_VectorRational
+export castVectorRational
 export canonical_partitions
 export factorialbig
 export faulhaber_polynom

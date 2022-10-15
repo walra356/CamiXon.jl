@@ -357,7 +357,7 @@ triangle_coefficient(a::Real, b::Real, c::Real)
 istriangle(a::Real, b::Real, c::Real)
 texp(x::T, a::T, p::Int) where T <: Real
 VectorRational
-normalize_VectorRational(vec::Vector{Rational{Int}})
+castVectorRational(vec::Vector{Rational{Int}})
 ```
 
 ### Polynomials
