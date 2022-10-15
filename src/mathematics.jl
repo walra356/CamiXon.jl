@@ -536,8 +536,6 @@ end
 # ...............................................................................
 function _generalized_laguerre_coord(n, α, m)
 
-    α ≥ -1 || error("Error: condition Laguerre α ≥ -1 not satisfied")
-
     sgn = iseven(m) ? 1 : -1
     den = factorialbig(n-m) * factorialbig(m)
 
@@ -563,7 +561,8 @@ end
 @doc raw"""
     generalized_laguerre_coords(n::Int, α::T) where T<:Real
 
-The coefficients of the generalized Laguerre polynomals
+The coefficients of the generalized Laguerre polynomals of degree `n` for
+parameter `α`.
 
 ```math
 L_{n}^{\alpha}(x)&=
@@ -588,9 +587,9 @@ end
 # ============================= laguerre_coords(n::Int, α::T) where T<:Real =====================
 
 @doc raw"""
-    laguerre_coords(n::Int, α::T) where T<:Real
+    laguerre_coords(n::Int) where T<:Real
 
-The coefficients of the Laguerre polynomals
+The coefficients of the Laguerre polynomals of degree `n`.
 
 ```math
 L_{n}(x)&=
@@ -612,24 +611,73 @@ function laguerre_coords(n::T) where T<:Real
 
 end
 
-function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid)
+@doc raw"""
+    generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
 
-    Zval = atom.Z
-    n = orbit.n
-    ℓ = orbit.ℓ
-    r = grid.r
+Generalized Laguerre polynomal of degree `n` for parameter `α`,
 
-    norm = _hydrogenic_norm(n, ℓ)
+```math
+L_{n}^{\alpha}(x)&=
+\frac{1}{n!}e^{x}x^{-\alpha}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n+\alpha})\\&=
+\sum_{m=0}^{n}(-1)^{m}\binom{n+\alpha}{n-m}\frac{x^{m}}{m!}\\&=
+\sum_{m=0}^{n}\frac{\Gamma(\alpha+n+1)}{\Gamma(\alpha+m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+```
+#### Example:
+```
+(xmin, Δx, xmax) = (0, 0.1, 11)
+n = 8
+α = -0.3
+gL = [generalized_laguerreL(n, α, x) for x=xmin:Δx:xmax]
+f = Float64.(gL);
 
-    a = big(2Zval/n)
-    b = a^(ℓ+1)*sqrt(a/norm)
+plot_function(f, xmin, Δx, xmax; title="Laguere polynomial (of degree $n for α =$α)")
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
 
-    coords = convert.(BigFloat,generalized_laguerre_coords(n-ℓ-1), 2ℓ+1)
+![Image](./assets/laguerreL8.png)
+"""
+function generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
 
-    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * polynomial(coords, a*r[i]; deriv=0) for i ∈ eachindex(r)]
-    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * polynomial(coords, a*r[i]; deriv=0) + a*r[i]*polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    coords = convert.(BigFloat,generalized_laguerre_coords(n, α) )
 
-    return P + im * Q
+    o = polynomial(coords, x; deriv=0)
+
+    return o
+
+end
+
+@doc raw"""
+    laguerreL(n::Int, x::T) where T<:Real
+
+Laguerre polynomal of degree `n`,
+
+```math
+L_{n}(x)&=
+\frac{1}{n!}e^{x}\frac{d^{n}}{dx^{n}}(e^{-x}x^{n})\\&=
+\sum_{m=0}^{n}(-1)^{m}\binom{n}{n-m}\frac{x^{m}}{m!}\\&=
+\sum_{m=0}^{n}\frac{\Gamma(n+1)}{\Gamma(m+1)}\frac{(-1)^{m}}{(n-m)!}\frac{x^{m}}{m!}
+```
+#### Example:
+```
+(xmin, Δx, xmax) = (0, 0.1, 11)
+n = 8
+L = [laguerreL(n, x) for x=xmin:Δx:xmax]
+f = Float64.(L);
+
+plot_function(f, xmin, Δx, xmax; title="Laguere polynomial (of degree $n)")
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
+![Image](./assets/laguerreL8.png)
+"""
+function laguerreL(n::Int, x::T) where T<:Real
+
+    coords = convert.(BigFloat,generalized_laguerre_coords(n, 0) )
+
+    o = polynomial(coords, x; deriv=0)
+
+    return o
 
 end
 
