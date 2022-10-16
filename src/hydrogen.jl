@@ -22,8 +22,8 @@ end
     hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
 Analytic function for the hydrogenic *reduced* radial wavefunction of a given
-[`atom`](@ref) in a given [`orbit`](@ref) on a given [`grid`](@ref).
-The argument [`def`](@ref) completes the definition of the problem.
+`atom` in a given `orbit` on a given `grid`.
+The argument `def` completes the definition of the problem.
 
 ```math
     \tilde{\chi}_{nl}(\rho)
