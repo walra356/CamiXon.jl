@@ -75,7 +75,7 @@ println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
 
     Z: WKB Ansatz for wavefunction (n < Na=70))
 
-plot_wavefunction(Z, 1:def.pos.Na, grid, def; undo_reduction=false)
+plot_wavefunction(Z, 1:def.pos.Na, grid, def; reduced=true)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.

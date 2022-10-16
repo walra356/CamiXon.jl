@@ -239,7 +239,7 @@ E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def);
 
 adams, ΔE, Z = adams_moulton_solve(E, grid, def, adams)
-plot_wavefunction(Z, 1:grid.N, grid, def; undo_reduction=false)
+plot_wavefunction(Z, 1:grid.N, grid, def; reduced=true)
 ```
 The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
@@ -351,7 +351,7 @@ E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams);
     Ecal = -0.5; E = -0.75; 0 nodes
 
-plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`. Note the discontinuity in the derivative.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -409,7 +409,7 @@ msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν=Value(
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
     Ecal = -0.5; E = -0.49999997841850014; 0 nodes
 
-plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -472,7 +472,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
 
 E = 1.5Ecal;
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -501,6 +501,25 @@ end
 @doc raw"""
     wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
+Conversion from the *reduced* radial wavefunction ``\chi_{nl}(r)`` to the
+ordinary radial wavefuntion ``R_{nl}(r)``, where
+```math
+    \chi_{nl}(r)=rR_{nl}(r)
+```
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0)
+orbit = castOrbit(n=1, ℓ=0)
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+def = castDef(grid, atom, orbit, codata)
+Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
+Z2 = wavefunction(Z1, grid);
+
+plot_wavefunction(Z2, 1:grid.N, grid, def)
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+![Image](./assets/hydrogen-1s.png)
 """
 function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
