@@ -263,11 +263,11 @@ function polynom_primitive(coords::Vector{T}) where T<:Real
 
     coords = coords .* d
 
-    return Base.pushfirst!(coords,0)      # constant of integration equal to zero
+    return Base.pushfirst!(coords,0)    # constant of integration equal to zero
 
 end
 
-# ==================================== polynom_product(a, b) ============================================================
+# ================= polynom_product(a, b) ======================================
 
 @doc raw"""
     polynom_product(a::Vector{T}, b::Vector{V}) where {T<:Real, V<:Real}
