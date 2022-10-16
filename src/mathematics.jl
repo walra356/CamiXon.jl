@@ -37,7 +37,7 @@ function castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
     den = val.den
     num = Base.convert(Vector{T}, (vec .* den))
 
-    return CamiXon.VectorRational(num, den, vec)
+    return VectorRational(num, den, vec)
 
 end
 
@@ -571,31 +571,6 @@ function integer_partitions(n::Int, m=0; transpose=false, count=false)
     end
 
     return count ? np : oo
-
-end
-
-# ========================== Laguerre sector ===================================
-
-# ...............................................................................
-function _generalized_laguerre_coord(n, α, m)
-
-    sgn = iseven(m) ? 1 : -1
-    den = factorialbig(n-m) * factorialbig(m)
-
-    T = (n + α) > 20 ? BigInt : Int
-
-    (α, n, m) = isinteger(α) ? (T(α), n, m) : promote(α, n, m)
-
-    num = T(1)
-    den = T(den)
-
-    for i=1:(n-m)
-        num *= (α + m + i)
-    end
-
-    o = isinteger(α) ? sgn * num // den : sgn * num / den
-
-    return o
 
 end
 

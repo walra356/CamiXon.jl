@@ -377,10 +377,10 @@ polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Real
 #### Laguerre polynomials
 
 ```@docs
-laguerre_coords(n::T) where T<:Real
-laguerreL(n::Int, x::T) where T<:Real
+laguerre_coords(n::Int)
+laguerreL(n::Int, x::T; deriv=0) where T<:Real
 generalized_laguerre_coords(n::Int, α::T) where T<:Real
-generalized_laguerreL(n::Int, α::U, x::V) where {U<:Real, V<:Real}
+generalized_laguerreL(n::Int, α::U, x::T; deriv=0) where {U<:Real, T<:Real}
 ```
 
 ## Finite-difference methods
