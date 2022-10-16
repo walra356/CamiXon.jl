@@ -12,6 +12,7 @@ using Test
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+    Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 8
     @test def.atom.element.name == "hydrogen"
@@ -21,6 +22,7 @@ using Test
     @test get_Nb(Z, def) == 88
     @test get_Nuctp(E, def) == 64
     @test grid_trapezoidal_integral(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
+    @test grid_trapezoidal_integral(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
