@@ -118,7 +118,7 @@ and rotational quantum number `ℓ`.
 
 #### Example:
 The plot is made using CairomMakie. Note the discontinuity in the derivative.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package. 
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
