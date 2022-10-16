@@ -61,7 +61,7 @@ plot_wavefunction(Z, 1:grid.N, grid, def)
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 
-![Image](./assets/H_25n.png)
+![Image](./assets/H1_25n.png)
 """
 function hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
@@ -87,3 +87,23 @@ function hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
     return P + im * Q
 
 end
+
+# ======================== bohrformula(atom, term) =============================
+
+@doc raw"""
+    bohrformula(Z::Int, n::Int)
+
+Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and
+*principal quantum number* `n`.
+```math
+    E_n = - \frac{Z^2}{2n^2}
+```
+#### Example:
+```
+Z = 2
+n = 4
+bohrformula(Z,n)
+ -0.125
+```
+"""
+bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2

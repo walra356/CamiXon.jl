@@ -404,23 +404,3 @@ function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
     return Term(name, n, n′, ℓ, S, L, J)
 
 end
-
-# ======================== bohrformula(atom, term) =============================
-
-@doc raw"""
-    bohrformula(Z::Int, n::Int)
-
-Hydrogenic energy (in Hartree a.u.) for *atom* with *atomic number* `Z` and
-*principal quantum number* `n`.
-```math
-    E_n = - \frac{Z^2}{2n^2}
-```
-#### Example:
-```
-Z = 2
-n = 4
-bohrformula(Z,n)
- -0.125
-```
-"""
-bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2
