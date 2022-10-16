@@ -157,7 +157,7 @@ end
 # =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
 
 @doc raw"""
-    grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+    grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Integral of the function ``f=[f_0,⋯\ f_n]`` tabulated on a [`Grid`](@ref)
 using the trapezoidal rule optimized with endpoint correction by the

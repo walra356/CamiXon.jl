@@ -527,7 +527,7 @@ function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 end
 
 @doc raw"""
-    wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+    wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 """
 function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
