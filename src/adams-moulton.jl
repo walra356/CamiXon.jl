@@ -530,7 +530,7 @@ end
     wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
 """
-function wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where {T<:Real, V<Real}
+function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<Real}
 
     χ = real(Z)
     χ′= imag(Z)
