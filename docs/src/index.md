@@ -369,7 +369,7 @@ castVectorRational(vec::Vector{Rational{Int}})
 
 ```@docs
 polynomial(coords::Vector{T}, x::V; deriv=0) where {T <: Real, V <: Real}
-polynom_derivative(coords::Vector{T) where T<:Real
+polynom_derivative(coords::Vector{T}) where T<:Real
 polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
 polynom_derivatives_all(coords::Vector{T}) where T<:Real
 polynom_power(coords::Vector{T}, power::Int) where T<:Real

@@ -197,7 +197,7 @@ end
 # ==================================== polynom_powers(coords, pmax) ============
 
 @doc raw"""
-    polynom_powers(coords, pmax)
+    polynom_powers(coords::Vector{T}, pmax::Int) where T<:Real
 
 The polynomial `coords` raised to the powers 1,...,pmax  which
 results in a collection of polynomials in vector spaces of dimension ``d+1`` tot ``p d + 1``.
@@ -232,7 +232,7 @@ end
 # ==================================== polynom_primitive(coords) ====================
 
 @doc raw"""
-    polynom_primitive(coords)
+    polynom_primitive(coords::Vector{T}) where T<:Real
 
 Vector representation of the primitive of the polynomial `coords` which is a
 polynomial in a vector space of dimension ``p d + 1``.
