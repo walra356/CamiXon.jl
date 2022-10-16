@@ -12,7 +12,7 @@ using Test
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
+    Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 8
     @test def.atom.element.name == "hydrogen"
