@@ -515,11 +515,11 @@ def = castDef(grid, atom, orbit, codata)
 Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
 Z2 = wavefunction(Z1, grid);
 
-plot_wavefunction(Z2, 1:grid.N, grid, def)
+plot_wavefunction(Z2, 1:grid.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/hydrogen-1s.png)
+![Image](./assets/H1_1s.png)
 """
 function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
