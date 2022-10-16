@@ -159,7 +159,7 @@ function laguerreL(n::Int, x::T; deriv=0) where T<:Real
     coords = generalized_laguerre_coords(n, 0)
     coords = T.(coords)
 
-    o = polynomial2(coords, x; deriv)
+    o = polynomial(coords, x; deriv)
 
     return o
 
