@@ -186,7 +186,7 @@ norm = grid_trapezoidal_integral(f2, 1:N, grid)
     1.0
 ```
 """
-function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}) where T<:Real
+function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 # ==============================================================================
 #  trapezoidal integral over the grid indices [n1:n2] with 1 ≤ n1,n2 ≤ N
 # ==============================================================================
@@ -213,7 +213,7 @@ function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{T}
     return LinearAlgebra.dot(f .* r′, w)
 
 end
-function grid_trapezoidal_integral(f::Vector{T}, itr::UnitRange, grid::Grid{T}) where T<:Real
+function grid_trapezoidal_integral(f::Vector{T}, itr::UnitRange, grid::Grid{V}) where {T<:Real, V<:Real}
 
     return grid_trapezoidal_integral(f, itr.start, itr.stop, grid)
 
