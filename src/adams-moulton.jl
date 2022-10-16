@@ -203,13 +203,18 @@ function adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}
 
     k = def.k
 
-    Z2 = copy(Z[2k:2k+1])
+    Z2 = copy(Z[2k+1:3k])
 
     for n=2k:-1:1
         _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
     end
 
-    Z[1:2k+1] = Z2
+    Z[1:3k] = Z2
+
+    P = fdiff_interpolation(real(Z[2:end]),0; k=4)
+    Q = fdiff_interpolation(imag(Z[2:end]),0; k=4)
+
+    Z[1] = P + im * Q
 
     return Z
 
@@ -246,6 +251,7 @@ function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) whe
          Z = adams_moulton_outward(def, adams)
      ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
      ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
+         Z = adams_moulton_patch(Z, def, adams)
 
     for n ∈ eachindex(Z)
         adams.Z[n] = Z[n]
@@ -491,40 +497,6 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
 
 end
 
-# ========================= demo_hydrogen(; n=3, ℓ=2) ==========================
-
-@doc raw"""
-    demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
-
-Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
-and rotational quantum number `ℓ`.
-
-#### Example:
-The plot is made using CairomMakie. Note the discontinuity in the derivative.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
-    Def created for hydrogen 1s on exponential grid of 100 points
-
-E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-
-plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
-```
-![Image](./assets/hydrogen-1s.png)
-"""
-function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
-
-    atom = castAtom(;Z=1, A=1, Q=0, msg=false)
-    orbit = castOrbit(; n, ℓ, msg=false)
-    grid = autoGrid(atom, orbit, Float64; msg=false)
-    def = castDef(grid, atom, orbit, codata; msg=true )
-    E = convert(grid.T, bohrformula(atom.Z, orbit.n))
-    adams = castAdams(E, grid, def)
-
-    return E, grid, def, adams
-
-end
 
 @doc raw"""
     wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
