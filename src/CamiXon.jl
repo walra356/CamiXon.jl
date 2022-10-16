@@ -100,6 +100,7 @@ export adams_moulton_prepare
 export adams_moulton_iterate
 export adams_moulton_master
 export demo_hydrogen
+export hydrogenic_wavefunction
 export wavefunction
 
 export Grid
@@ -208,6 +209,7 @@ include("angular_momentum.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")
+include("hydrogen.jl")
 include("outsch.jl")
 include("adams.jl")
 include("insch.jl")

@@ -234,7 +234,7 @@ E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def);
 
 adams, ΔE, Z = adams_moulton_solve(E, grid, def, adams)
-plot_wavefunction(Z, 1:grid.N, grid, def; reduced=true)
+plot_wavefunction(Z, 1:grid.N, grid, def; undo_reduction=false)
 ```
 The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
@@ -345,7 +345,7 @@ E = 1.5Ecal
 msg, adams, init, Z = adams_moulton_prepare(E, grid, def, adams);
     Ecal = -0.5; E = -0.75; 0 nodes
 
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
 ```
 The plot is made using `CairomMakie`. Note the discontinuity in the derivative.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -403,7 +403,7 @@ msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν=Value(
 println("Ecal = $Ecal; E = $(init[2]); $(def.pos.nodes) nodes")
     Ecal = -0.5; E = -0.49999997841850014; 0 nodes
 
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -466,7 +466,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
 
 E = 1.5Ecal;
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
@@ -509,7 +509,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
 E = 1.5Ecal
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
 
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
+plot_wavefunction(Z, 1:def.pos.N, grid, def; undo_reduction=true)
 ```
 ![Image](./assets/hydrogen-1s.png)
 """
@@ -530,7 +530,7 @@ end
     wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
 """
-function wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+function wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where {T<:Real, V<Real}
 
     χ = real(Z)
     χ′= imag(Z)

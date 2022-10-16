@@ -101,6 +101,11 @@ createSpinOrbit(o::Orbit; up=true, msg=true)
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 bohrformula(Z::Int, n::Int)
 ```
+### Hydrogen
+
+```@docs
+hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+```
 
 ## Angular momentum
 
