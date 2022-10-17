@@ -135,6 +135,7 @@ autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+autoGrid2(atom::Atom, orbit1::Orbit, orbit2::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 ```

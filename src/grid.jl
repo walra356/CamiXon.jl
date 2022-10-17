@@ -40,8 +40,8 @@ Method to create the Grid object
 
 `ID = 1`: exponential grid,
 `ID = 2`: quasi-exponential grid,
-`ID = 3`: polynomial grid
-`ID = 4`: linear grid
+`ID = 3`: linear grid
+`ID = 4`: polynomial grid
 #### Examples:
 ```
 h = 0.1
