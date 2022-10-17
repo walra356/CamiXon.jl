@@ -118,7 +118,7 @@ and rotational quantum number `ℓ`.
 
 #### Example:
 The plot is made using CairomMakie. Note the discontinuity in the derivative.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package. 
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
@@ -140,5 +140,48 @@ function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
     adams = castAdams(E, grid, def)
 
     return E, grid, def, adams
+
+end
+
+end
+
+
+@doc raw"""
+    wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+Conversion from the *reduced* radial wavefunction ``\chi_{nl}(r)`` to the
+*ordinary* radial wavefuntion ``R_{nl}(r)``,
+```math
+    \chi_{nl}(r)=rR_{nl}(r).
+```
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0)
+orbit = castOrbit(n=1, ℓ=0)
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+def = castDef(grid, atom, orbit, codata)
+Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
+Z2 = wavefunction(Z1, grid);
+
+plot_wavefunction(Z2, 1:grid.N, grid, def; reduced=false)
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+![Image](./assets/H1_1s.png)
+"""
+function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+    χ = real(Z)
+    χ′= imag(Z)
+    r = grid.r
+
+    ψ = χ ./ r
+    ψ′= (χ′ .- χ ./ r) ./ r
+
+    ψ[1] = fdiff_interpolation(ψ[2:end], 0) # extrapolate to r=0 to handle division by "zero"
+    ψ′[1] = fdiff_interpolation(ψ′[2:end], 0)
+
+
+    return ψ + im * ψ′
 
 end
