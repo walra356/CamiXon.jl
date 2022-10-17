@@ -138,7 +138,9 @@ function potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:
 
     o = (potUF_inner .* r[2:N].^-(k+1)) .+ (potUF_outer .* r[2:N].^k)
 
-    prepend!(o,0)
+    p = fdiff_interpolation(o, 0; k=4)
+
+    prepend!(o,p)
 
     return o
 
