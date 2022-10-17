@@ -143,8 +143,6 @@ function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
 end
 
-end
-
 
 @doc raw"""
     wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
@@ -152,7 +150,7 @@ end
 Conversion from the *reduced* radial wavefunction ``\chi_{nl}(r)`` to the
 *ordinary* radial wavefuntion ``R_{nl}(r)``,
 ```math
-    \chi_{nl}(r)=rR_{nl}(r).
+    R_{nl}(r)=\chi_{nl}(r)/r.
 ```
 #### Example:
 ```

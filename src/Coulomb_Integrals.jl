@@ -92,3 +92,54 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
     return o
 
 end
+
+# ======================== potUF(k, Z, grid) ===================================
+@doc raw"""
+    potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V})
+
+Coulomb integral for *direct* screening,
+
+```math
+    U_{F}^{k}(\rho)
+    =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}
+    \left[\tilde{R}_{nl}(\varrho)\right]^{2}
+    \varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
+    \frac{1}{\varrho^{k+1}}
+    \left[\tilde{R}_{nl}(\varrho)\right]^{2}\varrho^{2}d\varrho
+```
+#### Example:
+```
+atom = castAtom(Z=2, A=4, Q=0; msg=false)
+orbit = castOrbit(n=1, ℓ=0; msg=false)
+grid = autoGrid(atom, orbit, Float64; Nboost=5, msg=false)
+scr = nothing
+def = castDef(grid, atom, orbit, codata; scr)
+    Def created for helium 1s on exponential grid of 500 points
+
+E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
+E = initE(def)
+adams = castAdams(E, grid, def)
+E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+scr = potUF(0,Z,grid);
+plot_function(scr, 1:grid.N, grid; title="He4(1s):  direct screening potential")
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
+![Image](./assets/He41s-UF0.png)
+"""
+function potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+    N = grid.N
+    r = grid.r
+
+    potUF_inner = [grid_trapezoidal_integral(r.^k .* real(Z).^2, 1:n, grid) for n=2:N]
+    potUF_outer = [grid_trapezoidal_integral((1.0 ./ r).^(k+1) .* real(Z).^2, n:N, grid) for n=2:N]
+
+    o = (potUF_inner .* r[2:N].^-(k+1)) .+ (potUF_outer .* r[2:N].^k)
+
+    prepend!(o,0)
+
+    return o
+
+end

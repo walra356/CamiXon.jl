@@ -494,3 +494,5 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
     (Emin, E, Emax, ΔE) = init
 
     return E, def, adams, Z
+
+end
