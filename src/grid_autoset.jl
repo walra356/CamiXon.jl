@@ -62,8 +62,8 @@ function gridname(ID::Int)
 
     ID == 1 && return "exponential"
     ID == 2 && return "quasi-exponential"
-    ID == 3 && return "polynomial"
-    ID == 4 && return "linear"
+    ID == 3 && return "linear"
+    ID == 4 && return "polynomial"
 
     return error("Error: unknown grid name")
 
@@ -75,8 +75,8 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
 
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
-           ID == 3 ? r0 * polynomial(coords, h*N)  :
-           ID == 4 ? r0 * _linear_gridfunction(N, h) : error("Error: unknown grid type")
+           ID == 3 ? r0 * _linear_gridfunction(N, h)  :
+           ID == 4 ? r0 * polynomial(coords, h*N) : error("Error: unknown grid type")
 
     ID = ID ≠ 2 ? ID : p == 1 ? 4 : 2
     name = gridname(ID::Int)
@@ -87,8 +87,8 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
 
     ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
     ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
-    ID == 3 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
-    ID == 4 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
+    ID == 3 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
+    ID == 4 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
 
     return error("Error: unknown grid type")
 
@@ -188,7 +188,7 @@ function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 
     mytype = Rmax^(ℓ+1) == Inf ? BigFloat : T
 
-    mytype ≠ T && println("\nWarning: changed to BigFloat - overflow expected (Rmax^(ℓ+1) => Inf)\n")
+    mytype ≠ T && println("\nautoPrecision: type promoted to BigFloat - overflow expected (Rmax^(ℓ+1) => Inf)\n")
 
     return mytype
 
@@ -197,7 +197,8 @@ end
 # ...................... autoSteps(Ntot, Rmax) .................................
 
 @doc raw"""
-    autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+    autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5) where T<:Real
+    autoSteps(ID::Int, Ntot::Int, Rmax::T; coords=[0,1]) where T<:Real
 
 Step size parameter (h) and range parameter (r0) (rule of thumb values).
 ### Example:
@@ -232,13 +233,13 @@ end
 ```math
     f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + ⋯ + \frac{1}{p!}(h(n-1))^p
 ```
-* `ID = 3`: polynomial grid function of degree `p = length(c)` based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
-```math
-    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
-```
-* `ID = 4`: linear grid function,
+* `ID = 3`: linear grid function,
 ```math
     f[n] = h(n-1)
+```
+* `ID = 4`: polynomial grid function of degree `p = length(c)` based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
+```math
+    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
 ```
 #### Examples:
 ```
@@ -249,22 +250,22 @@ r = [gridfunction(1, n-1, h) for n=1:5]                            # exponential
 r = [gridfunction(2, n-1, h; p = 4) for n=1:5]  # quasi exponential (degree p=4)
  [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375, 0.49173333333333336]
 
-r = [gridfunction(3, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial (degree p=4)
- [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001, 0.49173333333333336]
-
-r = [gridfunction(4, n-1, h) for n=1:5]              # linear
+r = [gridfunction(3, n-1, h) for n=1:5]              # linear
   [0.0, 0.1, 0.2, 0.3, 0.4]
 
-r′= [gridfunction(4, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
+r′= [gridfunction(3, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
    [0.1, 0.1, 0.1, 0.1, 0.1]
+
+  r = [gridfunction(4, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial of degree 4)
+   [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001, 0.49173333333333336]
 ```
 """
 function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
 
     ID == 1 && return _walterjohnson(n, h; deriv)
     ID == 2 && return _jw_gridfunction(n, h; deriv, p)
-    ID == 3 && return polynomial(coords, h*n; deriv)
-    ID == 4 && return _linear_gridfunction(n, h; deriv)
+    ID == 3 && return _linear_gridfunction(n, h; deriv)
+    ID == 4 && return polynomial(coords, h*n; deriv)
 
     return error("Error: unknown gridfunction")
 
@@ -273,12 +274,14 @@ end
 # = autoGrid(atom, orbit, T; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true) ===
 
 @doc raw"""
-    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, Nboost=1, epn=5, k=7, msg=true)
+    autoGrid(atom::Atom, orbit::Orbit, T::Type; coords=[], Nboost=1, epn=5, k=7, msg=true)
 
 Automatic setting of grid parameters. Important cases:
-* `p=0` (exponential grid default)
-* `p=1` (linear grid)
-* `p>1` (quasi-exponential grid)
+* `p == 0` (exponential radial grid)
+* `p == 1` (linear radial grid)
+* `p > 1` (quasi-exponential radial grid)
+* `coords=[]` (free polynomial grid based on the [`polynom`](@ref) `coords`)
 #### Example:
 ```
 codata = castCodata(2018)
@@ -293,13 +296,13 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[0,1], Nboost=1, epn=5, k=7, msg=true)
 
-    T ∈ [Float64,BigFloat] || println("Warning (autoGrid): grid.T = $T => Float64 (by automatic type promotion)")
+    T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
     ID = (p < 1) & (length(coords) < 2) ? 1 :
-         (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
-         (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
+         (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 3 : 2) :
+         (p < 1) & (length(coords) ≥ 2) ? 4 : error("Error: unknown grid")
 
     Ntot = autoNtot(orbit, Nboost)
     Rmax = autoRmax(atom, orbit)
