@@ -93,7 +93,8 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-# ======================== potUF(k, Z, grid) ===================================
+
+# ======================== potUG(k, Z, grid) ===================================
 @doc raw"""
     potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
@@ -146,9 +147,9 @@ function potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Gri
 
 end
 
-# ======================== potUG(k, Z, grid) ===================================
+# ======================== potUF(k, Z, grid) ===================================
 @doc raw"""
-    potUG(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Coulomb integral for *direct* screening,
 
@@ -183,18 +184,6 @@ NB.: `plot_function` is not included in the `CamiXon` package.
 """
 function potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-    N = grid.N
-    r = grid.r
-
-    potUF_inner = [grid_trapezoidal_integral(r.^k .* real(Z).^2, 1:n, grid) for n=2:N]
-    potUF_outer = [grid_trapezoidal_integral((1.0 ./ r).^(k+1) .* real(Z).^2, n:N, grid) for n=2:N]
-
-    o = (potUF_inner .* r[2:N].^-(k+1)) .+ (potUF_outer .* r[2:N].^k)
-
-    p = fdiff_interpolation(o, 0; k=4)
-
-    prepend!(o,p)
-
-    return o
+    return potUG(k, Z, Z, grid)
 
 end
