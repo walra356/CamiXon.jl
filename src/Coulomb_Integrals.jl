@@ -95,7 +95,60 @@ end
 
 # ======================== potUF(k, Z, grid) ===================================
 @doc raw"""
-    potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V})
+    potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+Coulomb integral for *direct* screening,
+
+```math
+    U_{G}^{k}(\rho)
+    =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
+    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,
+    \varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
+    \frac{1}{\varrho^{k+1}}\tilde{R}_{nl}(\varrho)
+    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,\varrho^{2}d\varrho.
+```
+#### Example:
+```
+atom = castAtom(Z=2, A=4, Q=0; msg=false)
+orbit = castOrbit(n=1, ℓ=0; msg=false)
+grid = autoGrid(atom, orbit, Float64; Nboost=5, msg=false)
+scr = nothing
+def = castDef(grid, atom, orbit, codata; scr)
+    Def created for helium 1s on exponential grid of 500 points
+
+E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
+E = initE(def)
+adams = castAdams(E, grid, def)
+E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+scr = potUG(0,Z,grid);
+plot_function(scr, 1:grid.N, grid; title="He4(1s):  direct screening potential")
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
+![Image](./assets/He41s-UG0.png)
+"""
+function potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+    N = grid.N
+    r = grid.r
+
+    potUG_inner = [grid_trapezoidal_integral(r.^k .* real(Z1) .* real(Z2), 1:n, grid) for n=2:N]
+    potUG_outer = [grid_trapezoidal_integral((1.0 ./ r).^(k+1) .* real(Z1) .* real(Z2), n:N, grid) for n=2:N]
+
+    o = (potUG_inner .* r[2:N].^-(k+1)) .+ (potUG_outer .* r[2:N].^k)
+
+    p = fdiff_interpolation(o, 0; k=4)
+
+    prepend!(o,p)
+
+    return o
+
+end
+
+# ======================== potUG(k, Z, grid) ===================================
+@doc raw"""
+    potUG(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Coulomb integral for *direct* screening,
 
@@ -105,7 +158,7 @@ Coulomb integral for *direct* screening,
     \left[\tilde{R}_{nl}(\varrho)\right]^{2}
     \varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
     \frac{1}{\varrho^{k+1}}
-    \left[\tilde{R}_{nl}(\varrho)\right]^{2}\varrho^{2}d\varrho
+    \left[\tilde{R}_{nl}(\varrho)\right]^{2}\varrho^{2}d\varrho.
 ```
 #### Example:
 ```
