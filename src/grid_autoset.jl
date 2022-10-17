@@ -274,10 +274,13 @@ end
 # = autoGrid(atom, orbit, T; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true) ===
 
 @doc raw"""
-    autoGrid(atom::Atom, orbit::Orbit, T::Type ; p=0, Nboost=1, epn=5, k=7, msg=true)
-    autoGrid(atom::Atom, orbit::Orbit, T::Type; coords=[], Nboost=1, epn=5, k=7, msg=true)
+    autoGrid(atom, orbit, T;  Nboost=1, epn=5, k=7, msg=true, p=0)
+    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
+    autoGrid(atom, orbit, T;  Nboost=1, epn=5, k=7, msg=true, coords=[])
+    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, coords=[])
 
-Automatic setting of grid parameters. Important cases:
+Automatic setting of grid parameters for a given orbit [`Orbit`](@ref) or an
+array of orbits - orbits = [orbitA,⋯, orbitZ]. Important cases:
 * `p == 0` (exponential radial grid)
 * `p == 1` (linear radial grid)
 * `p > 1` (quasi-exponential radial grid)
@@ -313,21 +316,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, e
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
 end
-
-@doc raw"""
-    autoGrid2(atom, orbit1, orbit2, T; p=0, Nboost=1, epn=5, k=7, msg=true)
-    autoGrid2(atom, orbit1, orbit2, T; coords=[], Nboost=1, epn=5, k=7, msg=true)
-
-Automatic setting of grid parameters. Important cases:
-* `p == 0` (exponential radial grid)
-* `p == 1` (linear radial grid)
-* `p > 1` (quasi-exponential radial grid)
-* `coords=[]` (free polynomial grid based on the [`polynom`](@ref) `coords`)
-#### Example:
-```
-```
-"""
-function autoGrid2(atom::Atom, orbit1::Orbit, orbit2::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+function autoGrid(atom::Atom, orbits::Vector{Orbit}, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (enforced by automatic type promotion)")
 
@@ -335,14 +324,13 @@ function autoGrid2(atom::Atom, orbit1::Orbit, orbit2::Orbit, T::Type; p=0, coord
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
          (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
 
-    Ntot = max(autoNtot(orbit1, Nboost), autoNtot(orbit2, Nboost) )
-    Rmax = max(autoRmax(atom, orbit1), autoRmax(atom, orbit2) )
+    Ntot = maximum([autoNtot(orbits[i], Nboost) for i ∈ eachindex(orbits)] )
+    Rmax = maximum([autoRmax(atom, orbits[i]) for i ∈ eachindex(orbits)] )
+    h,r0 = autoSteps(ID, Ntot, Rmax; p, coords)
 
-    T1 = autoPrecision(Rmax, orbit1)
-    T2 = autoPrecision(Rmax, orbit2)
-
-    T = T == BigFloat ? T : (T1 == BigFloat | T2 == BigFloat) ? BigFloat : T
-    h, r0 = autoSteps(ID, Ntot, Rmax; p, coords)
+    for i ∈ eachindex(orbits)
+        autoPrecision(Rmax, orbits[i]) == BigFloat ? T = BigFloat : false
+    end
 
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
