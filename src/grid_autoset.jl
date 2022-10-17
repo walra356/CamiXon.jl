@@ -78,7 +78,7 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
            ID == 3 ? r0 * _linear_gridfunction(N, h)  :
            ID == 4 ? r0 * polynomial(coords, h*N) : error("Error: unknown grid type")
 
-    ID = ID ≠ 2 ? ID : p == 1 ? 4 : 2
+    ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
     name = gridname(ID::Int)
     str_h = repr(h, context=:compact => true)
     str_r0 = repr(r0, context=:compact => true)
