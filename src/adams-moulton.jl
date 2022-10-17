@@ -252,7 +252,7 @@ function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) whe
     ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
     ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
 
-    if def.pos.Na == def.pos.k + 1 
+    if def.pos.Na == def.k + 1 
          Z = adams_moulton_patch(Z, def, adams)
     end
 
