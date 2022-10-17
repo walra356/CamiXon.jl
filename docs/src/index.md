@@ -261,6 +261,7 @@ adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true
 ```@docs
 a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
 ## FITS

@@ -247,11 +247,14 @@ NB.: `plot_wavefunction` is not part of the `CamiXon` package.
 """
 function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 
-     adams = updateAdams!(adams, E, grid, def)
-         Z = adams_moulton_outward(def, adams)
-     ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
-     ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
+    adams = updateAdams!(adams, E, grid, def)
+        Z = adams_moulton_outward(def, adams)
+    ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
+    ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
+
+    if def.pos.Na == def.pos.k + 1 
          Z = adams_moulton_patch(Z, def, adams)
+    end
 
     for n ∈ eachindex(Z)
         adams.Z[n] = Z[n]

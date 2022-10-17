@@ -55,6 +55,7 @@ export SpinOrbit
 export createSpinOrbit
 export Term
 export createTerm
+export potUF
 
 export FITS_HDU
 export FITS_header
