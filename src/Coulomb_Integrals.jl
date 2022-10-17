@@ -151,7 +151,7 @@ end
 @doc raw"""
     potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Coulomb integral for *direct* screening,
+Coulomb integral for *exchange* screening,
 
 ```math
     U_{F}^{k}(\rho)
@@ -176,7 +176,7 @@ adams = castAdams(E, grid, def)
 E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
 scr = potUF(0,Z,grid);
-plot_function(scr, 1:grid.N, grid; title="He4(1s):  direct screening potential")
+plot_function(scr, 1:grid.N, grid; title="He4(1s):  exchange screening potential")
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
