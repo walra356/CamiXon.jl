@@ -60,7 +60,7 @@ end
     INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function INSCH_old(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     N = grid.N
     r = grid.r
@@ -75,7 +75,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     P = prepend!(P,ones(Nuctp-1))
     Q = grid_differentiation(P, grid)
 
-    Nb = def.pos.Nb = findfirst(x -> abs(x) < 1.0e-2, P)
+    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-2, P)
 
     Z = P .+ im * Q
 
