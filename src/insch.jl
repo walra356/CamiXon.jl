@@ -70,6 +70,28 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     Nuctp = def.pos.Nuctp
 
     p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
+    I = [grid_trapezoidal_integral(p, Nuctp:i, grid) for i=Nuctp:N]  # quasi-classical integral
+    P = exp.(-I) ./ sqrt.(p[Nuctp:N])                       # WKB solution
+    P = prepend!(P,zeros(Nuctp-1))
+    Q = grid_differentiation(P, grid)
+
+    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-2, P)
+
+    Z = P .+ im * Q
+
+    return Z[Nb:N]
+
+end
+function INSCH_old(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    N = grid.N
+    r = grid.r
+    k = grid.k
+    v = def.pot
+    s = def.scr
+    Nuctp = def.pos.Nuctp
+
+    p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
     I = [grid_integration(p, Nuctp:i, grid) for i=Nuctp:N]  # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[Nuctp:N])                       # WKB solution
     P = prepend!(P,ones(Nuctp-1))
