@@ -13,15 +13,15 @@ using Test
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
-    #@test potUF(0,Z,grid)[1] ≈ 1.0
+    @test potUF(0,Z,grid)[1] ≈ 1.0
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9 #10
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
-    @test def.pos.Nb == 109 #92
+    @test def.pos.Nb == 98
     @test get_Na(Z, def) == 8
-    @test get_Nb(Z, def) == 109 #92
-    @test get_Nuctp(E, def) == 63 #66
+    @test get_Nb(Z, def) == 98
+    @test get_Nuctp(E, def) == 76
     @test grid_integration(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
     @test grid_integration(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5//2) == "⁻⁵ᐟ²"
@@ -113,7 +113,7 @@ using Test
     grid = castGrid(3, 6, Float64; r0=1.0, h=1.0, msg=false);
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 84.0 #63.0
-    @test autoNtot(orbit,2) == 200
+    @test autoNtot(orbit,2) == 240
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
