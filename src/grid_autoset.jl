@@ -284,7 +284,7 @@ array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
 * `p == 0` (exponential radial grid)
 * `p == 1` (linear radial grid)
 * `p > 1` (quasi-exponential radial grid)
-* `coords=[]` (free polynomial grid based on the [`polynom`](@ref) `coords`)
+* `coords=[]` (free polynomial grid based on the `coords`)
 #### Example:
 ```
 codata = castCodata(2018)
