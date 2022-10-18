@@ -151,7 +151,7 @@ function autoNtot(orbit::Orbit, Nboost=1)
 
     n = orbit.n
 
-    Ntot = (50 + 50 * n) * Nboost
+    Ntot = (70 + 50 * n) * Nboost
 
     return Ntot
 
