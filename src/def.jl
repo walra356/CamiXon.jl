@@ -1,6 +1,6 @@
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
+    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, cWKB::Float64)
 
 Type with fields:
 * `   .Na`: grid index of last leading point (`::Int`)
@@ -10,18 +10,19 @@ Type with fields:
 * `   .Nb`: grid index first trailing point (`::Int`)
 * `    .N`: grid index last point (`::Int`)
 * `.nodes`: number of nodes  (`::Int`)
+* ` .cWKB`: WKB threshold level determining Nb (`::Float64`)
 
 Mutable struct to hold special grid indices as well as the number of nodes;
 `Pos` is one of the fields of the [`Def`](@ref) object
 #### Examples:
 ```
-pos = Pos(1, 2, 3, 4, 5, 6, 7, false)
+pos = Pos(1, 2, 3, 4, 5, 6, 7, 8)
 pos.Nuctp
- 4
+    4
 
 pos.Nuctp = 8
 pos
- Pos(1, 2, 3, 8, 5, 6, 7, false)
+    Pos(1, 2, 3, 9, 5, 6, 7, 8)
 ```
 """
 mutable struct Pos
@@ -32,6 +33,7 @@ mutable struct Pos
     Nb::Int
     N::Int
     nodes::Int
+    cWKB::Float64
 end
 
 # ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============
@@ -135,7 +137,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     o1 = [fill(convert(T,0), (2,2)) for n=1:N]
     o2 = [fill(convert(T,0), (2,2)) for n=1:N]
     o3 = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-4)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
@@ -252,10 +254,11 @@ function get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 # ==============================================================================
     k = def.k
     N = def.pos.N
+    cWKB = def.pos.cWKB
 
-    ref = T(1.0e-10)
+    cWKB = T(cWKB)
 
-    Nb = findlast(x -> abs(x) > ref, real(Z))
+    Nb = findlast(x -> abs(x) > cWKB, real(Z))
     Nb = isnothing(Nb) ? N-k : Nb > 0 ? min(N-k, Nb) : N-k
 
     return Nb

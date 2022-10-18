@@ -67,6 +67,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     k = grid.k
     v = def.pot
     s = def.scr
+    cWKB = def.pos.cWKB
     Nuctp = def.pos.Nuctp
 
     p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
@@ -75,7 +76,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     P = prepend!(P,zeros(Nuctp-1))
     Q = grid_differentiation(P, grid)
 
-    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-4, P)
+    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < cWKB, P)
 
     Z = P .+ im * Q
 
