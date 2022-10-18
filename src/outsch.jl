@@ -129,7 +129,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     Nlctp = def.pos.Nlctp
 
     p = sqrt.(abs.(v .+ s .- E))                                     # quasi-classical momentum
-    I = [grid_trapezoidal_integral(p, i:Nlctp, grid) for i=1:Nlctp]  # quasi-classical integral
+    I = [grid_integration(p, i:Nlctp, grid) for i=1:Nlctp]  # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[1:Nlctp])                                # WKB solution
     P = append!(P,zeros(N-Nlctp))
     Q = grid_differentiation(P, grid)

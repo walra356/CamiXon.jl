@@ -22,8 +22,8 @@ using Test
     @test get_Na(Z, def) == 8
     @test get_Nb(Z, def) == 92
     @test get_Nuctp(E, def) == 66
-    @test grid_trapezoidal_integral(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
-    @test grid_trapezoidal_integral(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
+    @test grid_integration(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
+    @test grid_integration(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
@@ -117,7 +117,7 @@ using Test
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
-    @test grid_trapezoidal_integral([0.,1.,2.,3.,4.], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
+    @test grid_integration([0.,1.,2.,3.,4.], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
     @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]

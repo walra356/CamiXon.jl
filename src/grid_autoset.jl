@@ -274,13 +274,13 @@ end
 # = autoGrid(atom, orbit, T; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true) ===
 
 @doc raw"""
-    autoGrid(atom, orbit, T;  Nboost=1, epn=5, k=7, msg=true, p=0)
+    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
     autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
-    autoGrid(atom, orbit, T;  Nboost=1, epn=5, k=7, msg=true, coords=[])
+    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, coords=[])
     autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, coords=[])
 
 Automatic setting of grid parameters for a given orbit [`Orbit`](@ref) or an
-array of orbits - orbits = [orbitA,⋯, orbitZ]. Important cases:
+array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
 * `p == 0` (exponential radial grid)
 * `p == 1` (linear radial grid)
 * `p > 1` (quasi-exponential radial grid)

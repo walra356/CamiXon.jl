@@ -154,10 +154,10 @@ function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 
 end
 
-# =============== grid_trapezoidal_integral(f, n1, n2, grid) ===================
+# =============== grid_integration(f, n1, n2, grid) ===================
 
 @doc raw"""
-    grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
+    grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Integral of the function ``f=[f_0,⋯\ f_n]`` tabulated on a [`Grid`](@ref)
 using the trapezoidal rule optimized with endpoint correction by the
@@ -178,15 +178,15 @@ grid = castGrid(1, N, Float64; h=0.01, r0=0.005)
 
 r = grid.r;
 f2 = [f1s(r[n])^2 for n=1:N];
-grid_trapezoidal_integral(f2, 1:N, grid) == grid_trapezoidal_integral(f2, 1, N, grid)
+grid_integration(f2, 1:N, grid) == grid_integration(f2, 1, N, grid)
     true
 
-norm = grid_trapezoidal_integral(f2, 1:N, grid)
+norm = grid_integration(f2, 1:N, grid)
 
     1.0
 ```
 """
-function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
+function grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 # ==============================================================================
 #  trapezoidal integral over the grid indices [n1:n2] with 1 ≤ n1,n2 ≤ N
 # ==============================================================================
@@ -213,8 +213,8 @@ function grid_trapezoidal_integral(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}
     return LinearAlgebra.dot(f .* r′, w)
 
 end
-function grid_trapezoidal_integral(f::Vector{T}, itr::UnitRange, grid::Grid{V}) where {T<:Real, V<:Real}
+function grid_integration(f::Vector{T}, itr::UnitRange, grid::Grid{V}) where {T<:Real, V<:Real}
 
-    return grid_trapezoidal_integral(f, itr.start, itr.stop, grid)
+    return grid_integration(f, itr.start, itr.stop, grid)
 
 end

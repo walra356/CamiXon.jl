@@ -117,7 +117,7 @@ export autoSteps
 export autoGrid
 export autoGrid2
 export grid_differentiation
-export grid_trapezoidal_integral
+export grid_integration
 
 export get_Na
 export get_Nb

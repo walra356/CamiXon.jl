@@ -93,7 +93,6 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-
 # ======================== potUG(k, Z, grid) ===================================
 @doc raw"""
     potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
@@ -134,8 +133,8 @@ function potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Gri
     N = grid.N
     r = grid.r
 
-    potUG_inner = [grid_trapezoidal_integral(r.^k .* real(Z1) .* real(Z2), 1:n, grid) for n=2:N]
-    potUG_outer = [grid_trapezoidal_integral((1.0 ./ r).^(k+1) .* real(Z1) .* real(Z2), n:N, grid) for n=2:N]
+    potUG_inner = [grid_integration(r.^k .* real(Z1) .* real(Z2), 1:n, grid) for n=2:N]
+    potUG_outer = [grid_integration((1.0 ./ r).^(k+1) .* real(Z1) .* real(Z2), n:N, grid) for n=2:N]
 
     o = (potUG_inner .* r[2:N].^-(k+1)) .+ (potUG_outer .* r[2:N].^k)
 

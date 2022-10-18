@@ -185,7 +185,7 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
     Nb = def.pos.Nb
     k = def.k
 
-    norm = grid_trapezoidal_integral(real(Z) .^2, Na-k, Nb+k, grid)
+    norm = grid_integration(real(Z) .^2, Na-k, Nb+k, grid)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
