@@ -151,7 +151,7 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
     Nuctp = def.pos.Nuctp
     sgn = isodd(def.orbit.n′) ? -1.0 : 1.0
 
-    Z2 = INSCH(E, grid, def, adams)
+    Z2 = INSCH(E, grid, def)
 
     for n=Nb-1:-1:Nuctp
         _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
