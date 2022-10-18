@@ -79,6 +79,8 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     Z = P .+ im * Q
 
+    println(Z[Nb:N])
+
     return Z[Nb:N]
 
 end
