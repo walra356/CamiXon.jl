@@ -115,7 +115,6 @@ export autoNtot
 export autoPrecision
 export autoSteps
 export autoGrid
-export autoGrid2
 export grid_differentiation
 export grid_integration
 
