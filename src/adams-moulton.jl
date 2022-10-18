@@ -153,6 +153,34 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
 
     Z2 = INSCH(E, grid, def, adams)
 
+    for n=Nb-1:-1:Nuctp
+        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
+    end
+
+    norm = abs(real(Z2[1]))
+    Z2 /= norm
+    Z2 *= sgn             # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
+
+    ΔQ = imag(Z[Nuctp]) - imag(Z2[1])
+
+    Z[Nuctp:N] = Z2
+
+    def.pos.Na = get_Na(Z, def)
+    def.pos.Nb = get_Nb(Z, def)
+
+    return ΔQ, Z
+
+end
+function adams_moulton_inward_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    N = grid.N
+    k = grid.k
+    Z = adams.Z
+    Nuctp = def.pos.Nuctp
+    sgn = isodd(def.orbit.n′) ? -1.0 : 1.0
+
+    Z2 = INSCH(E, grid, def, adams)
+
     for n=N-k-1:-1:Nuctp
         _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
     end

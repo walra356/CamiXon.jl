@@ -202,8 +202,8 @@ function grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {
     if n ≥ 2epn
         epi = epn÷2+1        # index endpoint weights
     else
-        epn = Base.isodd(n÷2) ? (n÷2) : n÷2-1              # endpoint number
-        epi = Base.isodd(n÷2) ? (n÷2)÷2+1 : (n÷2-1)÷2+1    # index endpoint weights
+        epn = Base.isodd(n÷2) ? (n÷2) : n÷2-1           # endpoint number
+        epi = Base.isodd(n÷2) ? (n÷2)÷2+1 : (n÷2-1)÷2+1 # index endpoint weights
     end
 
     w = Base.ones(T,n)
