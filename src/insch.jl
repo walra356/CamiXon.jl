@@ -75,7 +75,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     P = prepend!(P,zeros(Nuctp-1))
     Q = grid_differentiation(P, grid)
 
-    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-2, P)
+    Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-4, P)
 
     Z = P .+ im * Q
 
