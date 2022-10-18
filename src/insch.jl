@@ -60,7 +60,7 @@ end
     INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function INSCH_old(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     N = grid.N
     r = grid.r
