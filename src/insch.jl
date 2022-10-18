@@ -72,7 +72,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
     I = [grid_integration(p, Nuctp:i, grid) for i=Nuctp:N]  # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[Nuctp:N])                       # WKB solution
-    P = append!(P,zeros(Nuctp))
+    P = append!(P,zeros(Nuctp-1))
     Q = grid_differentiation(P, grid)
 
     Nb = def.pos.Nb = findfirst(x -> 0 < abs(x) < 1.0e-10, P)
