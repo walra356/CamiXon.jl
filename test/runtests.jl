@@ -18,7 +18,7 @@ using Test
     @test findIndex(0.0042, grid) == 8 #10
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
-    @test def.pos.Nb == 91 #92
+    @test def.pos.Nb == 92 #92
     @test get_Na(Z, def) == 8
     @test get_Nb(Z, def) == 91 #92
     @test get_Nuctp(E, def) == 63 #66
