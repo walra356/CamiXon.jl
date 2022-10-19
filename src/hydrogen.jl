@@ -21,7 +21,7 @@ end
 @doc raw"""
     hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
-Analytic expression for the hydrogenic wavefunction written in the form 
+Analytic expression for the hydrogenic wavefunction written in the form
 ``Z = χ + im χ′``, where ``χ_{nℓ}(r)`` is the  *reduced* radial wavefunction
 and ``χ′_{nℓ}(r)`` its derivative, of a given [`Atom`](@ref) in a given
 [`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref) completes
@@ -146,7 +146,7 @@ end
 
 
 @doc raw"""
-    wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Conversion from the *reduced* radial wavefunction ``\chi_{nl}(r)`` to the
 *ordinary* radial wavefuntion ``R_{nl}(r)``,
@@ -160,7 +160,7 @@ orbit = castOrbit(n=1, ℓ=0)
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
 Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
-Z2 = wavefunction(Z1, grid);
+Z2 = convert_wavefunction(Z1, grid);
 
 plot_wavefunction(Z2, 1:grid.N, grid, def; reduced=false)
 ```
@@ -168,7 +168,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/H1_1s.png)
 """
-function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+function convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
     χ = real(Z)
     χ′= imag(Z)
@@ -184,3 +184,12 @@ function wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:R
     return ψ + im * ψ′
 
 end
+
+χH1s(r) = 2.0 * exp(-r) * r + im * 2.0 * exp(-r) * (1.0 - r)
+gridH1s(grid) = [χH1s(grid.r[n]) for n=1:grid.N]
+
+χH2p(r) = 0.5 * sqrt(1/6) * exp(-r/2) * r^2 + im * sqrt(1/6) * exp(-r/2) * r * (1.0 - r/4.0)
+gridH2p(grid) = [χH2p(grid.r[n]) for n=1:grid.N]
+
+χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
+gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]

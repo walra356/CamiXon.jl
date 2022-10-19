@@ -104,7 +104,7 @@ export adams_moulton_iterate
 export adams_moulton_master
 export demo_hydrogen
 export hydrogenic_wavefunction
-export wavefunction
+export convert_wavefunction
 
 export Grid
 export gridname

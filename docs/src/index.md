@@ -104,7 +104,7 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 ```@docs
 hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
-wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 bohrformula(Z::Int, n::Int)
 demo_hydrogen(; n=3, ℓ=2)
 ```
