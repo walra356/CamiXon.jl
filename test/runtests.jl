@@ -10,7 +10,7 @@ using Test
     grid = autoGrid(atom, orbit, Float64);
     def = castDef(grid, atom, orbit, codata);
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
-    E = initE(def)
+    E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
