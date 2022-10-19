@@ -96,29 +96,6 @@ function OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T
 
 end
 # ..............................................................................
-function OUTSCH_hydrogenic(grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-
-        r = grid.r
-        k = def.k
-        N = def.pos.N
-        ℓ = def.orbit.ℓ
-        n′= def.orbit.n′
-     Zval = def.atom.Z
-
-    Z = zeros(Complex{T},N)
-
-    P = real(Z)
-    Q = imag(Z)
-
-    P[1:k+1] = [r[n]^(ℓ+1) * exp(-Zval/(n′+ℓ+1)*r[n]) for n=1:k+1]
-    Q[1:k+1] = [(ℓ+1)*r[n]^ℓ - r[n]^(ℓ+1)*exp(-Zval/(n′+ℓ+1)*r[n])*Zval/(n′+ℓ+1) for n=1:k+1]
-
-    def.pos.Na = k+1
-
-    return P .+ im * Q
-
-end
-# ..............................................................................
 function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
 
     N = grid.N
@@ -126,6 +103,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     k = grid.k
     v = def.pot
     s = def.scr
+    cWKB = def.pos.cWKB
     Nlctp = def.pos.Nlctp
 
     p = sqrt.(abs.(v .+ s .- E))                                     # quasi-classical momentum
@@ -134,7 +112,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     P = append!(P,zeros(N-Nlctp))
     Q = grid_differentiation(P, grid)
 
-    Na = def.pos.Na = findfirst(x -> abs(x) > 1.0e-10, P)
+    Na = def.pos.Na = findfirst(x -> abs(x) > cWKB, P)
 
     Na > k+1 || return OUTSCH_WJ(grid, def, σ)
 

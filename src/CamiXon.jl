@@ -85,13 +85,14 @@ export matG
 export matσ
 export matMinv
 export OUTSCH
-export OUTSCH_WJ
 export OUTSCH_WKB
-export OUTSCH_hydrogenic
+export OUTSCH_WJ
 export Adams
 export castAdams
 export updateAdams!
 export INSCH
+export INSCH_WKB
+export INSCH_WJ
 export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized

@@ -21,10 +21,11 @@ end
 @doc raw"""
     hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
-Analytic function for the hydrogenic *reduced* radial wavefunction of a given
-[`Atom`](@ref) in a given [`Orbit`](@ref) on a given [`Grid`](@ref).
-The argument [`Def`](@ref) completes the definition of the problem.
-
+Analytic expression for the hydrogenic wavefunction written in the form 
+``Z = χ + im χ′``, where ``χ_{nℓ}(r)`` is the  *reduced* radial wavefunction
+and ``χ′_{nℓ}(r)`` its derivative, of a given [`Atom`](@ref) in a given
+[`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref) completes
+the definition of the problem.
 ```math
     \tilde{\chi}_{nl}(\rho)
     =\mathcal{N}_{nl}^{-1/2}(2Z/n)^{l+3/2}\rho^{l+1}e^{-Z\rho/n}

@@ -10,7 +10,7 @@ Type with fields:
 * `   .Nb`: grid index first trailing point (`::Int`)
 * `    .N`: grid index last point (`::Int`)
 * `.nodes`: number of nodes  (`::Int`)
-* ` .cWKB`: WKB threshold level determining Nb (`::Float64`)
+* ` .cWKB`: WKB threshold level determining Na and Nb (`::Float64`)
 
 Mutable struct to hold special grid indices as well as the number of nodes;
 `Pos` is one of the fields of the [`Def`](@ref) object
@@ -176,7 +176,7 @@ function initE(def::Def{T}) where T<:Real
     Emax = pot[N]
     Emin = minimum(pot[2:N])
 
-    E = iszero(ℓ) ? 2.0Emax : 0.9Emin
+    E = iszero(ℓ) ? 10.0Emax : 0.9Emin
 
     return E
 
@@ -187,8 +187,9 @@ end
     get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Grid index of the starting point for outward numerical integration. This is
-`k+1` or the first point where the integration threshold value (1.0e-10)
-is exceeded.
+`k+1` or the point marking the end of the quasiclassical region below the
+lower classical turning point (`lctp`) as marked by the WKB threshold value
+(`def.pos.cWKB`).
 #### Example:
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
@@ -228,7 +229,9 @@ end
     get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
 Grid index of the stopping for outward numerical integration. This is `N-k-1`
-or the last point where the integration threshold value (1.0e-10) is exceeded.
+or the point marking the start of the quasiclassical region above the
+upper classical turning point (`Nuctp`) as marked by the WKB threshold value
+(`def.pos.cWKB`).
 #### Example:
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0)
