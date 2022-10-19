@@ -324,7 +324,7 @@ function autoGrid(atom::Atom, orbits::Vector{Orbit}, T::Type; p=0, coords=[], Nb
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
          (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
 
-    R = round.([autoRmax(atom, orbits[i]) for i ∈ eachindex(orbits)])
+    R = round.(Int, [autoRmax(atom, orbits[i]) for i ∈ eachindex(orbits)])
     Rmax = maximum(R)
     Ntot = maximum([autoNtot(orbits[i], Nboost)*Rmax÷R[i] for i ∈ eachindex(orbits)])
     h,r0 = autoSteps(ID, Ntot, Rmax; p, coords)
