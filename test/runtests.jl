@@ -14,7 +14,7 @@ using Test
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
-    @test potUF(0,Z,grid)[1] ≈  0.9999999195946345
+    @test round(potUF(0,Z,grid)[1]) = 1
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9 #10
     @test def.atom.element.name == "hydrogen"
