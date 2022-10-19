@@ -123,7 +123,7 @@ function autoRmax(atom::Atom, orbit::Orbit)
      n = orbit.n
     Zc = atom.Zc
 
-    Rmax = 4(n^2+20)/Zc
+    Rmax = 5(n^2+20)/Zc
 
     return Rmax
 
@@ -188,7 +188,7 @@ function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 
     mytype = Rmax^(ℓ+1) == Inf ? BigFloat : T
 
-    mytype ≠ T && println("\nautoPrecision: type promoted to BigFloat - overflow expected (Rmax^(ℓ+1) => Inf)\n")
+    mytype ≠ T && println("\nautoPrecision: Rmax^(ℓ+1) => Inf - overflow protection: type promoted to BigFloat\n")
 
     return mytype
 
