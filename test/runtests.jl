@@ -10,10 +10,11 @@ using Test
     grid = autoGrid(atom, orbit, Float64);
     def = castDef(grid, atom, orbit, codata);
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
+    E = initE(def)
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
     Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
-    @test potUF(0,Z,grid)[1] ≈  0.9999999195946345 
+    @test potUF(0,Z,grid)[1] ≈  0.9999999195946345
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9 #10
     @test def.atom.element.name == "hydrogen"
