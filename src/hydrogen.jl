@@ -65,7 +65,6 @@ plot_wavefunction(Z, 1:grid.N, grid, def)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-
 ![Image](./assets/H1_25n.png)
 """
 function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
@@ -122,8 +121,6 @@ Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
 
 #### Example:
-The plot is made using CairomMakie. Note the discontinuity in the derivative.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ```
 Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
@@ -133,6 +130,8 @@ E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz")
 
 plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
+The plot is made using `CairomMakie`. Note the discontinuity in the derivative.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/hydrogen-1s.png)
 """
 function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
@@ -164,21 +163,20 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=1, ℓ=0; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata)
+def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
+XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 
-χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
-RH1s_generic = restore_wavefunction(χH1s_generic, grid)
+XH1s_example = reduce_wavefunction(RH1s_example)
+RH1s_generic = restore_wavefunction(XH1s_generic)
 
-f1 = real(RH1s_example)
-f2 = real(RH1s_generic)
+XH1s_example ≈ XH1s_generic
+    true
 
-compare_functions(f1, f2, 1:grid.N, grid)
+RH1s_example ≈ RH1s_generic
+    true
 ```
-The plot is made using `CairomMakie`.
-NB.: `compare_functions` is not included in the `CamiXon` package.
-![Image](./assets/H1_1s.png)
 """
 function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
@@ -212,21 +210,20 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=1, ℓ=0; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata)
+def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
-χH1s_example = reduce_wavefunction(RH1s_example, grid)
+XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 
-χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+XH1s_example = reduce_wavefunction(RH1s_example)
+RH1s_generic = restore_wavefunction(XH1s_generic)
 
-f1 = real(χH1s_example)
-f2 = real(χH1s_generic)
+XH1s_example ≈ XH1s_generic
+    true
 
-compare_functions(f1, f2, 1:grid.N, grid)
+RH1s_example ≈ RH1s_generic
+    true
 ```
-The plot is made using `CairomMakie`.
-NB.: `compare_functions` is not included in the `CamiXon` package.
-![Image](./assets/H1_1s.png)
 """
 function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
@@ -241,24 +238,25 @@ function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Rea
 
 end
 
-# =============================== ψH1s(Z, r) ===================================
+# =============================== RHqs(Z, r) ===================================
+
 @doc raw"""
     RH1s(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s radial wavefunction
 and its derivative in the format,
 ```math
-    Z = \tilde{R} + im \tilde{R}^′``,
+    Z = \tilde{R} + i \tilde{R}^′,
 ```
-where ``\tilde{R}_{nℓ}(ρ)`` is the radial wavefunction and
-``\tilde{R}^′_{nℓ}(ρ)`` its derivative, with ``ρ`` the radial distance
-to the nucleus in a.u..
+where
 ```math
     \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}
 ```
+is the radial wavefunction and
 ```math
     \tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}
 ```
+its derivative, with ``ρ`` the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
@@ -266,18 +264,13 @@ orbit = castOrbit(n=1, ℓ=0; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
-RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
-χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 
-χH1s_example = reduce_wavefunction(RH1s_example)
-RH1s_generic = restore_wavefunction(χH1s_generic)
-
-χH1s_example ≈ χH1s_generic
-    true
-
-RH1s_example ≈ RH1s_generic
-    true
+plot_wavefunction(RH1s_example, 1:grid.N, grid, def; reduced=false)
 ```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
+![Image](./assets/RH1s.png)
 """
 function RH1s(Z::Int, r::T) where T <:Real
 
@@ -288,7 +281,7 @@ function RH1s(Z::Int, r::T) where T <:Real
 
 end
 
-# =======================
+# =============================== RH2p(Z, r) ===================================
 
 @doc raw"""
     RH2p(Z::Int, r::T) where T <:Real
@@ -303,15 +296,15 @@ and its derivative in a complex number format,
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=2, ℓ=1; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-
-ZH2p_example = [fH2p(grid.r[n]) for n=1:grid.N]
-
 def = castDef(grid, atom, orbit, codata)
-ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 
-ZH2p_example ≈ ZH2p_generic
-    true
+RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N]
+
+plot_wavefunction(RH2p_example, 1:grid.N, grid, def; reduced=false)
 ```
+The plot is made using `CairomMakie`.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+![Image](./assets/RH2p.png)
 """
 function RH2p(Z::Int, r::T) where T <:Real
 
