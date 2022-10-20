@@ -97,7 +97,7 @@ end
 @doc raw"""
     potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Coulomb integral for *direct* screening,
+Coulomb integral for *exchange* screening,
 
 ```math
     U_{G}^{k}(\rho)
@@ -109,20 +109,24 @@ Coulomb integral for *direct* screening,
 ```
 #### Example:
 ```
-atom = castAtom(Z=2, A=4, Q=0; msg=false)
-orbit = castOrbit(n=1, ℓ=0; msg=false)
-grid = autoGrid(atom, orbit, Float64; Nboost=5, msg=false)
+atom = castAtom(Z=2, A=4, Q=0; msg=true)
+orbit1 = castOrbit(n=1, ℓ=0; msg=true)
+orbit2 = castOrbit(n=2, ℓ=0; msg=true)
 scr = nothing
-def = castDef(grid, atom, orbit, codata; scr)
-    Def created for helium 1s on exponential grid of 500 points
-
+grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=10, msg=true)
+def1 = castDef(grid, atom, orbit1, codata; scr)
 E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
-E = initE(def)
-adams = castAdams(E, grid, def)
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+E = initE(def1)
+adams = castAdams(E, grid, def1)
+E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
-scr = potUG(0,Z,grid);
-plot_function(scr, 1:grid.N, grid; title="He4(1s):  direct screening potential")
+def2 = castDef(grid, atom, orbit2, codata; scr)
+E = initE(def2)
+adams = castAdams(E, grid, def2)
+E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+pot = potUG(0, Z1, Z2, grid);
+plot_function(pot, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
@@ -150,7 +154,7 @@ end
 @doc raw"""
     potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Coulomb integral for *exchange* screening,
+Coulomb integral for *directe* screening,
 
 ```math
     U_{F}^{k}(\rho)
@@ -162,20 +166,17 @@ Coulomb integral for *exchange* screening,
 ```
 #### Example:
 ```
-atom = castAtom(Z=2, A=4, Q=0; msg=false)
-orbit = castOrbit(n=1, ℓ=0; msg=false)
-grid = autoGrid(atom, orbit, Float64; Nboost=5, msg=false)
+atom = castAtom(Z=2, A=4, Q=0; msg=true)
+orbit1 = castOrbit(n=1, ℓ=0; msg=true)
 scr = nothing
-def = castDef(grid, atom, orbit, codata; scr)
-    Def created for helium 1s on exponential grid of 500 points
+grid = autoGrid(atom, orbit1, Float64; Nboost=10, msg=true)
+def1 = castDef(grid, atom, orbit1, codata; scr)
+E = initE(def1)
+adams = castAdams(E, grid, def1)
+E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
-E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
-E = initE(def)
-adams = castAdams(E, grid, def)
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-scr = potUF(0,Z,grid);
-plot_function(scr, 1:grid.N, grid; title="He4(1s):  exchange screening potential")
+pot = potUF(0, Z1, grid);
+plot_function(pot, 1:grid.N, grid; title="He4(1s,1s):  direct screening potential")
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
