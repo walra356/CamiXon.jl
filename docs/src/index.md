@@ -107,9 +107,12 @@ bohrformula(Z::Int, n::Int)
 hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+demo_hydrogen(; n=3, ℓ=2)
+```
+#### Some special cases
+```@docs
 RH1s(Z::Int, r::T) where T <:Real
 RH2p(Z::Int, r::T) where T <:Real
-demo_hydrogen(; n=3, ℓ=2)
 ```
 
 ## Angular momentum

@@ -316,7 +316,7 @@ NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 function RH2p(Z::Int, r::T) where T <:Real
 
     P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
-    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * exp(-Z*r/2.0) * (1.0 - Z*r/2.0)
+    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * (1.0 - Z*r/2.0) * exp(-Z*r/2.0)
 
     return P + im * Q
 
