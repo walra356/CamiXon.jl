@@ -216,7 +216,7 @@ function fH1s(r::T) where T<:Real
     return P + im * Q
 
 end
-ρ
+
 # =======================
 
 @doc raw"""
