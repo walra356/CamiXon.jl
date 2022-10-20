@@ -252,11 +252,11 @@ end
     RH1s(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s radial wavefunction
-and its derivative in the format,
+and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```math
-    Z = \tilde{R} + i \tilde{R}^′,
+    \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ},
 ```
-where ``\tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}`` is the radial wavefunction and
+is the radial wavefunction and
 ``\tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}`` its derivative, with ``ρ``
 the radial distance to the nucleus in a.u..
 #### Example:
@@ -289,14 +289,13 @@ end
     RH2p(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
-and its derivative in the format,
+and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```math
-    Z = \tilde{R} + i \tilde{R}^′,
+    \tilde{R}_{2p}(ρ)=\left(Z/2\right)^{3/2}\sqrt{1/3}(Zρ/2)2e^{-Zρ/2}
 ```
-where ``\tilde{R}_{2p}(ρ)=2\left(Z/2\right)^{3/2}\sqrt{1/3}(Zρ/2)e^{-Zρ/2}``
 is the radial wavefunction and
-``\tilde{R}_{2p}(ρ)=2\left(Z/2\right)^{3/2}\sqrt{1/3}(1-Zρ/2)e^{-Zρ/2}`` its derivative, with ``ρ`` 
-the radial distance to the nucleus in a.u..
+``\tilde{R}_{2p}(ρ)=\left(Z/2\right)^{3/2}\sqrt{1/3}(1-Zρ/2)2e^{-Zρ/2}`` its
+derivative, with ``ρ`` the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
