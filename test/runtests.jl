@@ -4,9 +4,9 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
+    codata = castCodata(2018);
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=1, ℓ=0);
-    codata = castCodata(2018);
     grid = autoGrid(atom, orbit, Float64);
     def = castDef(grid, atom, orbit, codata);
     E = convert(grid.T, bohrformula(atom.Z, orbit.n));
@@ -17,7 +17,7 @@ using Test
     val = potUF(0,Z,grid)[1];
     @test round(val) == 1
     @test grid.name == "exponential"
-    @test findIndex(0.0042, grid) == 9 #10
+    @test findIndex(0.0042, grid) == 9
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
     @test def.pos.Nb == 98
