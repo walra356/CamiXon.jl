@@ -104,8 +104,8 @@ export adams_moulton_iterate
 export adams_moulton_master
 export demo_hydrogen
 export hydrogenic_reduced_wavefunction
-export fH1s
-export fH2p
+export RH1s
+export RH2p
 export restore_wavefunction
 
 export Grid

@@ -106,8 +106,8 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 bohrformula(Z::Int, n::Int)
 demo_hydrogen(; n=3, ℓ=2)
-fH1s(r)
-fH2p(r)
+RH1s(Z::Int, r::T) where T <:Real
+RH2p(Z::Int, r::T) where T <:Real
 ```
 
 ## Angular momentum
