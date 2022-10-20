@@ -556,7 +556,7 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
 
     (Emin, E, Emax, ΔE) = init
 
-    msg && println("\nplot_wavefunction: k = $(grid.k), Na = $(def.pos.Na), Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N-k = $(def.pos.N-k), N = $(def.pos.N)")
+    msg && println("\ngrid special points: Na = $(def.pos.Na), Nlctp = $(def.pos.Nlctp), Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N)")
 
     nodes = count_nodes(Z, def)
     msg && println("n′ = $(def.atom.n′); nodes = $(nodes)")
