@@ -107,6 +107,7 @@ export hydrogenic_reduced_wavefunction
 export RH1s
 export RH2p
 export restore_wavefunction
+export reduce_wavefunction
 
 export Grid
 export gridname

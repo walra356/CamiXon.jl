@@ -104,10 +104,13 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 ```@docs
 hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 bohrformula(Z::Int, n::Int)
 demo_hydrogen(; n=3, ℓ=2)
 RH1s(Z::Int, r::T) where T <:Real
 RH2p(Z::Int, r::T) where T <:Real
+
 ```
 
 ## Angular momentum
@@ -254,7 +257,6 @@ adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T
 adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, Δν=Value(1,"kHz")) where T<:Real
 adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
-restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
 ## Coulomb integrals
