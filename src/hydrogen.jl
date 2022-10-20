@@ -185,11 +185,75 @@ function convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Re
 
 end
 
-χH1s(r) = 2.0 * exp(-r) * r + im * 2.0 * exp(-r) * (1.0 - r)
-gridH1s(grid) = [χH1s(grid.r[n]) for n=1:grid.N]
+@doc raw"""
+    fH1s(r::T) where T <: Real
 
-χH2p(r) = 0.5 * sqrt(1/6) * exp(-r/2) * r^2 + im * sqrt(1/6) * exp(-r/2) * r * (1.0 - r/4.0)
-gridH2p(grid) = [χH2p(grid.r[n]) for n=1:grid.N]
+Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
+and its derivative in a complex number format,
+```math
+    \tilde{\chi}_{1s}(\rho) = Z^{3/2} 2\rho e^{-Z\rho}.
+```
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0; msg=false);
+orbit = castOrbit(n=1, ℓ=0; msg=false);
+
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+ZH1s_example = [fH1s(grid.r[n]) for n=1:grid.N]
+
+def = castDef(grid, atom, orbit, codata)
+ZH1s_generic = hydrogenic_wavefunction(atom, orbit, grid, def)
+
+ZH1s_example ≈ ZH1s_generic
+    true
+```
+"""
+function fH1s(r::T) where T<:Real
+
+    P = 2.0 * exp(-r) * r
+    Q = 2.0 * exp(-r) * (1.0 - r)
+
+    return P + im * Q
+
+end
+ρ
+# =======================
+
+@doc raw"""
+    fH2p(r::T) where T <: Real
+
+Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
+and its derivative in a complex number format,
+```math
+    P = \frac{1}{2} sqrt(1/6) e^{-ρ/2} r^2\\
+    Q = sqrt(1/6) e^{-ρ/2} r (1.0 - r/4.0)\\
+\\
+    \tilde{\chi}_{2p}(ρ)= P + i Q\\
+```
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0; msg=false);
+orbit = castOrbit(n=2, ℓ=1; msg=false);
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+
+ZH2p_example = [fH2p(grid.r[n]) for n=1:grid.N]
+
+def = castDef(grid, atom, orbit, codata)
+ZH2p_generic = hydrogenic_wavefunction(atom, orbit, grid, def)
+
+ZH2p_example ≈ ZH2p_generic
+    true
+```
+"""
+function fH2p(r::T) where T<:Real
+
+    P = 0.5 * sqrt(1/6) * exp(-r/2.0) * r^2
+    Q = sqrt(1/6) * exp(-r/2.0) * r * (1.0 - r/4.0)
+
+    return P + im * Q
+
+end
+
 
 χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
 gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]
