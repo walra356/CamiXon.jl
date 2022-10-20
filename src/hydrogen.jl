@@ -22,7 +22,7 @@ end
     hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
 Analytic expression for the hydrogenic wavefunction written in the format
-``Z = \tilde{R} + i \tilde{R}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
+``Z = \tilde{χ} + i \tilde{χ}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
 the *reduced* radial wavefunction and ``\tilde{χ}^′_{nℓ}(ρ)`` its derivative,
 with ``ρ`` the radial distance to the nucleus in a.u..
 The expression is evaluated for a given [`Atom`](@ref) in a given
@@ -255,7 +255,10 @@ and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
     \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}
 ```
 is the radial wavefunction and
-``\tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}`` its derivative, with ``ρ``
+```math
+    \tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}
+```
+its derivative, with ``ρ``
 the radial distance to the nucleus in a.u..
 #### Example:
 ```
@@ -292,8 +295,9 @@ and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
     \tilde{R}_{2p}(ρ)=\left(Z/2\right)^{3/2}\sqrt{1/3}(Zρ/2)2e^{-Zρ/2}
 ```
 is the radial wavefunction and
-``\tilde{R}_{2p}(ρ)=\left(Z/2\right)^{3/2}\sqrt{1/3}(1-Zρ/2)2e^{-Zρ/2}`` its
-derivative, with ``ρ`` the radial distance to the nucleus in a.u..
+```math
+    \tilde{R}_{2p}(ρ)=\left(Z/2\right)^{3/2}\sqrt{1/3}(1-Zρ/2)2e^{-Zρ/2}
+``` its derivative, with ``ρ`` the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
