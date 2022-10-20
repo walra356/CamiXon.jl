@@ -208,7 +208,7 @@ ZH1s_example ≈ ZH1s_generic
     true
 ```
 """
-function fH1s(r::T) where T<:Real
+function fH1s(r)
 
     P = 2.0 * exp(-r) * r
     Q = 2.0 * exp(-r) * (1.0 - r)
@@ -220,7 +220,7 @@ end
 # =======================
 
 @doc raw"""
-    fH2p(r::T) where T <: Real
+    fH2p(r)
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in a complex number format,
@@ -242,7 +242,7 @@ ZH2p_example ≈ ZH2p_generic
     true
 ```
 """
-function fH2p(r::T) where T<:Real
+function fH2p(r)
 
     P = 0.5 * sqrt(1/6) * exp(-r/2.0) * r^2
     Q = sqrt(1/6) * exp(-r/2.0) * r * (1.0 - r/4.0)
