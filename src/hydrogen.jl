@@ -225,10 +225,7 @@ end
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in a complex number format,
 ```math
-    P = \frac{1}{2} sqrt(1/6) e^{-\rho/2} \rho^2\\
-    Q = sqrt(1/6) e^{-\rho/2} \rho (1.0 - \rho/4.0)\\
-\\
-    \tilde{\chi}_{2p}(\rho)= P + i Q\\
+    \tilde{χ}_{2p}(\rho)&=\left(Z/2\right)^{3/2}\sqrt{1/3}(Z\rho/2)2ρe^{-Zρ/2}
 ```
 #### Example:
 ```
