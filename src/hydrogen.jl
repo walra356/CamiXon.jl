@@ -22,13 +22,11 @@ end
     hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
 Analytic expression for the hydrogenic wavefunction written in the format
-```math
-    Z = \tilde{χ} + im \tilde{χ}^′``,
-```
-where ``\tilde{χ}_{nℓ}(ρ)`` is the *reduced* radial wavefunction and
-``\tilde{χ}^′_{nℓ}(ρ)`` its derivative, with ``ρ`` the radial distance
-to the nucleus in a.u.. The expression is evaluated for a given [`Atom`](@ref)
-in a given [`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref)
+``Z = \tilde{R} + i \tilde{R}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
+the *reduced* radial wavefunction and ``\tilde{χ}^′_{nℓ}(ρ)`` its derivative,
+with ``ρ`` the radial distance to the nucleus in a.u..
+The expression is evaluated for a given [`Atom`](@ref) in a given
+[`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref)
 completes the definition of the problem.
 ```math
     \tilde{\chi}_{nl}(\rho)
@@ -254,7 +252,7 @@ end
 Analytic expression for the *hydrogenic* 1s radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```math
-    \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ},
+    \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}
 ```
 is the radial wavefunction and
 ``\tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}`` its derivative, with ``ρ``
