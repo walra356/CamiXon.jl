@@ -171,12 +171,20 @@ XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 XH1s_example = reduce_wavefunction(RH1s_example)
 RH1s_generic = restore_wavefunction(XH1s_generic)
 
+RH1s_example ≈ RH1s_generic
+    true
+
 XH1s_example ≈ XH1s_generic
     true
 
-RH1s_example ≈ RH1s_generic
-    true
+f1 = real(XH1s_example)
+f2 = real(XH1s_generic)
+
+compare_functions(f1, f2, 1:grid.N, grid)
 ```
+The plot is made using `CairomMakie`.
+NB.: `compare_functions` is not included in the `CamiXon` package.
+![Image](./assets/compareXH1s.png)
 """
 function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
@@ -248,15 +256,9 @@ and its derivative in the format,
 ```math
     Z = \tilde{R} + i \tilde{R}^′,
 ```
-where
-```math
-    \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}
-```
-is the radial wavefunction and
-```math
-    \tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}
-```
-its derivative, with ``ρ`` the radial distance to the nucleus in a.u..
+where ``\tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}`` is the radial wavefunction and
+``\tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}`` its derivative, with ``ρ``
+the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
@@ -287,10 +289,14 @@ end
     RH2p(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
-and its derivative in a complex number format,
+and its derivative in the format,
 ```math
-    \tilde{R}_{2p}(\rho)&=\left(Z/2\right)^{3/2}\sqrt{1/3}(Z\rho/2)2ρe^{-Zρ/2}
+    Z = \tilde{R} + i \tilde{R}^′,
 ```
+where ``\tilde{R}_{2p}(ρ)=2\left(Z/2\right)^{3/2}\sqrt{1/3}(Zρ/2)e^{-Zρ/2}``
+is the radial wavefunction and
+``\tilde{R}_{2p}(ρ)=2\left(Z/2\right)^{3/2}\sqrt{1/3}(1-Zρ/2)e^{-Zρ/2}`` its derivative, with ``ρ`` 
+the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
