@@ -19,16 +19,20 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
-Analytic expression for the hydrogenic wavefunction written in the form
-``Z = χ + im χ′``, where ``χ_{nℓ}(r)`` is the  *reduced* radial wavefunction
-and ``χ′_{nℓ}(r)`` its derivative, of a given [`Atom`](@ref) in a given
-[`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref) completes
-the definition of the problem.
+Analytic expression for the hydrogenic wavefunction written in the format
+```math
+    Z = \tilde{χ} + im \tilde{χ}^′``,
+```
+where ``\tilde{χ}_{nℓ}(ρ)`` is the *reduced* radial wavefunction and
+``\tilde{χ}^′_{nℓ}(ρ)`` its derivative, with ``ρ`` the radial distance
+to the nucleus in a.u.. The expression is evaluated for a given [`Atom`](@ref)
+in a given [`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref)
+completes the definition of the problem.
 ```math
     \tilde{\chi}_{nl}(\rho)
-    =\mathcal{N}_{nl}^{-1/2}(2Z/n)^{l+3/2}\rho^{l+1}e^{-Z\rho/n}
+    =\mathcal{N}_{nl}^{-1/2}(2Z/n)^{l+3/2}\rho^{l+1}e^{-Zρ/n}
     L_{n-l-1}^{2l+1}(2Z\rho/n)
 ```
 where ``L_{n-l-1}^{2l+1}(2Z\rho/n)`` is the generalized Laguerre polynomial
@@ -46,7 +50,7 @@ atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=25, ℓ=10)
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
-Z = hydrogenic_wavefunction(atom, orbit, grid, def);
+Z = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
     Element created: H, hydrogen, Z=1, weight=1.008
     Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
     Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
@@ -64,7 +68,7 @@ NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 
 ![Image](./assets/H1_25n.png)
 """
-function hydrogenic_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
 
     Zval = atom.Z
     n = orbit.n
@@ -144,88 +148,155 @@ function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
 end
 
+# =================== restore_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Conversion from the *reduced* radial wavefunction ``\chi_{nl}(r)`` to the
-*ordinary* radial wavefuntion ``R_{nl}(r)``,
+Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
+to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
 ```math
-    R_{nl}(r)=\chi_{nl}(r)/r.
+    \tilde{R}_{nl}(ρ)=\tilde{\chi}_{nl}(ρ)/ρ,
 ```
+where ``ρ`` is the radial distance to the nucleus in a.u..
 #### Example:
 ```
-atom = castAtom(Z=1, A=1, Q=0)
-orbit = castOrbit(n=1, ℓ=0)
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+atom = castAtom(Z=1, A=1, Q=0; msg=false);
+orbit = castOrbit(n=1, ℓ=0; msg=false);
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata)
-Z1 = hydrogenic_wavefunction(atom, orbit, grid, def)
-Z2 = convert_wavefunction(Z1, grid);
 
-plot_wavefunction(Z2, 1:grid.N, grid, def; reduced=false)
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
+
+χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+RH1s_generic = restore_wavefunction(χH1s_generic, grid)
+
+f1 = real(RH1s_example)
+f2 = real(RH1s_generic)
+
+compare_functions(f1, f2, 1:grid.N, grid)
 ```
 The plot is made using `CairomMakie`.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+NB.: `compare_functions` is not included in the `CamiXon` package.
 ![Image](./assets/H1_1s.png)
 """
-function convert_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
     χ = real(Z)
     χ′= imag(Z)
     r = grid.r
 
-    ψ = χ ./ r
-    ψ′= (χ′ .- χ ./ r) ./ r
+    R = χ ./ r
+    R′= (χ′ .- χ ./ r) ./ r
 
-    ψ[1] = fdiff_interpolation(ψ[2:end], 0) # extrapolate to r=0 to handle division by "zero"
-    ψ′[1] = fdiff_interpolation(ψ′[2:end], 0)
+    R[1] = fdiff_interpolation(R[2:end], 0) # extrapolate to r=0 to handle division by "zero"
+    R′[1] = fdiff_interpolation(R′[2:end], 0)
 
 
-    return ψ + im * ψ′
+    return R + im * R′
+
+end
+# =================== reduce_wavefunction(Z, grid) ============================
+
+@doc raw"""
+    reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+Conversion from the *ordinary* radial wavefunction ``\tilde{R}_{nl}(ρ)``
+to the *reduced* radial wavefuntion
+```math
+    \tilde{\chi}_{nl}(ρ) = ρ \tilde{R}_{nl}(ρ).
+```
+where ``ρ`` is the radial distance to the nucleus in a.u..
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0; msg=false);
+orbit = castOrbit(n=1, ℓ=0; msg=false);
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+def = castDef(grid, atom, orbit, codata)
+
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
+χH1s_example = reduce_wavefunction(RH1s_example, grid)
+
+χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+
+f1 = real(χH1s_example)
+f2 = real(χH1s_generic)
+
+compare_functions(f1, f2, 1:grid.N, grid)
+```
+The plot is made using `CairomMakie`.
+NB.: `compare_functions` is not included in the `CamiXon` package.
+![Image](./assets/H1_1s.png)
+"""
+function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+    R = real(Z)
+    R′= imag(Z)
+    r = grid.r
+
+    χ = r .* R
+    χ′= r .* R′ + R
+
+    return χ + im * χ′
 
 end
 
+# =============================== ψH1s(Z, r) ===================================
 @doc raw"""
-    fH1s(r::T) where T <: Real
+    RH1s(Z::Int, r::T) where T <:Real
 
-Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
-and its derivative in a complex number format,
+Analytic expression for the *hydrogenic* 1s radial wavefunction
+and its derivative in the format,
 ```math
-    \tilde{\chi}_{1s}(\rho) = Z^{3/2} 2\rho e^{-Z\rho}.
+    Z = \tilde{R} + im \tilde{R}^′``,
+```
+where ``\tilde{R}_{nℓ}(ρ)`` is the radial wavefunction and
+``\tilde{R}^′_{nℓ}(ρ)`` its derivative, with ``ρ`` the radial distance
+to the nucleus in a.u..
+```math
+    \tilde{R}_{1s}(ρ) = Z^{3/2} 2 e^{-Zρ}
+```
+```math
+    \tilde{R}^′_{1s}(ρ) = -Z^{5/2} 2 e^{-Zρ}
 ```
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=1, ℓ=0; msg=false);
-
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-ZH1s_example = [fH1s(grid.r[n]) for n=1:grid.N]
+def = castDef(grid, atom, orbit, codata);
 
-def = castDef(grid, atom, orbit, codata)
-ZH1s_generic = hydrogenic_wavefunction(atom, orbit, grid, def)
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
+χH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 
-ZH1s_example ≈ ZH1s_generic
+χH1s_example = reduce_wavefunction(RH1s_example)
+RH1s_generic = restore_wavefunction(χH1s_generic)
+
+χH1s_example ≈ χH1s_generic
+    true
+
+RH1s_example ≈ RH1s_generic
     true
 ```
 """
-function fH1s(r)
+function RH1s(Z::Int, r::T) where T <:Real
 
-    P = 2.0 * exp(-r) * r
-    Q = 2.0 * exp(-r) * (1.0 - r)
+    p = 2.0 * Z^(3/2) * exp(-Z*r)
+    q = -2.0 * Z^(5/2) * exp(-Z*r)
 
-    return P + im * Q
+    return p + im * q
 
 end
 
 # =======================
 
 @doc raw"""
-    fH2p(r)
+    RH2p(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in a complex number format,
 ```math
-    \tilde{χ}_{2p}(\rho)&=\left(Z/2\right)^{3/2}\sqrt{1/3}(Z\rho/2)2ρe^{-Zρ/2}
+    \tilde{R}_{2p}(\rho)&=\left(Z/2\right)^{3/2}\sqrt{1/3}(Z\rho/2)2ρe^{-Zρ/2}
 ```
 #### Example:
 ```
@@ -236,21 +307,20 @@ grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 ZH2p_example = [fH2p(grid.r[n]) for n=1:grid.N]
 
 def = castDef(grid, atom, orbit, codata)
-ZH2p_generic = hydrogenic_wavefunction(atom, orbit, grid, def)
+ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
 
 ZH2p_example ≈ ZH2p_generic
     true
 ```
 """
-function fH2p(r)
+function RH2p(Z::Int, r::T) where T <:Real
 
-    P = 0.5 * sqrt(1/6) * exp(-r/2.0) * r^2
-    Q = sqrt(1/6) * exp(-r/2.0) * r * (1.0 - r/4.0)
+    P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
+    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * exp(-Z*r/2.0) * (1.0 - Z*r/2.0)
 
     return P + im * Q
 
 end
-
 
 χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
 gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]

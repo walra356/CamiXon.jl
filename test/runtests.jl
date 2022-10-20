@@ -13,7 +13,7 @@ using Test
     E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    Z1 = hydrogenic_wavefunction(atom, orbit, grid, def);
+    Z1 = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
     val = potUF(0,Z,grid)[1];
     @test round(val) == 1
     @test grid.name == "exponential"
