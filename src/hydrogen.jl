@@ -163,11 +163,11 @@ orbit = castOrbit(n=1, ℓ=0; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
-RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
-XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
 
-XH1s_example = reduce_wavefunction(RH1s_example)
-RH1s_generic = restore_wavefunction(XH1s_generic)
+XH1s_example = reduce_wavefunction(RH1s_example);
+RH1s_generic = restore_wavefunction(XH1s_generic);
 
 RH1s_example ≈ RH1s_generic
     true
@@ -218,11 +218,11 @@ orbit = castOrbit(n=1, ℓ=0; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
-RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N]
-XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def)
+RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
 
-XH1s_example = reduce_wavefunction(RH1s_example)
-RH1s_generic = restore_wavefunction(XH1s_generic)
+XH1s_example = reduce_wavefunction(RH1s_example);
+RH1s_generic = restore_wavefunction(XH1s_generic);
 
 XH1s_example ≈ XH1s_generic
     true
@@ -303,9 +303,9 @@ is the radial wavefunction and
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=2, ℓ=1; msg=false);
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata)
+def = castDef(grid, atom, orbit, codata);
 
-RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N]
+RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
 
 plot_wavefunction(RH2p_example, 1:grid.N, grid, def; reduced=false)
 ```
