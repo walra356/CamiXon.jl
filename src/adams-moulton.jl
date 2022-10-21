@@ -238,12 +238,14 @@ end
 """
 function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
-    Na = def.pos.Na
     Nuctp = def.pos.Nuctp
-    Nb = def.pos.Nb
-    k = def.k
 
-    norm = grid_integration(real(Z) .^2, Na-k, Nb+k, grid)
+    #Na = def.pos.Na
+    #Nb = def.pos.Nb
+    #k = def.k
+
+    #norm = grid_integration(real(Z) .^2, Na-k, Nb+k, grid)
+    norm = grid_integration(real(Z) .^2, 2, N, grid)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
@@ -359,6 +361,7 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
 
     nodes = def.pos.nodes
        n′ = def.orbit.n′
+    codata = def.codata
 
     nodes == n′ || error("Error: nodes condition violated (nodes = $(nodes) ≠  $(n′)")
 
@@ -367,9 +370,11 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
     Nuctp = def.pos.Nuctp
     Ntot = def.pos.N
     cnts = "iterations"
+    f = convertUnit(abs(ΔE), codata) # default input (Hartree) and output (xHz)
+    strHz = strValue(f)
     imax = modus == "prepare" ? "" : i > imax-1 ? "(maximum value)" : ""
-    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (absolute convergence error)\n"
-    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " (relative convergence error)\n"
+    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (" * strHz *") - absolute convergence error\n"
+    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " - relative convergence error\n"
 
     msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "): \nnode condition satified after "
     msg *= "$i " * cnts * imax
