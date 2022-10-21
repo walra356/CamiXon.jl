@@ -245,7 +245,7 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
     #k = def.k
 
     #norm = grid_integration(real(Z) .^2, Na-k, Nb+k, grid)
-    norm = grid_integration(real(Z) .^2, 2, N, grid)
+    norm = grid_integration(real(Z) .^2, 1, N, grid)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
