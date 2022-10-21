@@ -239,6 +239,7 @@ end
 function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
     Nuctp = def.pos.Nuctp
+    N = grid.N
     #Na = def.pos.Na
     #Nb = def.pos.Nb
     #k = def.k
