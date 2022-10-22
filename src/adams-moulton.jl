@@ -168,36 +168,7 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
     Z[Nuctp:N] = Z2
 
     def.pos.Na = get_Na(Z, def)
-    def.pos.Nb = get_Nb(Z, def)
-
-    return ΔQ, Z
-
-end
-function adams_moulton_inward_old(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-
-    N = grid.N
-    k = grid.k
-    Z = adams.Z
-    Nuctp = def.pos.Nuctp
-    Nb = def.pos.Nb
-    sgn = isodd(def.orbit.n′) ? -1.0 : 1.0
-
-    Z2 = INSCH(E, grid, def, adams)
-
-    for n=Nb-1:-1:Nuctp
-        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
-    end
-
-    norm = abs(real(Z2[1]))
-    Z2 /= norm
-    Z2 *= sgn             # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
-
-    ΔQ = imag(Z[Nuctp]) - imag(Z2[1])
-
-    Z[Nuctp:N] = Z2
-
-    def.pos.Na = get_Na(Z, def)
-    def.pos.Nb = get_Nb(Z, def)
+    #def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
 
@@ -225,7 +196,7 @@ function adams_moulton_inward_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{
     Z[Nuctp:N] = Z2
 
     def.pos.Na = get_Na(Z, def)
-    def.pos.Nb = get_Nb(Z, def)
+    #def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
 
@@ -246,7 +217,12 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
-    return ΔE/norm, Z/sqrt(norm)
+    ΔE = ΔE/norm
+    Z = Z/sqrt(norm)
+
+    def.pos.Nb = get_Nb(Z, def)
+
+    return ΔE, Z
 
 end
 
@@ -255,6 +231,7 @@ end
 @doc raw"""
     adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 
+Correct first 2k points of Z.
 """
 function adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 
@@ -506,6 +483,7 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
             E = iseven(nodes) ? E+ΔE : E-ΔE
         end
         i = i < imax ? i+1 : break
+        def.pos.Nb = get_Nb(Z, def)
     end
 
     init = (Emin, E, Emax, ΔE)
@@ -548,8 +526,8 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
     t1 = time()
     msg && println("\nt = " * _strΔt(t1,t1))
     msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
+
     t2 = time()
-    #def.pos.cWKB = def.pos.cWKB*0.001
     msg && println(msg1) # * "\n" * "preparation time: " * _strΔt(t2,t1))
     msg && println("\nt = " * _strΔt(t2,t1))
     msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν, imax)

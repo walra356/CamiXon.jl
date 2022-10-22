@@ -214,10 +214,10 @@ function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 #  grid index of starting point outward numerical integration
 # ==============================================================================
     k = def.k
+    cWKB = def.pos.cWKB
+    #ref = T(1.0e-10)
 
-    ref = T(1.0e-10)
-
-    Na = findfirst(x -> abs(x) > ref, real(Z))
+    Na = findfirst(x -> abs(x) > cWKB, real(Z))
     Na = isnothing(Na) ? k+1 : Na > 0 ? max(k+1, Na) : k+1
 
     return Na
