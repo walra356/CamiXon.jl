@@ -21,9 +21,9 @@ using Test
     @test findIndex(0.0042, grid) == 9
     @test def.atom.element.name == "hydrogen"
     @test def.pos.Na == 8
-    @test def.pos.Nb == 98
+    @test def.pos.Nb == 103
     @test get_Na(Z, def) == 8
-    @test get_Nb(Z, def) == 98
+    @test get_Nb(Z, def) == 103
     @test get_Nuctp(E, def) == 76
     @test grid_integration(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
     @test grid_integration(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
