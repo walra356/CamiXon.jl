@@ -549,7 +549,7 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
     msg && println("\nt = " * _strΔt(t1,t1))
     msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
     t2 = time()
-    def.pos.cWKB = def.pos.cWKB*0.001
+    #def.pos.cWKB = def.pos.cWKB*0.001
     msg && println(msg1) # * "\n" * "preparation time: " * _strΔt(t2,t1))
     msg && println("\nt = " * _strΔt(t2,t1))
     msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν, imax)
