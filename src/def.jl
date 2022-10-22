@@ -137,7 +137,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     o1 = [fill(convert(T,0), (2,2)) for n=1:N]
     o2 = [fill(convert(T,0), (2,2)) for n=1:N]
     o3 = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-4)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
