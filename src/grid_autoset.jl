@@ -124,7 +124,7 @@ function autoRmax(atom::Atom, orbit::Orbit)
     Zc = atom.Zc
 
     #Rmax = 4(n^2+20)/Zc
-    Rmax = (2n^2 + 20n + 63)/Zc
+    Rmax = (2n^2 + 20n + 62)/Zc
 
     return Rmax
 
@@ -152,7 +152,7 @@ function autoNtot(orbit::Orbit, Nboost=1)
 
     n = orbit.n
 
-    Ntot = (70 + 50 * n) * Nboost
+    Ntot = (80 + 50 * n) * Nboost
 
     return Ntot
 
