@@ -77,7 +77,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     Q = grid_differentiation(P, grid)
 
 
-    Nb = findlast(x -> abs(x) > cWKB, real(Z))
+    Nb = findlast(x -> abs(x) > cWKB, P)
     #Nb = findfirst(x -> 0 < abs(x) < cWKB, P)
     Nb = def.pos.Nb = isnothing(Nb) ? N-k : min(N-k, Nb)
 
