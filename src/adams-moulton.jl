@@ -119,7 +119,7 @@ function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 
     Z[1:Nuctp] /= norm    # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
 
-    def.pos.Na = get_Na(Z, def)
+    #def.pos.Na = get_Na(Z, def)
 
     return Z
 
@@ -167,7 +167,7 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
 
     Z[Nuctp:N] = Z2
 
-    def.pos.Na = get_Na(Z, def)
+    #def.pos.Na = get_Na(Z, def)
     #def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
@@ -195,7 +195,7 @@ function adams_moulton_inward_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{
 
     Z[Nuctp:N] = Z2
 
-    def.pos.Na = get_Na(Z, def)
+    #def.pos.Na = get_Na(Z, def)
     #def.pos.Nb = get_Nb(Z, def)
 
     return ΔQ, Z
@@ -220,6 +220,7 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
     ΔE = ΔE/norm
     Z = Z/sqrt(norm)
 
+    def.pos.Na = get_Na(Z, def)
     def.pos.Nb = get_Nb(Z, def)
 
     return ΔE, Z
