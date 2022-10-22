@@ -123,7 +123,8 @@ function autoRmax(atom::Atom, orbit::Orbit)
      n = orbit.n
     Zc = atom.Zc
 
-    Rmax = 4(n^2+20)/Zc
+    #Rmax = 4(n^2+20)/Zc
+    Rmax = (2n^2 + 20n + 63)/Zc
 
     return Rmax
 

@@ -154,6 +154,7 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
     Z2 = INSCH(E, grid, def, adams)
     Nb = def.pos.Nb
 
+    Nb+k ≤ N || error("Error: grid boost required (increase NBoost)")
     for n=Nb-1:-1:Nuctp
         _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
     end
@@ -240,11 +241,6 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
     Nuctp = def.pos.Nuctp
     N = grid.N
-    #Na = def.pos.Na
-    #Nb = def.pos.Nb
-    #k = def.k
-
-    #norm = grid_integration(real(Z) .^2, Na-k, Nb+k, grid)
 
     norm = grid_integration(real(Z) .^2, 1, N, grid)
 
@@ -374,8 +370,8 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
     f = convertUnit(abs(ΔE), codata) # default input (Hartree) and output (xHz)
     strHz = strValue(f)
     imax = modus == "prepare" ? "" : i > imax-1 ? "(maximum value)" : ""
-    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (" * strHz *") - absolute convergence error\n"
-    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " - relative convergence error\n"
+    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (" * strHz *") - absolute convergence\n"
+    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " - relative convergence\n"
 
     msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "): \nnode condition satified after "
     msg *= "$i " * cnts * imax
@@ -553,11 +549,11 @@ function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25,
     msg && println("\nt = " * _strΔt(t1,t1))
     msg1, adams, init, Z = adams_moulton_prepare(E, grid, def, adams)
     t2 = time()
-    msg && println(msg1 * "\n" * "preparation time: " * _strΔt(t2,t1))
+    msg && println(msg1) # * "\n" * "preparation time: " * _strΔt(t2,t1))
     msg && println("\nt = " * _strΔt(t2,t1))
     msg2, adams, init, Z = adams_moulton_iterate(init, grid, def, adams; Δν, imax)
     t3 = time()
-    msg && println(msg2 * "\n" * "iteration time: " * _strΔt(t3,t2))
+    msg && println(msg2) # * "\n" * "iteration time: " * _strΔt(t3,t2))
     msg && println("\nt = " * _strΔt(t3,t1))
 
     (Emin, E, Emax, ΔE) = init
