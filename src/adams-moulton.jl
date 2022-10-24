@@ -34,23 +34,22 @@ function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     r = grid.r
     r′= grid.r′
     o = def.o2
-    Z = def.atom.Z
+    Zval = def.atom.Z
     ℓ = def.orbit.ℓ
     s = def.scr
 
-    Zet = T(Z)
     one = T(1)
     two = T(2)
     num = -T(ℓ + 1)
 
     for n ∈ eachindex(o)
         o[n][1,2] = r′[n]                                  # b in Johnson (2.69)
-        o[n][2,1] = r′[n] * two * (-E - Zet/r[n] + s[n])   # c in Johnson (2.69)
+        o[n][2,1] = r′[n] * two * (-E - Zval/r[n] + s[n])  # c in Johnson (2.69)
         o[n][2,2] = r′[n] * two * num / r[n]               # d in Johnson (2.69)
     end
 
     r1 = T(1.0e-100)  # quasi zero
-    o[1][2,1] = r′[1] * two * (-E - Zet / r1 + s[1])
+    o[1][2,1] = r′[1] * two * (-E - Zval / r1 + s[1])
     o[1][2,2] = r′[1] * two * num / r1
 
     return o
@@ -71,6 +70,8 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
     s = def.scr
     o = def.o3
 
+    pot = v .+ s
+
     one = T(1)
     two = T(2)
 
@@ -78,7 +79,7 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 
     for n ∈ eachindex(o)
         o[n][1,2] = λ[n]
-        o[n][2,1] = λ[n]  * two * (-E + v[n] + s[n])
+        o[n][2,1] = λ[n]  * two * (-E + pot[n])
     end
 
     Δ = [one - o[n][1,2]*o[n][2,1] for n ∈ eachindex(o)]

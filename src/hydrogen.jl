@@ -247,7 +247,7 @@ end
 # =============================== RHqs(Z, r) ===================================
 
 @doc raw"""
-    RH1s(Z::Int, r::T) where T <:Real
+    RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 
 Analytic expression for the *hydrogenic* 1s radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
@@ -275,7 +275,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/RH1s.png)
 """
-function RH1s(Z::Int, r::T) where T <:Real
+function RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 
     p = 2.0 * Z^(3/2) * exp(-Z*r)
     q = -2.0 * Z^(5/2) * exp(-Z*r)
@@ -287,7 +287,7 @@ end
 # =============================== RH2p(Z, r) ===================================
 
 @doc raw"""
-    RH2p(Z::Int, r::T) where T <:Real
+    RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
@@ -313,7 +313,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2p.png)
 """
-function RH2p(Z::Int, r::T) where T <:Real
+function RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
     P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
     Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * (1.0 - Z*r/2.0) * exp(-Z*r/2.0)

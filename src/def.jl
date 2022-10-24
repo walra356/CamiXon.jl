@@ -124,7 +124,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     Z = atom.Z
     ℓ = orbit.ℓ
 
-    r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (Inf)")
+    r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (r[N]^(ℓ+1) -> Inf)")
 
     Z = convert(T, Z)
     num = convert(T, ℓ*(ℓ + 1)//2)
@@ -141,7 +141,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
-    println(_defspecs(grid, atom, orbit))
+    msg && println(_defspecs(grid, atom, orbit))
 
     return Def(T, atom, orbit, codata, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 

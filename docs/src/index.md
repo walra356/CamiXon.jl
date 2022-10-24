@@ -111,8 +111,8 @@ demo_hydrogen(; n=3, ℓ=2)
 ```
 #### Some special cases
 ```@docs
-RH1s(Z::Int, r::T) where T <:Real
-RH2p(Z::Int, r::T) where T <:Real
+RH1s(Z::U, r::T) where {U <: Real, T <:Real}
+RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 ```
 
 ## Angular momentum
@@ -268,8 +268,8 @@ adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true
 ```@docs
 a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
-potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
-potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+UF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+UG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
 ## FITS

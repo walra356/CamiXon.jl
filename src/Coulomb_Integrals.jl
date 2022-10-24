@@ -93,7 +93,7 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-# ======================== potUG(k, Z, grid) ===================================
+# ========= kanweg =============== potUG(k, Z, grid) ===================================
 @doc raw"""
     potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
@@ -149,9 +149,68 @@ function potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Gri
 
 end
 
+# ======================== potUG(k, Z, grid) ===================================
+@doc raw"""
+    UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+Coulomb integral for *exchange* screening,
+
+```math
+    U_{G}^{k}(\rho)
+    =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
+    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,
+    \varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
+    \frac{1}{\varrho^{k+1}}\tilde{R}_{nl}(\varrho)
+    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,\varrho^{2}d\varrho.
+```
+#### Example:
+```
+atom = castAtom(Z=2, A=4, Q=0; msg=true)
+orbit1 = castOrbit(n=1, ℓ=0; msg=true)
+orbit2 = castOrbit(n=2, ℓ=0; msg=true)
+scr = nothing
+grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
+def1 = castDef(grid, atom, orbit1, codata; scr)
+E = initE(def1)
+adams = castAdams(E, grid, def1)
+E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+def2 = castDef(grid, atom, orbit2, codata; scr)
+E = initE(def2)
+adams = castAdams(E, grid, def2)
+E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+P1 = real(Z1);
+P2 = real(Z2);
+
+UG0 = UG(0, P1, P2, grid);
+plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_function` is not included in the `CamiXon` package.
+![Image](./assets/He41s-UG0.png)
+"""
+function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+
+    N = grid.N
+    r = grid.r
+
+    UG_inner = [grid_integration(r.^k .* P1 .* P2, 1:n, grid) for n=2:N]
+    UG_outer = [grid_integration((1.0 ./ r).^(k+1) .* P1 .* P2, n:N, grid) for n=2:N]
+
+    o = (UG_inner .* r[2:N].^-(k+1)) .+ (UG_outer .* r[2:N].^k)
+
+    p = fdiff_interpolation(o, 0; k=4)
+
+    prepend!(o,p)
+
+    return o
+
+end
+
 # ======================== potUF(k, Z, grid) ===================================
 @doc raw"""
-    potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    UF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Coulomb integral for *directe* screening,
 
@@ -166,23 +225,24 @@ Coulomb integral for *directe* screening,
 #### Example:
 ```
 atom = castAtom(Z=2, A=4, Q=0; msg=true)
-orbit1 = castOrbit(n=1, ℓ=0; msg=true)
+orbit = castOrbit(n=1, ℓ=0; msg=true)
 scr = nothing
-grid = autoGrid(atom, orbit1, Float64; Nboost=1, msg=true)
-def1 = castDef(grid, atom, orbit1, codata; scr)
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+def = castDef(grid, atom, orbit, codata; scr)
 E = initE(def1)
-adams = castAdams(E, grid, def1)
-E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+adams = castAdams(E, grid, def)
+E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
-pot = potUF(0, Z1, grid);
-plot_function(pot, 1:grid.N, grid; title="He4(1s,1s):  direct screening potential")
+P1 = real(Z)
+UF0P1 = UF(0, P1, grid);
+plot_function(scrUF0P1, 1:grid.N, grid; title="He4(1s,1s):  direct screening potential")
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UF0.png)
 """
-function potUF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+function UF(k::Int, F::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-    return potUG(k, Z, Z, grid)
+    return UG(k, F, F, grid)
 
 end
