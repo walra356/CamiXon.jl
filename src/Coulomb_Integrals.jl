@@ -93,62 +93,6 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-# ========= kanweg =============== potUG(k, Z, grid) ===================================
-@doc raw"""
-    potUG(k::Int, Z1::Vector{Complex{T}}, Z1::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
-
-Coulomb integral for *exchange* screening,
-
-```math
-    U_{G}^{k}(\rho)
-    =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
-    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,
-    \varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
-    \frac{1}{\varrho^{k+1}}\tilde{R}_{nl}(\varrho)
-    \tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,\varrho^{2}d\varrho.
-```
-#### Example:
-```
-atom = castAtom(Z=2, A=4, Q=0; msg=true)
-orbit1 = castOrbit(n=1, ℓ=0; msg=true)
-orbit2 = castOrbit(n=2, ℓ=0; msg=true)
-scr = nothing
-grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
-def1 = castDef(grid, atom, orbit1, codata; scr)
-E = initE(def1)
-adams = castAdams(E, grid, def1)
-E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-def2 = castDef(grid, atom, orbit2, codata; scr)
-E = initE(def2)
-adams = castAdams(E, grid, def2)
-E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-f = potUG(0, Z1, Z2, grid);
-plot_function(f, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
-```
-The plot is made using `CairomMakie`.
-NB.: `plot_function` is not included in the `CamiXon` package.
-![Image](./assets/He41s-UG0.png)
-"""
-function potUG(k::Int, Z1::Vector{Complex{T}}, Z2::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
-
-    N = grid.N
-    r = grid.r
-
-    potUG_inner = [grid_integration(r.^k .* real(Z1) .* real(Z2), 1:n, grid) for n=2:N]
-    potUG_outer = [grid_integration((1.0 ./ r).^(k+1) .* real(Z1) .* real(Z2), n:N, grid) for n=2:N]
-
-    o = (potUG_inner .* r[2:N].^-(k+1)) .+ (potUG_outer .* r[2:N].^k)
-
-    p = fdiff_interpolation(o, 0; k=4)
-
-    prepend!(o,p)
-
-    return o
-
-end
-
 # ======================== potUG(k, Z, grid) ===================================
 @doc raw"""
     UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
