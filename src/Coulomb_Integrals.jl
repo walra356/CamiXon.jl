@@ -208,7 +208,7 @@ function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real,
 
 end
 
-# ======================== potUF(k, Z, grid) ===================================
+# ======================== UF(k, Z, grid) ===================================
 @doc raw"""
     UF(k::Int, Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 
