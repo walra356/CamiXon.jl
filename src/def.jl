@@ -81,11 +81,16 @@ end
 function _defspecs(grid, atom, orbit)
 
     g = grid.name
-    T = grid.T
-    a = atom.element.name
     o = orbit.name
+    Q = atom.Q
 
-    return "Def created for $a $o on $g grid of $(grid.N) points"
+    strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
+    strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+    strN = Q ≠ 0 ? " ion" : ", neutral atom"
+
+    str = atom.isotope.symbol * strQ
+
+    return "Def created for "* str *":$o on $g grid of $(grid.N) points"
 
 end
 # ..............................................................................
