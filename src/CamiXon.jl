@@ -55,6 +55,8 @@ export SpinOrbit
 export createSpinOrbit
 export Term
 export createTerm
+export a_coeff
+export b_coeff
 export UF
 export UG
 
@@ -166,8 +168,6 @@ export find_last
 
 export threeJsymbol
 export CGC
-export a_coeff
-export b_coeff
 
 export bernoulli_numbers
 export VectorRational
