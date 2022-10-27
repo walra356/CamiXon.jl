@@ -99,14 +99,6 @@ end
 
 Coulomb integral for *exchange* screening,
 
-```math
-U_{G}^{k}(\rho)
-=\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
-\tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,
-\varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
-\frac{1}{\varrho^{k+1}}\tilde{R}_{nl}(\varrho)
-\tilde{R}_{n^{\prime}l^{\prime}}(\varrho)\,\varrho^{2}d\varrho.
-```
 #### Example:
 ```
 atom = castAtom(Z=2, A=4, Q=0; msg=true)
@@ -158,14 +150,7 @@ end
 
 Coulomb integral for *directe* screening,
 
-```math
-U_{F}^{k}(\rho)
-=\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}
-\left[\tilde{R}_{nl}(\varrho)\right]^{2}
-\varrho^{2}d\varrho+\rho^{k}\int_{\rho}^{\infty}
-\frac{1}{\varrho^{k+1}}
-\left[\tilde{R}_{nl}(\varrho)\right]^{2}\varrho^{2}d\varrho.
-```
+
 #### Example:
 ```
 atom = castAtom(Z=2, A=4, Q=0; msg=true)
