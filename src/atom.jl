@@ -224,46 +224,50 @@ end
 # ======================== Orbit(name, n, n′, ℓ, up) ===========================
 
 """
-    Orbit(name, n, n′, ℓ)
+    Orbit(name, n, n′, ℓ, mℓ)
 
 Type for specification of *atomic orbitals* with fields:
 * `.name`: name
 * ` .n`:  principal quantum number
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
+* `.mℓ`:  orbital angular momentum projection valence electron
 
 The type `Orbit` is best created with the function `castOrbit`.
 """
 struct Orbit
-    name::String         # LS term notation
-    n::Int               # principal quantum number
-    n′::Int              # radial quantum number (number of nodes)
-    ℓ::Int               # orbital angular momentum valence electron
+    name::String          # LS term notation
+     n::Int               # principal quantum number
+    n′::Int               # radial quantum number (number of nodes)
+     ℓ::Int               # orbital angular momentum valence electron
+    mℓ::Int               # orbital angular momentum projection valence electron
 end
 # ================================ End =========================================
 
 
 # ======================== castOrbital(n::Int, ℓ::Int) ===========
 
-function _specsOrbit(name, n, n′, ℓ)
+function _specsOrbit(name, n, n′, ℓ, mℓ)
 
     str = "Orbital: $(name)
     principal quantum number: n = $n
     radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
-    orbital angular momentum of valence electron: ℓ = $ℓ"
+    orbital angular momentum of valence electron: ℓ = $ℓ
+    orbital angular momentum of valence electron: mℓ = $(mℓ)"
 
     return str
 
 end
 
 """
-    castOrbit(;n=1, ℓ=0, msg=true)
+    castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 
 Create `Orbit` with fields:
 * `.name`: name
 * ` .n`:  principal quantum number
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
+* `.mℓ`:  orbital angular momentum projection valence electron
 #### Examples:
 ```
 castOrbit(n=1, ℓ=0)
@@ -271,7 +275,7 @@ castOrbit(n=1, ℓ=0)
  Orbit("1s", 1, 0, 0)
 ```
 """
-function castOrbit(;n=1, ℓ=0, msg=true)
+function castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 
     ℓ < n || return error("Error: ℓ < n rule not satisfied")
 
@@ -281,9 +285,9 @@ function castOrbit(;n=1, ℓ=0, msg=true)
 
     n′ = n - ℓ - 1
 
-    msg && println(_specsOrbit(name, n, n′, ℓ) )
+    msg && println(_specsOrbit(name, n, n′, ℓ, mℓ) )
 
-    return Orbit(name, n, n′, ℓ)
+    return Orbit(name, n, n′, ℓ, mℓ)
 
 end
 

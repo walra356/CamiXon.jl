@@ -154,7 +154,7 @@ end
 
 # ======================== UF(k, Z, grid) ===================================
 @doc raw"""
-    UF(k::Int, F::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+    UF(k::Int, P::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 
 Coulomb integral for *directe* screening,
 
@@ -185,8 +185,8 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UF0.png)
 """
-function UF(k::Int, F::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+function UF(k::Int, P::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-    return UG(k, F, F, grid)
+    return UG(k, P, P, grid)
 
 end
