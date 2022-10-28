@@ -107,6 +107,7 @@ export adams_moulton_master
 export demo_hydrogen
 export hydrogenic_reduced_wavefunction
 export RH1s
+export RH2s
 export RH2p
 export restore_wavefunction
 export reduce_wavefunction

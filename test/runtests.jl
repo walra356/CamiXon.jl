@@ -13,11 +13,11 @@ using Test
     E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid, def);
+    Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-    XH1s_generic = hydrogenic_reduced_wavefunction1(1, orbit, grid, def);
+    XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
     XH1s_example = reduce_wavefunction(RH1s_example, grid);
     @test XH1s_example ≈ XH1s_generic
     orbit = castOrbit(n=2, ℓ=0; msg=false);
@@ -25,15 +25,15 @@ using Test
     def = castDef(grid, atom, orbit, codata);
     RH2s_example = [RH2s(1, grid.r[n]) for n=1:grid.N];
     XH2s_example = reduce_wavefunction(RH2s_example, grid);
-    XH2s_generic = hydrogenic_reduced_wavefunction1(1, orbit, grid);
+    XH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
     @test XH2s_example ≈ XH2s_generic
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
     def = castDef(grid, atom, orbit, codata);
     RH2p_example = [RH2p(1, grid.r[n]) for n=1:grid.N];
     XH2p_example = reduce_wavefunction(RH2p_example, grid);
-    XH2p_generic = hydrogenic_reduced_wavefunction1(1, orbit, grid);
-    @test XH2p_example ≈ XH2p_generic 
+    XH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    @test XH2p_example ≈ XH2p_generic
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9
