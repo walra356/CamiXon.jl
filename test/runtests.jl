@@ -22,12 +22,12 @@ using Test
     @test XH2p_example ≈ XH2p_generic
     orbit = castOrbit(n=1, ℓ=0);
     grid = autoGrid(atom, orbit, Float64);
+    def = castDef(grid, atom, orbit, codata);
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
     XH1s_example = reduce_wavefunction(RH1s_example, grid);
     @test XH1s_example ≈ XH1s_generic
-    #def = castDef(grid, atom, orbit, codata);
-    E = convert(grid.T, bohrformula(atom.Z, orbit.n));
+    #E = convert(grid.T, bohrformula(atom.Z, orbit.n));
     E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
