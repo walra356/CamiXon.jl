@@ -184,24 +184,24 @@ function fits_create(filename::String, data=[]; protect=true)
 
 end
 # test ...
-function fits_create()
+#function fits_create()
 
-    strExample = "minimal.fits"
-    fits_create(strExample, protect=false)
+#    strExample = "minimal.fits"
+#    fits_create(strExample, protect=false)
 
-    f = fits_read(strExample)
-    a = f[1].header.keys[1]  == "SIMPLE"
-    b = f[1].dataobject.data == Any[]
-    c = get(Dict(f[1].header.dict),"SIMPLE",0)
-    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0;
+#    f = fits_read(strExample)
+#    a = f[1].header.keys[1]  == "SIMPLE"
+#    b = f[1].dataobject.data == Any[]
+#    c = get(Dict(f[1].header.dict),"SIMPLE",0)
+#    d = get(Dict(f[1].header.dict),"NAXIS",0) == 0;
 
-    rm(strExample)
+#    rm(strExample)
 
-    test = .![a, b, c, d];
+#    test = .![a, b, c, d];
 
-    return !convert(Bool,sum(test))
+#    return !convert(Bool,sum(test))
 
-end
+#end
 
 
 # .................................................... fits_info ...................................................
