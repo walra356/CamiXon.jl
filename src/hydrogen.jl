@@ -19,7 +19,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+    hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid, def::Def)
 
 Analytic expression for the hydrogenic wavefunction written in the format
 ``Z = \tilde{χ} + i \tilde{χ}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
@@ -158,7 +158,7 @@ grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
+XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid, def);
 
 XH1s_example = reduce_wavefunction(RH1s_example);
 RH1s_generic = restore_wavefunction(XH1s_generic);
@@ -213,7 +213,7 @@ grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-XH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
+XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid, def);
 
 XH1s_example = reduce_wavefunction(RH1s_example);
 RH1s_generic = restore_wavefunction(XH1s_generic);
