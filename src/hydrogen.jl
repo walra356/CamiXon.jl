@@ -281,6 +281,44 @@ end
 # =============================== RH2p(Z, r) ===================================
 
 @doc raw"""
+    RH2s(Z::U, r::T) where {U <: Real, T <:Real}
+
+Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
+and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
+```math
+    \tilde{R}_{2s}(ρ)=\left(Z/2\right)^{3/2}(1-Zρ/2)2e^{-Zρ/2}
+```
+is the radial wavefunction and
+```math
+    \tilde{R}_{2s}(ρ)=\left(Z/2\right)^{5/2}(2-Zρ/2)2e^{-Zρ/2}
+``` its derivative, with ``ρ`` the radial distance to the nucleus in a.u..
+#### Example:
+```
+atom = castAtom(Z=1, A=1, Q=0; msg=false);
+orbit = castOrbit(n=2, ℓ=0; msg=false);
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+def = castDef(grid, atom, orbit, codata; msg=false);
+
+RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
+
+plot_wavefunction(RH2s_example, 1:grid.N, grid, def; reduced=false)
+```
+The plot is made using `CairomMakie`.
+NB.: `plot_wavefunction` is not included in the `CamiXon` package.
+![Image](./assets/RH2s.png)
+"""
+function RH2p(Z::U, r::T) where {U <: Real, T <:Real}
+
+    P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
+    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * (1.0 - Z*r/2.0) * exp(-Z*r/2.0)
+
+    return P + im * Q
+
+end
+
+# =============================== RH2p(Z, r) ===================================
+
+@doc raw"""
     RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
