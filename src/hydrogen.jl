@@ -19,7 +19,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid, def::Def)
+    hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
 
 Analytic expression for the hydrogenic wavefunction written in the format
 ``Z = \tilde{χ} + i \tilde{χ}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
@@ -48,7 +48,7 @@ orbit = castOrbit(n=25, ℓ=10)
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
 Zval = 1
-Z = hydrogenic_reduced_wavefunction(Zval, orbit, grid, def);
+Z = hydrogenic_reduced_wavefunction(Zval, orbit, grid);
     Orbital: 25n
     principal quantum number: n = 25
     radial quantum number: n′ = 14 (number of nodes in radial wavefunction)
@@ -62,13 +62,11 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/H1_25n.png)
 """
-function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid, def::Def)
+function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
 
     n = orbit.n
     ℓ = orbit.ℓ
     r = grid.r
-
-    grid.N == def.pos.N || error("Error: grid.N ≠ def.pos.N")
 
     norm = _hydrogenic_norm(n, ℓ)
 
@@ -215,8 +213,8 @@ def = castDef(grid, atom, orbit, codata);
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid, def);
 
-XH1s_example = reduce_wavefunction(RH1s_example);
-RH1s_generic = restore_wavefunction(XH1s_generic);
+XH1s_example = reduce_wavefunction(RH1s_example, grid);
+RH1s_generic = restore_wavefunction(XH1s_generic, grid);
 
 XH1s_example ≈ XH1s_generic
     true
@@ -307,10 +305,10 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2s.png)
 """
-function RH2p(Z::U, r::T) where {U <: Real, T <:Real}
+function RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 
-    P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
-    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * (1.0 - Z*r/2.0) * exp(-Z*r/2.0)
+    P = 2.0 * (Z/2)^(3/2) * (1.0-Z*r/2.0) * exp(-Z*r/2.0)
+    Q = -2.0 * (Z/2)^(5/2) * (2.0 - Z*r/2.0) * exp(-Z*r/2.0)
 
     return P + im * Q
 
