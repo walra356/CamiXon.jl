@@ -44,14 +44,11 @@ where ``L_{n-l-1}^{2l+1}(2Z\rho/n)`` is the generalized Laguerre polynomial
 is the norm of the wavefunction.
 #### Example:
 ```
-atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=25, ℓ=10)
 grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
-Z = hydrogenic_reduced_wavefunction(atom, orbit, grid, def);
-    Element created: H, hydrogen, Z=1, weight=1.008
-    Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
-    Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
+Zval = 1
+Z = hydrogenic_reduced_wavefunction(Zval, orbit, grid, def);
     Orbital: 25n
     principal quantum number: n = 25
     radial quantum number: n′ = 14 (number of nodes in radial wavefunction)
@@ -65,14 +62,11 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/H1_25n.png)
 """
-function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid, def::Def)
+function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid, def::Def)
 
-    Zval = atom.Z
     n = orbit.n
     ℓ = orbit.ℓ
     r = grid.r
-
-    (atom.Z - atom.Q) == 1 || error("Error: Z-Q ≠ 1 (atom not hydrogenic)")
 
     grid.N == def.pos.N || error("Error: grid.N ≠ def.pos.N")
 
@@ -322,5 +316,5 @@ function RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
 end
 
-χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
-gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]
+#χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
+#gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]
