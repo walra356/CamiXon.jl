@@ -156,19 +156,19 @@ grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
 
-XH1s_example = reduce_wavefunction(RH1s_example);
-RH1s_generic = restore_wavefunction(XH1s_generic);
+ZH1s_example = reduce_wavefunction(RH1s_example);
+RH1s_generic = restore_wavefunction(ZH1s_generic);
 
 RH1s_example ≈ RH1s_generic
     true
 
-XH1s_example ≈ XH1s_generic
+ZH1s_example ≈ ZH1s_generic
     true
 
-f1 = real(XH1s_example)
-f2 = real(XH1s_generic)
+f1 = real(ZH1s_example)
+f2 = real(ZH1s_generic)
 
 compare_functions(f1, f2, 1:grid.N, grid)
 ```
@@ -211,12 +211,12 @@ grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
 
-XH1s_example = reduce_wavefunction(RH1s_example, grid);
-RH1s_generic = restore_wavefunction(XH1s_generic, grid);
+ZH1s_example = reduce_wavefunction(RH1s_example, grid);
+RH1s_generic = restore_wavefunction(ZH1s_generic, grid);
 
-XH1s_example ≈ XH1s_generic
+ZH1s_example ≈ ZH1s_generic
     true
 
 RH1s_example ≈ RH1s_generic
@@ -288,7 +288,7 @@ and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```
 is the radial wavefunction and
 ```math
-    \tilde{R}_{2s}(ρ)=\left(Z/2\right)^{5/2}(2-Zρ/2)2e^{-Zρ/2}
+    \tilde{R}_{2s}(ρ)=-\left(Z/2\right)^{5/2}(2-Zρ/2)2e^{-Zρ/2}
 ``` its derivative, with ``ρ`` the radial distance to the nucleus in a.u..
 #### Example:
 ```

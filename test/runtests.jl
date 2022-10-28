@@ -10,28 +10,29 @@ using Test
     grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
     def = castDef(grid, atom, orbit, codata);
     RH2s_example = [RH2s(1, grid.r[n]) for n=1:grid.N];
-    XH2s_example = reduce_wavefunction(RH2s_example, grid);
-    XH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    @test XH2s_example ≈ XH2s_generic
+    ZH2s_example = reduce_wavefunction(RH2s_example, grid);
+    ZH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    @test ZH2s_example ≈ ZH2s_generic
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
     def = castDef(grid, atom, orbit, codata);
     RH2p_example = [RH2p(1, grid.r[n]) for n=1:grid.N];
-    XH2p_example = reduce_wavefunction(RH2p_example, grid);
-    XH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    @test XH2p_example ≈ XH2p_generic
+    ZH2p_example = reduce_wavefunction(RH2p_example, grid);
+    ZH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    @test ZH2p_example ≈ ZH2p_generic
     orbit = castOrbit(n=1, ℓ=0);
     grid = autoGrid(atom, orbit, Float64);
     def = castDef(grid, atom, orbit, codata);
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-    XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    XH1s_example = reduce_wavefunction(RH1s_example, grid);
-    @test XH1s_example ≈ XH1s_generic
+    ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    ZH1s_example = reduce_wavefunction(RH1s_example, grid);
+    @test ZH1s_example ≈ ZH1s_generic
     #E = convert(grid.T, bohrformula(atom.Z, orbit.n));
     E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    @test ZH1s_example ≈ Z
+    #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
@@ -44,7 +45,7 @@ using Test
     @test get_Nb(Z, def) == 103
     @test get_Nuctp(E, def) == 76
     @test grid_integration(real(Z) .^2, 1, grid.N, grid) ≈ 1.0
-    @test grid_integration(real(Z1) .^2, 1, grid.N, grid) ≈ 1.0
+    @test grid_integration(real(ZH1s_generic) .^2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5//2) == "⁻⁵ᐟ²"
     @test sub(-5//2) == "₋₅⸝₂"
     @test frac(-5//2) == "-⁵/₂"
