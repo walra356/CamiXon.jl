@@ -6,20 +6,6 @@ using Test
 @testset "CamiXon.jl" begin
     codata = castCodata(2018);
     atom = castAtom(Z=1, A=1, Q=0);
-    orbit = castOrbit(n=1, ℓ=0);
-    grid = autoGrid(atom, orbit, Float64);
-    def = castDef(grid, atom, orbit, codata);
-    E = convert(grid.T, bohrformula(atom.Z, orbit.n));
-    E = initE(def);
-    adams = castAdams(E, grid, def);
-    E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    #P = real(Z)
-    #val = UF(0, P, grid)[1];
-    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-    XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    XH1s_example = reduce_wavefunction(RH1s_example, grid);
-    @test XH1s_example ≈ XH1s_generic
     orbit = castOrbit(n=2, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
     def = castDef(grid, atom, orbit, codata);
@@ -34,6 +20,20 @@ using Test
     XH2p_example = reduce_wavefunction(RH2p_example, grid);
     XH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
     @test XH2p_example ≈ XH2p_generic
+    orbit = castOrbit(n=1, ℓ=0);
+    grid = autoGrid(atom, orbit, Float64);
+    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+    XH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    XH1s_example = reduce_wavefunction(RH1s_example, grid);
+    @test XH1s_example ≈ XH1s_generic
+    #def = castDef(grid, atom, orbit, codata);
+    E = convert(grid.T, bohrformula(atom.Z, orbit.n));
+    E = initE(def);
+    adams = castAdams(E, grid, def);
+    E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
+    Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    #P = real(Z)
+    #val = UF(0, P, grid)[1];
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9
