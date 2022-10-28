@@ -253,7 +253,7 @@ function _specsOrbit(name, n, n′, ℓ, mℓ)
     principal quantum number: n = $n
     radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
     orbital angular momentum of valence electron: ℓ = $ℓ
-    orbital angular momentum of valence electron: mℓ = $(mℓ)"
+    orbital angular momentum projection of valence electron: mℓ = $(mℓ)"
 
     return str
 
