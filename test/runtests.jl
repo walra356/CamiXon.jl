@@ -31,7 +31,8 @@ using Test
     E = initE(def);
     adams = castAdams(E, grid, def);
     E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false);
-    @test (real(ZH1s_example .- Z)) .< [1.0e-6 for i=1:grid.N]
+    @test ((real(ZH1s_example .- Z)) .< [1.0e-6 for i=1:grid.N]) == ones(Bool,gridN)
+    @test ((imag(ZH1s_example .- Z)) .< [1.0e-6 for i=1:grid.N]) == ones(Bool,gridN)
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
