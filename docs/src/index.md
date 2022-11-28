@@ -59,7 +59,7 @@ book *Atomic Structure Theory* by Walter R. Johnson.
 
 Shown below are the reduced radial wavefunction ``(χ)`` and its derivative
 ``(χ^′)`` in the near field (left), the far field (right), and in the region
-near the classical turning point (center).
+near the classical turning point (center). 
 
 ![Image](./assets/H1_3d.png)
 
