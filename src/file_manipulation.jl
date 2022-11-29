@@ -25,7 +25,7 @@ function decompose_filnam(str::String)
 
     ne = Base.findlast('.',str)                # ne: first digit of extension
     nl = length(str)                           # ne: length of file name including extension
-    ne == nothing ? extension = false : extension = true
+    isnothing(ne) ? extension = false : extension = true
 
     if extension
         strNam = str[1:ne-1]
@@ -39,7 +39,7 @@ function decompose_filnam(str::String)
         o = [("Name", strNam)]
     end
 
-    if n != nothing
+    if !isnothing(n)
         strNum = ""
         while Base.Unicode.isdigit(str[n])
             strNum = str[n] * strNum
@@ -119,7 +119,7 @@ function fits_combine(filnamFirst::String, filnamLast::String; info=false)
 
     filnamOut = strPre * strNum * "-" * strPre * strNum2 * strExt
     fileOut = FITSIO.FITS(filnamOut,"w")
-    Base.write(fileOut, dataStack; header=metaInfo)
+    Base.write(fileOut, dataStack) # was incorrect: Base.write(fileOut, dataStack; header=metaInfo)
     if info
         println("Output fileOut:\r\n", fileOut)
         println("\r\nOutput fileOut[1]:\r\n", fileOut[1])

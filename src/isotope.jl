@@ -53,7 +53,7 @@ function _strIsotope(Z::Int, A::Int)
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "⁺" : "⁻"
-    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
+    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra) * "%"
     strT½ = isotope.T½ == 1e100 ? "stable" : "radioactive"
 
     str = isotope.symbol
@@ -81,7 +81,7 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
 
     strπ = isotope.π == 1 ? "\$^+\$" : "\$^-\$"
     name = isotope.name
-    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra)
+    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra)
     strT½ = isotope.T½ == 1e100 ? "\\," : "*\$\\!\\!\$"
     symbol = name=="deuterium" ? "D" : name=="tritium" ? "T" : symbol
 
@@ -108,7 +108,7 @@ function _infoIsotope(Z::Int, A::Int)
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "even" : "odd"
-    strRA = isotope.ra == nothing ? "trace" : repr(isotope.ra) * "%"
+    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra) * "%"
     strT½ = isotope.T½ == 1e100 ? "stable" : repr(isotope.T½) * " years"
 
     str = "Isotope: " * isotope.name * "-" * repr(isotope.A)

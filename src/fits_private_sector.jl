@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 # ............................................ FITS private sector ................................................................
 
 using Dates
@@ -5,7 +7,7 @@ using Dates
 # ........................................... cast filename into a FITSname object .................................
 
 """
-    cast_FITS_name(filename::String)
+    cast_FITS_name(str::String)
 
 Decompose the FITS filename 'filnam.fits' into its name, prefix, numerator and extension.
 #### Examples:
@@ -25,7 +27,7 @@ function cast_FITS_name(str::String)
     ne = Base.findlast('.',str)                                     # ne: first digit of extension
     nl = Base.length(str)                                           # ne: length of file name including extension
 
-    hasextension = ne == nothing ? false : true
+    hasextension = isnothing(ne) ? false : true
 
     if hasextension
         strNam = str[1:ne-1]
@@ -40,7 +42,7 @@ function cast_FITS_name(str::String)
 
     isfits || error("FitsError: '$(str)': incorrect filename (lacks mandatory '.fits' extension)")
 
-    if n != nothing
+    if !isnothing(n)
         strNum = ""
         while Base.Unicode.isdigit(str[n])
             strNum = str[n] * strNum
