@@ -186,11 +186,11 @@ using Test
     @test texp(1.0, 0.0, 5) == 2.7166666666666663
     @test texp(1, 0, 5) == 163//60
     @test texp(1//1, 0//1, 5) == 163//60
-    strExample = "kanweg.fits";
-    data = [11, 21, 31, 12, 22, 23, 13, 23, 33];
-    data = reshape(data, (3, 3, 1));
-    fits_create(strExample, data; protect=false);
-    f = fits_read(strExample);
+    # strExample = raw"//runtest/kanweg.fits";
+    # data = [11, 21, 31, 12, 22, 23, 13, 23, 33];
+    # data = reshape(data, (3, 3, 1));
+    # fits_create(strExample, data; protect=false);
+    f = fits_read("/.kanweg.fits");
     fits_info(f[1])
     #@test fits_info("T01.fits") == "T01.fits: file was found (for more information set info=true)"
     #@test fits_copy("T01.fits") == "T01.fits was saved as T01 - Copy.fits"
