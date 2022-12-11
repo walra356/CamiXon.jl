@@ -69,7 +69,7 @@ function _write_IMAGE_data(FITS_HDU)
       
          E = Base.eltype(data)
          E <: Real || error("FitsError: incorrect DataType (Real type mandatory for image HDUs)")
-    nbytes = E.size
+    nbytes = sizeof(E)
      bzero = _fits_bzero(E)
       data = Base.vec(data)
       data = data .- E(bzero)                                           # change between Int and UInt (if applicable)

@@ -7,7 +7,7 @@ function _PRIMARY_input(dataobject::FITS_data)
     r::Array{String,1} = []
 
          E = Base.eltype(dataobject.data)
-    nbytes = E ≠ Any ? E.size : 0
+    nbytes = E ≠ Any ? sizeof(E) : 0
      nbits = 8 * nbytes
     bitpix = E <: AbstractFloat ? -abs(nbits) : nbits
     bitpix = Base.lpad(bitpix,20)
@@ -38,7 +38,7 @@ function _IMAGE_input(data::Array{T,N} where {T <: Real,N})
     eltype(data) <: Real || error("FitsError: Array of real numbers expected")
 
          E = Base.eltype(data)
-    nbytes = E.size
+    nbytes = sizeof(E)
      nbits = 8 * nbytes
     bitpix = E <: AbstractFloat ? -abs(nbits) : nbits
     bitpix = Base.lpad(bitpix,20)
