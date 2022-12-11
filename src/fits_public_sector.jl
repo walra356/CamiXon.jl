@@ -124,7 +124,7 @@ Key:
 #### Examples:
 ```
 strExample = "minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 
 f = fits_read(strExample)
 a = f[1].dataobject.data
@@ -189,7 +189,7 @@ end
 function fits_create()
 
     strExample = "minimal.fits"
-    fits_create(strExample, protect=false)
+    fits_create(strExample; protect=false)
 
     f = fits_read(strExample)
     a = f[1].header.keys[1]  == "SIMPLE"
@@ -279,7 +279,7 @@ Read FITS file and return Array of `FITS_HDU`s
 #### Example:
 ```
 strExample = "minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 
 f = fits_read(strExample)
 f[1].dataobject.data
@@ -306,7 +306,7 @@ end
 function fits_read()
 
     strExample = "minimal.fits"
-    fits_create(strExample, protect=false)
+    fits_create(strExample; protect=false)
 
     f = fits_read(strExample)
     a = f[1].header.keys[1]  == "SIMPLE"
@@ -331,7 +331,7 @@ Extend the FITS file of given filename with the data of `hdutype` from `data_ext
 ```
 strExample = "test_example.fits"
 data = [0x0000043e, 0x0000040c, 0x0000041f]
-fits_create(strExample, data, protect=false)
+fits_create(strExample, data; protect=false)
 
 f = fits_read(strExample)
 a = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
@@ -384,7 +384,7 @@ function fits_extend()
 
     strExample = "test_example.fits"
     data = [0x0000043e, 0x0000040c, 0x0000041f]
-    fits_create(strExample, data, protect=false)
+    fits_create(strExample, data; protect=false)
 
     f = fits_read(strExample)
     a = Float16[1.01E-6,2.0E-6,3.0E-6,4.0E-6,5.0E-6]
@@ -419,7 +419,7 @@ Add a header record of given 'key, value and comment' to 'HDU[hduindex]' of file
 #### Example:
 ```
 strExample="minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
 f = fits_read(strExample)
@@ -473,7 +473,7 @@ end
 function fits_add_key()
 
     strExample="minimal.fits"
-    fits_create(strExample;protect=false)
+    fits_create(strExample; protect=false)
     fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
     f = fits_read(strExample)
@@ -496,7 +496,7 @@ Edit a header record of given 'key, value and comment' to 'HDU[hduindex]' of fil
 ```
 data = DateTime("2020-01-01T00:00:00.000")
 strExample="minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 fits_edit_key(strExample, 1, "KEYNEW1", data, "record 5 changed to a DateTime type")
 
@@ -556,7 +556,7 @@ end
 function fits_edit_key()
 
     strExample="minimal.fits"
-    fits_create(strExample;protect=false)
+    fits_create(strExample; protect=false)
     fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
     fits_edit_key(strExample, 1, "KEYNEW1", false, "comment has changed")
 
@@ -579,7 +579,7 @@ Delete a header record of given `key`, `value` and `comment` to `FITS_HDU[hduind
 #### Examples:
 ```
 strExample="minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 
 f = fits_read(strExample)
@@ -630,7 +630,7 @@ end
 function fits_delete_key()
 
     strExample="minimal.fits"
-    fits_create(strExample;protect=false)
+    fits_create(strExample; protect=false)
     fits_add_key(strExample, 1, "KEYNEW1", true, "FITS dataset may contain extension")
 
     f = fits_read(strExample)
@@ -660,7 +660,7 @@ Rename the key of a header record of file with name 'filename'
 #### Example:
 ```
 strExample="minimal.fits"
-fits_create(strExample;protect=false)
+fits_create(strExample; protect=false)
 fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 fits_rename_key(strExample, 1, "KEYNEW1",  "KEYNEW2")
 
@@ -715,7 +715,7 @@ end
 function fits_rename_key()
 
     strExample="minimal.fits"
-    fits_create(strExample;protect=false)
+    fits_create(strExample; protect=false)
     fits_add_key(strExample, 1, "KEYNEW1", true, "this is record 5")
 
     f = fits_read(strExample)
