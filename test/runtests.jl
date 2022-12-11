@@ -6,9 +6,6 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    E = Base.eltype([])
-    println("E = $E")
-    println("E.size = $(E.size)")
     codata = castCodata(2018);
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
@@ -189,11 +186,11 @@ using Test
     @test texp(1.0, 0.0, 5) == 2.7166666666666663
     @test texp(1, 0, 5) == 163//60
     @test texp(1//1, 0//1, 5) == 163//60
-    #@test fits_create()
-    #@test fits_extend()
-    #@test fits_read()
-    #@test fits_add_key()
-    #@test fits_edit_key()
-    #@test fits_delete_key()
-    #@test fits_rename_key()
+    @test fits_create()
+    @test fits_extend()
+    @test fits_read()
+    @test fits_add_key()
+    @test fits_edit_key()
+    @test fits_delete_key()
+    @test fits_rename_key()
 end

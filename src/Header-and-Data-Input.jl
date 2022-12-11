@@ -7,7 +7,7 @@ function _PRIMARY_input(dataobject::FITS_data)
     r::Array{String,1} = []
 
          E = Base.eltype(dataobject.data)
-    nbytes = E.size
+    nbytes = E ≠ Any ? E.size : 0
      nbits = 8 * nbytes
     bitpix = E <: AbstractFloat ? -abs(nbits) : nbits
     bitpix = Base.lpad(bitpix,20)

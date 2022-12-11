@@ -199,9 +199,9 @@ function fits_create()
 
     rm(strExample)
 
-    test = .![a, b, c, d];
+    o = isnothing(findfirst(.![a, b, c, d])) ? true : false
 
-    return !convert(Bool,sum(test))
+    return o
 
 end
 
@@ -316,9 +316,9 @@ function fits_read()
 
     rm(strExample)
 
-    test = .![a, b, c, d];
+    o = isnothing(findfirst(.![a, b, c, d])) ? true : false
 
-    return !convert(Bool,sum(test))
+    return o
 
 end
 
@@ -404,9 +404,9 @@ function fits_extend()
 
     rm(strExample)
 
-    test = .![a, b, c, d, e]
+    o = isnothing(findfirst(.![a, b, c, d, e])) ? true : false
 
-    return !convert(Bool,sum(test))
+    return o
 
 end
 
@@ -647,9 +647,11 @@ function fits_delete_key()
 
     test = .![test1, test2]
 
+    o = isnothing(findfirst(.![test1, test2])) ? true : false
+
     rm(strExample)
 
-    return !convert(Bool,sum(test))
+    return o
 
 end
 
@@ -732,9 +734,11 @@ function fits_rename_key()
 
     test = .![test1, test2]
 
+    o = isnothing(findfirst(.![test1, test2])) ? true : false
+
     rm(strExample)
 
-    return !convert(Bool,sum(test))
+    return o
 
 end
 
