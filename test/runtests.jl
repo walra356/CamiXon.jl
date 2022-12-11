@@ -8,7 +8,7 @@ using Test
 @testset "CamiXon.jl" begin
     E = Base.eltype([0])
     println("E = $E")
-    println("E.size = $(E.size)")
+    println("sizeof(E) = $(sizeof(E))")
     codata = castCodata(2018);
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
