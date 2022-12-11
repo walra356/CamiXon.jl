@@ -189,7 +189,7 @@ end
 function fits_create()
 
     strExample = "minimal.fits"
-    data = []
+    data = [0]
     fits_create(strExample, data; protect=false)
 
     f = fits_read(strExample)
