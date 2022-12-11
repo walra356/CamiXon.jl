@@ -6,8 +6,8 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    Base.eltype([]).size
-    "hoi"
+    E = Base.eltype([])
+    println("E.size = $(E.size)")
     codata = castCodata(2018);
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
