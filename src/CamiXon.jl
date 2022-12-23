@@ -55,8 +55,8 @@ export SpinOrbit
 export createSpinOrbit
 export Term
 export createTerm
-export ak
-export bk
+export a_direct
+export b_exchange
 export UF
 export UG
 
