@@ -164,8 +164,8 @@ end
 #...............................................................................
 
 """
-    castAtom(;Z=1, A=1, Q=0, msg=true)
-    castAtom(elt::String; A=1, Q=0, msg=true)
+    castAtom(;Z=1, A=1, Q=0, msg=false)
+    castAtom(elt::String; A=1, Q=0, msg=false)
 
 Create Atom with fields:
 * `      .Z`:  atomic number (`::Int`)
@@ -176,10 +176,10 @@ Create Atom with fields:
 * `.isotope`:  (`::Isotope`)
 #### Examples:
 ```
-castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
+castAtom("Rb"; A=87, Q=0) == castAtom(Z=37, A=87, Q=0)
   true
 
-castAtom(Z=1, A=3, Q=0, msg=false)
+castAtom(Z=1, A=3, Q=0)
   Atom(1, 3, 0, 1, Element("hydrogen", "H", 1.008), Isotope("³T", "tritium",
   1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing))
 
@@ -196,7 +196,7 @@ atom.isotope.T½
   12.33
 ```
 """
-function castAtom(;Z=1, A=1, Q=0, msg=true)
+function castAtom(;Z=1, A=1, Q=0, msg=false)
 
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
@@ -206,7 +206,7 @@ function castAtom(;Z=1, A=1, Q=0, msg=true)
     return Atom(Z, A, Q, 1+Q, element, isotope)
 
 end
-function castAtom(elt::String; A=1, Q=0, msg=true)
+function castAtom(elt::String; A=1, Q=0, msg=false)
 
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
@@ -275,7 +275,7 @@ castOrbit(n=1, ℓ=0)
  Orbit("1s", 1, 0, 0)
 ```
 """
-function castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
+function castOrbit(;n=1, ℓ=0, mℓ=0, msg=false)
 
     ℓ < n || return error("Error: ℓ < n rule not satisfied")
 

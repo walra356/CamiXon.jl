@@ -100,6 +100,10 @@ end
     autoRmax(atom::Atom, orbit::Orbit)
 
 Largest relevant radial distance in a.u. (rule of thumb value)
+```math
+    Rmax = (2n^2 + 20n + 62)/Zc,
+```
+where ``n`` is thr principal quantum number and ``Z_c`` the Rydberg charge
 #### Example:
 ```
 codata = castCodata(2018)
@@ -136,6 +140,10 @@ end
     autoNtot(orbit::Orbit, Nboost=1)
 
 Total number of gridpoints (rule of thumb value)
+```math
+    Ntot = (70 + 50 * n) * Nboost,
+```
+where ``n`` is the principal quantum number and `Nboost` a multiplier to boost numerical precision
 ### Example:
 ```
 orbit = castOrbit(n=1, ℓ=0)
@@ -286,6 +294,9 @@ array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
 * `p == 1` (linear radial grid)
 * `p > 1` (quasi-exponential radial grid)
 * `coords=[]` (free polynomial grid based on the `coords`)
+* `Nboost` (multiplier to boost numerical precision)
+* `epn` (endpoint number: odd number to be used for trapezoidal integration with endpoint correction)
+* `k` (Adams-Moulton order to be used for `k+1`-point Adams-Moulton integration)
 #### Example:
 ```
 codata = castCodata(2018)

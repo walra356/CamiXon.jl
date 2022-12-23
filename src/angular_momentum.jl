@@ -1,7 +1,7 @@
 # ========= threeJsymbol(j1, m1, j2, m2, j3, m3; msg=false) ====================
 
 # ........................................................
-function _threeJroot2(j1, m1, j2, m2, J, M)
+function _Racah_sqrt2(j1, m1, j2, m2, J, M)
 
     a = Int(j1 + m1)
     b = Int(j1 - m1)
@@ -97,7 +97,7 @@ function threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real
     iszero(m1 + m2 + m3) || return 0
 
     Δ = triangle_coefficient(j1, j2, j3)
-    T = _threeJroot2(j1, m1, j2, m2, j3, m3)
+    T = _Racah_sqrt2(j1, m1, j2, m2, j3, m3)
     R = _Racah_sum(j1, m1, j2, m2, j3)
     S = R * R
     A = Δ * T * S
@@ -151,7 +151,7 @@ function CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false
 
     if msg
         Δ = triangle_coefficient(j1, j2, J)
-        T = _threeJroot2(j1, m1, j2, m2, J, M)
+        T = _Racah_sqrt2(j1, m1, j2, m2, J, M)
         R = _Racah_sum(j1, m1, j2, m2, J)
         S = R * R
         A = Δ * T * S

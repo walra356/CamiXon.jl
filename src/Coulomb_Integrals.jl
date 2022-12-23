@@ -1,5 +1,7 @@
+# SPDX-License-Identifier: MIT
+
 @doc raw"""
-    a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+    ak(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 Angular coefficient for the *direct* Coulomb integral:
 
@@ -21,14 +23,14 @@ l^{\prime} & k & l^{\prime}\\
 ```
 #### Example:
 ```
-a(2,1,1,2,2)
+ak(2,1,1,2,2)
     2//35
 
-a(6,3,2,3,-1)
+ak(6,3,2,3,-1)
     -250//20449
 ```
 """
-function a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+function ak(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Base.iseven(k) || return 0
     0 ≤ k ≤ 2min(l,l′) || return 0
@@ -36,7 +38,7 @@ function a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Δ1 = triangle_coefficient(l, k, l)
     Δ2 = triangle_coefficient(l′, k, l′)
-    T = _threeJroot2(l, 0, k, 0, l, 0) * _threeJroot2(l, -ml, k, 0, l, ml) * _threeJroot2(l′, 0, k, 0, l′, 0) * _threeJroot2(l′, -ml′, k, 0, l′, ml′)
+    T = _Racah_sqrt2(l, 0, k, 0, l, 0) * _Racah_sqrt2(l, -ml, k, 0, l, ml) * _Racah_sqrt2(l′, 0, k, 0, l′, 0) * _Racah_sqrt2(l′, -ml′, k, 0, l′, ml′)
     S = _Racah_sum(l, 0, k, 0, l) * _Racah_sum(l, -ml, k, 0, l) * _Racah_sum(l′, 0, k, 0, l′) * _Racah_sum(l′, -ml′, k, 0, l′)
 
     a = (2l+1) * (2l′+1) * Δ1 * Δ2 * S
@@ -51,7 +53,7 @@ function a_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 end
 
 @doc raw"""
-    b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+    bk(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 Angular coefficient for the *exchange* Coulomb integral:
 
@@ -67,20 +69,20 @@ l & k & l^{\prime}\\
 ```
 #### Example:
 ```
-b(1,1,1,2,2)
+bk(1,1,1,2,2)
     2//5
 
-b(6,3,2,3,-1)
+bk(6,3,2,3,-1)
     1050//20449
 ```
 """
-function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+function bk(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Base.iseven(k+l+l′) || return 0
     abs(l-l′) ≤ k ≤ l+l′ || return 0
 
     Δ = triangle_coefficient(l, k, l′)
-    T = _threeJroot2(l, 0, k, 0, l′, 0) * _threeJroot2(l, -ml, k, ml-ml′, l′, ml′)
+    T = _Racah_sqrt2(l, 0, k, 0, l′, 0) * _Racah_sqrt2(l, -ml, k, ml-ml′, l′, ml′)
     S = _Racah_sum(l, 0, k, 0, l′) * _Racah_sum(l, -ml, k, ml-ml′, l′)
 
     o = abs((2l+1) * (2l′+1) * Δ * Δ * S * S * T)
@@ -93,11 +95,11 @@ function b_coeff(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-# ======================== potUG(k, Z, grid) ===================================
+# ======================== scrUG(k, Z, grid) ===================================
 @doc raw"""
     UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Coulomb integral for *exchange* screening,
+Potential for *exchange* screening,
 
 ```math
 U_{G}^{k}(\rho)
@@ -156,7 +158,7 @@ end
 @doc raw"""
     UF(k::Int, P::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 
-Coulomb integral for *directe* screening,
+Potential for *directe* screening,
 
 ```math
 U_{F}^{k}(\rho)

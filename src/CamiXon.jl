@@ -55,8 +55,8 @@ export SpinOrbit
 export createSpinOrbit
 export Term
 export createTerm
-export a_coeff
-export b_coeff
+export ak
+export bk
 export UF
 export UG
 
