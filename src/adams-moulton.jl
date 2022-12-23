@@ -501,7 +501,7 @@ end
 # ===================== adams_moulton_master ===================================
 
 @doc raw"""
-    adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+    adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false)
 
 Solves the Schrödinger equation for an atom defined by `def` for energy `E`
 on grid the `grid` with the Adams-Moulton method defined by `adams`.
@@ -523,7 +523,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/hydrogen-1s.png)
 """
-function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true)
+function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false)
 
     t1 = time()
     msg && println("\nt = " * _strΔt(t1,t1))
