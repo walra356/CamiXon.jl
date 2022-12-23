@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
 
 @doc raw"""
-    ak(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+    a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
-Angular coefficient for the *direct* Coulomb integral:
+Coulomb *direct* angular integral:
 
 ```math
 a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(-)^{m_{l}+m_{l^{\prime}}}
@@ -23,14 +23,14 @@ l^{\prime} & k & l^{\prime}\\
 ```
 #### Example:
 ```
-ak(2,1,1,2,2)
+a_direct(2,1,1,2,2)
     2//35
 
-ak(6,3,2,3,-1)
+a_direct(6,3,2,3,-1)
     -250//20449
 ```
 """
-function ak(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+function a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Base.iseven(k) || return 0
     0 ≤ k ≤ 2min(l,l′) || return 0
@@ -53,9 +53,9 @@ function ak(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 end
 
 @doc raw"""
-    bk(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+    b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
-Angular coefficient for the *exchange* Coulomb integral:
+Coulomb *exchange* angular integral:
 
 ```math
 b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(2l+1)(2l^{\prime}+1)
@@ -69,14 +69,14 @@ l & k & l^{\prime}\\
 ```
 #### Example:
 ```
-bk(1,1,1,2,2)
+b_exchange(1,1,1,2,2)
     2//5
 
-bk(6,3,2,3,-1)
+b_exchange(6,3,2,3,-1)
     1050//20449
 ```
 """
-function bk(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Base.iseven(k+l+l′) || return 0
     abs(l-l′) ≤ k ≤ l+l′ || return 0

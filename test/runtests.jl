@@ -101,10 +101,10 @@ using Test
     @test triangle_coefficient(1//2, 1, 1.5) == 1//12
     @test threeJsymbol(3, 0, 4, -1, 5, 1) ≈ -0.10964174397241236
     @test CGC(3, 0, 4, -1, 5, -1) ≈ -0.36364052611670256
-    @test ak(2,1,1,2,2) == 2//35
-    @test bk(1,1,1,2,2) == 2//5
-    @test ak(6,3,2,3,-1) == -250//20449
-    @test bk(6,3,2,3,-1) == 1050//20449
+    @test a_direct(2,1,1,2,2) == 2//35
+    @test b_exchange(1,1,1,2,2) == 2//5
+    @test a_direct(6,3,2,3,-1) == -250//20449
+    @test b_exchange(6,3,2,3,-1) == 1050//20449
     @test fdiff_interpolation_expansion_coeffs(-1, 5) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(-1, 5, bwd) == [1, 1, 1, 1, 1, 1]
     @test fdiff_interpolation_expansion_coeffs(1, 5, fwd) == [1, -1, 1, -1, 1, -1]

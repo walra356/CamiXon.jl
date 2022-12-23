@@ -101,9 +101,9 @@ end
 
 Largest relevant radial distance in a.u. (rule of thumb value)
 ```math
-    Rmax = (2n^2 + 20n + 62)/Zc,
+    R_{max} = (2n^2 + 20n + 62)/Zc,
 ```
-where ``n`` is thr principal quantum number and ``Z_c`` the Rydberg charge
+where ``n`` is the principal quantum number and ``Z_c`` the Rydberg charge
 #### Example:
 ```
 codata = castCodata(2018)
@@ -141,7 +141,7 @@ end
 
 Total number of gridpoints (rule of thumb value)
 ```math
-    Ntot = (70 + 50 * n) * Nboost,
+    N_{tot} = (70 + 50 * n) * N_{boost},
 ```
 where ``n`` is the principal quantum number and `Nboost` a multiplier to boost numerical precision
 ### Example:
