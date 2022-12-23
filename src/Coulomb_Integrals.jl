@@ -3,7 +3,7 @@
 @doc raw"""
     a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
-Coulomb *direct* angular integral:
+Coulomb angular integral - direct part:
 
 ```math
 a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(-)^{m_{l}+m_{l^{\prime}}}
@@ -55,7 +55,7 @@ end
 @doc raw"""
     b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
-Coulomb *exchange* angular integral:
+Coulomb angular integral - exchange part:
 
 ```math
 b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=(2l+1)(2l^{\prime}+1)

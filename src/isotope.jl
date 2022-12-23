@@ -219,8 +219,8 @@ function _filter_isotopes(elt::String, A::Int)
 end
 #...............................................................................
 """
-    castIsotope(;Z=1, A=1, msg=true)
-    castIsotope(elt::String; A=1, msg=true)
+    castIsotope(;Z=1, A=1, msg=false)
+    castIsotope(elt::String; A=1, msg=false)
 
 Create Isotope with fields
 * `     .symbol`: symbol (`::String`)
@@ -238,16 +238,16 @@ Create Isotope with fields
 * `     .T½`:  lifetime in years (`::Float64`)
 #### Examples:
 ```
-castIsotope("Rb"; A=87, msg=false) == castIsotope(Z=37, A=87, msg=false)
+castIsotope("Rb"; A=87) == castIsotope(Z=37, A=87)
   true
 
-isotope = castIsotope(Z=1, A=3, msg=false)
+isotope = castIsotope(Z=1, A=3)
   Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
 
 isotope.T½
   12.33
 
-castIsotope(Z=1,A=3);
+castIsotope(Z=1, A=3, msg=true);
   Isotope created: tritium-3
       symbol: ³T
       element: tritium
@@ -264,7 +264,7 @@ castIsotope(Z=1,A=3);
       lifetime: 12.33 years
 ```
 """
-function castIsotope(;Z=1, A=1, msg=true)
+function castIsotope(;Z=1, A=1, msg=false)
 
     dict = dictIsotopes
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
@@ -279,7 +279,7 @@ function castIsotope(;Z=1, A=1, msg=true)
     return o
 
 end
-function castIsotope(elt::String; A=1, msg=true)
+function castIsotope(elt::String; A=1, msg=false)
 
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
