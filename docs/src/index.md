@@ -270,7 +270,7 @@ adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true
 a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 UF(k::Int, F::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
-UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
 ## FITS
