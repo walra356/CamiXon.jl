@@ -291,21 +291,21 @@ function castOrbit(;n=1, ℓ=0, mℓ=0, msg=false)
 
 end
 
-# ======================== SpinOrbit(name, n, n′, ℓ, ms) ===========
+# ======================== Spinorbital(name, n, n′, ℓ, ms) ===========
 
 """
-    SpinOrbit
+    Spinorbital
 
-Type for specification of *atomic spinorbitals* with fields:
+Type for specification of *atomic Spinorbitals* with fields:
 * `.name`: name
 * ` .n`:  principal quantum number
 * `.n′`:  radial quantum number (number of nodes in radial wavefunction)
 * ` .ℓ`:  orbital angular momentum valence electron
 * `.ms`:  spin magnetic quantum number
 
-The type `SpinOrbit` is best created with the function `createSpinOrbit`.
+The type `Spinorbital` is best created with the function `castSpinorbital`.
 """
-struct SpinOrbit
+struct Spinorbital
     name::String         # LS term notation
     n::Int               # principal quantum number
     n′::Int              # radial quantum number (number of nodes)
@@ -314,12 +314,12 @@ struct SpinOrbit
 end
 
 
-# ====================== createSpinOrbit(o::Orbital; up=true) ==================
+# ====================== castSpinorbital(o::Orbital; up=true) ==================
 
 """
-    createSpinOrbital(o::Orbit; up=true, msg=true)
+    castSpinorbital(o::Orbit; up=true, msg=true)
 
-Specify `SpinOrbit` with fields:
+Specify `Spinorbital` with fields:
 * `.name`: name
 * `   .n`: principal quantum number
 * `  .n′`: radial quantum number (number of nodes in radial wavefunction)
@@ -328,18 +328,18 @@ Specify `SpinOrbit` with fields:
 #### Examples:
 ```
 s1s = castOrbit(1,0)
-createSpinOrbit(s1s; up=true)
-  SpinOrbit created: 1s↑ (n = 1, n′ = 0, ℓ = 0, ms = 1//2)
-  SpinOrbit("1s↑", 1, 0, 0, 1//2)
+castSpinorbital(s1s; up=true)
+  Spinorbital created: 1s↑ (n = 1, n′ = 0, ℓ = 0, ms = 1//2)
+  Spinorbital("1s↑", 1, 0, 0, 1//2)
 ```
 """
-function createSpinOrbit(o::Orbit; up=true, msg=true)
+function castSpinorbital(o::Orbit; up=true, msg=true)
 
     name = o.name * string(up ? :↑ : :↓)
 
-    msg && println("SpinOrbit created: $(name) (n = $(o.n), n′ = $(o.n′), ℓ = $(o.ℓ), ms = $(up ? 1//2 : -1//2))")
+    msg && println("Spinorbital created: $(name) (n = $(o.n), n′ = $(o.n′), ℓ = $(o.ℓ), ms = $(up ? 1//2 : -1//2))")
 
-    return SpinOrbit(name, o.n, o.n′, o.ℓ, (up ? 1//2 : -1//2))
+    return Spinorbital(name, o.n, o.n′, o.ℓ, (up ? 1//2 : -1//2))
 
 end
 
