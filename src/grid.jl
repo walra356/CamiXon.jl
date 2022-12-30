@@ -83,6 +83,8 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
     r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
     r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]
 
+    r[1] = T == BigFloat ? T("1.0e-100") : T(1.0e-100)
+
     msg && println(_gridspecs(ID, N, T; h, r0,  p, coords, epn, k, msg))
 
     return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
@@ -148,7 +150,7 @@ function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
     r′= grid.r′
 
     l = length(f)
-    f′= [fdiff_differentiation(f, 1.0v; k) for v=1:l]
+    f′= [fdiff_differentiation(f, T(v); k) for v=1:l]
 
     return f′ ./ r′
 

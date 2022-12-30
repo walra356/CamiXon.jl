@@ -629,7 +629,7 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
 # trapezoidal_weights(k; rationalize=false, devisor=false)
 # ==============================================================================
-    strWarn = "Warning: k = $(k-1) → $(k) (trapezoidal rule requires odd k)"
+    strWarn = "Warning: k = $(k) → $(k-1) (trapezoidal rule requires odd k)"
     Base.isodd(k) ? true :
                    (k=k+1; println(strWarn))
 
