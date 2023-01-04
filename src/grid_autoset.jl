@@ -311,7 +311,7 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
@@ -328,7 +328,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, e
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
 end
-function autoGrid(atom::Atom, orbits::Vector{Orbit}, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+function autoGrid(atom::Atom, orbits::Vector{Orbit}, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (enforced by automatic type promotion)")
 
