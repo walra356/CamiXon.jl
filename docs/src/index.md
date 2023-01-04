@@ -358,7 +358,7 @@ faulhaber_polynom(p::Int)
 faulhaber_summation(n::Int, p::Int; T=Int)
 fibonacci_numbers(nmax::T; msg=true) where T<:Integer
 harmonic_number(n::Int, p::Int)
-harmonic_number(n::Int)
+harmonic_number(n::T; msg=false) where {T<:Integer}
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)

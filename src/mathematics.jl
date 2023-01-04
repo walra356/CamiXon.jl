@@ -263,8 +263,8 @@ end
 # =================================== harmonic number(n;T) ===============
 
 @doc raw"""
-    harmonic_number(n [, T=Int])
-
+    harmonic_number(n::T; msg=false) where {T<:Integer} 
+    
 Sum of the reciprocals of the first ``n`` natural numbers
 ```math
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
