@@ -355,6 +355,7 @@ canonical_partitions(n::Int, m=0; header=true, reverse=true)
 factorialbig(n::Int)
 faulhaber_polynom(p::Int)
 faulhaber_summation(n::Int, p::Int; T=Int)
+fibonacci_numbers(nmax::T; msg=true) where T<:Integer
 harmonic_number(n::Int, p::Int)
 harmonic_number(n::Int)
 integer_partitions(n::Int, m=0; transpose=false, count=false)

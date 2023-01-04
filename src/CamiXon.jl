@@ -177,6 +177,7 @@ export canonical_partitions
 export factorialbig
 export faulhaber_polynom
 export faulhaber_summation
+export fibonacci_numbers
 export harmonic_number
 export integer_partitions
 export log10_characteristic_power
