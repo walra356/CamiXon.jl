@@ -81,7 +81,7 @@ function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], e
     name = gridname(ID)
 
     r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
-    r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]
+    r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]     # r′= dr/dn
 
     r[1] = T == BigFloat ? T("1.0e-100") : T(1.0e-100)
 
