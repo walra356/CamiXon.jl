@@ -1,5 +1,6 @@
+# ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
 @doc raw"""
-    ConditionalType(n::T, nc::T; msg=false) where T<:Integer  
+    ConditionalType(n::T, nc::T [; msg=false]) where T<:Integer  
 
 Convert type `T` to `BigInt` for `n > nc`.
 #### Example:
@@ -20,17 +21,11 @@ function ConditionalType(n::T, nc::T; msg=false) where {T<:Integer}
 
 end
 
-
-
-
-
-
-
-
-
+# ========================= find_all(A [,a...]; count=false) ===========
 
 """
     find_all(A [,a...]; count=false)
+
 A: string/array of elements of the same type
 
 default   : Array containing the index (indices) of selected elements of A (default: all elements)
