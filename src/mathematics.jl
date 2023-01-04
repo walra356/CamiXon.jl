@@ -382,7 +382,7 @@ function harmonic_number(n::Int, p::Int)    # short argument: better performance
             end
             o += F[k+1]
         end
-        Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
         o = Base.numerator(o)
     end
 

@@ -342,6 +342,7 @@ edges(px, Δx=1.0, x0=0.0)
 ## Search and conversion tools
 
 ```@docs
+ConditionalType(n::T, nc::T; msg=false) where T<:Integer
 find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
@@ -836,7 +837,7 @@ create_lagrange_differentiation_matrix(k::Int)
 ### Integration
 
 ```@docs
-trapezoidal_weights(k::Int; rationalize=false, devisor=false)
+trapezoidal_epw(k::Int; rationalize=false, devisor=false)
 trapezoidal_integration(f, x1, x2, weights)
 ```
 

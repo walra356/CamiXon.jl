@@ -1,3 +1,34 @@
+@doc raw"""
+    ConditionalType(n::T, nc::T; msg=false) where T<:Integer  
+
+Convert type `T` to `BigInt` for `n > nc`.
+#### Example:
+```
+ConditionalType(46, 46)
+#  Int64
+
+ConditionalType(47, 46)
+#  BigInt
+```
+"""
+function ConditionalType(n::T, nc::T; msg=false) where {T<:Integer}
+
+    V = n > nc ? BigInt : T
+    V ≠ T ? (msg && println("Warning: output converted to BigInt")) : false
+
+    return V
+
+end
+
+
+
+
+
+
+
+
+
+
 """
     find_all(A [,a...]; count=false)
 A: string/array of elements of the same type

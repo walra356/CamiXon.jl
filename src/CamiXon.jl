@@ -80,7 +80,7 @@ export create_lagrange_differentiation_matrix
 export fdiff_adams_moulton_expansion_coeffs
 export create_adams_moulton_weights
 export fdiff_adams_bashford_expansion_coeffs
-export trapezoidal_weights
+export trapezoidal_epw
 export trapezoidal_integration
 
 export matG
@@ -163,6 +163,7 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
+export ConditionalType
 export find_all
 export find_first
 export find_last

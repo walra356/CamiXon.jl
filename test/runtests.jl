@@ -77,6 +77,7 @@ using Test
     @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
     @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1,"Hz")) == "1 Hz"
+    @test ConditionalType(47,46) == BigInt
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
@@ -120,7 +121,7 @@ using Test
     @test [fdiff_differentiation([16, 9, 4, 1, 0, 1, 4, 9, 16], v) for v=1:9] == [-8//1, -6//1, -4//1, -2//1, 0//1, 2//1, 4//1, 6//1, 8//1]
     @test fdiff_differentiation([16, 9, 4, 1, 0, 1, 4, 9, 16], 5.5) == 1.0
     @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
-    @test trapezoidal_weights(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
+    @test trapezoidal_epw(5; rationalize=true) == [95//288, 317//240, 23//30, 793//720, 157//160]
     @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3//8, 7//6, 23//24]) ≈ 215.4166666
     @test create_adams_moulton_weights(3;rationalize=true) == [1//24, -5//24, 19//24, 3//8]
     @test fdiff_adams_moulton_expansion_coeffs(5) == [1//1, -1//2, -1//12, -1//24, -19//720, -3//160]

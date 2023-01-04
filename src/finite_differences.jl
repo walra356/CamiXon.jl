@@ -598,12 +598,12 @@ function create_lagrange_differentiation_matrix(k::Int)
 
 end
 
-# =========== trapezoidal_weights(k; rationalize=false, devisor=false) =========
+# =========== trapezoidal_epw(k; rationalize=false, devisor=false) =========
 
 @doc raw"""
-    trapezoidal_weights(k::Int [; rationalize=false [, devisor=false]])
+    trapezoidal_epw(k::Int [; rationalize=false [, devisor=false]])
 
-Weight coefficient vector ``a=[a_1,⋯\ a_k]`` of trapeziodal rule
+Endpoint weights vector ``a=[a_1,⋯\ a_k]`` of trapeziodal rule
 optimized for functions of polynomial form,
 ```math
     ∫_0^n f(x) dx = a_1 (f_0+f_n) + ⋯ + a_k (f_{k-1}+f_{n-k+1})
@@ -615,7 +615,7 @@ By default the output is in Float64, optionally the output is rational, with or
 without specification of the gcd devisor.
 #### Example:
 ```
-[trapezoidal_weights(k; rationalize=true, devisor=true) for k=1:2:9]
+[trapezoidal_epw(k; rationalize=true, devisor=true) for k=1:2:9]
 5-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
   (1, 2, [1])
   (3, 24, [9, 28, 23])
@@ -625,9 +625,9 @@ without specification of the gcd devisor.
                                                      5095890, 7783754, 7200319])
 ```
 """
-function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
+function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
 # ==============================================================================
-# trapezoidal_weights(k; rationalize=false, devisor=false)
+# trapezoidal_epw(k; rationalize=false, devisor=false)
 # ==============================================================================
     strWarn = "Warning: k = $(k) → $(k-1) (trapezoidal rule requires odd k)"
     Base.isodd(k) ? true :
@@ -649,7 +649,7 @@ function trapezoidal_weights(k::Int; rationalize=false, devisor=false)
 
     σ = Base.inv(Base.transpose(σ))
 
-    o = -σ * c  # solving matrix equation results in trapezoidal_weights
+    o = -σ * c  # solving matrix equation results in trapezoidal_epw
 
     if rationalize
         a = CamiXon.fdiff_adams_moulton_expansion_coeffs(k)
@@ -689,7 +689,7 @@ x2=5.0
 x = collect(range(x1, x2, n))
 f = pol.(x .-2.5)
 
-w3 = trapezoidal_weights(3)
+w3 = trapezoidal_epw(3)
 trapezoidal_integration(f, x1, x2, w3)
  15.416666666666673
 
