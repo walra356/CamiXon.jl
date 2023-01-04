@@ -260,11 +260,57 @@ function faulhaber_summation(n::Int, p::Int)   # short argument: better performa
 
 end
 
+# ============================= Fibonacci numbersfindNmin!(rrw) =================================
+
+@doc raw"""
+    fibonacci_numbers(nmax::T) where T<:Integer
+
+A sequence of integers,  ``F_1,⋯\ F_{nmax}``, in which each element is the sum of the 
+two preceding ones, 
+```math
+    F_n = F_{n-1}+F_{n-2}.
+```
+where ``F_1=1`` and ``F_0=0`` (NB. ``F_0`` *not* included in the output). 
+
+#### Example:
+```
+Fn = fibonacci_numbers(20)
+#  [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+
+Fn = fibonacci_numbers(200)
+println("Fn(200) = $(Fn[end])")
+#  Warning: output converted to BigInt
+#  Fn(200) = 280571172992510140037611932413038677189525
+```
+"""
+function fibonacci_numbers(nmax::T; msg=false) where {T<:Integer}
+
+    nmax > 0 || return T(0)
+    nmax > 1 || return T(1)
+
+    nc = T(92)
+    Fn = T[1, 1]
+
+    for n = 3:min(nmax, nc)
+        push!(Fn, Fn[n-1] + Fn[n-2])
+    end
+
+    V = ConditionalType(nmax, nc; msg)
+
+    Fn *= V(1)
+    for n = nc+1:nmax
+        push!(Fn, Fn[n-1] + Fn[n-2])
+    end
+
+    return Fn
+
+end
+
 # =================================== harmonic number(n;T) ===============
 
 @doc raw"""
     harmonic_number(n::T; msg=false) where {T<:Integer} 
-    
+
 Sum of the reciprocals of the first ``n`` natural numbers
 ```math
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
@@ -295,7 +341,7 @@ function harmonic_number(n::T; msg=false) where {T<:Integer}       # short argum
     V = ConditionalType(n, nc; msg)
 
     o *= V(1)
-    for j = nc:n
+    for j = nc+1:n
         o += 1 // V(j)
     end
 
@@ -385,47 +431,6 @@ function harmonic_number(n::Int, p::Int)    # short argument: better performance
 
     return o
 
-end
-
-# ============================= Fibonacci numbersfindNmin!(rrw) =================================
-
-@doc raw"""
-    fibonacci_numbers(nmax::T) where T<:Integer
-
-A sequence of integers,  ``F_1,⋯\ F_{nmax}``, in which each element is the sum of the 
-two preceding ones, 
-```math
-    F_n = F_{n-1}+F_{n-2}.
-```
-where ``F_1=1`` and ``F_0=0`` (NB. ``F_0`` *not* included in the output). 
-
-#### Example:
-```
-Fn = fibonacci_numbers(20)
-#  [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
-
-Fn = fibonacci_numbers(200)
-println("Fn(200) = $(Fn[end])")
-#  Warning: output converted to BigInt (integer-overload protection)
-#  Fn(200) = 280571172992510140037611932413038677189525
-```
-"""
-function fibonacci_numbers(nmax::T; msg=true) where T<:Integer
-    
-    if nmax < 93
-        Fn = T[1,1]
-    else
-        txt = "Warning: output converted to BigInt (integer-overload protection)"
-        Fn = [big(1),big(1)]
-        T == BigInt || msg && println(txt)
-    end
-    
-    for n=3:nmax
-        push!(Fn, Fn[n-1] + Fn[n-2])
-    end
-    
-    return Fn
-    
 end
 
 # ==================================== _canonical_partition(n, m) =======================
