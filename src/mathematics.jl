@@ -46,28 +46,26 @@ end
 # ==================================== bernoulli_numbers(nmax) =================
 
 @doc raw"""
-    bernoulli_numbers(nmax [, T=Int])
+    bernoulli_numbers(nmax::T [; msg=false]) where {T<:Integer}
 
 Bernoulli numbers ``B_0,⋯\ B_{nmax}`` calculated by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
 Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``.
+
+Integer-overload protection: for `nmax > 35` the output is autoconverted to Rational{BigInt} when appropriate.
+Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
-bernoulli_numbers(10)
-11-element Vector{Rational{Int64}}:
-  1//1
- -1//2
-  1//6
-  0//1
- -1//30
-  0//1
-  1//42
-  0//1
- -1//30
-  0//1
-  5//66
+nmax=10
+o = bernoulli_numbers(nmax); println(o)
+#  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1, 1//1]
+
+nmax=60
+o = bernoulli_numbers(nmax; msg=true); println(o[1+nmax])
+#  Warning: output converted to BigInt
+#  -1215233140483755572040304994079820246041491//56786730
 ```
 """
 function bernoulli_numbers(nmax::T; msg=false) where {T<:Integer}
@@ -220,7 +218,7 @@ function faulhaber_polynom(k::Int; T=Int)
     k > 1 || return 1//1
 
     P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulli_numbers(k-1; T); B[2]=-B[2]
+    B = CamiXon.bernoulli_numbers(k-1); B[2]=-B[2]
 
     F = (B .* P)  // k
 
