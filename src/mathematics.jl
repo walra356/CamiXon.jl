@@ -335,7 +335,7 @@ function harmonic_number(n::T; msg=false) where {T<:Integer}       # short argum
 
     o = 0 // 1
     for j = 1:min(n, nc)
-        o += 1 // j
+        o += 1 // T(j)
     end
 
     V = ConditionalType(n, nc; msg)
@@ -372,7 +372,7 @@ harmonic_number(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-function harmonic_number(n::Int, p::Int; T=Int)
+function harmonic_number0(n::Int, p::Int; T=Int)
 
     n ≠ 0 || return 0
 
@@ -402,7 +402,7 @@ function harmonic_number(n::Int, p::Int; T=Int)
     return o
 
 end
-function harmonic_number(n::Int, p::Int)    # short argument: better performance
+function harmonic_number1(n::Int, p::Int)    # short argument: better performance
 
     n ≠ 0 || return 0
 
@@ -421,6 +421,67 @@ function harmonic_number(n::Int, p::Int)    # short argument: better performance
         o = 0
         for k=1:p+1
             for i=1:k
+                F[k+1] *= n
+            end
+            o += F[k+1]
+        end
+        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
+        o = Base.numerator(o)
+    end
+
+    return o
+
+end
+
+
+function _hn_Int(n, nc, p)
+
+    n = Int(n)
+
+    o = 0 // 1
+    for j = 1:min(n, nc)
+        a = 1
+        for i = 1:p
+            a *= j
+        end
+        o += 1 // a
+    end
+
+    return o
+
+end
+function _hn_BigInt(o, n, nc, p)
+
+    one = big(1)
+
+    for j = nc+1:n
+        a = one
+        for i = 1:p
+            a *= big(j)
+        end
+        o += one // a
+    end
+
+    return o
+
+end
+function harmonic_number(n::T, p::Int; msg=false) where {T<:Integer}
+
+    n ≠ 0 || return 0
+
+    ac = [46, 24, 16, 12, 10, 8, 7, 6, 6, 6, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3]
+    nc = p > 17 ? 2 : ac[p]
+
+    if p > 0
+        o = _hn_Int(n, nc, p)
+        n > nc ? o *= big(1) : o *= T(1)
+        o = _hn_BigInt(o, n, nc, p)
+    else
+        p = -p
+        F = CamiXon.faulhaber_polynom(p + 1; T)
+        o = 0
+        for k = 1:p+1
+            for i = 1:k
                 F[k+1] *= n
             end
             o += F[k+1]
