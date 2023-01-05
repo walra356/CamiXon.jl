@@ -260,10 +260,10 @@ function faulhaber_summation(n::Int, p::Int)   # short argument: better performa
 
 end
 
-# ============================= Fibonacci numbersfindNmin!(rrw) =================================
+# ============================= Fibonacci numbers =================================
 
 @doc raw"""
-    fibonacci_numbers(nmax::T) where T<:Integer
+    fibonacci_numbers(nmax::T [; msg=false]) where T<:Integer
 
 A sequence of integers,  ``F_1,⋯\ F_{nmax}``, in which each element is the sum of the 
 two preceding ones, 
@@ -277,7 +277,7 @@ where ``F_1=1`` and ``F_0=0`` (NB. ``F_0`` *not* included in the output).
 Fn = fibonacci_numbers(20)
 #  [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
 
-Fn = fibonacci_numbers(200)
+Fn = fibonacci_numbers(200; msg=true)
 println("Fn(200) = $(Fn[end])")
 #  Warning: output converted to BigInt
 #  Fn(200) = 280571172992510140037611932413038677189525
@@ -309,7 +309,7 @@ end
 # =================================== harmonic number(n;T) ===============
 
 @doc raw"""
-    harmonic_number(n::T; msg=false) where {T<:Integer} 
+    harmonic_number(n::T [; msg=false]) where {T<:Integer} 
 
 Sum of the reciprocals of the first ``n`` natural numbers
 ```math
