@@ -297,7 +297,7 @@ function fibonacci_numbers(nmax::T; msg=false) where {T<:Integer}
 
     V = ConditionalType(nmax, nc; msg)
 
-    Fn *= V(1)
+    nmax > nc ? Fn *= V(1) : false
     for n = nc+1:nmax
         push!(Fn, Fn[n-1] + Fn[n-2])
     end
@@ -340,7 +340,7 @@ function harmonic_number(n::T; msg=false) where {T<:Integer}       # short argum
 
     V = ConditionalType(n, nc; msg)
 
-    o *= V(1)
+    n > nc ? o *= V(1) : false
     for j = nc+1:n
         o += 1 // V(j)
     end
@@ -669,30 +669,15 @@ pascal_triangle(5)
  [1, 5, 10, 10, 5, 1]
 ```
 """
-function pascal_triangle(nmax::Int; T=Int)
+function pascal_triangle(nmax::T) where {T<:Integer}
 
-    nmax < 0 && error("jwError: nmax must be a non-negative integer")
+    nmax < 0 && error("Error: nmax must be a non-negative integer")
+    nmax > T(10000) && error("Error: integer overflow")
 
-    o = [Base.ones(T,n+1) for n=0:nmax]
+    o = [Base.ones(T, n + 1) for n = 0:nmax]
 
-    for n=2:nmax
-        for k=1:n÷2
-            o[n+1][k+1] = o[n][k+1] + o[n][k]
-            o[n+1][n+1-k] = o[n+1][k+1]
-        end
-    end
-
-    return o
-
-end
-function pascal_triangle(nmax::Int)
-
-    nmax < 0 && error("jwError: nmax must be a non-negative integer")
-
-    o = [Base.ones(Int,n+1) for n=0:nmax]
-
-    for n=2:nmax
-        for k=1:n÷2
+    for n = 2:nmax
+        for k = 1:n÷2
             o[n+1][k+1] = o[n][k+1] + o[n][k]
             o[n+1][n+1-k] = o[n+1][k+1]
         end
