@@ -148,7 +148,7 @@ end
 # ==================================== faulhaber_polynom(p) ====================
 
 @doc raw"""
-    faulhaber_polynom(k::T)  where T<:Integer
+    faulhaber_polynom(p [, T=Int])
 
 Vector representation of the Faulhaber polynomial of degree ``p``,
 ```math
@@ -173,7 +173,23 @@ faulhaber_polynom(6)
   1//6
 ```
 """
-function faulhaber_polynom(k::T)  where T<:Integer
+function faulhaber_polynom(k::Int; T=Int)
+
+    k < 1 && return 0
+    k > 1 || return 1//1
+
+    P = CamiXon.pascal_triangle(k)[end][1:end-1]
+    B = CamiXon.bernoulli_numbers(k-1; T); B[2]=-B[2]
+
+    F = (B .* P)  // k
+
+    F = Base.append!(F,0//1)   # add polynomial constant (zero in this case)
+
+    return Base.reverse(F)     # reverse to standard order
+
+end
+function faulhaber_polynom(k::Int)       # short argument: better performance
+
     k < 1 && return 0
     k > 1 || return 1//1
 
@@ -207,9 +223,27 @@ faulhaber_summation(3,60; T=BigInt)
   42391158276369125018901280178
 ```
 """
-function faulhaber_summation(n::T, p::T) where T<:Integer
+function faulhaber_summation(n::Int, p::Int; T=Int)
 
     n ≠ 0 || return nothing
+
+    F = CamiXon.faulhaber_polynom(p+1; T)
+    o = 0
+    for k=1:p+1
+        for i=1:k
+            F[k+1] *= n # avoid n^k in o = Base.sum([F[k+1]*n^k for k=1:p+1])
+        end
+        o += F[k+1]
+    end
+
+    Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+
+    return Base.numerator(o)
+
+end
+function faulhaber_summation(n::Int, p::Int)   # short argument: better performance
+
+    n ≠ 0 || return 0
 
     F = CamiXon.faulhaber_polynom(p+1)
     o = 0
@@ -320,7 +354,7 @@ end
 # =================================== harmonic number(n, p;T) ===============
 
 @doc raw"""
-    harmonic_number(n::T, p::T) where T<:Integer
+    harmonic_number(n, p [, T=Int])
 
 Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
@@ -338,12 +372,42 @@ harmonic_number(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-function harmonic_number(n::T, p::T) where T<:Integer
+function harmonic_number(n::Int, p::Int; T=Int)
 
     n ≠ 0 || return 0
 
     if p > 0
         o::Base.Rational{T} = 0//1
+        for j=1:n
+            a = 1
+            for i=1:p
+                a *= j
+            end
+        o += 1//a
+        end
+    else
+        p = -p
+        F = CamiXon.faulhaber_polynom(p+1; T)
+        o = 0
+        for k=1:p+1
+            for i=1:k
+                F[k+1] *= n
+            end
+            o += F[k+1]
+        end
+        Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+        o = Base.numerator(o)
+    end
+
+    return o
+
+end
+function harmonic_number(n::Int, p::Int)    # short argument: better performance
+
+    n ≠ 0 || return 0
+
+    if p > 0
+        o = 0//1
         for j=1:n
             a = 1
             for i=1:p
@@ -361,7 +425,7 @@ function harmonic_number(n::T, p::T) where T<:Integer
             end
             o += F[k+1]
         end
-        Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
         o = Base.numerator(o)
     end
 
