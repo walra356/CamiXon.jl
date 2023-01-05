@@ -109,7 +109,7 @@ function bernoulli_numbers(nmax::T; msg=false) where {T<:Integer}
     return B
 
 end
-function bernoulli_numbers1(nmax::Int; T=Int)
+function bernoulli_numbers(nmax::Int; T=Int)
 
     B = Base.ones(Rational{T},nmax+1)
 
@@ -218,7 +218,7 @@ function faulhaber_polynom(k::Int; T=Int)
     k > 1 || return 1//1
 
     P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulli_numbers(k-1); B[2]=-B[2]
+    B = CamiXon.bernoulli_numbers(k-1; T); B[2]=-B[2]
 
     F = (B .* P)  // k
 
