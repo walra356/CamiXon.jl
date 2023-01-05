@@ -317,10 +317,20 @@ Sum of the reciprocals of the first ``n`` natural numbers
 ```
 ### Examples:
 ```
-[harmonic_number(i) for i=1:10]
-#  [1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140, 761//280, 7129//2520, 7381//2520]
+o = [harmonic_number(i) for i=1:7]; println(o)
+#  Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140]
 
-harmonic_number(60)
+o = [harmonic_number(46; msg=true)]; println(o)
+#  Rational{Int64}[5943339269060627227//1345655451257488800]
+
+o = [harmonic_number(47; msg=true)]; println(o)
+#  Warning: output converted to BigInt
+#  Rational{BigInt}[280682601097106968469//63245806209101973600]
+
+o = [harmonic_number(47)]; println(o)
+#  Rational{BigInt}[280682601097106968469//63245806209101973600]
+
+harmonic_number(60; msg=false)
 #  15117092380124150817026911//3230237388259077233637600
 
 harmonic_number(12) == harmonic_number(12, 1)
@@ -351,10 +361,45 @@ end
 
 
 
-# =================================== harmonic number(n, p;T) ===============
+# =================================== harmonic number(n, p [; msg=false]) ===============
+
+# .......................................................................................
+function _hn_Int(n, nc, p)
+
+    n = Int(n)
+
+    o = 0 // 1
+    for j = 1:min(n, nc)
+        a = 1
+        for i = 1:p
+            a *= j
+        end
+        o += 1 // a
+    end
+
+    return o
+
+end
+# .......................................................................................
+function _hn_BigInt(o, n, nc, p)
+
+    one = big(1)
+
+    for j = nc+1:n
+        a = one
+        for i = 1:p
+            a *= big(j)
+        end
+        o += one // a
+    end
+
+    return o
+
+end
+# .......................................................................................
 
 @doc raw"""
-    harmonic_number(n, p [, T=Int])
+    harmonic_number(n::T, p::Int [; msg=false]) where {T<:Integer}
 
 Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
@@ -362,40 +407,48 @@ Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```
 ### Examples:
 ```
-harmonic_number(12, 3)
- 25535765062457//21300003648000
+o = [harmonic_number6(46,1; msg=true)]; println(o)
+#  Rational{Int64}[5943339269060627227//1345655451257488800]
 
-harmonic_number(12, 5; T=BigInt)
- 16971114472329088045481//16366888723117363200000
+o = [harmonic_number6(47,1; msg=true)]; println(o)
+# Warning: output converted to BigInt
+# Rational{BigInt}[280682601097106968469//63245806209101973600]
+
+o = [harmonic_number6(47,1)]; println(o)
+# Rational{BigInt}[280682601097106968469//63245806209101973600]
 
 harmonic_number(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-function harmonic_number0(n::Int, p::Int; T=Int)
+
+function harmonic_number(n::T, p::Int; msg=false) where {T<:Integer}
 
     n ≠ 0 || return 0
 
+    ac = [46, 24, 16, 12, 10, 8, 7, 6, 6, 6, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3]
+    nc = p > 17 ? 0 : ac[p]
+
     if p > 0
-        o::Base.Rational{T} = 0//1
-        for j=1:n
-            a = 1
-            for i=1:p
-                a *= j
-            end
-        o += 1//a
+        o = _hn_Int(n, nc, p)
+        if n > nc
+            T ≠ BigInt ? (msg && println("Warning: output converted to BigInt")) : false
+            o *= big(1)
+            o = _hn_BigInt(o, n, nc, p)
+        else
+            T ≠ BigInt ? true : o *= T(1)
         end
     else
         p = -p
-        F = CamiXon.faulhaber_polynom(p+1; T)
+        F = CamiXon.faulhaber_polynom(p + 1; T)
         o = 0
-        for k=1:p+1
-            for i=1:k
+        for k = 1:p+1
+            for i = 1:k
                 F[k+1] *= n
             end
             o += F[k+1]
         end
-        Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
         o = Base.numerator(o)
     end
 
@@ -434,65 +487,7 @@ function harmonic_number1(n::Int, p::Int)    # short argument: better performanc
 end
 
 
-function _hn_Int(n, nc, p)
 
-    n = Int(n)
-
-    o = 0 // 1
-    for j = 1:min(n, nc)
-        a = 1
-        for i = 1:p
-            a *= j
-        end
-        o += 1 // a
-    end
-
-    return o
-
-end
-function _hn_BigInt(o, n, nc, p)
-
-    one = big(1)
-
-    for j = nc+1:n
-        a = one
-        for i = 1:p
-            a *= big(j)
-        end
-        o += one // a
-    end
-
-    return o
-
-end
-function harmonic_number(n::T, p::Int; msg=false) where {T<:Integer}
-
-    n ≠ 0 || return 0
-
-    ac = [46, 24, 16, 12, 10, 8, 7, 6, 6, 6, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3]
-    nc = p > 17 ? 2 : ac[p]
-
-    if p > 0
-        o = _hn_Int(n, nc, p)
-        n > nc ? o *= big(1) : o *= T(1)
-        o = _hn_BigInt(o, n, nc, p)
-    else
-        p = -p
-        F = CamiXon.faulhaber_polynom(p + 1; T)
-        o = 0
-        for k = 1:p+1
-            for i = 1:k
-                F[k+1] *= n
-            end
-            o += F[k+1]
-        end
-        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
-        o = Base.numerator(o)
-    end
-
-    return o
-
-end
 
 # ==================================== _canonical_partition(n, m) =======================
 
