@@ -70,7 +70,48 @@ bernoulli_numbers(10)
   5//66
 ```
 """
-function bernoulli_numbers(nmax::Int; T=Int)
+function bernoulli_numbers(nmax::T; msg=false) where {T<:Integer}
+
+    nmax ≥ 0 || return nothing
+
+    nc = T(35)
+
+    B = Base.ones(Rational{T}, nmax + 1)
+
+    for m = 2:min(nmax, nc)
+        B[m] = m > 2 ? 0 // 1 : -1
+        if Base.isodd(m)
+            b = 1
+            for j = 1:m-1
+                B[m] -= B[j] * b
+                b *= m + 1 - j
+                b = b ÷ j      # binomial coefficients are integers
+            end
+        end
+        B[m] = B[m] // m
+    end
+
+    V = ConditionalType(nmax, nc; msg)
+
+    nmax > nc ? B *= V(1) : false
+
+    for m = nc+1:nmax+1
+        B[m] = m > 2 ? 0 // 1 : -1
+        if Base.isodd(m)
+            b = 1
+            for j = 1:m-1
+                B[m] -= B[j] * b
+                b *= m + 1 - j
+                b = b ÷ j      # binomial coefficients are integers
+            end
+        end
+        B[m] = B[m] // m
+    end
+
+    return B
+
+end
+function bernoulli_numbers1(nmax::Int; T=Int)
 
     B = Base.ones(Rational{T},nmax+1)
 
@@ -90,7 +131,7 @@ function bernoulli_numbers(nmax::Int; T=Int)
     return B
 
 end
-function bernoulli_numbers(nmax::Int)       # short argument: better performance
+function bernoulli_numbers2(nmax::Int)       # short argument: better performance
 
     B = Base.ones(Rational{Int},nmax+1)
 
@@ -272,6 +313,8 @@ two preceding ones,
 ```
 where ``F_1=1`` and ``F_0=0`` (NB. ``F_0`` *not* included in the output). 
 
+Integer-overload protection: for `nmax > 92` the output is autoconverted to BigInt.
+Optional: a warning message is displayed when autoconversion is activated (default: no message)
 #### Example:
 ```
 Fn = fibonacci_numbers(20)
@@ -315,6 +358,8 @@ Sum of the reciprocals of the first ``n`` natural numbers
 ```math
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
 ```
+Integer-overload protection: for `n > 46` the output is autoconverted to Rational{BigInt}.
+Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
 o = [harmonic_number(i) for i=1:7]; println(o)
@@ -405,6 +450,8 @@ Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
     H_{n,p}=\sum_{k=1}^{n}\frac{1}{k^p}.
 ```
+Integer-overload protection: the output is autoconverted to Rational{BigInt} when appropriate.
+Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
 o = [harmonic_number6(46,1; msg=true)]; println(o)

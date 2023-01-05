@@ -351,7 +351,7 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ## Mathematics
 
 ```@docs
-bernoulli_numbers(nmax::Int)
+bernoulli_numbers(nmax::T; msg=false) where {T<:Integer}
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
 factorialbig(n::Int)
 # faulhaber_polynom(k::T)  where T<:Integer
