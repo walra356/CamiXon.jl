@@ -12,7 +12,9 @@ ConditionalType(47, 46)
 #  BigInt
 ```
 """
-function ConditionalType(n::T, nc::T; msg=false) where {T<:Integer}
+function ConditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
+
+    T == Int || return BigInt
 
     V = n > nc ? BigInt : T
     V ≠ T ? (msg && println("Warning: output converted to BigInt")) : false

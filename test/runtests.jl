@@ -155,11 +155,17 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test bernoulli_numbers(10) == [1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
+    @test bernoulli_number(0) == 1//1
+    @test bernoulli_number(1) == 1//2
+    @test bernoull1_number(60 )== - 1215233140483755572040304994079820246041491 // 56786730
     @test (bernoulli_number(60) == bernoulli_numbers(61)[end]) == true
     @test factorialbig(21) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
+    @test fibonacci_number(0) == 0
+    @test fibonacci_number(1) == 1
     @test fibonacci_numbers(200)[end] == 280571172992510140037611932413038677189525
+    @test (fibonacci_number(100) == fibonacci_numbers(101)[end]) == true
     @test harmonic_number(60) == 15117092380124150817026911 // 3230237388259077233637600
     @test harmonic_number(12, 3) == 25535765062457//21300003648000
     @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]

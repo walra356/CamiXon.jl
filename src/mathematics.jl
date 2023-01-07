@@ -89,7 +89,8 @@ end
     bernoulli_number(n::T [; msg=true]) where {T<:Integer}
     bernoulli_numbers(nmax::T [; msg=true]) where {T<:Integer}
 
-Bernoulli number array ``[B_0,⋯\ B_{nmax-1}]``, unit-based array calculated 
+Bernoulli number array the *even index convention* (odd-indexed numbers vanish), 
+``[B_0,⋯\ B_{nmax}]``. Thisunit-based array calculated 
 by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
@@ -98,7 +99,7 @@ Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Starting
 at ``B_0`` is called the *even index convention*.
 
 Integer-overload protection: for `n > 35` (`nmax > 36`) the output is 
-autoconverted to `Rational{BigInt}`. Optional: a warning message is displayed when 
+autoconverted to `Rational{BigInt}`. *Option*: warning message displayed when 
 autoconversion is activated (default: no message).
 ### Examples:
 ```
@@ -107,24 +108,26 @@ bernoulli_number(60)
 #
 #  -1215233140483755572040304994079820246041491//56786730
 
-nmax=10
+nmax = 10
 o = bernoulli_numbers(nmax); println(o)
 #  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
-bernoulli_number(60) == bernoulli_numbers(61)[end]             # unit based array
+n = 60
+bernoulli_number(n) == bernoulli_numbers(n+1)[end]             # unit based array
 #  true
 ```
 """
 function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
     nmax ≥ 0 || return nothing
-    nmax = convert(Int, nmax)
 
     nc = 36           # n > nc: integer overload
-
+   
+    V = ConditionalType(nmax, nc; msg)
+    
+    nmax = convert(Int, nmax)
     B = _bn_Int(nmax, nc)
     B = _bn_BigInt(B, nmax, nc)
-    V = ConditionalType(nmax, nc; msg)
 
     if (T == BigInt) & (V == Int)
         B = convert(Vector{Rational{BigInt}}, B)
@@ -134,10 +137,12 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
 end
 function bernoulli_number(n::T; msg=true) where {T<:Integer}
+    
+    n > 0 || return T(0)
 
-    B = bernoulli_numbers(n + 1::T; msg=true)
+    B = bernoulli_numbers(n + 1::T; msg)[end]
 
-    return B[end]
+    return B
 
 end
 
@@ -291,9 +296,40 @@ function faulhaber_summation(n::Int, p::Int)   # short argument: better performa
 end
 
 # ============================= Fibonacci numbers =================================
+function _fn(o::Vector{T}, nstart::Int, nstop::Int) where {T<:Integer}
+
+    for n = nstart:nstop
+        push!(o, o[n-1] + o[n-2])
+    end
+
+    return o
+
+end
+# ..............................................................................
+function _fn_Int(nmax::Int, nc::Int)
+
+    o = [0, 1]
+    o = _fn(o, 3, min(nmax, nc))
+
+    return o
+
+end
+# ..............................................................................
+function _fn_BigInt(o::Vector{T}, nmax::Int, nc::Int) where {T<:Real}
+
+    nmax > nc || return o
+
+    o = convert(Vector{BigInt}, o)
+    o = _fn(o, nc + 1, nmax)
+
+    return o
+
+end
+# ..............................................................................
 
 @doc raw"""
-    fibonacci_numbers(nmax::T [; msg=false]) where T<:Integer
+    fibonacci_number(n::T [; msg=true]) where T<:Integer
+    fibonacci_numbers(nmax::T [; msg=true]) where T<:Integer
 
 A sequence of integers,  ``F_1,⋯\ F_{nmax}``, in which each element is the sum of the 
 two preceding ones, 
@@ -313,28 +349,37 @@ Fn = fibonacci_numbers(200; msg=true)
 println("Fn(200) = $(Fn[end])")
 #  Warning: output converted to BigInt
 #  Fn(200) = 280571172992510140037611932413038677189525
+
+
 ```
 """
-function fibonacci_numbers(nmax::T; msg=false) where {T<:Integer}
+function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
 
-    nmax > 0 || return T(0)
-    nmax > 1 || return T(1)
+    nmax > 0 || return nothing
+    nmax > 1 || return T(0)
 
-    nc = T(92)
-    Fn = T[1, 1]
-
-    for n = 3:min(nmax, nc)
-        push!(Fn, Fn[n-1] + Fn[n-2])
-    end
+    nc = 92   # n > nc: integer overload protection activated
 
     V = ConditionalType(nmax, nc; msg)
 
-    nmax > nc ? Fn *= V(1) : false
-    for n = nc+1:nmax
-        push!(Fn, Fn[n-1] + Fn[n-2])
+    nmax = convert(Int, nmax)
+    F = _fn_Int(nmax, nc)
+    F = _fn_BigInt(F, nmax, nc)
+
+    if (T == BigInt) & (V == Int)
+        F = convert(Vector{BigInt}, F)
     end
 
-    return Fn
+    return F
+
+end
+function fibonacci_number(n::T; msg=true) where {T<:Integer}
+
+    n > 0 || return T(0)
+
+    F = fibonacci_numbers(n + 1; msg)[end]
+
+    return F
 
 end
 
