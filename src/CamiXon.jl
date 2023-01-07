@@ -171,6 +171,7 @@ export find_last
 export threeJsymbol
 export CGC
 
+export bernoulli_number
 export bernoulli_numbers
 export VectorRational
 export castVectorRational

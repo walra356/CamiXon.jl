@@ -86,26 +86,33 @@ end
 # ..............................................................................
 
 @doc raw"""
-    bernoulli_numbers(nmax::T [; msg=false]) where {T<:Integer}
+    bernoulli_number(n::T [; msg=true]) where {T<:Integer}
+    bernoulli_numbers(nmax::T [; msg=true]) where {T<:Integer}
 
-Bernoulli numbers ``B_0,⋯\ B_{nmax-1}`` calculated by repetative use of the recurrence relation
+Bernoulli number array ``[B_0,⋯\ B_{nmax-1}]``, unit-based array calculated 
+by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
-Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. 
+Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Starting 
+at ``B_0`` is called the *even index convention*.
 
-Integer-overload protection: for `nmax > 36` the output is autoconverted to `Vector{Rational{BigInt}}``.
-Optional: a warning message is displayed when autoconversion is activated (default: no message).
+Integer-overload protection: for `n > 35` (`nmax > 36`) the output is 
+autoconverted to `Rational{BigInt}`. Optional: a warning message is displayed when 
+autoconversion is activated (default: no message).
 ### Examples:
 ```
+bernoulli_number(60)
+#  Warning: output converted to BigInt
+#
+#  -1215233140483755572040304994079820246041491//56786730
+
 nmax=10
 o = bernoulli_numbers(nmax); println(o)
 #  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
-nmax=61
-o = bernoulli_numbers(nmax; msg=true); println(o[1+nmax])
-#  Warning: output converted to BigInt
-#  -1215233140483755572040304994079820246041491//56786730
+bernoulli_number(60) == bernoulli_numbers(61)[end]             # unit based array
+#  true
 ```
 """
 function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
@@ -126,44 +133,11 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
     return B
 
 end
-function bernoulli_numbers1(nmax::Int; T=Int)   # kanweg kandidaat
+function bernoulli_number(n::T; msg=true) where {T<:Integer}
 
-    B = Base.ones(Rational{T},nmax+1)
+    B = bernoulli_numbers(n + 1::T; msg=true)
 
-    for m = 2:nmax+1
-        B[m] = m > 2 ? 0//1 : -1
-        if Base.isodd(m)
-            b = 1
-            for j = 1:m-1
-                B[m] -= B[j] * b
-                b *= m+1-j
-                b = b÷j      # binomial coefficients are integers
-            end
-        end
-        B[m] = B[m] // m
-    end
-
-    return B
-
-end
-function bernoulli_numbers2(nmax::Int)       # kanweg kandidaat
-
-    B = Base.ones(Rational{Int},nmax+1)
-
-    for m = 2:nmax+1
-        B[m] = m > 2 ? 0//1 : -1
-        if Base.isodd(m)
-            b = 1
-            for j = 1:m-1
-                B[m] -= B[j] * b
-                b *= m+1-j
-                b = b÷j      # binomial coefficients are integers
-            end
-        end
-        B[m] = B[m] // m
-    end
-
-    return B
+    return B[end]
 
 end
 
