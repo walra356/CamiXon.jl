@@ -92,17 +92,17 @@ Bernoulli numbers ``B_0,⋯\ B_{nmax}`` calculated by repetative use of the recu
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
-Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``.
+Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Note that ``B_{n}=B[n+1]``.
 
-Integer-overload protection: for `nmax > 35` the output is autoconverted to Rational{BigInt} when appropriate.
-Optional: a warning message is displayed when autoconversion is activated (default: no message)
+Integer-overload protection: for `nmax > 36` the output is autoconverted to `Vector{Rational{BigInt}}``.
+Optional: a warning message is displayed when autoconversion is activated (default: no message).
 ### Examples:
 ```
 nmax=10
 o = bernoulli_numbers(nmax); println(o)
-#  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1, 1//1]
+#  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
-nmax=60
+nmax=61
 o = bernoulli_numbers(nmax; msg=true); println(o[1+nmax])
 #  Warning: output converted to BigInt
 #  -1215233140483755572040304994079820246041491//56786730
@@ -126,7 +126,7 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
     return B
 
 end
-function bernoulli_numbers1(nmax::Int; T=Int)
+function bernoulli_numbers1(nmax::Int; T=Int)   # kanweg kandidaat
 
     B = Base.ones(Rational{T},nmax+1)
 
@@ -146,7 +146,7 @@ function bernoulli_numbers1(nmax::Int; T=Int)
     return B
 
 end
-function bernoulli_numbers2(nmax::Int)       # short argument: better performance
+function bernoulli_numbers2(nmax::Int)       # kanweg kandidaat
 
     B = Base.ones(Rational{Int},nmax+1)
 
