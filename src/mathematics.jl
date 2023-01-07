@@ -88,11 +88,11 @@ end
 @doc raw"""
     bernoulli_numbers(nmax::T [; msg=false]) where {T<:Integer}
 
-Bernoulli numbers ``B_0,⋯\ B_{nmax}`` calculated by repetative use of the recurrence relation
+Bernoulli numbers ``B_0,⋯\ B_{nmax-1}`` calculated by repetative use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
-Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Note that ``B_{n}=B[n+1]``.
+Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. 
 
 Integer-overload protection: for `nmax > 36` the output is autoconverted to `Vector{Rational{BigInt}}``.
 Optional: a warning message is displayed when autoconversion is activated (default: no message).
