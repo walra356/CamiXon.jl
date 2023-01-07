@@ -298,6 +298,7 @@ function faulhaber_summation(n::Int, p::Int)   # short argument: better performa
 end
 
 # ============================= Fibonacci numbers =================================
+
 function _fn(o::Vector{T}, nstart::Int, nstop::Int) where {T<:Integer}
 
     for n = nstart:nstop
@@ -347,10 +348,11 @@ Optional: a warning message is displayed when autoconversion is activated (defau
 Fn = fibonacci_numbers(20)
 #  [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
 
-Fn = fibonacci_numbers(200; msg=true)
+Fn = fibonacci_number(100)
 println("Fn(200) = $(Fn[end])")
 #  Warning: output converted to BigInt
-#  Fn(200) = 280571172992510140037611932413038677189525
+#
+#  Fn(200) = 354224848179261915075
 ```
 """
 function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
@@ -385,8 +387,38 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
+function _hn(o::Rational{T}, nstart::Int, nstop::Int) where {T<:Integer}
+
+    for n = nstart:nstop
+        o += 1 // n
+    end
+
+    return o
+
+end
+# ..............................................................................
+function _hn_Int(n::Int, nc::Int)
+
+    o = 1 // 1
+    o = _hn(o, 2, min(n, nc))
+
+    return o
+
+end
+# ..............................................................................
+function _hn_BigInt(o::Rational{T}, n::Int, nc::Int) where {T<:Real}
+
+    n > nc || return o
+
+    o = convert(Rational{BigInt}, o)
+    o = _hn(o, nc + 1, n)
+
+    return o
+
+end
+
 @doc raw"""
-    harmonic_number(n::T [; msg=false]) where {T<:Integer} 
+    harmonic_number(n::T [; msg=true]) where {T<:Integer} 
 
 Sum of the reciprocals of the first ``n`` natural numbers
 ```math
@@ -416,33 +448,28 @@ harmonic_number(12) == harmonic_number(12, 1)
 #  true
 ```
 """
-function harmonic_number(n::T; msg=false) where {T<:Integer}       # short argument: better performance
+function harmonic_number(n::T; msg=true) where {T<:Integer}
 
     n ≠ 0 || return 0
 
-    nc = T(46)
-
-    o = 0 // 1
-    for j = 1:min(n, nc)
-        o += 1 // T(j)
-    end
+    nc = 46
 
     V = ConditionalType(n, nc; msg)
 
-    n > nc ? o *= V(1) : false
-    for j = nc+1:n
-        o += 1 // V(j)
+    n = convert(Int, n)
+    H = _hn_Int(n, nc)
+    H = _hn_BigInt(H, n, nc)
+
+    if (T == BigInt) & (V == Int)
+        H = convert(Rational{BigInt}, H)
     end
 
-    return o
+    return H
 
 end
 
-
-
 # =================================== harmonic number(n, p [; msg=false]) ===============
 
-# .......................................................................................
 function _hn_Int(n, nc, p)
 
     n = Int(n)
@@ -475,8 +502,6 @@ function _hn_BigInt(o, n, nc, p)
     return o
 
 end
-# .......................................................................................
-
 @doc raw"""
     harmonic_number(n::T, p::Int [; msg=false]) where {T<:Integer}
 
@@ -502,7 +527,6 @@ harmonic_number(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-
 function harmonic_number(n::T, p::Int; msg=false) where {T<:Integer}
 
     n ≠ 0 || return 0
@@ -566,9 +590,6 @@ function harmonic_number1(n::Int, p::Int)    # short argument: better performanc
     return o
 
 end
-
-
-
 
 # ==================================== _canonical_partition(n, m) =======================
 
