@@ -89,9 +89,9 @@ end
     bernoulli_number(n::T [; msg=true]) where {T<:Integer}
     bernoulli_numbers(nmax::T [; msg=true]) where {T<:Integer}
 
-Bernoulli number array the *even index convention* (odd-indexed numbers vanish), 
-``[B_0,⋯\ B_{nmax}]``. Thisunit-based array calculated 
-by repetative use of the recurrence relation
+Bernoulli number array, ``[B_0,⋯\ B_{nmax}]``; i.e., in the *even index convention* 
+(in which the odd-indexed numbers vanish). This array is calculated by repetative 
+use of the recurrence relation
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
@@ -349,8 +349,6 @@ Fn = fibonacci_numbers(200; msg=true)
 println("Fn(200) = $(Fn[end])")
 #  Warning: output converted to BigInt
 #  Fn(200) = 280571172992510140037611932413038677189525
-
-
 ```
 """
 function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
