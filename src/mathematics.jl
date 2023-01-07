@@ -66,6 +66,8 @@ end
 # ..............................................................................
 function _bn_Int(nmax::Int, nc::Int)
 
+    nmax == 1 && return [1 // 1]
+
     o = [1 // 1, -1 // 2]
     o = _bn(o, 3, min(nmax, nc))
 
@@ -140,7 +142,7 @@ function bernoulli_number(n::T; msg=true) where {T<:Integer}
     
     n > 0 || return T(0)
 
-    B = bernoulli_numbers(n + 1::T; msg)[end]
+    B = bernoulli_numbers(n + 1; msg)[end]
 
     return B
 
