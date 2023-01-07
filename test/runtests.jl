@@ -154,10 +154,10 @@ using Test
     @test integer_partitions(7; transpose=true) == [[7], [4, 3], [5, 2], [6, 1], [3, 2, 2], [3, 3, 1], [4, 2, 1], [5, 1, 1], [2, 2, 2, 1], [3, 2, 1, 1], [4, 1, 1, 1], [2, 2, 1, 1, 1], [3, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]]
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
-    @test bernoulli_numbers(10) == [1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
-    @test bernoulli_number(0) == 1//1
-    @test bernoulli_number(1) == 1//2
-    @test bernoull1_number(60 )== - 1215233140483755572040304994079820246041491 // 56786730
+    @test bernoulli_numbers1(10) == [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1, -1 // 30, 0 // 1]
+    @test bernoulli_number(0) == 1 // 1
+    @test bernoulli_number(1) == -1 // 2
+    @test bernoulli_number(60) == -1215233140483755572040304994079820246041491 // 56786730
     @test (bernoulli_number(60) == bernoulli_numbers(61)[end]) == true
     @test factorialbig(21) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
