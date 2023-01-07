@@ -45,6 +45,46 @@ end
 
 # ==================================== bernoulli_numbers(nmax) =================
 
+function _bn(o::Vector{Rational{T}}, nstart::Int, nstop::Int) where {T<:Integer}
+
+    for n = nstart:nstop
+        a = 0
+        if Base.isodd(n)
+            b = 1
+            for j = 1:n-1
+                a -= o[j] * b
+                b *= (n + 1 - j)
+                b ÷= j        # binomial coefficients are integers
+            end
+        end
+        push!(o, a // n)
+    end
+
+    return o
+
+end
+# ..............................................................................
+function _bn_Int(nmax::Int, nc::Int)
+
+    o = [1 // 1, -1 // 2]
+    o = _bn(o, 3, min(nmax, nc))
+
+    return o
+
+end
+# ..............................................................................
+function _bn_BigInt(o::Vector{T}, nmax::Int, nc::Int) where {T<:Real}
+
+    nmax > nc || return o
+
+    o = convert(Vector{Rational{BigInt}}, o)
+    o = _bn(o, nc + 1, nmax)
+
+    return o
+
+end
+# ..............................................................................
+
 @doc raw"""
     bernoulli_numbers(nmax::T [; msg=false]) where {T<:Integer}
 
@@ -68,48 +108,25 @@ o = bernoulli_numbers(nmax; msg=true); println(o[1+nmax])
 #  -1215233140483755572040304994079820246041491//56786730
 ```
 """
-function bernoulli_numbers(nmax::T; msg=false) where {T<:Integer}
+function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
     nmax ≥ 0 || return nothing
+    nmax = convert(Int, nmax)
 
-    nc = T(35)
+    nc = 36           # n > nc: integer overload
 
-    B = Base.ones(Rational{T}, nmax + 1)
-
-    for m = 2:min(nmax, nc)
-        B[m] = m > 2 ? 0 // 1 : -1
-        if Base.isodd(m)
-            b = 1
-            for j = 1:m-1
-                B[m] -= B[j] * b
-                b *= m + 1 - j
-                b = b ÷ j      # binomial coefficients are integers
-            end
-        end
-        B[m] = B[m] // m
-    end
-
+    B = _bn_Int(nmax, nc)
+    B = _bn_BigInt(B, nmax, nc)
     V = ConditionalType(nmax, nc; msg)
 
-    nmax > nc ? B *= V(1) : false
-
-    for m = nc+1:nmax+1
-        B[m] = m > 2 ? 0 // 1 : -1
-        if Base.isodd(m)
-            b = 1
-            for j = 1:m-1
-                B[m] -= B[j] * b
-                b *= m + 1 - j
-                b = b ÷ j      # binomial coefficients are integers
-            end
-        end
-        B[m] = B[m] // m
+    if (T == BigInt) & (V == Int)
+        B = convert(Vector{Rational{BigInt}}, B)
     end
 
     return B
 
 end
-function bernoulli_numbers(nmax::Int; T=Int)
+function bernoulli_numbers1(nmax::Int; T=Int)
 
     B = Base.ones(Rational{T},nmax+1)
 
@@ -218,7 +235,7 @@ function faulhaber_polynom(k::Int; T=Int)
     k > 1 || return 1//1
 
     P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulli_numbers(k-1; T); B[2]=-B[2]
+    B = CamiXon.bernoulli_numbers(T(k-1)); B[2]=-B[2]
 
     F = (B .* P)  // k
 
@@ -227,7 +244,7 @@ function faulhaber_polynom(k::Int; T=Int)
     return Base.reverse(F)     # reverse to standard order
 
 end
-function faulhaber_polynom(k::Int)       # short argument: better performance
+function faulhaber_polynom1(k::Int)       # short argument: better performance
 
     k < 1 && return 0
     k > 1 || return 1//1
@@ -275,7 +292,7 @@ function faulhaber_summation(n::Int, p::Int; T=Int)
         o += F[k+1]
     end
 
-    Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+    Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
 
     return Base.numerator(o)
 
@@ -293,7 +310,7 @@ function faulhaber_summation(n::Int, p::Int)   # short argument: better performa
         o += F[k+1]
     end
 
-    Base.denominator(o) == 1 || error("jwError: Faulhaber sum failed")
+    Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
 
     return Base.numerator(o)
 
