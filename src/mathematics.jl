@@ -123,10 +123,10 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
     nmax ≥ 0 || return nothing
 
-    nc = 36           # n > nc: integer overload
-   
+    nc = 36          # n > nc: integer overload
+
     V = ConditionalType(nmax, nc; msg)
-    
+
     nmax = convert(Int, nmax)
     B = _bn_Int(nmax, nc)
     B = _bn_BigInt(B, nmax, nc)
@@ -139,8 +139,8 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
 end
 function bernoulli_number(n::T; msg=true) where {T<:Integer}
-    
-    n > 0 || return T(0)
+
+    n == 0 && return Rational{T}(1 // 1)
 
     B = bernoulli_numbers(n + 1; msg)[end]
 
