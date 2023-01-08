@@ -482,7 +482,7 @@ end
 
 # =================================== harmonic number(n, p [; msg=false]) ===============
 
-function _hn_Int(n, nc, p)
+function _hn_Int(n::T, nc::Int, p::Int) where T<:Integer
 
     n = Int(n)
 
@@ -499,8 +499,9 @@ function _hn_Int(n, nc, p)
 
 end
 # .......................................................................................
-function _hn_BigInt(o, n, nc, p)
+function _hn_BigInt(o, n::T, nc::Int, p::Int) where {T<:Integer}
 
+    n = Int(n)
     one = big(1)
 
     for j = nc+1:n

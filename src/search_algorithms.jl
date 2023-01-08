@@ -59,18 +59,18 @@ Optional: a warning message is displayed when `protectInt = true`
 ### Examples:
 ```
 julia> protectInt(8, 8)
-julia> false
+false
 
 julia> protectInt(9, 8)
-julia> Warning: converted to BigInt (integer overload protection)
-julia> true
+Warning: converted to BigInt (integer overload protection)
+true
 
 julia> protectInt(big(8), 8)
-julia> false
+false
 
 julia> protectInt(big(9), 8)
-julia> Warning: converted to BigInt (integer overload protection)
-julia> true
+Warning: converted to BigInt (integer overload protection)
+true
 ```
 """
 function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
