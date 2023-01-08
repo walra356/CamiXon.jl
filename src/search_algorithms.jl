@@ -62,14 +62,14 @@ julia> protectInt(8, 8)
 false
 
 julia> protectInt(9, 8)
-Warning: converted to BigInt (integer overload protection)
+Warning: protectInt -> true"
 true
 
 julia> protectInt(big(8), 8)
 false
 
 julia> protectInt(big(9), 8)
-Warning: converted to BigInt (integer overload protection)
+Warning: protectInt -> true"
 true
 ```
 """
@@ -78,7 +78,7 @@ function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
     n = convert(Int, n)
 
     protect = n > nc ? true : false
-    protect && msg && println("Warning: integer-overload protection indicated")
+    protect && msg && println("Warning: protectInt -> true")
 
     return protect
 
