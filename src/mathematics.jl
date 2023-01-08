@@ -480,9 +480,9 @@ function harmonic_number(n::T; msg=true) where {T<:Integer}
 
     nc = 46
 
-    o = _fn_Int(1//1, nmax, nc)
-    o = _fn_BigInt(o, nmax, nc)
-    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
+    o = _fn_Int(1//1, n, nc)
+    o = _fn_BigInt(o, n, nc)
+    o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
 
     return o
 
@@ -523,7 +523,7 @@ function _hn_BigInt(o, n, nc, p)
 
 end
 @doc raw"""
-    harmonic_number(n::T, p::Int [; msg=false]) where {T<:Integer}
+    harmonic_number(n::T, p::Int [; msg=true]) where {T<:Integer}
 
 Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
@@ -547,7 +547,7 @@ harmonic_number(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-function harmonic_number(n::T, p::Int; msg=false) where {T<:Integer}
+function harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
 
     n ≠ 0 || return 0
 
