@@ -416,7 +416,7 @@ function _hn(o, nstart::Int, nstop::Int)
 
 end
 # ..............................................................................
-unction _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
+function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
     nstop = convert(Int, nstop)
 
@@ -441,6 +441,7 @@ function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
     return o
 
 end
+# ..............................................................................
 
 @doc raw"""
     harmonic_number(n::T [; msg=true]) where {T<:Integer} 
