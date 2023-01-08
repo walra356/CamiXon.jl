@@ -43,6 +43,24 @@ dictAtomicNumbers = Dict(
   "Md" => 101, "No" => 102
 )
 
+# ============================
+
+dictBigConversion = Dict(
+
+  Int => BigInt,
+  Vector{Int} => Vector{BigInt},
+  Vector{Vector{Int}} => Vector{Vector{BigInt}},
+  Rational{Int} => Rational{BigInt},
+  Vector{Rational{Int}} => Vector{Rational{BigInt}},
+  Vector{Vector{Rational{Int}}} => Vector{Vector{Rational{Int}}},
+  Float64 => BigFloat,
+  Vector{Float64} => Vector{BigFloat},
+  Vector{Vector{Float64}} => Vector{Vector{BigFloat}},
+  Complex{Float64} => Complex{BigFloat},
+  Vector{Complex{Float64}} => Vector{Complex{BigFloat}},
+  Vector{Vector{Complex{Float64}}} => Vector{Vector{Complex{BigFloat}}}
+  
+  )
 # ================================ dictElements ================================
 
 @doc raw"""

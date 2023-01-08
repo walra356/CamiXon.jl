@@ -23,6 +23,33 @@ function ConditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
 
 end
 
+@doc raw"""
+    bigconvert(o)
+
+Convert type `T` to `BigInt` for `n > nc`.
+#### Example:
+```
+julia> o = [[1//1, 1//2, 1//3],[1//1, 1//2, 1//3]]
+2-element Vector{Vector{Rational{Int64}}}:
+ [1//1, 1//2, 1//3]
+ [1//1, 1//2, 1//3]
+ 
+julia> bigconvert(o)
+2-element Vector{Vector{Rational{Int64}}}:
+ [1//1, 1//2, 1//3]
+ [1//1, 1//2, 1//3]
+```
+"""
+function bigconvert(o)
+
+    T = typeof(o)
+    W = get(dictBigConversion, T, "key not implemented")
+    o = convert(W, o)
+
+    return o
+
+end
+
 # ========================= find_all(A [,a...]; count=false) ===========
 
 """
