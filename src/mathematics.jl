@@ -446,20 +446,20 @@ Integer-overload protection: for `n > 46` the output is autoconverted to Rationa
 Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
-o = [harmonic_number(i) for i=1:7]; println(o)
-#  Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140]
+julia> o = [harmonic_number(i) for i=1:7]; println(o)
+Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140]
 
-o = [harmonic_number(46; msg=true)]; println(o)
-#  Rational{Int64}[5943339269060627227//1345655451257488800]
+julia> o = [harmonic_number(46; msg=true)]; println(o)
+Rational{Int64}[5943339269060627227//1345655451257488800]
 
-o = [harmonic_number(47; msg=true)]; println(o)
-#  Warning: output converted to BigInt
+julia> o = [harmonic_number(47; msg=true)]; println(o)
+Warning: output converted to BigInt
+Rational{BigInt}[280682601097106968469//63245806209101973600]
+
+julia> o = [harmonic_number(47)]; println(o)
 #  Rational{BigInt}[280682601097106968469//63245806209101973600]
 
-o = [harmonic_number(47)]; println(o)
-#  Rational{BigInt}[280682601097106968469//63245806209101973600]
-
-harmonic_number(60; msg=false)
+julia> harmonic_number(60; msg=false)
 #  15117092380124150817026911//3230237388259077233637600
 
 harmonic_number(12) == harmonic_number(12, 1)
