@@ -424,7 +424,7 @@ function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
     nstop > nc || return o
 
     o = bigconvert(o)
-    for n = nstart:nstop
+    for n = nc+1:nstop
         o += 1 // big(n)
     end
 
