@@ -356,22 +356,24 @@ Optional: a warning message is displayed when autoconversion is activated (defau
 #### Example:
 ```
 julia> fibonacci_numbers(20)
-    21-element Vector{Int64}:
-        0
-        1
-        1
-        2
-        3
-        5
-        8
-       13
-        ⋮
-     1597
-     2584
-     4181
+21-element Vector{Int64}:
+   0
+   1
+   1
+   2
+   3
+   5
+   8
+  13
+   ⋮
+1597
+2584
+4181
+
 julia> fibonacci_number(100)
-    Warning: converted to BigInt (integer overload protection)
-    354224848179261915075
+Warning: converted to BigInt (integer overload protection)
+354224848179261915075
+
 julia>
 ```
 """
@@ -396,7 +398,7 @@ function fibonacci_number(n::T; msg=true) where {T<:Integer}
 
     n > 0 || return T(0)
 
-    F = fibonacci_numbers5(n; msg)[end]
+    F = fibonacci_numbers(n; msg)[end]
 
     return F
 
