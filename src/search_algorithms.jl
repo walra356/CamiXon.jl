@@ -26,7 +26,7 @@ end
 @doc raw"""
     bigconvert(o)
 
-Convert type `T` to `BigInt` for `n > nc`.
+Convert IntBased types to `BigIntBased` types for `n > nc` in accordance with `dictBigConversion`.
 #### Example:
 ```
 julia> o = [[1//1, 1//2, 1//3],[1//1, 1//2, 1//3]]
@@ -53,7 +53,7 @@ end
 @doc raw"""
     protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
 
-Integer-overload protection: `protectInt = true` for `n > nc` and 
+Integer-overload protection indicated: `protectInt = true` for `n > nc` and 
 `protectInt = false` for `n ≤ nc` (also when `T == BigInt`).
 Optional: a warning message is displayed when `protectInt = true`
 ### Examples:
@@ -78,7 +78,7 @@ function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
     n = convert(Int, n)
 
     protect = n > nc ? true : false
-    protect && msg && println("Warning: converted to BigInt (integer overload protection)")
+    protect && msg && println("Warning: integer-overload protection indicated")
 
     return protect
 

@@ -981,6 +981,7 @@ strRational(n::T) where T<:Union{Rational{}, Int, BigInt}
 
 ```@docs
 dictAtomicNumbers
+dictBigConversion
 dictElements
 dictIsotopes
 ```

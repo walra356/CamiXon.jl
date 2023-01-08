@@ -303,7 +303,17 @@ end
 
 # ======================== _collect_Int and _collect_BigInt ====================
 
-function _collect_Int(o, nstop::T, nc::Int) where {T<:Integer}
+function _fn(o, nstart::Int, nstop::Int)
+
+    for n = nstart:nstop
+        push!(o, o[n-1] + o[n-2])
+    end
+
+    return o
+
+end
+# ..............................................................................
+function _fn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
     nstop = convert(Int, nstop)
 
@@ -316,7 +326,7 @@ function _collect_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
 end
 # ..............................................................................
-function _collect_BigInt(o, nstop::T, nc::Int) where {T<:Real}
+function _fn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
     nstop = convert(Int, nstop)
 
@@ -324,16 +334,6 @@ function _collect_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
     o = bigconvert(o)
     o = _fn(o, nc + 1, nstop)
-
-    return o
-
-end
-# ..............................................................................
-function _fn(o, nstart::Int, nstop::Int)
-
-    for n = nstart:nstop
-        push!(o, o[n-1] + o[n-2])
-    end
 
     return o
 
@@ -386,11 +386,11 @@ function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
 
     nc = 93   # n > nc: integer overload protection activated
 
-    F = _collect_Int([0, 1], nmax, nc)
-    F = _collect_BigInt(F, nmax, nc)
-    F = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(F) : F
+    o = _fn_Int([0, 1], nmax, nc)
+    o = _fn_BigInt(o, nmax, nc)
+    o = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(o) : o
 
-    return F
+    return o
 
 end
 # ..............................................................................
@@ -406,7 +406,7 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-function _hn(o::Rational{T}, nstart::Int, nstop::Int) where {T<:Integer}
+function _hn(o, nstart::Int, nstop::Int)
 
     for n = nstart:nstop
         o += 1 // n
@@ -416,21 +416,27 @@ function _hn(o::Rational{T}, nstart::Int, nstop::Int) where {T<:Integer}
 
 end
 # ..............................................................................
-function _hn_Int(n::Int, nc::Int)
+unction _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
-    o = 1 // 1
-    o = _hn(o, 2, min(n, nc))
+    nstop = convert(Int, nstop)
+
+    nstart = length(o) + 1
+    nstop = min(nstop, nc)
+
+    o = _fn(o, nstart, nstop)
 
     return o
 
 end
 # ..............................................................................
-function _hn_BigInt(o::Rational{T}, n::Int, nc::Int) where {T<:Real}
+function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
-    n > nc || return o
+    nstop = convert(Int, nstop)
 
-    o = convert(Rational{BigInt}, o)
-    o = _hn(o, nc + 1, n)
+    nstop > nc || return o
+
+    o = bigconvert(o)
+    o = _hn(o, nc + 1, nstop)
 
     return o
 
@@ -473,17 +479,11 @@ function harmonic_number(n::T; msg=true) where {T<:Integer}
 
     nc = 46
 
-    V = ConditionalType(n, nc; msg)
+    o = _fn_Int(1//1, nmax, nc)
+    o = _fn_BigInt(o, nmax, nc)
+    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
 
-    n = convert(Int, n)
-    H = _hn_Int(n, nc)
-    H = _hn_BigInt(H, n, nc)
-
-    if (T == BigInt) & (V == Int)
-        H = convert(Rational{BigInt}, H)
-    end
-
-    return H
+    return o
 
 end
 
