@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-# ...................................................... VectorRational .........................................................
+# =================================== VectorRational ====================================
 
 @doc raw"""
     VectorRational{T}
@@ -20,7 +20,7 @@ struct VectorRational{T}
 
 end
 
-# ==================================== analyzeVectorRational(vec) =======================
+# ==================================== castVectorRational(vec) =======================
 
 @doc raw"""
     castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
@@ -299,31 +299,41 @@ end
 
 # ============================= Fibonacci numbers =================================
 
-function _fn(o::Vector{T}, nstart::Int, nstop::Int) where {T<:Integer}
+
+
+# ======================== _collect_Int and _collect_BigInt ====================
+
+function _collect_Int(o, nstop::T, nc::Int) where {T<:Integer}
+
+    nstop = convert(Int, nstop)
+
+    nstart = length(o) + 1
+    nstop = min(nstop, nc)
+
+    o = _fn(o, nstart, nstop)
+
+    return o
+
+end
+# ..............................................................................
+function _collect_BigInt(o, nstop::T, nc::Int) where {T<:Real}
+
+    nstop = convert(Int, nstop)
+
+    nstop > nc || return o
+
+    o = bigconvert(o)
+    o = _fn(o, nc + 1, nstop)
+
+    return o
+
+end
+# ..............................................................................
+function _fn(o, nstart::Int, nstop::Int)
 
     for n = nstart:nstop
         push!(o, o[n-1] + o[n-2])
     end
-
-    return o
-
-end
-# ..............................................................................
-function _fn_Int(nmax::Int, nc::Int)
-
-    o = [0, 1]
-    o = _fn(o, 3, min(nmax, nc))
-
-    return o
-
-end
-# ..............................................................................
-function _fn_BigInt(o::Vector{T}, nmax::Int, nc::Int) where {T<:Real}
-
-    nmax > nc || return o
-
-    o = convert(Vector{BigInt}, o)
-    o = _fn(o, nc + 1, nmax)
 
     return o
 
@@ -334,52 +344,59 @@ end
     fibonacci_number(n::T [; msg=true]) where T<:Integer
     fibonacci_numbers(nmax::T [; msg=true]) where T<:Integer
 
-A sequence of integers,  ``F_1,⋯\ F_{nmax}``, in which each element is the sum of the 
+A sequence of integers,  ``F_0,⋯\ F_{nmax}``, in which each element is the sum of the 
 two preceding ones, 
 ```math
     F_n = F_{n-1}+F_{n-2}.
 ```
-where ``F_1=1`` and ``F_0=0`` (NB. ``F_0`` *not* included in the output). 
+where ``F_1=1`` and ``F_0=0``. 
 
 Integer-overload protection: for `nmax > 92` the output is autoconverted to BigInt.
 Optional: a warning message is displayed when autoconversion is activated (default: no message)
 #### Example:
 ```
-Fn = fibonacci_numbers(20)
-#  [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
-
-Fn = fibonacci_number(100)
-println("Fn(200) = $(Fn[end])")
-#  Warning: output converted to BigInt
-#
-#  Fn(200) = 354224848179261915075
+julia> fibonacci_numbers(20)
+    21-element Vector{Int64}:
+        0
+        1
+        1
+        2
+        3
+        5
+        8
+       13
+        ⋮
+     1597
+     2584
+     4181
+julia> fibonacci_number(100)
+    Warning: converted to BigInt (integer overload protection)
+    354224848179261915075
+julia>
 ```
 """
 function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
 
+    nmax = nmax + 1
+
     nmax > 0 || return nothing
     nmax > 1 || return T(0)
 
-    nc = 92   # n > nc: integer overload protection activated
+    nc = 93   # n > nc: integer overload protection activated
 
-    V = ConditionalType(nmax, nc; msg)
-
-    nmax = convert(Int, nmax)
-    F = _fn_Int(nmax, nc)
-    F = _fn_BigInt(F, nmax, nc)
-
-    if (T == BigInt) & (V == Int)
-        F = convert(Vector{BigInt}, F)
-    end
+    F = _collect_Int([0, 1], nmax, nc)
+    F = _collect_BigInt(F, nmax, nc)
+    F = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(F) : F
 
     return F
 
 end
+# ..............................................................................
 function fibonacci_number(n::T; msg=true) where {T<:Integer}
 
     n > 0 || return T(0)
 
-    F = fibonacci_numbers(n + 1; msg)[end]
+    F = fibonacci_numbers5(n; msg)[end]
 
     return F
 

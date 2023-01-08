@@ -1,6 +1,6 @@
 # ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
 @doc raw"""
-    ConditionalType(n::T, nc::T [; msg=false]) where T<:Integer  
+    ConditionalType(n::T, nc::T [; msg=true]) where T<:Integer  
 
 Convert type `T` to `BigInt` for `n > nc`.
 #### Example:
