@@ -32,15 +32,17 @@ export castCodata
 export listCodata
 export calibrationReport
 
-export bohrformula
-export Element
+export dictBigConversion
 export dictAtomicNumbers
 export dictElements
+export dictIsotopes
+
+export bohrformula
+export Element
 export listElement
 export listElements
 export castElement
 export Isotope
-export dictIsotopes
 export listIsotope
 export listIsotopes
 export castIsotope
@@ -164,6 +166,7 @@ export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
 export ConditionalType
+export protectInt
 export find_all
 export find_first
 export find_last

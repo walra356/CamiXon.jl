@@ -33,7 +33,7 @@ julia> o = [[1//1, 1//2, 1//3],[1//1, 1//2, 1//3]]
 2-element Vector{Vector{Rational{Int64}}}:
  [1//1, 1//2, 1//3]
  [1//1, 1//2, 1//3]
- 
+
 julia> bigconvert(o)
 2-element Vector{Vector{Rational{Int64}}}:
  [1//1, 1//2, 1//3]
@@ -49,6 +49,41 @@ function bigconvert(o)
     return o
 
 end
+
+@doc raw"""
+    protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
+
+Integer-overload protection: `protectInt = true` for `n > nc` and 
+`protectInt = false` for `n ≤ nc` (also when `T == BigInt`).
+Optional: a warning message is displayed when `protectInt = true`
+### Examples:
+```
+julia> protectInt(8, 8)
+julia> false
+
+julia> protectInt(9, 8)
+julia> Warning: converted to BigInt (integer overload protection)
+julia> true
+
+julia> protectInt(big(8), 8)
+julia> false
+
+julia> protectInt(big(9), 8)
+julia> Warning: converted to BigInt (integer overload protection)
+julia> true
+```
+"""
+function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
+
+    n = convert(Int, n)
+
+    protect = n > nc ? true : false
+    protect && msg && println("Warning: converted to BigInt (integer overload protection)")
+
+    return protect
+
+end
+
 
 # ========================= find_all(A [,a...]; count=false) ===========
 
