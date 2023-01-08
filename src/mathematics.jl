@@ -472,8 +472,8 @@ function harmonic_number(n::T; msg=true) where {T<:Integer}
 
     nc = 46
 
-    o = _fn_Int_1(1//1, n, nc)
-    o = _fn_BigInt_1(o, n, nc)
+    o = _hn_Int_1(1//1, n, nc)
+    o = _hn_BigInt_1(o, n, nc)
     o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
 
     return o
