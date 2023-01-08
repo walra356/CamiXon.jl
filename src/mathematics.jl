@@ -402,7 +402,7 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-function _hn_Int_1(o, nstop::T, nc::Int) where {T<:Integer}
+function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
     nstop = convert(Int, nstop)
 
@@ -417,7 +417,7 @@ function _hn_Int_1(o, nstop::T, nc::Int) where {T<:Integer}
 
 end
 # ..............................................................................
-function _hn_BigInt_1(o, nstop::T, nc::Int) where {T<:Real}
+function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
     nstop = convert(Int, nstop)
 
@@ -472,8 +472,8 @@ function harmonic_number(n::T; msg=true) where {T<:Integer}
 
     nc = 46
 
-    o = _hn_Int_1(1//1, n, nc)
-    o = _hn_BigInt_1(o, n, nc)
+    o = _hn_Int(1//1, n, nc)
+    o = _hn_BigInt(o, n, nc)
     o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
 
     return o
