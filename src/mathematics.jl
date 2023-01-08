@@ -135,7 +135,7 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
     #nmax = convert(Int, nmax)
     o = _bn_Int(nmax, nc)
     o = _bn_BigInt(o nmax, nc)
-    o = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(o) : o
+    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
 
     #if (T == BigInt) & (V == Int)
     #    B = convert(Vector{Rational{BigInt}}, B)
