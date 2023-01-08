@@ -164,8 +164,8 @@ using Test
     @test faulhaber_summation(3,5) == 276
     @test fibonacci_number(0) == 0
     @test fibonacci_number(1) == 1
-    @test fibonacci_number(100; msg=false) == 354224848179261915075
-    @test (fibonacci_number(100; msg=false) == fibonacci_numbers(100; msg=false)[end]) == true
+    @test fibonacci_number(100) == 354224848179261915075
+    @test (fibonacci_number(100) == fibonacci_numbers(100)[end]) == true
     @test harmonic_number(1) == 1 // 1
     @test harmonic_number(60; msg=false) == 15117092380124150817026911 // 3230237388259077233637600
     @test harmonic_number(12, 3) == 25535765062457//21300003648000

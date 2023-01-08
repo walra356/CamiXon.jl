@@ -367,7 +367,7 @@ julia> fibonacci_numbers(20)
 4181
 
 julia> fibonacci_number(100)
-Warning: converted to BigInt (integer overload protection)
+Warning: protectInt -> true
 354224848179261915075
 
 julia>
@@ -402,14 +402,11 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
+function _hn_Int(o, n::T, nc::Int) where {T<:Integer}
 
-    nstop = convert(Int, nstop)
+    n = Int(n)
 
-    nstart = 2
-    nstop = min(nstop, nc)
-
-    for n = nstart:nstop
+    for n = 2:min(n, nc)
         o += 1 // n
     end
 
@@ -417,16 +414,16 @@ function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
 end
 # ..............................................................................
-function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
+function _hn_BigInt(o, n::T, nc::Int) where {T<:Real}
 
-    nstop = convert(Int, nstop)
+    n = Int(n)
 
-    nstop > nc || return o
+    n > nc || return o
 
     one = big(1)
 
     o = bigconvert(o)
-    for n = nc+1:nstop
+    for n = nc+1:n
         o += one // big(n)
     end
 
@@ -452,18 +449,18 @@ Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140]
 julia> o = [harmonic_number(46; msg=true)]; println(o)
 Rational{Int64}[5943339269060627227//1345655451257488800]
 
-julia> o = [harmonic_number(47; msg=true)]; println(o)
-Warning: output converted to BigInt
+julia> harmonic_number(47)]
+Warning: protectInt -> true
 Rational{BigInt}[280682601097106968469//63245806209101973600]
 
-julia> o = [harmonic_number(47)]; println(o)
-#  Rational{BigInt}[280682601097106968469//63245806209101973600]
+julia> harmonic_number(47; msg=false)
+Rational{BigInt}[280682601097106968469//63245806209101973600]
 
 julia> harmonic_number(60; msg=false)
-#  15117092380124150817026911//3230237388259077233637600
+15117092380124150817026911//3230237388259077233637600
 
-harmonic_number(12) == harmonic_number(12, 1)
-#  true
+julia> harmonic_number(12) == harmonic_number(12, 1)
+true
 ```
 """
 function harmonic_number(n::T; msg=true) where {T<:Integer}
@@ -482,11 +479,11 @@ end
 
 # =================================== harmonic number(n, p [; msg=false]) ===============
 
-function _hn_Int(n::T, nc::Int, p::Int) where T<:Integer
-
+function _hn_Int(o, n::T, nc::Int, p::Int) where T<:Integer
+    
     n = Int(n)
 
-    o = 0 // 1
+    #o = 0 // 1
     for j = 1:min(n, nc)
         a = 1
         for i = 1:p
@@ -502,8 +499,10 @@ end
 function _hn_BigInt(o, n::T, nc::Int, p::Int) where {T<:Integer}
 
     n = Int(n)
+    
     one = big(1)
 
+    o = bigconvert(o)
     for j = nc+1:n
         a = one
         for i = 1:p
@@ -548,14 +547,19 @@ function harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
     nc = p > 17 ? 0 : ac[p]
 
     if p > 0
-        o = _hn_Int(n, nc, p)
-        if n > nc
-            T ≠ BigInt ? (msg && println("Warning: output converted to BigInt")) : false
-            o *= big(1)
-            o = _hn_BigInt(o, n, nc, p)
-        else
-            T ≠ BigInt ? true : o *= T(1)
-        end
+        o = _hn_Int(0 // 1, n, nc, p)
+        o = _hn_BigInt(o, n, nc, p)
+        o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
+
+
+ #       o = _hn_Int(n, nc, p)
+  #      if n > nc
+   #         T ≠ BigInt ? (msg && println("Warning: output converted to BigInt")) : false
+    #        o *= big(1)
+     #       o = _hn_BigInt(o, n, nc, p)
+      #  else
+       #     T ≠ BigInt ? true : o *= T(1)
+        #end
     else
         p = -p
         F = CamiXon.faulhaber_polynom(p + 1; T)
