@@ -299,10 +299,6 @@ end
 
 # ============================= Fibonacci numbers =================================
 
-
-
-# ======================== _collect_Int and _collect_BigInt ====================
-
 function _fn(o, nstart::Int, nstop::Int)
 
     for n = nstart:nstop
@@ -406,16 +402,6 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-function _hn(o, nstart::Int, nstop::Int)
-
-    for n = nstart:nstop
-        o += 1 // n
-    end
-
-    return o
-
-end
-# ..............................................................................
 function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
 
     nstop = convert(Int, nstop)
@@ -423,7 +409,9 @@ function _hn_Int(o, nstop::T, nc::Int) where {T<:Integer}
     nstart = length(o) + 1
     nstop = min(nstop, nc)
 
-    o = _fn(o, nstart, nstop)
+    for n = nstart:nstop
+        o += 1 // n
+    end
 
     return o
 
@@ -436,7 +424,9 @@ function _hn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
     nstop > nc || return o
 
     o = bigconvert(o)
-    o = _hn(o, nc + 1, nstop)
+    for n = nstart:nstop
+        o += 1 // big(n)
+    end
 
     return o
 
