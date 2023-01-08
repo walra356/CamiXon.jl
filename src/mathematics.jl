@@ -45,9 +45,13 @@ end
 
 # ==================================== bernoulli_numbers(nmax) =================
 
-function _bn(o::Vector{Rational{T}}, nstart::Int, nstop::Int) where {T<:Integer}
+function _bn_Int(nmax::Int, nc::Int)
 
-    for n = nstart:nstop
+    nmax == 1 && return [1 // 1]
+
+    o = [1 // 1, -1 // 2]
+    #o = _bn(o, 3, min(nmax, nc))
+    for n = 3:min(nmax, nc)
         a = 0
         if Base.isodd(n)
             b = 1
@@ -64,23 +68,24 @@ function _bn(o::Vector{Rational{T}}, nstart::Int, nstop::Int) where {T<:Integer}
 
 end
 # ..............................................................................
-function _bn_Int(nmax::Int, nc::Int)
-
-    nmax == 1 && return [1 // 1]
-
-    o = [1 // 1, -1 // 2]
-    o = _bn(o, 3, min(nmax, nc))
-
-    return o
-
-end
-# ..............................................................................
 function _bn_BigInt(o::Vector{T}, nmax::Int, nc::Int) where {T<:Real}
 
     nmax > nc || return o
 
-    o = convert(Vector{Rational{BigInt}}, o)
-    o = _bn(o, nc + 1, nmax)
+    #o = convert(Vector{Rational{BigInt}}, o)
+    #o = _bn(o, nc + 1, nmax)
+    for n = nc:nmax
+        a = 0
+        if Base.isodd(n)
+            b = 1
+            for j = 1:n-1
+                a -= o[j] * b
+                b *= (n + 1 - j)
+                b ÷= j        # binomial coefficients are integers
+            end
+        end
+        push!(o, a // n)
+    end
 
     return o
 
@@ -100,49 +105,50 @@ repetative use of the recurrence relation
 Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Starting 
 at ``B_0`` is called the *even index convention*.
 
-Integer-overload protection: for `n > 35` (`nmax > 36`) the output is 
-autoconverted to `Rational{BigInt}`. *Option*: warning message displayed when 
-autoconversion is activated (default: no message).
+Integer-overload protection: for `n > 35` the output is 
+autoconverted to `Rational{BigInt}`. *Option*: by default the message 
+Warning: `protectInt -> true`` is activated.
 ### Examples:
 ```
-bernoulli_number(60)
-#  Warning: output converted to BigInt
-#
-#  -1215233140483755572040304994079820246041491//56786730
+julia> bernoulli_number(60)
+Warning: protectInt -> true
+-1215233140483755572040304994079820246041491//56786730
 
 nmax = 10
-o = bernoulli_numbers(nmax); println(o)
-#  Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
+julia> bernoulli_numbers(10; println(o)
+Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
 n = 60
-bernoulli_number(n) == bernoulli_numbers(n+1)[end]             # unit based array
+bernoulli_number(n) == bernoulli_numbers(n)[end]             # unit based array
 #  true
 ```
 """
 function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
+    nmax += 1
     nmax ≥ 0 || return nothing
 
     nc = 36          # n > nc: integer overload
 
-    V = ConditionalType(nmax, nc; msg)
+    #V = ConditionalType(nmax, nc; msg)
 
-    nmax = convert(Int, nmax)
-    B = _bn_Int(nmax, nc)
-    B = _bn_BigInt(B, nmax, nc)
+    #nmax = convert(Int, nmax)
+    o = _bn_Int(nmax, nc)
+    o = _bn_BigInt(o nmax, nc)
+    o = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(o) : o
 
-    if (T == BigInt) & (V == Int)
-        B = convert(Vector{Rational{BigInt}}, B)
-    end
+    #if (T == BigInt) & (V == Int)
+    #    B = convert(Vector{Rational{BigInt}}, B)
+    #end
 
-    return B
+    return o
 
 end
 function bernoulli_number(n::T; msg=true) where {T<:Integer}
 
     n == 0 && return Rational{T}(1 // 1)
 
-    B = bernoulli_numbers(n + 1; msg)[end]
+    B = bernoulli_numbers(n; msg)[end]
 
     return B
 
@@ -299,24 +305,17 @@ end
 
 # ============================= Fibonacci numbers =================================
 
-function _fn(o, nstart::Int, nstop::Int)
+function _fn_Int(nstop::T, nc::Int) where {T<:Integer}
 
-    for n = nstart:nstop
+    nstop = convert(Int, nstop)
+    nstop = min(nstop, nc)
+
+    o = [0, 1]
+    for n = 3:nstop
         push!(o, o[n-1] + o[n-2])
     end
 
-    return o
-
-end
-# ..............................................................................
-function _fn_Int(o, nstop::T, nc::Int) where {T<:Integer}
-
-    nstop = convert(Int, nstop)
-
-    nstart = length(o) + 1
-    nstop = min(nstop, nc)
-
-    o = _fn(o, nstart, nstop)
+    #o = _fn(o, nstart, nstop)
 
     return o
 
@@ -325,11 +324,13 @@ end
 function _fn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
     nstop = convert(Int, nstop)
-
     nstop > nc || return o
 
     o = bigconvert(o)
-    o = _fn(o, nc + 1, nstop)
+    for n = nc + 1:nstop
+        push!(o, o[n-1] + o[n-2])
+    end
+    #o = _fn(o, nc + 1, nstop)
 
     return o
 
@@ -340,12 +341,12 @@ end
     fibonacci_number(n::T [; msg=true]) where T<:Integer
     fibonacci_numbers(nmax::T [; msg=true]) where T<:Integer
 
-A sequence of integers,  ``F_0,⋯\ F_{nmax}``, in which each element is the sum of the 
+The sequence of integers,  ``F_0,⋯\ F_{nmax}``, in which each element is the sum of the 
 two preceding ones, 
 ```math
     F_n = F_{n-1}+F_{n-2}.
 ```
-where ``F_1=1`` and ``F_0=0``. 
+with ``F_1=1`` and ``F_0=0``. 
 
 Integer-overload protection: for `nmax > 92` the output is autoconverted to BigInt.
 Optional: a warning message is displayed when autoconversion is activated (default: no message)
@@ -359,8 +360,6 @@ julia> fibonacci_numbers(20)
    2
    3
    5
-   8
-  13
    ⋮
 1597
 2584
@@ -375,16 +374,16 @@ julia>
 """
 function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
 
-    nmax = nmax + 1
+    nmax += 1
 
     nmax > 0 || return nothing
     nmax > 1 || return T(0)
 
     nc = 93   # n > nc: integer overload protection activated
 
-    o = _fn_Int([0, 1], nmax, nc)
+    o = _fn_Int(nmax, nc)
     o = _fn_BigInt(o, nmax, nc)
-    o = ((T == BigInt) & !protectInt(nmax, nc; msg)) ? bigconvert(o) : o
+    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
 
     return o
 
