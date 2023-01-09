@@ -114,18 +114,17 @@ julia> bernoulli_number(60)
 Warning: protectInt -> true
 -1215233140483755572040304994079820246041491//56786730
 
-nmax = 10
 julia> bernoulli_numbers(10; println(o)
 Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
-n = 60
-bernoulli_number(n) == bernoulli_numbers(n)[end]             # unit based array
-#  true
+julia> n = 60;
+julia> bernoulli_number(n) == bernoulli_numbers(n)[end]             
+true
 ```
 """
 function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
-    nmax += 1
+    nmax += 1  # account for unit-based of Array `o`
     nmax ≥ 0 || return nothing
 
     nc = 36          # n > nc: integer overload
@@ -222,22 +221,7 @@ function faulhaber_polynom(k::Int; T=Int)
     k > 1 || return 1//1
 
     P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulli_numbers(k); B[2]=-B[2]  # was bernoulli_numbers(k-1; T)
-
-    F = (B .* P)  // k
-
-    F = Base.append!(F,0//1)   # add polynomial constant (zero in this case)
-
-    return Base.reverse(F)     # reverse to standard order
-
-end
-function faulhaber_polynom1(k::Int)       # short argument: better performance
-
-    k < 1 && return 0
-    k > 1 || return 1//1
-
-    P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulli_numbers(k-1); B[2]=-B[2]
+    B = CamiXon.bernoulli_numbers(k-1); B[2]=-B[2]  # was bernoulli_numbers(k-1; T)
 
     F = (B .* P)  // k
 
@@ -315,8 +299,6 @@ function _fn_Int(nstop::T, nc::Int) where {T<:Integer}
         push!(o, o[n-1] + o[n-2])
     end
 
-    #o = _fn(o, nstart, nstop)
-
     return o
 
 end
@@ -330,7 +312,6 @@ function _fn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
     for n = nc + 1:nstop
         push!(o, o[n-1] + o[n-2])
     end
-    #o = _fn(o, nc + 1, nstop)
 
     return o
 
@@ -368,13 +349,11 @@ julia> fibonacci_numbers(20)
 julia> fibonacci_number(100)
 Warning: protectInt -> true
 354224848179261915075
-
-julia>
 ```
 """
 function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
 
-    nmax += 1
+    nmax += 1  # account for unit-based of Array `o`
 
     nmax > 0 || return nothing
     nmax > 1 || return T(0)
@@ -549,16 +528,6 @@ function harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
         o = _hn_Int(0 // 1, n, nc, p)
         o = _hn_BigInt(o, n, nc, p)
         o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
-
-
- #       o = _hn_Int(n, nc, p)
-  #      if n > nc
-   #         T ≠ BigInt ? (msg && println("Warning: output converted to BigInt")) : false
-    #        o *= big(1)
-     #       o = _hn_BigInt(o, n, nc, p)
-      #  else
-       #     T ≠ BigInt ? true : o *= T(1)
-        #end
     else
         p = -p
         F = CamiXon.faulhaber_polynom(p + 1; T)
