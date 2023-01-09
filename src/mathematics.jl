@@ -144,7 +144,7 @@ function bernoulli_number(n::T; msg=true) where {T<:Integer}
 
     n == 0 && return Rational{T}(1 // 1)
 
-    B = bernoulli_numbers1(n; msg)[end]
+    B = bernoulli_numbers(n; msg)[end]
 
     return B
 
