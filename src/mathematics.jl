@@ -45,7 +45,7 @@ end
 
 # ==================================== bernoulli_numbers(nmax) =================
 
-function _bn_Int(nstop::Int, nc::Int)
+function _bn_Int(nstop::T, nc::Int) where {T<:Integer}
 
     nstop = convert(Int, nstop)
     nstop = min(nstop, nc)
@@ -70,21 +70,26 @@ function _bn_Int(nstop::Int, nc::Int)
 
 end
 # ..............................................................................
-function _bn_BigInt(o::Vector{T}, nstop::Int, nc::Int) where {T<:Real}
+function _bn_BigInt(o, nstop::T, nc::Int) where {T<:Integer}
 
+    nstop = convert(Int, nstop)
     nstop > nc || return o
 
+    nul = big(0)
+    one = big(1)
+
+    o = bigconvert(o)
     for n = nc+1:nstop
-        a = 0
+        a = nul
         if Base.isodd(n)
-            b = 1
+            b = one
             for j = 1:n-1
                 a -= o[j] * b
                 b *= (n + 1 - j)
                 b ÷= j        # binomial coefficients are integers
             end
         end
-        push!(o, a // n)
+        push!(o, a // big(n))
     end
 
     return o
@@ -139,7 +144,7 @@ function bernoulli_number(n::T; msg=true) where {T<:Integer}
 
     n == 0 && return Rational{T}(1 // 1)
 
-    B = bernoulli_numbers(n; msg)[end]
+    B = bernoulli_numbers1(n; msg)[end]
 
     return B
 
