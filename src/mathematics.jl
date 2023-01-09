@@ -45,13 +45,15 @@ end
 
 # ==================================== bernoulli_numbers(nmax) =================
 
-function _bn_Int(nmax::Int, nc::Int)
+function _bn_Int(nstop::Int, nc::Int)
 
-    nmax == 1 && return [1 // 1]
+    nstop = convert(Int, nstop)
+    nstop = min(nstop, nc)
+
+    nstop == 1 && return [1 // 1]
 
     o = [1 // 1, -1 // 2]
-    #o = _bn(o, 3, min(nmax, nc))
-    for n = 3:min(nmax, nc)
+    for n = 3:nstop
         a = 0
         if Base.isodd(n)
             b = 1
@@ -68,13 +70,11 @@ function _bn_Int(nmax::Int, nc::Int)
 
 end
 # ..............................................................................
-function _bn_BigInt(o::Vector{T}, nmax::Int, nc::Int) where {T<:Real}
+function _bn_BigInt(o::Vector{T}, nstop::Int, nc::Int) where {T<:Real}
 
-    nmax > nc || return o
+    nstop > nc || return o
 
-    #o = convert(Vector{Rational{BigInt}}, o)
-    #o = _bn(o, nc + 1, nmax)
-    for n = nc:nmax
+    for n = nc+1:nstop
         a = 0
         if Base.isodd(n)
             b = 1
@@ -98,7 +98,7 @@ end
 
 Bernoulli number array, ``[B_0,⋯\ B_{nmax}]``. This is the *even index convention* 
 (odd-indexed numbers vanish - except B[1]=-1/2). The array is calculated by 
-repetative use of the recurrence relation
+repetative use of the recurrence relation.
 ```math
     B_n = - \frac{1}{n+1}\sum_{k=0}^{n-1}\frac{(n+1)!}{k!(n+1-k)}B_k.
 ```
@@ -128,17 +128,9 @@ function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
     nmax ≥ 0 || return nothing
 
     nc = 36          # n > nc: integer overload
-
-    #V = ConditionalType(nmax, nc; msg)
-
-    #nmax = convert(Int, nmax)
     o = _bn_Int(nmax, nc)
     o = _bn_BigInt(o, nmax, nc)
     o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
-
-    #if (T == BigInt) & (V == Int)
-    #    B = convert(Vector{Rational{BigInt}}, B)
-    #end
 
     return o
 
