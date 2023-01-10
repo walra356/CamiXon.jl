@@ -168,9 +168,9 @@ using Test
     @test fibonacciF(1) == 1
     @test fibonacciF(100; msg=false) == 354224848179261915075
     @test (fibonacciF(100; msg=false) == fibonacciFs(100; msg=false)[end]) == true
-    @test harmonic_number(1) == 1 // 1
-    @test harmonic_number(60) == 15117092380124150817026911 // 3230237388259077233637600
-    @test harmonic_number(12, 3) == 25535765062457//21300003648000
+    @test harmonicNumber(1) == 1 // 1
+    @test harmonicNumber(60) == 15117092380124150817026911 // 3230237388259077233637600
+    @test harmonicNumber(12, 3) == 25535765062457//21300003648000
     @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
     @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
     @test pochhammer.([0,1,2,3,4],5) == [0, 120, 720, 2520, 6720]
