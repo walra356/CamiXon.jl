@@ -352,14 +352,14 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ## Mathematics
 
 ```@docs
-bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
+bernoulliB(nmax::T; msg=true) where {T<:Integer}
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
 bigfactorial(n::Int)
 # faulhaber_polynom(k::T)  where T<:Integer
 faulhaber_polynom(k::Int; T=Int)
 # faulhaber_summation(n::T, p::T) where T<:Integer
 faulhaber_summation(n::Int, p::Int; T=Int)
-fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
+fibonacciF(n::T; msg=true) where {T<:Integer}
 harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
 harmonic_number(n::T; msg=true) where {T<:Integer}
 integer_partitions(n::Int, m=0; transpose=false, count=false)
