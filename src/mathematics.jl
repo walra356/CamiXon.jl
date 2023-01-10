@@ -344,8 +344,8 @@ function _fn_BigInt(n::Int, nc::Int)
     one = big(1)
 
     o = glFn_BigInt
-    for m = nc+1:n
-        push!(o, o[m-2] + o[m-3])
+    for m = nc+2:n+1
+        push!(o, o[m-1] + o[m-2])
     end
 
     return o
