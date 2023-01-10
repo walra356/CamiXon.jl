@@ -77,7 +77,8 @@ using Test
     @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
     @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1,"Hz")) == "1 Hz"
-    @test ConditionalType(47,46) == BigInt
+    @test conditionalType(47,46) == BigInt
+    @test typeof(bigconvert([[1//1,1//2], [1//1,1//2]])) == Vector{Vector{Rational{BigInt}}}
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌,:📢,:📌,:📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌,:📢,:📌,:📞], :📌) == [[2, 4]]
@@ -159,7 +160,7 @@ using Test
     @test bernoulli_number(1) == -1 // 2
     @test bernoulli_number(60; msg=false) == -1215233140483755572040304994079820246041491 // 56786730
     @test (bernoulli_number(60; msg=false) == bernoulli_numbers(60; msg=false)[end]) == true
-    @test factorialbig(21) == 51090942171709440000
+    @test bigfactorial(21) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
     @test fibonacci_number(0) == 0

@@ -1,23 +1,22 @@
 # ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
 @doc raw"""
-    ConditionalType(n::T, nc::T [; msg=true]) where T<:Integer  
+    conditionalType(n::T, nc::T [; msg=true]) where T<:Integer  
 
 Convert type `T` to `BigInt` for `n > nc`.
 #### Example:
 ```
-ConditionalType(46, 46)
-#  Int64
+julia> conditionalType(46, 46)
+Int64
 
-ConditionalType(47, 46)
-#  BigInt
+julia> conditionalType(47, 46)
+BigInt
 ```
 """
-function ConditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
+function conditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
 
     T == Int || return BigInt
 
     V = n > nc ? BigInt : T
-    V ≠ T ? (msg && println("Warning: output converted to BigInt")) : false
 
     return V
 
@@ -49,41 +48,6 @@ function bigconvert(o)
     return o
 
 end
-
-@doc raw"""
-    protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
-
-Integer-overload protection indicated: `protectInt = true` for `n > nc` and 
-`protectInt = false` for `n ≤ nc` (also when `T == BigInt`).
-Optional: a warning message is displayed when `protectInt = true`
-### Examples:
-```
-julia> protectInt(8, 8)
-false
-
-julia> protectInt(9, 8)
-Warning: protectInt -> true"
-true
-
-julia> protectInt(big(8), 8)
-false
-
-julia> protectInt(big(9), 8)
-Warning: protectInt -> true"
-true
-```
-"""
-function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
-
-    n = convert(Int, n)
-
-    protect = n > nc ? true : false
-    protect && msg && println("Warning: protectInt -> true")
-
-    return protect
-
-end
-
 
 # ========================= find_all(A [,a...]; count=false) ===========
 

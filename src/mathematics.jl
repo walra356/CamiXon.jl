@@ -28,9 +28,9 @@ end
 Decompose vector of rational numbers.
 #### Example:
 ```
-v = [2//3,4//5]
-castVectorRational(v)
-    VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
+julia> v = [2//3,4//5];
+julia> castVectorRational(v)
+VectorRational([10, 12], 15, Rational{Int64}[2//3, 4//5])
 ```
 """
 function castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
@@ -43,53 +43,45 @@ function castVectorRational(vec::Vector{Rational{T}}) where T<:Union{Int,BigInt}
 
 end
 
-# ==================================== bernoulli_numbers(nmax) =================
+# ============================ bernoulli_numbers ==============================
 
-function _bn_Int(nstop::T, nc::Int) where {T<:Integer}
+function _bn_Int(n::Int, nc::Int)
 
-    nstop = convert(Int, nstop)
-    nstop = min(nstop, nc)
-
-    nstop == 1 && return [1 // 1]
-
-    o = [1 // 1, -1 // 2]
-    for n = 3:nstop
-        a = 0
-        if Base.isodd(n)
-            b = 1
-            for j = 1:n-1
-                a -= o[j] * b
-                b *= (n + 1 - j)
-                b ÷= j        # binomial coefficients are integers
-            end
-        end
-        push!(o, a // n)
+    if n ≤ 8
+        o = n == 8 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1, -1 // 30] :
+            n == 7 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1] :
+            n == 6 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42] :
+            n == 5 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1] :
+            n == 4 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30] :
+            n == 3 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1] :
+            n == 2 ? [1 // 1, -1 // 2, 1 // 6] :
+            n == 1 ? [1 // 1, -1 // 2] : [1 // 1]
+    else
+        o = [get!(dictBernoulliNumbers, i, nothing) for i = 0:n]
     end
 
     return o
 
 end
 # ..............................................................................
-function _bn_BigInt(o, nstop::T, nc::Int) where {T<:Integer}
-
-    nstop = convert(Int, nstop)
-    nstop > nc || return o
+function _bn_BigInt(n::Int, nc::Int)
 
     nul = big(0)
     one = big(1)
 
+    o = [get!(dictBernoulliNumbers, n, nothing) for n = 0:nc]
     o = bigconvert(o)
-    for n = nc+1:nstop
+    for m = nc+2:n+1
         a = nul
-        if Base.isodd(n)
+        if Base.isodd(m)
             b = one
-            for j = 1:n-1
+            for j = 1:m-1
                 a -= o[j] * b
-                b *= (n + 1 - j)
-                b ÷= j        # binomial coefficients are integers
+                b *= (m + 1 - j)
+                b ÷= j                     # binomial coefficients are integers
             end
         end
-        push!(o, a // big(n))
+        push!(o, a // big(m))
     end
 
     return o
@@ -111,12 +103,12 @@ Special numbers: ``B_0=1,\ B_1=-1/2,\ B_{2n+1}=0\ (\rm{for}\ n>1)``. Starting
 at ``B_0`` is called the *even index convention*.
 
 Integer-overload protection: for `n > 35` the output is 
-autoconverted to `Rational{BigInt}`. *Option*: by default the message 
-Warning: `protectInt -> true`` is activated.
+autoconverted to `Rational{BigInt}`. By default the capture message is activated: 
+Warning: output converted to BigInt (integer-overload capture). 
 ### Examples:
 ```
 julia> bernoulli_number(60)
-Warning: protectInt -> true
+Warning: output converted to BigInt (integer-overload capture)
 -1215233140483755572040304994079820246041491//56786730
 
 julia> bernoulli_numbers(10; println(o)
@@ -129,31 +121,40 @@ true
 """
 function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 
-    nmax += 1  # account for unit-based of Array `o`
-    nmax ≥ 0 || return nothing
+    n = Int(nmax)
+    nc = 35
 
-    nc = 36          # n > nc: integer overload
-    o = _bn_Int(nmax, nc)
-    o = _bn_BigInt(o, nmax, nc)
-    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
+    if T == Int
+        o = n > nc ? _bn_BigInt(n, nc) : _bn_Int(n, nc)
+        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _bn_BigInt(n, nc) : bigconvert(_bn_Int(n, nc))
+    end
 
     return o
+
 
 end
 function bernoulli_number(n::T; msg=true) where {T<:Integer}
 
-    n == 0 && return Rational{T}(1 // 1)
+    n = Int(n)
+    nc = 35
 
-    B = bernoulli_numbers(n; msg)[end]
+    if T == Int
+        o = n > nc ? _bn_BigInt(n, nc)[end] : get!(dictBernoulliNumbers, n, nothing)
+        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _bn_BigInt(n, nc)[end] : bigconvert(get!(dictBernoulliNumbers, n, nothing))
+    end
 
-    return B
+    return o
 
 end
 
-# ==================================== factorialbig(n) =========================
+# ==================================== bigfactorial(n) =========================
 
 @doc raw"""
-    factorialbig(n::Int)
+    bigfactorial(n::Int)
 
 The product of all *positive* integers less than or equal to `n`,
 ```math
@@ -166,21 +167,32 @@ By definition
 For *negative* integers the factorial is zero.
 #### Examples:
 ```
-factorialbig(20)==factorial(20)
-    true
+julia> bigfactorial(20) == factorial(20)
+true
 
-factorialbig(21)
-    51090942171709440000
+julia> bigfactorial(21)
+Warning: output converted to BigInt (integer-oveload suppression) 
+51090942171709440000
+
+julia> bigfactorial(21; msg=false)
+51090942171709440000
 
 factorial(21)
     OverflowError: 21 is too large to look up in the table; consider using `factorial(big(21))` instead
 ```
 """
-function factorialbig(n::Int)
+function bigfactorial(n::T; msg=true) where {T<:Integer}
+    
+    T == Int || return factorial(n)
+    
+    n = Int(n)
+    nc = 20
+    
+    o = n > nc ? factorial(big(n)) : o = factorial(n)
+    
+    msg && n > nc && print("Warning: output converted to BigInt (integer-oveload suppression) ")
 
-    n > 20 || return factorial(n)
-
-    return factorial(big(n))
+    return o
 
 end
 
@@ -960,11 +972,11 @@ Triangle coefficient for a triangle of sides `a`, `b` and `c`.
 
 #### Example:
 ```
-triangle_coefficient(3, 4, 5)
-    1//180180
+julia> triangle_coefficient(3, 4, 5)
+1//180180
 
-triangle_coefficient(1//2, 1, 1.5)
-    1//12
+julia> triangle_coefficient(1//2, 1, 1.5)
+1//12
 ```
 """
 function triangle_coefficient(a::Real, b::Real, c::Real)
@@ -977,12 +989,12 @@ function triangle_coefficient(a::Real, b::Real, c::Real)
     B = Int(b + c - a)
     C = Int(c + a - b)
 
-    A = A ≥ 0 ? factorialbig(A) : return 0
-    B = B ≥ 0 ? factorialbig(B) : return 0
-    C = C ≥ 0 ? factorialbig(C) : return 0
+    A = A ≥ 0 ? bigfactorial(A) : return 0
+    B = B ≥ 0 ? bigfactorial(B) : return 0
+    C = C ≥ 0 ? bigfactorial(C) : return 0
 
     num = A * B * C
-    den = factorialbig(Int(a+b+c+1))
+    den = bigfactorial(Int(a+b+c+1))
 
     return num//den
 
@@ -997,11 +1009,11 @@ Triangle condition for a triangle of sides `a`, `b` and `c`.
 
 #### Example:
 ```
-istriangle(3, 4, 5)
-    true
+julia> istriangle(3, 4, 5)
+true
 
-istriangle(1//2, 1, 1.5)
-    true
+julia> istriangle(1//2, 1, 1.5)
+true
 ```
 """
 function istriangle(a::Real, b::Real, c::Real)
@@ -1055,12 +1067,12 @@ Taylor expansion of exp(x) about ``x = a`` up to order p.
 ```
 ### Examples:
 ```
-p = 5
-texp(1.0, 0.0, 5)
- 2.7166666666666663
+julia> p = 5;
+julia> texp(1.0, 0.0, 5)
+2.7166666666666663
 
-texp(1, 0, 5)
- 163//60
+julia> texp(1, 0, 5)
+163//60
 ```
 """
 function texp(x::T, a::T, p::Int) where T <: Real

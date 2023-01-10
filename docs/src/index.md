@@ -342,8 +342,7 @@ edges(px, Δx=1.0, x0=0.0)
 ## Search and conversion tools
 
 ```@docs
-ConditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
-protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
+conditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
 bigconvert(o)
 find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
 find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
@@ -355,7 +354,7 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```@docs
 bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
 canonical_partitions(n::Int, m=0; header=true, reverse=true)
-factorialbig(n::Int)
+bigfactorial(n::Int)
 # faulhaber_polynom(k::T)  where T<:Integer
 faulhaber_polynom(k::Int; T=Int)
 # faulhaber_summation(n::T, p::T) where T<:Integer

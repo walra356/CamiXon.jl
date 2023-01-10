@@ -44,6 +44,21 @@ dictAtomicNumbers = Dict(
   "Md" => 101, "No" => 102
 )
 
+# ============================ dictBernoulliNumbers ==================================
+
+dictBernoulliNumbers = Dict{Int,Rational{Int}}(
+  
+0 => 1 // 1, 1 => -1 // 2, 2 => 1 // 6, 3 => 0 // 1,
+  4 => -1 // 30, 5 => 0 // 1, 6 => 1 // 42, 7 => 0 // 1,
+  8 => -1 // 30, 9 => 0 // 1, 10 => 5 // 66, 11 => 0 // 1,
+  12 => -691 // 2730, 13 => 0 // 1, 14 => 7 // 6, 15 => 0 // 1,
+  16 => -3617 // 510, 17 => 0 // 1, 18 => 43867 // 798, 19 => 0 // 1,
+  20 => -174611 // 330, 21 => 0 // 1, 22 => 854513 // 138, 23 => 0 // 1,
+  24 => -236364091 // 2730, 25 => 0 // 1, 26 => 8553103 // 6, 27 => 0 // 1,
+  28 => -23749461029 // 870, 29 => 0 // 1, 30 => 8615841276005 // 14322, 31 => 0 // 1,
+  32 => -7709321041217 // 510, 33 => 0 // 1, 34 => 2577687858367 // 6, 35 => 0 // 1
+  )
+
 # ============================ dictBigConversion ======================================
 
 @doc raw"""
@@ -75,7 +90,7 @@ dictBigConversion = Dict(
   Vector{Vector{Int}} => Vector{Vector{BigInt}},
   Rational{Int} => Rational{BigInt},
   Vector{Rational{Int}} => Vector{Rational{BigInt}},
-  Vector{Vector{Rational{Int}}} => Vector{Vector{Rational{Int}}},
+  Vector{Vector{Rational{Int}}} => Vector{Vector{Rational{BigInt}}},
   Float64 => BigFloat,
   Vector{Float64} => Vector{BigFloat},
   Vector{Vector{Float64}} => Vector{Vector{BigFloat}},

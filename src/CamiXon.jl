@@ -165,8 +165,7 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
-export ConditionalType
-export protectInt
+export conditionalType
 export bigconvert
 export find_all
 export find_first
@@ -180,7 +179,7 @@ export bernoulli_numbers
 export VectorRational
 export castVectorRational
 export canonical_partitions
-export factorialbig
+export bigfactorial
 export faulhaber_polynom
 export faulhaber_summation
 export fibonacci_number
