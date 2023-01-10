@@ -156,17 +156,17 @@ using Test
     @test log10_mantissa.([3,30,300]) == [0.47712125471966244, 0.4771212547196624, 0.4771212547196626]
     @test log10_characteristic_power.([3,30,300]) == [0, 1, 2]
     @test bernoulliB_array(10) == [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1, -1 // 30, 0 // 1, 5//66]  # 11 values (one-based array)
-    @test bernoulli_number(0) == 1 // 1
-    @test bernoulli_number(1) == -1 // 2
-    @test bernoulli_number(60; msg=false) == -1215233140483755572040304994079820246041491 // 56786730
-    @test (bernoulli_number(60; msg=false) == bernoulliB_array(60; msg=false)[end]) == true
+    @test bernoulliB(0) == 1 // 1
+    @test bernoulliB(1) == -1 // 2
+    @test bernoulliB(60; msg=false) == -1215233140483755572040304994079820246041491 // 56786730
+    @test (bernoulliB(60; msg=false) == bernoulliB_array(60; msg=false)[end]) == true
     @test bigfactorial(21) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
-    @test fibonacci_number(0) == 0
-    @test fibonacci_number(1) == 1
-    @test fibonacci_number(100) == 354224848179261915075
-    @test (fibonacci_number(100) == fibonacci_numbers(100)[end]) == true
+    @test fibonacciF(0) == 0
+    @test fibonacciF(1) == 1
+    @test fibonacciF(100) == 354224848179261915075
+    @test (fibonacciF(100) == fibonacciFs(100)[end]) == true
     @test harmonic_number(1) == 1 // 1
     @test harmonic_number(60) == 15117092380124150817026911 // 3230237388259077233637600
     @test harmonic_number(12, 3) == 25535765062457//21300003648000
