@@ -166,6 +166,7 @@ export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
 export conditionalType
+export protectInt
 export bigconvert
 export find_all
 export find_first

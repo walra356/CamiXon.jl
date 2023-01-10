@@ -1,3 +1,14 @@
+function protectInt(n::T, nc::Int) where {T<:Integer}
+
+    n = convert(Int, n)
+
+    o = n > nc ? true : false
+
+    return o
+
+end
+
+
 # ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
 @doc raw"""
     conditionalType(n::T, nc::T [; msg=true]) where T<:Integer  
