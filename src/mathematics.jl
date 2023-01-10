@@ -131,7 +131,7 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_Int[1+n]
-        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && printlm("Warning: output converted to BigInt (integer-overload capture) ")
     else
         o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_BigInt[1+n]
     end
@@ -147,7 +147,7 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
-        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
     else
         o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
     end
@@ -394,7 +394,7 @@ function fibonacciF(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_Int[1+n]
-        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println"Warning: output converted to BigInt (integer-overload capture) ")
     else
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_BigInt[1+n]
     end
@@ -410,7 +410,7 @@ function fibonacciF_array(nmax::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _fn_BigInt(n, nc) : glFn_Int[1:1+n]
-        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
     else
         o = n > nc ? _fn_BigInt(n, nc) : glFn_BigInt[1:1+n]
     end
@@ -422,76 +422,104 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-function _hn_Int(o, n::T, nc::Int) where {T<:Integer}
+global glHn_Int = Rational{Int64}[
+    1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140, 761//280, 7129//2520, 7381//2520,
+    83711//27720, 86021//27720, 1145993//360360, 1171733//360360, 1195757//360360, 
+    2436559//720720, 42142223//12252240, 14274301//4084080, 275295799//77597520, 
+    55835135//15519504, 18858053//5173168, 19093197//5173168, 444316699//118982864, 
+    1347822955//356948592, 34052522467//8923714800, 34395742267//8923714800, 
+    312536252003//80313433200, 315404588903//80313433200, 9227046511387//2329089562800, 
+    9304682830147//2329089562800, 290774257297357//72201776446800, 
+    586061125622639//144403552893600, 53676090078349//13127595717600, 
+    54062195834749//13127595717600, 54437269998109//13127595717600, 
+    54801925434709//13127595717600, 2040798836801833//485721041551200, 
+    2053580969474233//485721041551200, 2066035355155033//485721041551200, 
+    2078178381193813//485721041551200, 85691034670497533//19914562703599200, 
+    12309312989335019//2844937529085600, 532145396070491417//122332313750680800, 
+    5884182435213075787//1345655451257488800, 5914085889685464427//1345655451257488800, 
+    5943339269060627227//1345655451257488800
+]
+# ..............................................................................
+global glHn_BigInt = convert(Vector{Rational{BigInt}}, glHn_Int)
 
-    n = Int(n)
+function _hn_Int(n::Int, nc::Int)
 
-    for n = 2:min(n, nc)
-        o += 1 // n
-    end
+    nstop = min(n, nc)
+
+    o = glHn_Int[1:nstop]
 
     return o
 
 end
 # ..............................................................................
-function _hn_BigInt(o, n::T, nc::Int) where {T<:Real}
-
-    n = Int(n)
-
-    n > nc || return o
+function _hn_BigInt(n::Int, nc::Int)
 
     one = big(1)
 
-    o = bigconvert(o)
-    for n = nc+1:n
-        o += one // big(n)
+    o = glHn_BigInt
+    for m = nc:n
+        a = o[m] + one // big(m)
+        o = push!(o, a)
     end
 
     return o
 
 end
 # ..............................................................................
-
 @doc raw"""
-    harmonic_number(n::T [; msg=true]) where {T<:Integer} 
+    harmonicNumber(n::T [; msg=true]) where {T<:Integer} 
+    harmonicNumber_array(nmax::T [; msg=true]) where {T<:Integer} 
 
 Sum of the reciprocals of the first ``n`` natural numbers
 ```math
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
 ```
 Integer-overload protection: for `n > 46` the output is autoconverted to Rational{BigInt}.
-Optional: a warning message is displayed when autoconversion is activated (default: no message)
+By default the capture message is activated: Warning: output converted to BigInt 
+(integer-overload capture). 
 ### Examples:
 ```
-julia> o = [harmonic_number(i) for i=1:7]; println(o)
-Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140]
+julia> o = harmonicNumber_array(9); println(o)
+Rational{Int64}[1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140, 761//280, 7129//2520]
 
-julia> o = [harmonic_number(46; msg=true)]; println(o)
+julia> o = [harmonicNumber(46; msg=true)]; println(o)
 Rational{Int64}[5943339269060627227//1345655451257488800]
 
-julia> harmonic_number(47)]
-Warning: protectInt -> true
-Rational{BigInt}[280682601097106968469//63245806209101973600]
+julia> o = [harmonicNumber(47; msg=true)]; println(o)
+Warning: output converted to BigInt (integer-overload capture) 
+Rational{BigInt}[282057509927739620069//63245806209101973600]
 
-julia> harmonic_number(47; msg=false)
-Rational{BigInt}[280682601097106968469//63245806209101973600]
-
-julia> harmonic_number(60; msg=false)
-15117092380124150817026911//3230237388259077233637600
-
-julia> harmonic_number(12) == harmonic_number(12, 1)
+julia> harmonicNumber(12) == harmonicNumber(12, 1)
 true
 ```
 """
-function harmonic_number(n::T; msg=true) where {T<:Integer}
+function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
-    n ≠ 0 || return 0
-
+    n = Int(n)
     nc = 46
 
-    o = _hn_Int(1//1, n, nc)
-    o = _hn_BigInt(o, n, nc)
-    o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
+    if T == Int
+        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[n]
+        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[n]
+    end
+
+    return o
+
+end
+# ..............................................................................
+function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
+
+    n = Int(nmax)
+    nc = 46
+
+    if T == Int
+        o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1:n]
+        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1:n]
+    end
 
     return o
 
@@ -535,7 +563,7 @@ function _hn_BigInt(o, n::T, nc::Int, p::Int) where {T<:Integer}
 
 end
 @doc raw"""
-    harmonic_number(n::T, p::Int [; msg=true]) where {T<:Integer}
+    harmonicNumber(n::T, p::Int [; msg=true]) where {T<:Integer}
 
 Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
@@ -545,21 +573,21 @@ Integer-overload protection: the output is autoconverted to Rational{BigInt} whe
 Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
-o = [harmonic_number6(46,1; msg=true)]; println(o)
+o = [harmonicNumber6(46,1; msg=true)]; println(o)
 #  Rational{Int64}[5943339269060627227//1345655451257488800]
 
-o = [harmonic_number6(47,1; msg=true)]; println(o)
+o = [harmonicNumber6(47,1; msg=true)]; println(o)
 # Warning: output converted to BigInt
 # Rational{BigInt}[280682601097106968469//63245806209101973600]
 
-o = [harmonic_number6(47,1)]; println(o)
+o = [harmonicNumber6(47,1)]; println(o)
 # Rational{BigInt}[280682601097106968469//63245806209101973600]
 
-harmonic_number(12, -3) == faulhaber_summation(12, 3)
+harmonicNumber(12, -3) == faulhaber_summation(12, 3)
   true
 ```
 """
-function harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
+function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
 
     n ≠ 0 || return 0
 
@@ -587,7 +615,7 @@ function harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
     return o
 
 end
-function harmonic_number1(n::Int, p::Int)    # short argument: better performance
+function harmonicNumber1(n::Int, p::Int)    # short argument: better performance
 
     n ≠ 0 || return 0
 

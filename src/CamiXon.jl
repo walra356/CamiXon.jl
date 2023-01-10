@@ -185,7 +185,8 @@ export faulhaber_polynom
 export faulhaber_summation
 export fibonacciF
 export fibonacciF_array
-export harmonic_number
+export harmonicNumber
+export harmonicNumber_array
 export integer_partitions
 export log10_characteristic_power
 export log10_mantissa
