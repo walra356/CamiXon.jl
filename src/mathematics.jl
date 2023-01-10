@@ -394,7 +394,7 @@ function fibonacciF(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_Int[1+n]
-        msg && n > nc && println"Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
     else
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_BigInt[1+n]
     end
