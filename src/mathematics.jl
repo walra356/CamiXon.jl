@@ -45,20 +45,27 @@ end
 
 # ============================ bernoulli_numbers ==============================
 
+global glBn_Int = [
+
+    1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42,
+    0 // 1, -1 // 30, 0 // 1, 5 // 66, 0 // 1, -691 // 2730, 0 // 1,
+    7 // 6, 0 // 1, -3617 // 510, 0 // 1, 43867 // 798, 0 // 1,
+    -174611 // 330, 0 // 1, 854513 // 138, 0 // 1, -236364091 // 2730,
+    0 // 1, 8553103 // 6, 0 // 1, -23749461029 // 870, 0 // 1,
+    8615841276005 // 14322, 0 // 1, -7709321041217 // 510, 0 // 1,
+    2577687858367 // 6, 0 // 1
+
+    ]
+
+global glBn_BigInt = convert(Vector{Rational{BigInt}}, glBn_Int)
+
+
+# ..............................................................................
 function _bn_Int(n::Int, nc::Int)
 
-    if n ≤ 8
-        o = n == 8 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1, -1 // 30] :
-            n == 7 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1] :
-            n == 6 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42] :
-            n == 5 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1] :
-            n == 4 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30] :
-            n == 3 ? [1 // 1, -1 // 2, 1 // 6, 0 // 1] :
-            n == 2 ? [1 // 1, -1 // 2, 1 // 6] :
-            n == 1 ? [1 // 1, -1 // 2] : [1 // 1]
-    else
-        o = [get!(dictBernoulliNumbers, i, nothing) for i = 0:n]
-    end
+    nstop = min(n, nc)
+
+    o = glBn_Int[1:1+nstop]
 
     return o
 
@@ -69,8 +76,7 @@ function _bn_BigInt(n::Int, nc::Int)
     nul = big(0)
     one = big(1)
 
-    o = [get!(dictBernoulliNumbers, n, nothing) for n = 0:nc]
-    o = bigconvert(o)
+    o = glBn_BigInt
     for m = nc+2:n+1
         a = nul
         if Base.isodd(m)
@@ -88,10 +94,9 @@ function _bn_BigInt(n::Int, nc::Int)
 
 end
 # ..............................................................................
-
 @doc raw"""
-    bernoulli_number(n::T [; msg=true]) where {T<:Integer}
-    bernoulli_numbers(nmax::T [; msg=true]) where {T<:Integer}
+    bernoulliB(n::T [; msg=true]) where {T<:Integer}
+    bernoulliB_array(nmax::T [; msg=true]) where {T<:Integer}
 
 Bernoulli number array, ``[B_0,⋯\ B_{nmax}]``. This is the *even index convention* 
 (odd-indexed numbers vanish - except B[1]=-1/2). The array is calculated by 
@@ -107,44 +112,45 @@ autoconverted to `Rational{BigInt}`. By default the capture message is activated
 Warning: output converted to BigInt (integer-overload capture). 
 ### Examples:
 ```
-julia> bernoulli_number(60)
+julia> bernoulliB(60)
 Warning: output converted to BigInt (integer-overload capture)
 -1215233140483755572040304994079820246041491//56786730
 
-julia> bernoulli_numbers(10; println(o)
+julia> bernoulliB_array(10; println(o)
 Rational{Int64}[1//1, -1//2, 1//6, 0//1, -1//30, 0//1, 1//42, 0//1, -1//30, 0//1]
 
 julia> n = 60;
-julia> bernoulli_number(n) == bernoulli_numbers(n)[end]             
+julia> bernoulliB(n) == bernoulliB_array(n)[end]             
 true
 ```
 """
-function bernoulli_numbers(nmax::T; msg=true) where {T<:Integer}
+function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
 
     n = Int(nmax)
     nc = 35
 
     if T == Int
-        o = n > nc ? _bn_BigInt(n, nc) : _bn_Int(n, nc)
+        o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
         msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
     else
-        o = n > nc ? _bn_BigInt(n, nc) : bigconvert(_bn_Int(n, nc))
+        o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
     end
 
     return o
 
 
 end
-function bernoulli_number(n::T; msg=true) where {T<:Integer}
+# ..............................................................................
+function bernoulliB(n::T; msg=true) where {T<:Integer}
 
     n = Int(n)
     nc = 35
 
     if T == Int
-        o = n > nc ? _bn_BigInt(n, nc)[end] : get!(dictBernoulliNumbers, n, nothing)
+        o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_Int[1+n]
         msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
     else
-        o = n > nc ? _bn_BigInt(n, nc)[end] : bigconvert(get!(dictBernoulliNumbers, n, nothing))
+        o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_BigInt[1+n]
     end
 
     return o
