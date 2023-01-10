@@ -360,8 +360,8 @@ faulhaber_polynom(k::Int; T=Int)
 # faulhaber_summation(n::T, p::T) where T<:Integer
 faulhaber_summation(n::Int, p::Int; T=Int)
 fibonacciF(n::T; msg=true) where {T<:Integer}
-harmonic_number(n::T, p::Int; msg=true) where {T<:Integer}
-harmonic_number(n::T; msg=true) where {T<:Integer}
+harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
+harmonicNumber(n::T; msg=true) where {T<:Integer}
 integer_partitions(n::Int, m=0; transpose=false, count=false)
 log10_characteristic_power(x)
 log10_mantissa(x)
