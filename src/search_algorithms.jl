@@ -1,13 +1,6 @@
-function protectInt(n::T, nc::Int) where {T<:Integer}
+function protectInt(n::T, nc::Int; msg=true) where {T<:Integer}
 
     n = convert(Int, n)
-
-    o = n > nc ? true : false
-
-    return o
-
-end
-function protectInt(n::Int, nc::Int)
 
     o = n > nc ? true : false
 
