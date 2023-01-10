@@ -176,7 +176,7 @@ export threeJsymbol
 export CGC
 
 export bernoulliB
-export bernoulliB_arry
+export bernoulliB_array
 export VectorRational
 export castVectorRational
 export canonical_partitions
