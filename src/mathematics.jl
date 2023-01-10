@@ -124,23 +124,6 @@ julia> bernoulliB(n) == bernoulliB_array(n)[end]
 true
 ```
 """
-function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
-
-    n = Int(nmax)
-    nc = 35
-
-    if T == Int
-        o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
-        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
-    else
-        o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
-    end
-
-    return o
-
-
-end
-# ..............................................................................
 function bernoulliB(n::T; msg=true) where {T<:Integer}
 
     n = Int(n)
@@ -156,6 +139,23 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
     return o
 
 end
+# ..............................................................................
+function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
+
+    n = Int(nmax)
+    nc = 35
+
+    if T == Int
+        o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
+        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
+    end
+
+    return o
+
+end
+
 
 # ==================================== bigfactorial(n) =========================
 
@@ -304,28 +304,48 @@ end
 
 # ============================= Fibonacci numbers =================================
 
-function _fn_Int(nstop::T, nc::Int) where {T<:Integer}
+global glFn_Int = [
+    
+    0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 
+    4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 
+    832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 
+    39088169, 63245986, 102334155, 165580141, 267914296, 433494437, 701408733, 
+    1134903170, 1836311903, 2971215073, 4807526976, 7778742049, 12586269025, 
+    20365011074, 32951280099, 53316291173, 86267571272, 139583862445, 
+    225851433717, 365435296162, 591286729879, 956722026041, 1548008755920, 
+    2504730781961, 4052739537881, 6557470319842, 10610209857723, 17167680177565, 
+    27777890035288, 44945570212853, 72723460248141, 117669030460994, 
+    190392490709135, 308061521170129, 498454011879264, 806515533049393, 
+    1304969544928657, 2111485077978050, 3416454622906707, 5527939700884757, 
+    8944394323791464, 14472334024676221, 23416728348467685, 37889062373143906, 
+    61305790721611591, 99194853094755497, 160500643816367088, 259695496911122585, 
+    420196140727489673, 679891637638612258, 1100087778366101931, 1779979416004714189, 
+    2880067194370816120, 4660046610375530309, 7540113804746346429
 
-    nstop = convert(Int, nstop)
-    nstop = min(nstop, nc)
+]
+# ..............................................................................
+global glFn_BigInt = convert(Vector{BigInt}, glFn_Int)
 
-    o = [0, 1]
-    for n = 3:nstop
-        push!(o, o[n-1] + o[n-2])
-    end
+# ..............................................................................
+function _fn_Int(n::Int, nc::Int)
+
+    nstop = min(n, nc)
+
+    o = glFn_Int[1:1+nstop]
 
     return o
 
 end
 # ..............................................................................
-function _fn_BigInt(o, nstop::T, nc::Int) where {T<:Real}
 
-    nstop = convert(Int, nstop)
-    nstop > nc || return o
+function _fn_BigInt(n::Int, nc::Int)
 
-    o = bigconvert(o)
-    for n = nc + 1:nstop
-        push!(o, o[n-1] + o[n-2])
+    nul = big(0)
+    one = big(1)
+
+    o = glFn_BigInt
+    for m = nc+1:n
+        push!(o, o[m-1] + o[m-2])
     end
 
     return o
@@ -334,21 +354,22 @@ end
 # ..............................................................................
 
 @doc raw"""
-    fibonacci_number(n::T [; msg=true]) where T<:Integer
-    fibonacci_numbers(nmax::T [; msg=true]) where T<:Integer
+    fibonacciF(n::T [; msg=true]) where T<:Integer
+    fibonacciF_array(nmax::T [; msg=true]) where T<:Integer
 
-The sequence of integers,  ``F_0,⋯\ F_{nmax}``, in which each element is the sum of the 
-two preceding ones, 
+The sequence of integers,  ``F_0,⋯\ F_{nmax}``, in which each element is 
+the sum of the two preceding ones, 
 ```math
     F_n = F_{n-1}+F_{n-2}.
 ```
 with ``F_1=1`` and ``F_0=0``. 
 
-Integer-overload protection: for `nmax > 92` the output is autoconverted to BigInt.
-Optional: a warning message is displayed when autoconversion is activated (default: no message)
+Integer-overload protection: for `n > 92` the output is autoconverted to BigInt. 
+By default the capture message is activated: Warning: output converted to BigInt 
+(integer-overload capture). 
 #### Example:
 ```
-julia> fibonacci_numbers(20)
+julia> fibonacciN_array(20)
 21-element Vector{Int64}:
    0
    1
@@ -361,35 +382,41 @@ julia> fibonacci_numbers(20)
 2584
 4181
 
-julia> fibonacci_number(100)
+julia> fibonacciF(100)
 Warning: protectInt -> true
 354224848179261915075
 ```
 """
-function fibonacci_numbers(nmax::T; msg=true) where {T<:Integer}
+function fibonacciF(n::T; msg=true) where {T<:Integer}
 
-    nmax += 1  # account for unit-based of Array `o`
+    n = Int(n)
+    nc = 92
 
-    nmax > 0 || return nothing
-    nmax > 1 || return T(0)
-
-    nc = 93   # n > nc: integer overload protection activated
-
-    o = _fn_Int(nmax, nc)
-    o = _fn_BigInt(o, nmax, nc)
-    o = (T == BigInt) & !protectInt(nmax, nc; msg) ? bigconvert(o) : o
+    if T == Int
+        o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_Int[1+n]
+        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_BigInt[1+n]
+    end
 
     return o
 
 end
 # ..............................................................................
-function fibonacci_number(n::T; msg=true) where {T<:Integer}
+function fibonacciF_array(nmax::T; msg=true) where {T<:Integer}
 
-    n > 0 || return T(0)
+    n = Int(nmax)
+    nc = 92
 
-    F = fibonacci_numbers(n; msg)[end]
+    if T == Int
+        o = n > nc ? _fn_BigInt(n, nc) : glFn_Int[1:1+n]
+        msg && n > nc && print("Warning: output converted to BigInt (integer-overload capture) ")
+    else
+        o = n > nc ? _fn_BigInt(n, nc) : glFn_BigInt[1:1+n]
+    end
 
-    return F
+    return o
+
 
 end
 

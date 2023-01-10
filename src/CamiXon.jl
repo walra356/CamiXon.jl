@@ -175,16 +175,16 @@ export find_last
 export threeJsymbol
 export CGC
 
-export bernoulli_number
-export bernoulli_numbers
+export bernoulliB
+export bernoulliB_arry
 export VectorRational
 export castVectorRational
 export canonical_partitions
 export bigfactorial
 export faulhaber_polynom
 export faulhaber_summation
-export fibonacci_number
-export fibonacci_numbers
+export fibonacciF
+export fibonacciF_array
 export harmonic_number
 export integer_partitions
 export log10_characteristic_power
