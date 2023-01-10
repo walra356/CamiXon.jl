@@ -7,6 +7,13 @@ function protectInt(n::T, nc::Int) where {T<:Integer}
     return o
 
 end
+function protectInt(n::Int, nc::Int)
+
+    o = n > nc ? true : false
+
+    return o
+
+end
 
 
 # ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
@@ -53,7 +60,7 @@ julia> bigconvert(o)
 function bigconvert(o)
 
     T = typeof(o)
-    W = get(dictBigConversion, T, "key not implemented")
+    W = get(dictBigConversion, T, "Type not implemented")
     o = convert(W, o)
 
     return o
