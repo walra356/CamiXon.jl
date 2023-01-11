@@ -160,7 +160,7 @@ using Test
     @test bernoulliB(1) == -1 // 2
     @test bernoulliB(60; msg=false) == -1215233140483755572040304994079820246041491 // 56786730
     @test (bernoulliB(60; msg=false) == bernoulliB_array(60; msg=false)[end]) == true
-    @test bigfactorial(21) == 51090942171709440000
+    @test bigfactorial(21; msg=false) == 51090942171709440000
     @test faulhaber_polynom(6) == [0//1, 0//1, -1//12, 0//1, 5//12, 1//2, 1//6]
     @test faulhaber_summation(3,5) == 276
     @test fibonacciF_array(10) == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]

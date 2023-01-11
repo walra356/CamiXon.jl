@@ -131,7 +131,7 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_Int[1+n]
-        msg && n > nc && printlm("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && printlm("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_BigInt[1+n]
     end
@@ -147,7 +147,7 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
-        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
     end
@@ -196,7 +196,7 @@ function bigfactorial(n::T; msg=true) where {T<:Integer}
     
     o = n > nc ? factorial(big(n)) : o = factorial(n)
     
-    msg && n > nc && print("Warning: output converted to BigInt (integer-oveload suppression) ")
+    msg && n > nc && println("Warning: output converted to BigInt (integer-oveload suppression) ")
 
     return o
 
@@ -327,25 +327,11 @@ global glFn_Int = [
 global glFn_BigInt = convert(Vector{BigInt}, glFn_Int)
 
 # ..............................................................................
-function _fn_Int(n::Int, nc::Int)
-
-    nstop = min(n, nc)
-
-    o = glFn_Int[1:1+nstop]
-
-    return o
-
-end
-# ..............................................................................
-
 function _fn_BigInt(n::Int, nc::Int)
 
-    nul = big(0)
-    one = big(1)
-
     o = glFn_BigInt
-    for m = nc+2:n+1
-        push!(o, o[m-1] + o[m-2])
+    for k = nc+2:n+1
+        push!(o, o[k-1] + o[k-2])
     end
 
     return o
@@ -394,7 +380,7 @@ function fibonacciF(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_Int[1+n]
-        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_BigInt[1+n]
     end
@@ -410,7 +396,7 @@ function fibonacciF_array(nmax::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _fn_BigInt(n, nc) : glFn_Int[1:1+n]
-        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _fn_BigInt(n, nc) : glFn_BigInt[1:1+n]
     end
@@ -422,7 +408,7 @@ end
 
 # =================================== harmonic number(n;T) ===============
 
-global glHn_Int = Rational{Int64}[
+global glHn_Int = Vector{Rational{Int64}}[
     1//1, 3//2, 11//6, 25//12, 137//60, 49//20, 363//140, 761//280, 7129//2520, 7381//2520,
     83711//27720, 86021//27720, 1145993//360360, 1171733//360360, 1195757//360360, 
     2436559//720720, 42142223//12252240, 14274301//4084080, 275295799//77597520, 
@@ -442,15 +428,6 @@ global glHn_Int = Rational{Int64}[
 # ..............................................................................
 global glHn_BigInt = convert(Vector{Rational{BigInt}}, glHn_Int)
 
-function _hn_Int(n::Int, nc::Int)
-
-    nstop = min(n, nc)
-
-    o = glHn_Int[1:nstop]
-
-    return o
-
-end
 # ..............................................................................
 function _hn_BigInt(n::Int, nc::Int)
 
@@ -459,13 +436,14 @@ function _hn_BigInt(n::Int, nc::Int)
     o = glHn_BigInt
     for m = nc+1:n
         a = o[m-1] + one // big(m)
-        o = push!(o, a)
+        push!(o, a)
     end
 
 
     return o
 
 end
+
 # ..............................................................................
 @doc raw"""
     harmonicNumber(n::T [; msg=true]) where {T<:Integer} 
@@ -501,7 +479,7 @@ function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[n]
-        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[n]
     end
@@ -517,7 +495,7 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1:n]
-        msg && n > nc && println("Warning: output converted to BigInt (integer-overload capture) ")
+        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
         o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1:n]
     end
@@ -528,36 +506,67 @@ end
 
 # =================================== harmonic number(n, p [; msg=false]) ===============
 
-function _hn_Int(o, n::T, nc::Int, p::Int) where T<:Integer
-    
-    n = Int(n)
+# ======================= harmonic number(n, p [; msg=false]) ==========================
 
-    #o = 0 // 1
-    for j = 1:min(n, nc)
-        a = 1
-        for i = 1:p
-            a *= j
+function Hn_Int(p::Int, nc::Int)
+
+    o = Rational{Int}[]
+    if p > 10
+        b = 0 // 1
+        for n = 1:nc
+            a = 1
+            for i = 1:p
+                a *= n
+            end
+            b += 1 // a
+            push!(o, b)
         end
-        o += 1 // a
+    else
+        o = glHn_Int[p]
+    end
+
+    return o
+
+end
+function Hn_BigInt(p::Int, nc::Int)
+
+    nul = big(0)
+    one = big(1)
+
+    o = Rational{BigInt}[]
+    if p > 10
+        b = nul // one
+        for k = 1:n
+            a = one
+            for i = 1:p
+                a *= big(k)
+            end
+            b += one // a
+            push!(o, b)
+        end
+    else
+        o = glHn_BigInt[p]
     end
 
     return o
 
 end
 # .......................................................................................
-function _hn_BigInt(o, n::T, nc::Int, p::Int) where {T<:Integer}
+function _hn_BigInt(n::Int, nc::Int, p::Int)
 
-    n = Int(n)
-    
+    nul = big(0)
     one = big(1)
 
-    o = bigconvert(o)
-    for j = nc+1:n
+    o = Hn_BigInt(p, nc)
+
+    b = nul // one
+    for m = 1:n
         a = one
         for i = 1:p
-            a *= big(j)
+            a *= big(m)
         end
-        o += one // a
+        b += one // a
+        push!(o, b)
     end
 
     return o
@@ -574,15 +583,15 @@ Integer-overload protection: the output is autoconverted to Rational{BigInt} whe
 Optional: a warning message is displayed when autoconversion is activated (default: no message)
 ### Examples:
 ```
-o = [harmonicNumber6(46,1; msg=true)]; println(o)
-#  Rational{Int64}[5943339269060627227//1345655451257488800]
+julia> o = [harmonicNumber(46,1; msg=true)]; println(o)
+Rational{Int64}[5943339269060627227//1345655451257488800]
 
-o = [harmonicNumber6(47,1; msg=true)]; println(o)
-# Warning: output converted to BigInt
-# Rational{BigInt}[280682601097106968469//63245806209101973600]
+julia> o = [harmonicNumber(47,1; msg=true)]; println(o)
+Integer-overflow protection: output converted to BigInt
+Rational{BigInt}[280682601097106968469//63245806209101973600]
 
-o = [harmonicNumber6(47,1)]; println(o)
-# Rational{BigInt}[280682601097106968469//63245806209101973600]
+julia> o = [harmonicNumber6(47,1)]; println(o)
+Rational{BigInt}[280682601097106968469//63245806209101973600]
 
 harmonicNumber(12, -3) == faulhaber_summation(12, 3)
   true
@@ -592,49 +601,22 @@ function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
 
     n ≠ 0 || return 0
 
-    ac = [46, 24, 16, 12, 10, 8, 7, 6, 6, 6, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3]
-    nc = p > 17 ? 0 : ac[p]
+    n = Int(n)
+    nc = p < 11 ? length(glHn_Int[p]) : p < 18 ? 4 : p < 25 ? 3 : 0
 
     if p > 0
-        o = _hn_Int(0 // 1, n, nc, p)
-        o = _hn_BigInt(o, n, nc, p)
-        o = (T == BigInt) & !protectInt(n, nc; msg) ? bigconvert(o) : o
+        if T == Int
+            o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_Int(p, nc)[n]
+            msg && n > nc && println("Integer-overflow protection: output converted to BigInt")
+        else
+            o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_BigInt(p, nc)[n]
+        end
     else
         p = -p
         F = CamiXon.faulhaber_polynom(p + 1; T)
         o = 0
         for k = 1:p+1
             for i = 1:k
-                F[k+1] *= n
-            end
-            o += F[k+1]
-        end
-        Base.denominator(o) == 1 || error("Error: Faulhaber sum failed")
-        o = Base.numerator(o)
-    end
-
-    return o
-
-end
-function harmonicNumber1(n::Int, p::Int)    # short argument: better performance
-
-    n ≠ 0 || return 0
-
-    if p > 0
-        o = 0//1
-        for j=1:n
-            a = 1
-            for i=1:p
-                a *= j
-            end
-        o += 1//a
-        end
-    else
-        p = -p
-        F = CamiXon.faulhaber_polynom(p+1)
-        o = 0
-        for k=1:p+1
-            for i=1:k
                 F[k+1] *= n
             end
             o += F[k+1]
