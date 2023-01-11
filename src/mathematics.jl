@@ -462,7 +462,7 @@ function _hn_BigInt(n::Int, nc::Int)
 
     one = big(1)
 
-    o = glHn_BigInt
+    o = glHn_BigInt[1]
     for m = nc+1:n
         a = o[m-1] + one // big(m)
         push!(o, a)
@@ -507,10 +507,10 @@ function harmonicNumber(n::T; msg=true) where {T<:Integer}
     nc = 46
 
     if T == Int
-        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[n]
+        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[1][n]
         msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
-        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[n]
+        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[1][n]
     end
 
     return o
@@ -523,10 +523,10 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
     nc = 46
 
     if T == Int
-        o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1:n]
+        o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1][1:n]
         msg && n > nc && println("Integer-overload protection: output converted to BigInt")
     else
-        o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1:n]
+        o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1][1:n]
     end
 
     return o
