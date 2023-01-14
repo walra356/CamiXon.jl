@@ -1,7 +1,42 @@
 # ========================= fdiff_adams_moulton_expansion_coeffs(k) ===========
 
+global glAMe_Int = [1 // 1, -1 // 2, -1 // 12, -1 // 24, -19 // 720, -3 // 160, -863 // 60480, -275 // 24192,
+    -33953 // 3628800, -8183 // 1036800, -3250433 // 479001600, -4671 // 788480,
+    -13695779093 // 2615348736000, -2224234463 // 475517952000,
+    -132282840127 // 31384184832000, -2639651053 // 689762304000,
+    -111956703448001 // 32011868528640000, -50188465 // 15613165568,
+    -2334028946344463 // 786014494949376000, -301124035185049 // 109285437800448000]
+
+# ..............................................................................
+global glAMe_BigInt = convert(Vector{Rational{BigInt}}, glAMe_Int)
+
+# ..............................................................................
+function _ame_BigInt(k::Int)
+
+    nul = big(0)
+    one = big(1)
+
+    o = Base.zeros(Rational{BigInt}, k + 1)
+    o[1] = big(1) // big(1)
+
+    a = [one // big(i + 1) for i = 0:k]
+    a[1] = nul // one
+
+    b = Base.copy(o)
+
+    for p = 1:k
+        b = CamiXon.polynom_product_expansion(a, b, k)
+        Base.isodd(p) ? o = o .- b : o = o .+ b
+    end
+
+    return o
+
+end
+# ..............................................................................
+
 @doc raw"""
-    fdiff_adams_moulton_expansion_coeffs(k [; T=Int])
+    fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
+    fdiff_adams_moulton_expansion_coeffs(n::T; msg=true) where {T<:Integer}
 
 Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
 defining ``k^{th}``-order Adams-Moulton expansion,
@@ -13,35 +48,53 @@ defining ``k^{th}``-order Adams-Moulton expansion,
 ```
 #### Examples:
 ```
-k = 5
-β = fdiff_adams_moulton_expansion_coeffs(k::Int); println(b)
- Rational[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
+julia> k = 5;
+julia> β = fdiff_adams_moulton_expansion_coeffs5(k); println(β)
+Rational{Int64}[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
 
-D = denominator(gcd(β)); println(D)
- 1440
+julia> D = denominator(gcd(β))
+1440
 
-o = convert(Vector{Int},(β .* D)); println(o)
- [1440, -720, -120, -60, -38, -27]
+julia> o = convert(Vector{Int},(β .* D)); println(o)
+[1440, -720, -120, -60, -38, -27]
+
+julia> k=20;
+julia> fdiff_adams_moulton_expansion_coeff(k)
+Integer-overload protection: output converted to BigInt
+-12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int)
-# ==============================================================================
-#   Adams-Moulton expansion coefficients
-# ==============================================================================
-    o = Base.zeros(Rational{T},k+1)
-    s::Rational{T} = 0//1
+function fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
 
-    o[1] = 1//1
+    n = Int(n)
+    nc = 19
 
-    b = Base.copy(o)
-    a = Base.append!([s],[1//(i+1) for i=1:k])
-
-    for p=1:k
-        b = CamiXon.polynom_product_expansion(a, b, k)
-        Base.isodd(p) ? o = o .- b : o = o .+ b
+    if n ≤ nc
+        o = T == Int ? glAMe_Int[1:1+n][end] : glAMe_BigInt[1:1+n][end]
+    else
+        o = _ame_BigInt(n)[end]
+        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
-    return o  # Note that D = devisor(gcd(o))
+    return o
+
+end
+
+
+# ..............................................................................
+function fdiff_adams_moulton_expansion_coeffs(nmax::T; msg=true) where {T<:Integer}
+
+    n = Int(nmax)
+    nc = 19
+
+    if n ≤ nc
+        o = T == Int ? glAMe_Int[1:1+n] : glAMe_BigInt[1:1+n]
+    else
+        o = _ame_BigInt(n)
+        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
+    end
+
+    return o
 
 end
 

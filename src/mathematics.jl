@@ -129,11 +129,11 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
     n = Int(n)
     nc = 35
 
-    if T == Int
-        o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_Int[1+n]
-        msg && n > nc && printlm("Integer-overload protection: output converted to BigInt")
+    if n ≤ nc
+        o = T == Int ? glbn_Int[1:1+n][end] : glbn_BigInt[1:1+n][end]
     else
-        o = n > nc ? _bn_BigInt(n, nc)[end] : glBn_BigInt[1+n]
+        o = _bn_BigInt(n)[end]
+        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
     return o
@@ -145,11 +145,11 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
     n = Int(nmax)
     nc = 35
 
-    if T == Int
-        o = n > nc ? _bn_BigInt(n, nc) : glBn_Int[1:1+n]
-        msg && n > nc && println("Integer-overload protection: output converted to BigInt")
+    if n ≤ nc
+        o = T == Int ? glbn_Int[1:1+n][end] : glbn_BigInt[1:1+n][end]
     else
-        o = n > nc ? _bn_BigInt(n, nc) : glBn_BigInt[1:1+n]
+        o = _bn_BigInt(n)[end]
+        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
     return o
@@ -532,8 +532,6 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
     return o
 
 end
-
-# =================================== harmonic number(n, p [; msg=false]) ===============
 
 # ======================= harmonic number(n, p [; msg=false]) ==========================
 

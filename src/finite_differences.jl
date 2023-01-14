@@ -654,8 +654,8 @@ function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
     if rationalize
         a = CamiXon.fdiff_adams_moulton_expansion_coeffs(k)
         D = Base.denominator(Base.gcd(a))          # == Adams-Moulton devisor
-        o = devisor ? (k, D, Base.round.(Int, o* D)) :
-                      Base.round.(Int, o* D) // D  # convert to Rational{Int}
+        o = devisor ? (k, D, Base.round.(Int, o * D)) :
+                      Base.round.(Int, o * D) // D  # convert to Rational{Int}
     end
 
     return o

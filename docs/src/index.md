@@ -964,7 +964,7 @@ Functions:
 ``→ [a_k^k,⋯\ a_0^k]``
 
 ```@docs
-fdiff_adams_moulton_expansion_coeffs(k::Int)
+fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
