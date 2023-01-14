@@ -111,6 +111,13 @@ true
 """
 function bernoulliB(n::T; msg=true) where {T<:Integer}
 
+    o = bernoulliB_array(n; msg)[end]
+
+    return o
+
+end
+function bernoulliB1(n::T; msg=true) where {T<:Integer}
+
     n = Int(n)
     nc = 35
 
@@ -359,6 +366,13 @@ Warning: protectInt -> true
 ```
 """
 function fibonacciF(n::T; msg=true) where {T<:Integer}
+
+    o = fibonacciF_array(n; msg)[end]
+
+    return o
+
+end
+function fibonacciF1(n::T; msg=true) where {T<:Integer}
 
     n = Int(n)
     nc = 92
