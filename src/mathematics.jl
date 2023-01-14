@@ -94,11 +94,11 @@ at ``B_0`` is called the *even index convention*.
 
 Integer-overflow protection: for `n > 35` the output is 
 autoconverted to `Rational{BigInt}`. By default the capture message is activated: 
-Warning: output converted to BigInt (Integer-overflow capture). 
+Integer-overflow protection: bernoulliB converted to BigInt. 
 ### Examples:
 ```
 julia> bernoulliB(60)
-Warning: output converted to BigInt (Integer-overflow capture)
+Integer-overflow protection: bernoulliB converted to BigInt
 -1215233140483755572040304994079820246041491//56786730
 
 julia> bernoulliB_array(10; println(o)
@@ -116,21 +116,6 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
     return o
 
 end
-function bernoulliB1(n::T; msg=true) where {T<:Integer}
-
-    n = Int(n)
-    nc = 35
-
-    if n ≤ nc
-        o = T == Int ? glBn_Int[1:1+n][end] : glBn_BigInt[1:1+n][end]
-    else
-        o = _bn_BigInt(n, nc)[end]
-        msg && T == Int && println("Integer-overflow protection: bernoulliB converted to BigInt")
-    end
-
-    return o
-
-end
 # ..............................................................................
 function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
 
@@ -141,7 +126,7 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
         o = T == Int ? glBn_Int[1:1+n] : glBn_BigInt[1:1+n]
     else
         o = _bn_BigInt(n, nc)
-        msg && T == Int && println("Integer-overflow protection: bernoulliB converted to BigInt")
+        msg && T == Int && println("Integer-overflow protection: bernoulliB converted to Rational{BigInt}")
     end
 
     return o
@@ -163,13 +148,16 @@ By definition
 !(0)=1
 ```
 For *negative* integers the factorial is zero.
+Integer-overflow protection: for `n > 20` the output is 
+autoconverted to `BigInt`. By default the capture message is activated: 
+bigfactorial. 
 #### Examples:
 ```
 julia> bigfactorial(20) == factorial(20)
 true
 
 julia> bigfactorial(21)
-Warning: output converted to BigInt (integer-oveload suppression) 
+Integer-overflow protection: bigfactorial converted to BigInt
 51090942171709440000
 
 julia> bigfactorial(21; msg=false)
@@ -188,7 +176,7 @@ function bigfactorial(n::T; msg=true) where {T<:Integer}
     
     o = n > nc ? factorial(big(n)) : o = factorial(n)
     
-    msg && n > nc && println("Integer-overflow protection: bigfactorial output BigInt")
+    msg && n > nc && println("Integer-overflow protection: bigfactorial converted to BigInt")
 
     return o
 
@@ -343,8 +331,8 @@ the sum of the two preceding ones,
 with ``F_1=1`` and ``F_0=0``. 
 
 Integer-overflow protection: for `n > 92` the output is autoconverted to BigInt. 
-By default the capture message is activated: Warning: output converted to BigInt 
-(Integer-overflow capture). 
+By default the capture message is activated: 
+Integer-overflow protection: fibonacciF converted to BigInt. 
 #### Example:
 ```
 julia> fibonacciN_array(20)
@@ -361,35 +349,13 @@ julia> fibonacciN_array(20)
 4181
 
 julia> fibonacciF(100)
-Warning: protectInt -> true
+Integer-overflow protection: fibonacciF converted to BigInt
 354224848179261915075
 ```
 """
 function fibonacciF(n::T; msg=true) where {T<:Integer}
 
     o = fibonacciF_array(n; msg)[end]
-
-    return o
-
-end
-function fibonacciF1(n::T; msg=true) where {T<:Integer}
-
-    n = Int(n)
-    nc = 92
-
-    if n ≤ nc
-        o = T == Int ? glFn_Int[1:1+n][end] : glFn_BigInt[1:1+n][end]
-    else
-        o = _fn_BigInt(n, nc)[end]
-        msg && T == Int && println("Integer-overflow protection: fibonacciF converted to BigInt")
-    end
-
-#    if T == Int
-#        o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_Int[1+n]
-#        msg && n > nc && println("Integer-overflow protection: fibonacciF converted to BigInt")
-#    else
-#        o = n > nc ? _fn_BigInt(n, nc)[end] : glFn_BigInt[1+n]
-#    end
 
     return o
 
@@ -406,13 +372,6 @@ function fibonacciF_array(nmax::T; msg=true) where {T<:Integer}
         o = _fn_BigInt(n, nc)
         msg && T == Int && println("Integer-overflow protection: fibonacciF converted to BigInt")
     end
-
- #   if T == Int
- #       o = n > nc ? _fn_BigInt(n, nc) : glFn_Int[1:1+n]
- #       msg && n > nc && println("Integer-overflow protection: fibonacciF converted to BigInt")
- #   else
- #       o = n > nc ? _fn_BigInt(n, nc) : glFn_BigInt[1:1+n]
- #   end
 
     return o
 
@@ -495,8 +454,8 @@ Sum of the reciprocals of the first ``n`` natural numbers
     H_n=\sum_{k=1}^{n}\frac{1}{k}.
 ```
 Integer-overflow protection: for `n > 46` the output is autoconverted to Rational{BigInt}.
-By default the capture message is activated: Warning: output converted to BigInt 
-(Integer-overflow capture). 
+By default the capture message is activated: 
+Integer-overflow protection: harmonicNumber converted to Rational{BigInt}. 
 ### Examples:
 ```
 julia> o = harmonicNumber_array(9); println(o)
@@ -506,7 +465,7 @@ julia> o = [harmonicNumber(46; msg=true)]; println(o)
 Rational{Int64}[5943339269060627227//1345655451257488800]
 
 julia> o = [harmonicNumber(47; msg=true)]; println(o)
-Warning: output converted to BigInt (Integer-overflow capture) 
+Integer-overflow protection: harmonicNumber converted to Rational{BigInt}
 Rational{BigInt}[282057509927739620069//63245806209101973600]
 
 julia> harmonicNumber(12) == harmonicNumber(12, 1)
@@ -516,28 +475,6 @@ true
 function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
     o = harmonicNumber_array(n; msg)[end]
-
-    return o
-
-end
-function harmonicNumber1(n::T; msg=true) where {T<:Integer}
-
-    n = Int(n)
-    nc = 46
-
-    if n ≤ nc
-        o = T == Int ? glHn_Int[1][n] : glHn_BigInt[1][n]
-    else
-        o = _hn_BigInt(n, nc)[end]
-        msg && T == Int && println("Integer-overflow protection: harmonicNumber converted to BigInt")
-    end
-
-#    if T == Int
-#        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[1][n]
-#        msg && n > nc && println("Integer-overflow protection: output converted to BigInt")
-#    else
-#        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[1][n]
-#    end
 
     return o
 
@@ -552,17 +489,9 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
         o = T == Int ? glHn_Int[1][1:n] : glHn_BigInt[1:n][n]
     else
         o = _hn_BigInt(n, nc)
-        msg && T == Int && println("Integer-overflow protection: harmonicNumber converted to BigInt")
+        msg && T == Int && println("Integer-overflow protection: harmonicNumber converted to Rational{BigInt}")
     end
     
-
- #   if T == Int
- #       o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1][1:n]
- #       msg && n > nc && println("Integer-overflow protection: output converted to BigInt")
- #   else
- #       o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1][1:n]
- #   end
-
     return o
 
 end
