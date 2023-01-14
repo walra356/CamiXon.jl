@@ -530,15 +530,7 @@ true
 """
 function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
-    n = Int(n)
-    nc = 46
-
-    if n ≤ nc
-        o = T == Int ? glFn_Int[1][1:n] : glFn_BigInt[1][1:n]
-    else
-        o = _hn_BigInt(n, nc)
-        msg && T == Int && println("Integer-overflow protection: fibonacciF converted to BigInt")
-    end
+    o = harmonicNumber_array(n; msg)[end]
 
     return o
 
