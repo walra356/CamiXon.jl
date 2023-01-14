@@ -543,7 +543,7 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
         o = T == Int ? glHn_Int[1][1:n] : glHn_BigInt[1][1:n]
     else
         o = _hn_BigInt(n, nc)
-        msg && T == Int && println("harmonicNumber: Integer-overflow protection: harmonicNumber autoconverted to Rational{BigInt}")
+        msg && T == Int && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
     end
 
     return o
@@ -556,7 +556,7 @@ function harmonicNumber1(n::T; msg=true) where {T<:Integer}
 
     if T == Int
         o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[1][n]
-        msg && n > nc && println("Integer-overflow protection: output converted to BigInt")
+        msg && n > nc && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
     else
         o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[1][n]
     end
@@ -681,12 +681,18 @@ function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
     nc = p < 11 ? length(glHn_Int[p]) : p < 18 ? 4 : p < 25 ? 3 : 0
 
     if p > 0
-        if T == Int
-            o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_Int(p, nc)[n]
-            msg && n > nc && println("Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}")
+        if n ≤ nc
+            o = T == Int ? glHn_Int[p][n] : glHn_BigInt[p][n]
         else
-            o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_BigInt(p, nc)[n]
+            o = _hn_BigInt(n, nc, p)[end]
+            msg && T == Int && println("Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}")
         end
+ #       if T == Int
+ #           o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_Int(p, nc)[n]
+ #           msg && n > nc && println("Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}")
+ #       else
+ #           o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_BigInt(p, nc)[n]
+ #       end
     else
         p = -p
         F = CamiXon.faulhaber_polynom(p + 1; T)
