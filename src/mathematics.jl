@@ -501,6 +501,13 @@ true
 """
 function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
+    o = harmonicNumber_array(n; msg)[end]
+
+    return o
+
+end
+function harmonicNumber1(n::T; msg=true) where {T<:Integer}
+
     n = Int(n)
     nc = 46
 
