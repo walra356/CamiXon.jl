@@ -122,7 +122,7 @@ true
 """
 function bernoulliB(n::T; msg=true) where {T<:Integer}
 
-    o = bernoulliB1(n; msg)[end]
+    o = bernoulliB_array(n; msg)[end]
 
     return o
 
@@ -654,15 +654,16 @@ Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```math
     H_{n,p}=\sum_{k=1}^{n}\frac{1}{k^p}.
 ```
-Integer-overflow protection: the output is autoconverted to Rational{BigInt} when appropriate.
-Optional: a warning message is displayed when autoconversion is activated (default: no message)
+Integer-overflow protection: the output is autoconverted to Rational{BigInt} when required.
+By default the capture message is activated: 
+"Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}". 
 ### Examples:
 ```
 julia> o = [harmonicNumber(46,1; msg=true)]; println(o)
 Rational{Int64}[5943339269060627227//1345655451257488800]
 
 julia> o = [harmonicNumber(47,1; msg=true)]; println(o)
-Integer-overflow protection: output converted to BigInt
+Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}"
 Rational{BigInt}[280682601097106968469//63245806209101973600]
 
 julia> o = [harmonicNumber6(47,1)]; println(o)
@@ -682,7 +683,7 @@ function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
     if p > 0
         if T == Int
             o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_Int(p, nc)[n]
-            msg && n > nc && println("Integer-overflow protection: output converted to BigInt")
+            msg && n > nc && println("Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}")
         else
             o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_BigInt(p, nc)[n]
         end
