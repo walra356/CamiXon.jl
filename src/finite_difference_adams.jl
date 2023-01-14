@@ -49,7 +49,7 @@ defining ``k^{th}``-order Adams-Moulton expansion,
 #### Examples:
 ```
 julia> k = 5;
-julia> β = fdiff_adams_moulton_expansion_coeffs5(k); println(β)
+julia> β = fdiff_adams_moulton_expansion_coeffs(k); println(β)
 Rational{Int64}[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
 
 julia> D = denominator(gcd(β))
@@ -127,7 +127,7 @@ divisor. By default the output is in Float64, optionally the output is rational,
 """
 function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
-    β = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; T)
+    β = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
 
     o = fdiff_expansion_weights(β)
 
@@ -167,7 +167,7 @@ function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int)
 # ==============================================================================
     a = Base.ones(Rational{T},k+1)
 
-    b = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; T)
+    b = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
     o = CamiXon.polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
