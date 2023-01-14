@@ -130,7 +130,7 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
     nc = 35
 
     if n ≤ nc
-        o = T == Int ? glbn_Int[1:1+n][end] : glbn_BigInt[1:1+n][end]
+        o = T == Int ? glBn_Int[1:1+n][end] : glBn_BigInt[1:1+n][end]
     else
         o = _bn_BigInt(n)[end]
         msg && T == Int && println("Integer-overload protection: output converted to BigInt")
@@ -146,7 +146,7 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
     nc = 35
 
     if n ≤ nc
-        o = T == Int ? glbn_Int[1:1+n][end] : glbn_BigInt[1:1+n][end]
+        o = T == Int ? glBn_Int[1:1+n][end] : glBn_BigInt[1:1+n][end]
     else
         o = _bn_BigInt(n)[end]
         msg && T == Int && println("Integer-overload protection: output converted to BigInt")

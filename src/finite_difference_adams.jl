@@ -80,7 +80,6 @@ function fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
 
 end
 
-
 # ..............................................................................
 function fdiff_adams_moulton_expansion_coeffs(nmax::T; msg=true) where {T<:Integer}
 
