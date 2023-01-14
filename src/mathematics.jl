@@ -146,9 +146,9 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
     nc = 35
 
     if n ≤ nc
-        o = T == Int ? glBn_Int[1:1+n][end] : glBn_BigInt[1:1+n][end]
+        o = T == Int ? glBn_Int[1:1+n] : glBn_BigInt[1:1+n]
     else
-        o = _bn_BigInt(n)[end]
+        o = _bn_BigInt(n)
         msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
