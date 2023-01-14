@@ -954,7 +954,7 @@ where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
 
 Functions:
 
-`β` = [`fdiff_adams_moulton_expansion_coeffs(k)`](@ref) ``→ [b_0,⋯\ b_k]``
+`β` = [`fdiff_adams_moulton_expansion_coeff(k)`](@ref) ``→ [b_0,⋯\ b_k]``
 
 `adams_moulton_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
