@@ -45,31 +45,27 @@ end
 
 # ============================ bernoulliB_array ==============================
 
-global glBn_Int = [
-
-    1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42,
+global glBn_Int = [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42,
     0 // 1, -1 // 30, 0 // 1, 5 // 66, 0 // 1, -691 // 2730, 0 // 1,
     7 // 6, 0 // 1, -3617 // 510, 0 // 1, 43867 // 798, 0 // 1,
     -174611 // 330, 0 // 1, 854513 // 138, 0 // 1, -236364091 // 2730,
     0 // 1, 8553103 // 6, 0 // 1, -23749461029 // 870, 0 // 1,
     8615841276005 // 14322, 0 // 1, -7709321041217 // 510, 0 // 1,
-    2577687858367 // 6, 0 // 1
-
-    ]
+    2577687858367 // 6, 0 // 1]
 
 global glBn_BigInt = convert(Vector{Rational{BigInt}}, glBn_Int)
 
 
 # ..............................................................................
-function _bn_Int(n::Int, nc::Int)
+#function _bn_Int(n::Int, nc::Int)             kanweg ?
+#
+#    nstop = min(n, nc)
 
-    nstop = min(n, nc)
+#    o = glBn_Int[1:1+nstop]
 
-    o = glBn_Int[1:1+nstop]
+#    return o
 
-    return o
-
-end
+#end
 # ..............................................................................
 function _bn_BigInt(n::Int, nc::Int)
 
@@ -132,7 +128,7 @@ function bernoulliB(n::T; msg=true) where {T<:Integer}
     if n ≤ nc
         o = T == Int ? glBn_Int[1:1+n][end] : glBn_BigInt[1:1+n][end]
     else
-        o = _bn_BigInt(n)[end]
+        o = _bn_BigInt(n, nc)[end]
         msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
@@ -148,7 +144,7 @@ function bernoulliB_array(nmax::T; msg=true) where {T<:Integer}
     if n ≤ nc
         o = T == Int ? glBn_Int[1:1+n] : glBn_BigInt[1:1+n]
     else
-        o = _bn_BigInt(n)
+        o = _bn_BigInt(n, nc)
         msg && T == Int && println("Integer-overload protection: output converted to BigInt")
     end
 
