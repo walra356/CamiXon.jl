@@ -545,7 +545,7 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
         o = T == Int ? glHn_Int[1][1:n] : glHn_BigInt[1][1:n]
     else
         o = _hn_BigInt(n, nc)
-        msg && T == Int && println("Integer-overflow protection: fibonacciF converted to BigInt")
+        msg && T == Int && println("Integer-overflow protection: harmonicNumber autoconverted to BigInt")
     end
 
     return o
