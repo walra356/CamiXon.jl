@@ -236,7 +236,7 @@ function faulhaber_polynom(k::Int; T=Int)
     k > 1 || return 1//1
 
     P = CamiXon.pascal_triangle(k)[end][1:end-1]
-    B = CamiXon.bernoulliB_array(k-1); B[2]=-B[2]  # was bernoulliB_array(k-1; T)
+    B = CamiXon.bernoulliB_array(k); B[2]=-B[2]  # was bernoulliB_array(k-1; T)
 
     F = (B .* P)  // k
 
