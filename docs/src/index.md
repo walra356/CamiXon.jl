@@ -928,7 +928,7 @@ y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 
 where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*,
 rational numbers generated numerically by the function
-[`fdiff_adams_moulton_expansion_coeffs(k)`](@ref). Extracting the greatest
+[`fdiff_adams_moulton_expansion_coeff(k)`](@ref). Extracting the greatest
 common denominator, ``1/D``, the step becomes
 
 ```math
