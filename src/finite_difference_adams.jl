@@ -60,7 +60,7 @@ julia> o = convert(Vector{Int},(β .* D)); println(o)
 
 julia> k=20;
 julia> fdiff_adams_moulton_expansion_coeff(k)
-Integer-overload protection: output converted to BigInt
+Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
@@ -73,7 +73,7 @@ function fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
         o = T == Int ? glAMe_Int[1:1+n][end] : glAMe_BigInt[1:1+n][end]
     else
         o = _ame_BigInt(n)[end]
-        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
+        msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
     end
 
     return o
@@ -90,7 +90,7 @@ function fdiff_adams_moulton_expansion_coeffs(nmax::T; msg=true) where {T<:Integ
         o = T == Int ? glAMe_Int[1:1+n] : glAMe_BigInt[1:1+n]
     else
         o = _ame_BigInt(n)
-        msg && T == Int && println("Integer-overload protection: output converted to BigInt")
+        msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
     end
 
     return o
