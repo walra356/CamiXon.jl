@@ -1,3 +1,44 @@
+# SPDX-License-Identifier: MIT
+
+# ================================== lceltype(o) ==============================
+
+@doc raw"""
+    lceltype(o)
+
+Lowest common eltype of a collection.
+#### Examples:
+```
+julia> o = ([1//2, 1//3]; (1//4, 1//1, 1//6));
+julia> lceltype(o)
+Rational{Int64}
+
+julia> o = ([1//2, 1//3]; (1//4, big(1)//big(5), 1//6));
+julia> lceltype(o)
+Rational
+
+julia> o = ([1//2, 1//3]; (1//4, [big(1)//big(5)], 1//6));
+julia> lceltype(o)
+Any
+
+julia> o = ([1/2, 1/3]; (1/4, 1/1, 1/6));
+julia> lceltype(o)
+Float64
+```
+"""
+function lceltype(o)
+
+    T = eltype(o)
+    U = eltype(T)
+
+    while T ≠ U
+        T = U
+        U = eltype(T)
+    end
+
+    return T
+
+end
+
 # ================================== ConditionalType(n::T, nc::T [; msg=false]) ===========
 @doc raw"""
     conditionalType(n::T, nc::T [; msg=true]) where T<:Integer  

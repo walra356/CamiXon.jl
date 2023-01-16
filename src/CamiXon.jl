@@ -21,8 +21,12 @@ export Object
 export Info
 export Latex
 
+export lceltype
 export conditionalType
 export bigconvert
+export find_all
+export find_first
+export find_last
 
 export convertUnit
 export Value
@@ -168,10 +172,6 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
-export find_all
-export find_first
-export find_last
-
 export threeJsymbol
 export CGC
 
@@ -215,7 +215,6 @@ include("singleton.jl")
 include("julia.jl")
 include("codata.jl")
 include("dicts.jl")
-include("search_algorithms.jl")
 include("strings.jl")
 include("latex.jl")
 include("finite_differences.jl")
