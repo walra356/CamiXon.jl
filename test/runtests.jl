@@ -77,6 +77,7 @@ using Test
     @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
     @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1,"Hz")) == "1 Hz"
+    @test lceltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test conditionalType(47,46) == BigInt
     @test typeof(bigconvert([[1//1,1//2], [1//1,1//2]])) == Vector{Vector{Rational{BigInt}}}
     @test find_all([:📑, :📌,:📢,:📌,:📞]) == [[1], [2, 4], [3], [5]]
