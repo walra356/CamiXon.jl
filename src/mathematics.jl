@@ -360,7 +360,7 @@ Integer-overflow protection: for `n > 92` the output is autoconverted to BigInt.
 By default the capture message is activated: "Warning: fibonacciF autoconverted to BigInt". 
 #### Example:
 ```
-julia> fibonacciN_array(20)
+julia> fibonacciF_array(20)
 21-element Vector{Int64}:
    0
    1

@@ -21,7 +21,9 @@ export Object
 export Info
 export Latex
 
-#export convert
+export conditionalType
+export bigconvert
+
 export convertUnit
 export Value
 export strValue
@@ -166,9 +168,6 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
-export conditionalType
-export protectInt
-export bigconvert
 export find_all
 export find_first
 export find_last
@@ -213,6 +212,7 @@ export permutations_unique_count
 export texp
 
 include("singleton.jl")
+include("julia.jl")
 include("codata.jl")
 include("dicts.jl")
 include("search_algorithms.jl")

@@ -339,7 +339,7 @@ stepedges(x::Vector{T} where T<:Real)
 edges(px, Δx=1.0, x0=0.0)
 ```
 
-## Search and conversion tools
+## julia tools
 
 ```@docs
 conditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
