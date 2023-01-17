@@ -21,7 +21,9 @@ export Object
 export Info
 export Latex
 
-export lceltype
+export primitivetype
+export lc_primitivetype
+export lc_eltype
 export conditionalType
 export bigconvert
 export find_all

@@ -342,7 +342,9 @@ edges(px, Δx=1.0, x0=0.0)
 ## julia tools
 
 ```@docs
-lceltype(o)
+primitivetype(T::Type)
+lc_primitivetype(o::Any)
+lc_eltype(o)
 bigconvert(o)
 conditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
 find_all(A::Union{String,AbstractArray{T,1}}, a::T...; count=false)  where T
