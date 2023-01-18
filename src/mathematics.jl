@@ -488,7 +488,7 @@ function _hn_BigInt(n::Int, nc::Int)
 
     one = big(1)
 
-    o = glHn_BigInt[1][1+nc]
+    o = glHn_BigInt[1][1:nc]
     for m = nc+1:n
         a = o[m-1] + one // big(m)
         push!(o, a)
