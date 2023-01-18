@@ -149,7 +149,7 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
     for Z=Z1:Z2
         for A=1:3Z
             next = listAtom(Z, A, Q; fmt)
-            isnothing(next) ? false : push!(o, next)
+            isnothing(next) ? false : Base.push!(o, next)
         end
     end
 

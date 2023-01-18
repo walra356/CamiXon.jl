@@ -11,7 +11,7 @@ function _nexta!(a::Vector{T}, aEnd::T, ℓ::T, σ::T, λ::T) where T <: Real
     two = T(2)
     add = (ℓ*(ℓ+one)-(σ-k)*(σ-k+one)) * aEnd / (two*λ*k)
 
-    push!(a, add)
+    Base.push!(a, add)
 
     return a
 
@@ -25,7 +25,7 @@ function _nextb!(b::Vector{T}, aEnd::T, ℓ::T, σ::T) where T <: Real
     two = T(2)
     add = ((σ+k)*(σ-k+one)-ℓ*(ℓ+one)) * aEnd / (two*k)
 
-    push!(b, add)
+    Base.push!(b, add)
 
     return b
 
@@ -43,13 +43,13 @@ function _nexto!(o::Vector{Complex{T}}, ρ::T, ρN::T, a::Vector{T}, b::Vector{T
 
     for i = 2:n
         den *= ρ
-        push!(c, one/den)
+        Base.push!(c, one/den)
     end
 
     a′ = a ⋅ c
     b′ = b ⋅ c
 
-    push!(o, (ρ/ρN)^σ * exp(-λ*(ρ-ρN)) * (a′ + b′*im))   #  α′=sum([α[s]ρ^(1-s) for s ∈ eachindex(α)], with α ∈ {a,b}
+    Base.push!(o, (ρ/ρN)^σ * exp(-λ*(ρ-ρN)) * (a′ + b′*im))   #  α′=sum([α[s]ρ^(1-s) for s ∈ eachindex(α)], with α ∈ {a,b}
 
     return o
 

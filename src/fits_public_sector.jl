@@ -369,8 +369,8 @@ function fits_extend(filename::String, data_extend, hdutype="IMAGE")
 
     nhdu = nhdu + 1
 
-    push!(FITS_headers, _cast_header(records, nhdu))              # update FITS_header object
-    push!(FITS_data, _cast_data(nhdu, hdutype, data))             # update FITS_data object
+    Base.push!(FITS_headers, _cast_header(records, nhdu))              # update FITS_header object
+    Base.push!(FITS_data, _cast_data(nhdu, hdutype, data))             # update FITS_data object
 
     FITS = [FITS_HDU(filename, i, FITS_headers[i], FITS_data[i]) for i=1:nhdu]
 

@@ -83,7 +83,7 @@ function _bn_BigInt(n::Int, nc::Int)
                 b ÷= j                     # binomial coefficients are integers
             end
         end
-        push!(o, a // big(m))
+        Base.push!(o, a // big(m))
     end
 
     return o
@@ -122,7 +122,7 @@ true
 """
 function bernoulliB(n::T; msg=true) where {T<:Integer}
 
-    o = bernoulliB_array(n; msg)[end]
+    o = CamiXon.bernoulliB_array(n; msg)[end]
 
     return o
 
@@ -337,7 +337,7 @@ function _fn_BigInt(n::Int, nc::Int)
 
     o = glFn_BigInt[1:1+nc]
     for k = nc+2:n+1
-        push!(o, o[k-1] + o[k-2])
+        Base.push!(o, o[k-1] + o[k-2])
     end
 
     return o
@@ -380,7 +380,7 @@ Warning: fibonacciF autoconverted to BigInt
 """
 function fibonacciF(n::T; msg=true) where {T<:Integer}
 
-    o = fibonacciF_array(n; msg)[end]
+    o = CamiXon.fibonacciF_array(n; msg)[end]
 
     return o
 
@@ -491,7 +491,7 @@ function _hn_BigInt(n::Int, nc::Int)
     o = glHn_BigInt[1][1:nc]
     for m = nc+1:n
         a = o[m-1] + one // big(m)
-        push!(o, a)
+        Base.push!(o, a)
     end
 
     return o
@@ -528,7 +528,7 @@ true
 """
 function harmonicNumber(n::T; msg=true) where {T<:Integer}
 
-    o = harmonicNumber_array(n; msg)[end]
+    o = CamiXon.harmonicNumber_array(n; msg)[end]
 
     return o
 
@@ -596,7 +596,7 @@ function Hn_Int(p::Int, nc::Int)
                 a *= n
             end
             b += 1 // a
-            push!(o, b)
+            Base.push!(o, b)
         end
     else
         o = glHn_Int[p]
@@ -619,7 +619,7 @@ function Hn_BigInt(p::Int, nc::Int)
                 a *= big(k)
             end
             b += one // a
-            push!(o, b)
+            Base.push!(o, b)
         end
     else
         o = glHn_BigInt[p]
@@ -634,7 +634,7 @@ function _hn_BigInt(n::Int, nc::Int, p::Int)
     nul = big(0)
     one = big(1)
 
-    o = Hn_BigInt(p, nc)[1:nc]
+    o = CamiXon.Hn_BigInt(p, nc)[1:nc]
 
     b = nul // one
     for m = 1:n
@@ -643,7 +643,7 @@ function _hn_BigInt(n::Int, nc::Int, p::Int)
             a *= big(m)
         end
         b += one // a
-        push!(o, b)
+        Base.push!(o, b)
     end
 
     return o

@@ -131,7 +131,7 @@ function listElements(Z1::Int, Z2::Int; fmt=Object)
 
     for Z=Z1:Z2
         next = listElement(Z; fmt)
-        isnothing(next) ? false : push!(o, next)
+        isnothing(next) ? false : Base.push!(o, next)
     end
 
     return o

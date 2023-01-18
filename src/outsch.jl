@@ -23,8 +23,8 @@ function _vecOUTSCH(k::Int, matLD::Matrix{T}, p::T, q::T) where T<:Real
 
         v = [matLD[2,1]]
 
-    for i=2:k  push!(v, matLD[1+i,1] * p)  end       # Johnson (2.67)
-    for i=1:k  push!(v, matLD[1+i,1] * q)  end       # Johnson (2.68)
+    for i=2:k  Base.push!(v, matLD[1+i,1] * p)  end       # Johnson (2.67)
+    for i=1:k  Base.push!(v, matLD[1+i,1] * q)  end       # Johnson (2.68)
 
     return -v
 

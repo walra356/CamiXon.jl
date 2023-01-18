@@ -221,7 +221,7 @@ function _format_recordslongstring(key::String, val::AbstractString, com::String
     elseif (lval == 70)
         chr = records[1][end-1]
         records[1] = records[1][1:end-2] * last
-        push!(records,rpad(("CONTINUE  '" * chr * last),80))
+        Base.push!(records,rpad(("CONTINUE  '" * chr * last),80))
     elseif lval > 70
          val = val[1:end-1]
         lval = length(val)
@@ -229,15 +229,15 @@ function _format_recordslongstring(key::String, val::AbstractString, com::String
         nrec > 1 ? [push!(records,("CONTINUE  '" * val[68i+2-i:68(i+1)-i] * "&'")) for i=1:nrec-1] : 0
          val = val[68(nrec)+2-nrec:end]; lval = length(val)
         (lcom == 0) & (lval == 1) ? (records[end] = records[end][1:end-2] * val * "'"; lval  =0) : 0
-        lval > 0 ? push!(records,rpad(("CONTINUE  '" * val * last),80)) : 0
+        lval > 0 ? Base.push!(records,rpad(("CONTINUE  '" * val * last),80)) : 0
     end
 
     if lcom <= 65
-        push!(records, rpad("CONTINUE  '' / " * com,80))
+        Base.push!(records, rpad("CONTINUE  '' / " * com,80))
     else
         ncom = lcom÷64 + 1
         ncom > 1 ? [push!(records,"CONTINUE  '&' / " * com[64i+1:64(i+1)]) for i=0:ncom-2] : 0
-        push!(records,rpad("CONTINUE  '' / " * com[64(ncom-1)+1:end],80))
+        Base.push!(records,rpad("CONTINUE  '' / " * com[64(ncom-1)+1:end],80))
     end
 
     return records

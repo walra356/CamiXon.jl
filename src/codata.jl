@@ -327,10 +327,10 @@ function convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 #  convertUnit(val, codata; unitIn="kHz", unitOut="MHz")
 # ==============================================================================
     U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz"]
-        push!(U,"Hartree")
-        push!(U,"Rydberg")
-        push!(U,"Joule")
-        push!(U,"eV")
+        Base.push!(U,"Hartree")
+        Base.push!(U,"Rydberg")
+        Base.push!(U,"Joule")
+        Base.push!(U,"eV")
 
     unitIn ∈ U || error("Error: unitIn = $(unitIn) unknown unit type")
 
