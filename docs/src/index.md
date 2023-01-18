@@ -339,7 +339,7 @@ stepedges(x::Vector{T} where T<:Real)
 edges(px, Δx=1.0, x0=0.0)
 ```
 
-## julia tools
+## Julia tools
 
 ```@docs
 primitivetype(T::Type)

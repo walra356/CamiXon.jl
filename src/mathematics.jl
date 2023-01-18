@@ -72,7 +72,7 @@ function _bn_BigInt(n::Int, nc::Int)
     nul = big(0)
     one = big(1)
 
-    o = glBn_BigInt
+    o = glBn_BigInt[1:1+nc]
     for m = nc+2:n+1
         a = nul
         if Base.isodd(m)
@@ -335,7 +335,7 @@ global glFn_BigInt = convert(Vector{BigInt}, glFn_Int)
 # ..............................................................................
 function _fn_BigInt(n::Int, nc::Int)
 
-    o = glFn_BigInt
+    o = glFn_BigInt[1:1+nc]
     for k = nc+2:n+1
         push!(o, o[k-1] + o[k-2])
     end
@@ -488,7 +488,7 @@ function _hn_BigInt(n::Int, nc::Int)
 
     one = big(1)
 
-    o = glHn_BigInt[1]
+    o = glHn_BigInt[1][1+nc]
     for m = nc+1:n
         a = o[m-1] + one // big(m)
         push!(o, a)
@@ -533,6 +533,7 @@ function harmonicNumber(n::T; msg=true) where {T<:Integer}
     return o
 
 end
+
 # ..............................................................................
 function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
 
@@ -543,43 +544,44 @@ function harmonicNumber_array(nmax::T; msg=true) where {T<:Integer}
         o = T == Int ? glHn_Int[1][1:n] : glHn_BigInt[1][1:n]
     else
         o = _hn_BigInt(n, nc)
-        msg && T == Int && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
+        msg && T == Int && println("Warning: harmonicNumber autoconverted to Rational{BigInt}")
     end
 
     return o
 
 end
-function harmonicNumber1(n::T; msg=true) where {T<:Integer}
-
-    n = Int(n)
-    nc = 46
-
-    if T == Int
-        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[1][n]
-        msg && n > nc && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
-    else
-        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[1][n]
-    end
-
-    return o
-
-end
+#function harmonicNumber1(n::T; msg=true) where {T<:Integer}
+#
+#    n = Int(n)
+#    nc = 46
+#
+#    if T == Int
+#        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_Int[1][n]
+#        msg && n > nc && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
+#    else
+#        o = n > nc ? _hn_BigInt(n, nc)[end] : glHn_BigInt[1][n]
+#    end
+#
+#
+#    return o
+#
+#end
 # ..............................................................................
-function harmonicNumber_array1(nmax::T; msg=true) where {T<:Integer}
-
-    n = Int(nmax)
-    nc = 46
-
-    if T == Int
-        o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1][1:n]
-        msg && n > nc && println("Integer-overflow protection: harmonicNumber converted to Rational{BigInt}")
-    else
-        o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1][1:n]
-    end
-
-    return o
-
-end
+#function harmonicNumber_array1(nmax::T; msg=true) where {T<:Integer}
+#
+#    n = Int(nmax)
+#    nc = 46
+#
+#    if T == Int
+#        o = n > nc ? _hn_BigInt(n, nc) : glHn_Int[1][1:n]
+#        msg && n > nc && println("Warning: harmonicNumber(n) autoconverted to Rational{BigInt}")
+#    else
+#        o = n > nc ? _hn_BigInt(n, nc) : glHn_BigInt[1][1:n]
+#    end
+#
+#    return o
+#
+#end
 
 # ======================= harmonic number(n, p [; msg=false]) ==========================
 
@@ -632,7 +634,7 @@ function _hn_BigInt(n::Int, nc::Int, p::Int)
     nul = big(0)
     one = big(1)
 
-    o = Hn_BigInt(p, nc)
+    o = Hn_BigInt(p, nc)[1:nc]
 
     b = nul // one
     for m = 1:n
@@ -656,14 +658,14 @@ Sum of the ``p_{th}`` power of reciprocals of the first ``n`` numbers
 ```
 Integer-overflow protection: the output is autoconverted to Rational{BigInt} when required.
 By default the capture message is activated: 
-"Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}". 
+"Warning: harmonicNumber autoconverted to Rational{BigInt}". 
 ### Examples:
 ```
 julia> o = [harmonicNumber(46,1; msg=true)]; println(o)
 Rational{Int64}[5943339269060627227//1345655451257488800]
 
 julia> o = [harmonicNumber(47,1; msg=true)]; println(o)
-Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}"
+Warning: harmonicNumber autoconverted to Rational{BigInt}"
 Rational{BigInt}[280682601097106968469//63245806209101973600]
 
 julia> o = [harmonicNumber6(47,1)]; println(o)
@@ -675,7 +677,8 @@ harmonicNumber(12, -3) == faulhaber_summation(12, 3)
 """
 function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
 
-    n ≠ 0 || return 0
+    n ≠ 0 || return T(0)
+    p ≠ 0 || return n
 
     n = Int(n)
     nc = p < 11 ? length(glHn_Int[p]) : p < 18 ? 4 : p < 25 ? 3 : 0
@@ -685,7 +688,7 @@ function harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
             o = T == Int ? glHn_Int[p][n] : glHn_BigInt[p][n]
         else
             o = _hn_BigInt(n, nc, p)[end]
-            msg && T == Int && println("Warning: harmonicNumber(n, p) autoconverted to Rational{BigInt}")
+            msg && T == Int && println("Warning: harmonicNumber autoconverted to Rational{BigInt}")
         end
  #       if T == Int
  #           o = n > nc ? _hn_BigInt(n, nc, p)[end] : Hn_Int(p, nc)[n]
