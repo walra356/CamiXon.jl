@@ -352,56 +352,6 @@ find_first(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```
 
-## Mathematics
-
-```@docs
-bernoulliB(nmax::T; msg=true) where {T<:Integer}
-canonical_partitions(n::Int, m=0; header=true, reverse=true)
-bigfactorial(n::Int)
-# faulhaber_polynom(k::T)  where T<:Integer
-faulhaber_polynom(k::Int; T=Int)
-# faulhaber_summation(n::T, p::T) where T<:Integer
-faulhaber_summation(n::Int, p::Int; T=Int)
-fibonacciF(n::T; msg=true) where {T<:Integer}
-harmonicNumber(n::T, p::Int; msg=true) where {T<:Integer}
-harmonicNumber(n::T; msg=true) where {T<:Integer}
-integer_partitions(n::Int, m=0; transpose=false, count=false)
-log10_characteristic_power(x)
-log10_mantissa(x)
-permutations_unique_count(p::Array{Array{Int64,1},1}, i::Int)
-pascal_triangle(nmax::Int)
-pascal_next(a::Vector{Int})
-pochhammer(x::T, p::Int) where T<:Real
-triangle_coefficient(a::Real, b::Real, c::Real)
-istriangle(a::Real, b::Real, c::Real)
-texp(x::T, a::T, p::Int) where T <: Real
-VectorRational
-castVectorRational(vec::Vector{Rational{Int}})
-```
-
-### Polynomials
-
-```@docs
-polynomial(coords::Vector{T}, x::V; deriv=0) where {T <: Real, V <: Real}
-polynom_derivative(coords::Vector{T}) where T<:Real
-polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
-polynom_derivatives_all(coords::Vector{T}) where T<:Real
-polynom_power(coords::Vector{T}, power::Int) where T<:Real
-polynom_powers(coords::Vector{T}, pmax::Int) where T<:Real
-polynom_primitive(coeffs::Vector{T}) where T<:Real
-polynom_product(a::Vector{T}, b::Vector{V})  where {T<:Real, V<:Real}
-polynom_product_expansion(a::Vector{T}, b::Vector{T}, p::Int) where T<:Real
-```
-
-#### Laguerre polynomials
-
-```@docs
-laguerre_coords(n::Int)
-laguerreL(n::Int, x::T; deriv=0) where T<:Real
-generalized_laguerre_coords(n::Int, α::T) where T<:Real
-generalized_laguerreL(n::Int, α::U, x::T; deriv=0) where {U<:Real, T<:Real}
-```
-
 ## Finite-difference methods
 
 ### Finite differences

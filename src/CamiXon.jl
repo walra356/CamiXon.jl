@@ -1,5 +1,7 @@
 module CamiXon
 
+import CamiMath
+
 using Printf
 using Dates           # used in fits_private_sector
 #using IntervalSets
