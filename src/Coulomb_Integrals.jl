@@ -1,5 +1,70 @@
 # SPDX-License-Identifier: MIT
 
+
+
+# ==============================================================================
+#                               CoulombIntegrals.jl
+#                           Jook Walraven - 14-2-2023
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+#           a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+# ------------------------------------------------------------------------------
+
+
+function _Racah_sqrt2(j1, m1, j2, m2, J, M)
+
+    a = Int(j1 + m1)
+    b = Int(j1 - m1)
+    c = Int(j2 + m2)
+    d = Int(j2 - m2)
+    e = Int(J + M)
+    f = Int(J - M)
+
+    a = a ≥ 0 ? factorial(big(a)) : return 0
+    b = b ≥ 0 ? factorial(big(b)) : return 0
+    c = c ≥ 0 ? factorial(big(c)) : return 0
+    d = d ≥ 0 ? factorial(big(d)) : return 0
+    e = e ≥ 0 ? factorial(big(e)) : return 0
+    f = f ≥ 0 ? factorial(big(f)) : return 0
+
+    return a * b * c * d * e * f
+
+end
+# ........................................................
+function _Racah_denom(j1, m1, j2, m2, J, t::Int)
+
+    a = Int(J - j2 + t + m1)
+    b = Int(J - j1 + t - m2)
+    c = Int(j1 + j2 - J - t)
+    d = Int(j1 - t - m1)
+    e = Int(j2 - t + m2)
+
+    a = a ≥ 0 ? factorial(big(a)) : return 0
+    b = b ≥ 0 ? factorial(big(b)) : return 0
+    c = c ≥ 0 ? factorial(big(c)) : return 0
+    d = d ≥ 0 ? factorial(big(d)) : return 0
+    e = e ≥ 0 ? factorial(big(e)) : return 0
+
+    return a * b * c * d * e * factorial(big(t))
+
+end
+# ........................................................
+function _Racah_sum(j1, m1, j2, m2, J)
+
+    o = big(0)
+
+    for t = 0:(j1+j2-J)
+        sign = iseven(t) ? 1 : -1
+        d = _Racah_denom(j1, m1, j2, m2, J, t)
+        o += d > 0 ? sign // d : 0
+    end
+
+    return o
+
+end
+# ........................................................
+
 @doc raw"""
     a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
@@ -33,24 +98,28 @@ a_direct(6,3,2,3,-1)
 function a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Base.iseven(k) || return 0
-    0 ≤ k ≤ 2min(l,l′) || return 0
+    0 ≤ k ≤ 2min(l, l′) || return 0
     k > 0 || return 1
 
-    Δ1 = triangle_coefficient(l, k, l)
-    Δ2 = triangle_coefficient(l′, k, l′)
+    Δ1 = CamiMath.triangle_coefficient(l, k, l)
+    Δ2 = CamiMath.triangle_coefficient(l′, k, l′)
     T = _Racah_sqrt2(l, 0, k, 0, l, 0) * _Racah_sqrt2(l, -ml, k, 0, l, ml) * _Racah_sqrt2(l′, 0, k, 0, l′, 0) * _Racah_sqrt2(l′, -ml′, k, 0, l′, ml′)
     S = _Racah_sum(l, 0, k, 0, l) * _Racah_sum(l, -ml, k, 0, l) * _Racah_sum(l′, 0, k, 0, l′) * _Racah_sum(l′, -ml′, k, 0, l′)
 
-    a = (2l+1) * (2l′+1) * Δ1 * Δ2 * S
+    a = (2l + 1) * (2l′ + 1) * Δ1 * Δ2 * S
     o = a * a * T
     num = Int(sqrt(numerator(o)))
     den = Int(sqrt(denominator(o)))
 
-    o = sign(S) * num//den
+    o = sign(S) * num // den
 
     return o
 
 end
+
+# ------------------------------------------------------------------------------
+#           b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
@@ -81,7 +150,7 @@ function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
     Base.iseven(k+l+l′) || return 0
     abs(l-l′) ≤ k ≤ l+l′ || return 0
 
-    Δ = triangle_coefficient(l, k, l′)
+    Δ = CamiMath.triangle_coefficient(l, k, l′)
     T = _Racah_sqrt2(l, 0, k, 0, l′, 0) * _Racah_sqrt2(l, -ml, k, ml-ml′, l′, ml′)
     S = _Racah_sum(l, 0, k, 0, l′) * _Racah_sum(l, -ml, k, ml-ml′, l′)
 
@@ -96,6 +165,7 @@ function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 end
 
 # ======================== scrUG(k, Z, grid) ===================================
+
 @doc raw"""
     UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
 

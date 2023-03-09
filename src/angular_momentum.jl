@@ -96,7 +96,7 @@ function threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real
 
     iszero(m1 + m2 + m3) || return 0
 
-    Δ = triangle_coefficient(j1, j2, j3)
+    Δ = CamiMath.triangle_coefficient(j1, j2, j3)
     T = _Racah_sqrt2(j1, m1, j2, m2, j3, m3)
     R = _Racah_sum(j1, m1, j2, m2, j3)
     S = R * R
@@ -150,7 +150,7 @@ function CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false
     tJs = threeJsymbol(j1, m1, j2, m2, J, -M)
 
     if msg
-        Δ = triangle_coefficient(j1, j2, J)
+        Δ = CamiMath.triangle_coefficient(j1, j2, J)
         T = _Racah_sqrt2(j1, m1, j2, m2, J, M)
         R = _Racah_sum(j1, m1, j2, m2, J)
         S = R * R

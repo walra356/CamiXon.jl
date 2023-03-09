@@ -104,10 +104,6 @@ using Test
     @test find_last([:📑, :📌, :📢, :📌, :📞]) == find_last([1, 2, 3, 2, 5]) == find_last("aβcβd")
     @test [fdiff_weight(5, j) for j = 0:5] == [1, -5, 10, -10, 5, -1]
     @test isforward(fwd) == true
-    @test istriangle(1 // 2, 1, 1.5) == true
-    @test triangle_coefficient(1 // 2, 1, 1.5) == 1 // 12
-    @test threeJsymbol(3, 0, 4, -1, 5, 1) ≈ -0.10964174397241236
-    @test CGC(3, 0, 4, -1, 5, -1) ≈ -0.36364052611670256
     @test a_direct(2, 1, 1, 2, 2) == 2 // 35
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
@@ -150,50 +146,6 @@ using Test
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
-    @test canonical_partitions(6; header=true) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
-    @test canonical_partitions(6) == [[1, 1, 1, 1, 1, 1], [2, 2, 2], [3, 3], [4, 2], [5, 1], [6]]
-    @test canonical_partitions(6; header=true, reverse=false) == [[6], [5, 1], [4, 2], [3, 3], [2, 2, 2], [1, 1, 1, 1, 1, 1]]
-    @test integer_partitions(7) == [[1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 1], [2, 2, 1, 1, 1], [2, 1, 1, 1, 1, 1], [3, 3, 1], [3, 2, 2], [3, 2, 1, 1], [3, 1, 1, 1, 1], [4, 3], [4, 2, 1], [4, 1, 1, 1], [5, 2], [5, 1, 1], [6, 1], [7]]
-    @test integer_partitions(9; count=true) == 30
-    @test integer_partitions(9) == unique(integer_partitions(9))
-    @test integer_partitions(7, 4) == [[4, 3], [4, 2, 1], [4, 1, 1, 1]]
-    @test integer_partitions(7, 4; count=true) == 3
-    @test integer_partitions(7; transpose=true) == [[7], [4, 3], [5, 2], [6, 1], [3, 2, 2], [3, 3, 1], [4, 2, 1], [5, 1, 1], [2, 2, 2, 1], [3, 2, 1, 1], [4, 1, 1, 1], [2, 2, 1, 1, 1], [3, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]]
-    @test bernoulliB_array(10) == [1 // 1, -1 // 2, 1 // 6, 0 // 1, -1 // 30, 0 // 1, 1 // 42, 0 // 1, -1 // 30, 0 // 1, 5 // 66]  # 11 values (one-based array)
-    @test bernoulliB(0) == 1 // 1
-    @test bernoulliB(1) == -1 // 2
-    @test bernoulliB(60; msg=false) == -1215233140483755572040304994079820246041491 // 56786730
-    @test (bernoulliB(60; msg=false) == bernoulliB_array(60; msg=false)[end]) == true
-    @test bigfactorial(21; msg=false) == 51090942171709440000
-    @test faulhaber_polynom(6) == [0 // 1, 0 // 1, -1 // 12, 0 // 1, 5 // 12, 1 // 2, 1 // 6]
-    @test faulhaber_summation(3, 5) == 276
-    @test fibonacciF_array(10) == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
-    @test fibonacciF(0) == 0
-    @test fibonacciF(1) == 1
-    @test fibonacciF(100; msg=false) == 354224848179261915075
-    @test (fibonacciF(100; msg=false) == fibonacciF_array(100; msg=false)[end]) == true
-    @test harmonicNumber(1) == 1 // 1
-    @test harmonicNumber(60) == 15117092380124150817026911 // 3230237388259077233637600
-    @test harmonicNumber(12, 3) == 25535765062457 // 21300003648000
-    @test harmonicNumber_array(9) == [1 // 1, 3 // 2, 11 // 6, 25 // 12, 137 // 60, 49 // 20, 363 // 140, 761 // 280, 7129 // 2520]
-    @test pascal_triangle(5) == [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]]
-    @test pascal_next([1, 4, 6, 4, 1]) == [1, 5, 10, 10, 5, 1]
-    @test pochhammer.([0, 1, 2, 3, 4], 5) == [0, 120, 720, 2520, 6720]
-    #@test polynom_derivative([1, 1, 1, 1, 1]) == [1, 2, 3, 4]
-    #@test polynom_derivative([1,1,1,1,1]) == [1,2,3,4]
-    #@test polynom_derivatives([1,1,1,1,1]; deriv=2) == [2, 6, 12]
-    #@test polynom_derivatives_all([1, 1, 1, 1, 1]) == [[1, 2, 3, 4], [2, 6, 12], [6, 24], [24]]
-    #@test polynom_power([1, 1, 1], 2) == [1, 2, 3, 2, 1]
-    #@test polynom_powers([1, 1, 1], 3) == [[1, 1, 1], [1, 2, 3, 2, 1], [1, 3, 6, 7, 6, 3, 1]]
-    #@test polynom_primitive([1, 1, 1, 1, 1]) == [0 // 1, 1 // 1, 1 // 2, 1 // 3, 1 // 4, 1 // 5]
-    #@test CamiMath.polynom_product([1.0, -1], [1, 2, -3]) == [1.0, 1.0, -5.0, 3.0]
-    #@test CamiMath.polynom_product([1 // 2, -1], [1, 2, -3]) == [1 // 2, 0 // 1, -7 // 2, 3 // 1]
-    #@test CamiMath.polynom_product([1, 1], [1, -1, 2]) == [1, 0, 1, 2]
-    #@test CamiMath.polynom_product_expansion([1, -1, 1], [1, 1, -1, 1, 1, 1], 5) == [1, 0, -1, 3, -1, 1]
-    #@test CamiMath.generalized_laguerre_polynom(8, 3) == [165 // 1, -330 // 1, 231 // 1, -77 // 1, 55 // 4, -11 // 8, 11 // 144, -11 // 5040, 1 // 40320]
-    #@test CamiMath.laguerre_polynom(8) == [1 // 1, -8 // 1, 14 // 1, -28 // 3, 35 // 12, -7 // 15, 7 // 180, -1 // 630, 1 // 40320]
-    @test permutations_unique_count([[1, 2, 3], [2, 3, 1, 4, 3]], 2) == 60
-    @test castVectorRational([2 // 3, 4 // 5]).num == [10, 12]
     @test edges(1:5, 2.5, 2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4, 2, 6]) == [0, 4, 6, 12]
     @test stepcenters([4, 2, 6]) == [2.0, 5.0, 9.0]

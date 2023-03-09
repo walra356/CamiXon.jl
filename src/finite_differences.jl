@@ -641,9 +641,9 @@ function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
         σ[i+1,1] = σ[i+1,1] + i^l                  # correction of coeff a0
     end
 
-    F = CamiXon.faulhaber_polynom(k)
+    F = CamiMath.faulhaber_polynom(k)
     s = [CamiMath.polynom_power([-k,1],p) for p=0:k] .* F
-    s[1][1] = -CamiXon.faulhaber_summation(k-1,l)//1
+    s[1][1] = -CamiMath.faulhaber_summation(k-1,l)//1
 
     c = [Base.sum([s[p+1][i+1] for p=i:k]) for i=0:k][1:end-1]
 

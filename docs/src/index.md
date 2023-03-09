@@ -116,15 +116,6 @@ RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 ```
 
-## Angular momentum
-
-### Vector-coupling coefficients
-
-```@docs
-threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
-CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
-```
-
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform
@@ -595,8 +586,8 @@ interval ``-k ≤σ ≤0\ \ (n \le n-σ \le n+k)``,
 σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). For ``σ`` outside the
-interpolation interval the method corresponds to *extrapolation* along the
+being the Pochhammer symbol ([`CamiMath.pochhammer`](@ref)). For ``σ`` outside 
+the interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
 
@@ -673,8 +664,8 @@ with
 σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`pochhammer`](@ref)). For ``σ`` outside the
-interpolation interval the method corresponds to *extrapolation* along the
+being the Pochhammer symbol ([`CamiMath.pochhammer`](@ref)). For ``σ`` outside 
+the interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
 

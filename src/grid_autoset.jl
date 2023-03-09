@@ -16,14 +16,16 @@ end
 
 function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
 # ==============================================================================
-# jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential texp()
+# jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential 
 # ==============================================================================
     deriv ≥ 0 || return T(0)
     deriv ≤ p || return T(0)
 
     nul = T(0)
 
-    f = deriv > 0 ? h^(deriv)*texp(n*h, nul, p-deriv) : texp(n*h, nul, p) - 1  # note: texp() not exp()
+    f = deriv > 0 ? h^(deriv)*CamiMath.texp(n*h, nul, p-deriv) : 
+                              CamiMath.texp(n*h, nul, p) - 1  
+                               # note: texp() not exp()
 
     return f
 
