@@ -76,7 +76,7 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
            ID == 3 ? r0 * _linear_gridfunction(N, h)  :
-           ID == 4 ? r0 * polynomial(coords, h*N) : error("Error: unknown grid type")
+           ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : error("Error: unknown grid type")
 
     ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
     name = gridname(ID::Int)
@@ -274,7 +274,7 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
     ID == 1 && return _walterjohnson(n, h; deriv)
     ID == 2 && return _jw_gridfunction(n, h; deriv, p)
     ID == 3 && return _linear_gridfunction(n, h; deriv)
-    ID == 4 && return polynomial(coords, h*n; deriv)
+    ID == 4 && return CamiMath.polynomial(coords, h*n; deriv)
 
     return error("Error: unknown gridfunction")
 

@@ -18,7 +18,7 @@ step125.([5,10,21.3,50,100.1])
 function step125(x::Real)
 
     m = log10_mantissa(x)
-    p = log10_characteristic_power(x)
+    p = log10_characteristic(x)
     v = 10^m
     d = v > 7.9 ? 2.0 : v > 3.9 ? 1.0 : v > 1.49 ? 0.5 : 0.2
 

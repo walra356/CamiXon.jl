@@ -109,7 +109,7 @@ function polynom_derivatives(coords::Vector{T}; deriv=0) where T<:Real
     deriv < 0 && error("jwError: negative derivative not defined")
 
     for k=1:deriv
-        coords = CamiXon.polynom_derivative(coords)
+        coords = CamiMath.polynom_derivative(coords)
     end
 
     return coords
@@ -142,7 +142,7 @@ function polynom_derivatives_all(coords::Vector{T}) where T<:Real
 
     k = Base.length(coords)
 
-    coords = CamiXon.polynom_derivative(coords)
+    coords = CamiMath.polynom_derivative(coords)
 
     o = [coords]
 
@@ -184,10 +184,10 @@ function polynom_power(coords::Vector{T}, power::Int) where T<:Real
     power == 1 && return coords
     power == 0 && return [1]
 
-    o = CamiXon.polynom_product(coords, coords)
+    o = CamiMath.polynom_product(coords, coords)
 
     for i=1:power-2
-        o = CamiXon.polynom_product(o, coords)
+        o = CamiMath.polynom_product(o, coords)
     end
 
     return o
@@ -222,7 +222,7 @@ function polynom_powers(coords::Vector{T}, pmax::Int) where T<:Real
     o = [coords]
 
     for i=1:pmax-1
-        Base.push!(o,CamiXon.polynom_product(o[end], coords))
+        Base.push!(o,CamiMath.polynom_product(o[end], coords))
     end
 
     return o

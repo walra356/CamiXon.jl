@@ -451,7 +451,7 @@ function fwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
     a,α = Base.promote(a,α)
 
-return polynom_product_expansion(a, α, k)
+return CamiMath.polynom_product_expansion(a, α, k)
 
 end
 #...............................................................................
@@ -477,7 +477,7 @@ function bwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
     b,β = Base.promote(b,β)
 
-    return polynom_product_expansion(b, β, k)
+    return CamiMath.polynom_product_expansion(b, β, k)
 
 end
 #...............................................................................
@@ -637,12 +637,12 @@ function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
     σ = Base.Matrix{Int}(undef,k,k)
 
     for i=0:k-1
-        σ[i+1,:] = CamiXon.polynom_power([i,-1],l) # corresponds to a0,...ak
+        σ[i+1,:] = CamiMath.polynom_power([i,-1],l) # corresponds to a0,...ak
         σ[i+1,1] = σ[i+1,1] + i^l                  # correction of coeff a0
     end
 
     F = CamiXon.faulhaber_polynom(k)
-    s = [CamiXon.polynom_power([-k,1],p) for p=0:k] .* F
+    s = [CamiMath.polynom_power([-k,1],p) for p=0:k] .* F
     s[1][1] = -CamiXon.faulhaber_summation(k-1,l)//1
 
     c = [Base.sum([s[p+1][i+1] for p=i:k]) for i=0:k][1:end-1]

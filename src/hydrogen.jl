@@ -34,7 +34,7 @@ completes the definition of the problem.
     L_{n-l-1}^{2l+1}(2Z\rho/n)
 ```
 where ``L_{n-l-1}^{2l+1}(2Z\rho/n)`` is the generalized Laguerre polynomial
-[`generalized_laguerreL`](@ref) and
+[`CamiMath.generalized_laguerreL`](@ref) and
 ```math
     \mathcal{N}_{nl}
     = {\displaystyle \int\nolimits _{0}^{\infty}}x^{2l+2}e^{-x}
@@ -73,10 +73,10 @@ function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
     a = float(big(2Zval)//big(n))
     b = a^(ℓ+1)*sqrt(a/big(norm))
 
-    coords = float(generalized_laguerre_coords(n-ℓ-1, 2ℓ+1))
+    coords = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
 
-    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * polynomial(coords, a*r[i]) for i ∈ eachindex(r)]
-    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * polynomial(coords, a*r[i]) + a*r[i]*polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) for i ∈ eachindex(r)]
+    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) + a*r[i]*CamiMath.polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
     return P + im * Q
 

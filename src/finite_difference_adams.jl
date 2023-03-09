@@ -25,7 +25,7 @@ function _ame_BigInt(k::Int)
     b = Base.copy(o)
 
     for p = 1:k
-        b = CamiXon.polynom_product_expansion(a, b, k)
+        b = CamiMath.polynom_product_expansion(a, b, k)
         Base.isodd(p) ? o = o .- b : o = o .+ b
     end
 
@@ -168,7 +168,7 @@ function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int)
     a = Base.ones(Rational{T},k+1)
 
     b = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
-    o = CamiXon.polynom_product_expansion(a, b, k)
+    o = CamiMath.polynom_product_expansion(a, b, k)
 
     return o  # Note that D = denominator(gcd(o))
 

@@ -192,26 +192,26 @@ export fibonacciF_array
 export harmonicNumber
 export harmonicNumber_array
 export integer_partitions
-export log10_characteristic_power
+export log10_characteristic
 export log10_mantissa
 export pascal_triangle
 export pascal_next
 export pochhammer
-export laguerre_coords
-export laguerreL
-export generalized_laguerre_coords
-export generalized_laguerreL
+#export laguerre_coords
+#export laguerreL
+#export generalized_laguerre_coords
+#export generalized_laguerreL
 export triangle_coefficient
 export istriangle
-export polynomial
-export polynom_derivative
-export polynom_derivatives
-export polynom_derivatives_all
-export polynom_primitive
-export polynom_product
-export polynom_product_expansion
-export polynom_power
-export polynom_powers
+#export polynomial
+#export polynom_derivative
+#export polynom_derivatives
+#export polynom_derivatives_all
+#export polynom_primitive
+#export polynom_product
+#export polynom_product_expansion
+#export polynom_power
+#export polynom_powers
 export permutations_unique_count
 export texp
 
@@ -246,8 +246,8 @@ include("plot_private_sector.jl")
 include("plot_public_sector.jl")
 include("Header-and-Data-Input.jl")
 include("FORTRAN.jl")
-include("polynom.jl")
-include("laguerre.jl")
+#include("polynom.jl")
+#include("laguerre.jl")
 include("mathematics.jl")
 
 end

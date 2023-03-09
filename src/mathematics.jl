@@ -900,21 +900,21 @@ function integer_partitions(n::Int, m=0; transpose=false, count=false)
 
 end
 
-# ===================================== log10_characteristic_power(x) ==============================================
+# ===================================== log10_characteristic(x) ==============================================
 """
-    log10_characteristic_power(x)
+    log10_characteristic(x)
 
 characteristic power-of-10 of the number x
 #### Examples:
 ```
-log10_characteristic_power.([3,30,300])
+log10_characteristic.([3,30,300])
 3-element Vector{Int64}:
  0
  1
  2
 ```
 """
-log10_characteristic_power(x) = Base.round(Int,Base.floor(log10(x)))
+log10_characteristic(x) = Base.round(Int,Base.floor(log10(x)))
 
 # ==================================== log10_mantissa(x) ============================================================
 """
