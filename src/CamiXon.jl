@@ -176,9 +176,6 @@ export FORTRAN_format
 export cast_FORTRAN_format
 export cast_FORTRAN_datatype
 
-#export threeJsymbol
-#export CGC
-
 include("singleton.jl")
 include("julia.jl")
 include("codata.jl")
@@ -190,7 +187,6 @@ include("finite_difference_adams.jl")
 include("element.jl")
 include("isotope.jl")
 include("atom.jl")
-#include("angular_momentum.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")
