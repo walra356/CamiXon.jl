@@ -924,6 +924,7 @@ strRational(n::T) where T<:Union{Rational{}, Int, BigInt}
 ## Dicts
 
 ```@docs
+dictAntoineCoefficients
 dictAtomicNumbers
 dictBigConversion
 dictElements

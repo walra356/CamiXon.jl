@@ -152,11 +152,5 @@ using Test
     @test stepedges([4, 2, 6]) == [0, 4, 6, 12]
     @test select125([1, 2, 4, 6, 8, 10, 13, 16, 18, 20, 40, 60, 80, 100]) == [2, 6, 10, 16, 20, 60, 100]
     @test step125.([5, 10, 21.3, 50, 100.1]) == [1, 2, 5, 10, 20]
-    @test fits_create()
-    @test fits_extend()
-    @test fits_read()
-    @test fits_add_key()
-    @test fits_edit_key()
-    @test fits_delete_key()
-    @test fits_rename_key()
+
 end

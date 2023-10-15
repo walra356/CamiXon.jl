@@ -1,28 +1,17 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 authors = ["= <walra356@planet.nl> and contributors"]
-version = "1.8.4" 
+version = "1.8.4"
 
 [deps]
-### Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
+CamiFITS = "e3d38e7e-66c0-4598-81c1-d1e9bcf43bf0"
 CamiMath = "d302b3f7-c8ae-418d-9fc2-2c0a42bddda0"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-#IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
-#LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-#RelocatableFolders = "05181044-ff0b-4ac5-8273-598c1e38db00"
-#FreeTypeAbstraction = "663a7486-cb36-511b-a19d-713bb74d65c9"
-#MathTeXEngine = "0a4f8689-d25c-4efe-a92b-7142dfc1aa53"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
-#IntervalSets = "0.6.0"
-#LaTeXStrings = "1.2.1"
-#LinearAlgebra = "1.8.0"
-#FreeTypeAbstraction = "0.9.9"
-#MathTeXEngine = "0.4.3"
-#RelocatableFolders = "0.3.0"
-julia = "1.8" 
+julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

@@ -1,6 +1,7 @@
 module CamiXon
 
 import CamiMath
+import CamiFITS
 
 using Printf
 using Dates           # used in fits_private_sector
@@ -42,8 +43,9 @@ export castCodata
 export listCodata
 export calibrationReport
 
-export dictBigConversion
+export dictAntoineCoefficients
 export dictAtomicNumbers
+export dictBigConversion
 export dictElements
 export dictIsotopes
 
@@ -71,14 +73,6 @@ export a_direct
 export b_exchange
 export UF
 export UG
-
-export FITS_HDU
-export FITS_header
-export FITS_data
-export FITS_table
-export parse_FITS_TABLE
-export FITS_name
-export cast_FITS_name
 
 export fdiff_weight
 export fdiff_expansion_weights
@@ -148,17 +142,6 @@ export Def
 export castDef
 export initE
 
-export fits_create
-export fits_read
-export fits_extend
-export fits_info
-export fits_copy
-export fits_combine
-export fits_add_key
-export fits_edit_key
-export fits_delete_key
-export fits_rename_key
-
 #export plot_matrices
 #export plot!
 export step125
@@ -187,6 +170,7 @@ include("finite_difference_adams.jl")
 include("element.jl")
 include("isotope.jl")
 include("atom.jl")
+include("thermal-properties.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")
@@ -196,15 +180,9 @@ include("adams.jl")
 include("insch.jl")
 include("Coulomb_Integrals.jl")
 include("adams-moulton.jl")
-include("fits_pointers.jl")
 include("read_io.jl")
 include("write_io.jl")
-include("fits_objects.jl")
-include("fits_private_sector.jl")
-include("fits_public_sector.jl")
 include("plot_private_sector.jl")
 include("plot_public_sector.jl")
-include("Header-and-Data-Input.jl")
-include("FORTRAN.jl")
 
 end
