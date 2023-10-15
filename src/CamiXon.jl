@@ -155,10 +155,6 @@ export stepedges
 #export centers
 #export edges
 
-export FORTRAN_format
-export cast_FORTRAN_format
-export cast_FORTRAN_datatype
-
 include("singleton.jl")
 include("julia.jl")
 include("codata.jl")
@@ -180,8 +176,6 @@ include("adams.jl")
 include("insch.jl")
 include("Coulomb_Integrals.jl")
 include("adams-moulton.jl")
-include("read_io.jl")
-include("write_io.jl")
 include("plot_private_sector.jl")
 include("plot_public_sector.jl")
 
