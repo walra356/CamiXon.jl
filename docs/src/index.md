@@ -534,7 +534,7 @@ interval ``-k ≤σ ≤0\ \ (n \le n-σ \le n+k)``,
 being the Pochhammer symbol `CamiMath.pochhammer`. For ``σ`` outside 
 the interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
-order ``k`` we obtain
+order ``k`` we obtain 
 
 ```math
 f[n-σ] =\sum_{p=0}^{k}α_p(σ)Δ^pf[n]
