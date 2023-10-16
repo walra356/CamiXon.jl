@@ -9,6 +9,8 @@ makedocs(;
     sitename="CamiXon.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
+        size_threshold_warn = 200000,
+        size_threshold = 300000,
         canonical="https://walra356.github.io/CamiXon.jl",
         assets=String[],
     ),
