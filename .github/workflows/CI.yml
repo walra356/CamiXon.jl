@@ -69,5 +69,6 @@ jobs:
       - name: Build the manual
         run: julia --color=yes --project=docs/ docs/make.jl
         env:
+          HTML_SIZE_LIMIT: 300000
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
