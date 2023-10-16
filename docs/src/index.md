@@ -531,7 +531,7 @@ interval ``-k ≤σ ≤0\ \ (n \le n-σ \le n+k)``,
 σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`CamiMath.pochhammer`](@ref)). For ``σ`` outside 
+being the Pochhammer symbol `CamiMath.pochhammer`. For ``σ`` outside 
 the interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
@@ -609,7 +609,7 @@ with
 σ(σ+1)(σ+2)\cdots(σ+p-1) & p>0
 \end{cases}
 ```
-being the Pochhammer symbol ([`CamiMath.pochhammer`](@ref)). For ``σ`` outside 
+being the Pochhammer symbol `CamiMath.pochhammer`. For ``σ`` outside 
 the interpolation interval the method corresponds to *extrapolation* along the
 Lagrange polynomial. Evaluating the finite-difference expansion up to
 order ``k`` we obtain
