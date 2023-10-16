@@ -43,7 +43,7 @@ function _strElement(Z::Int)
 
 end
 #...............................................................................
-function _infoElement(Z::Int)
+function _infoElement(Z::Int; msg=true)
 
     dict = dictElements
     element = (Z) ∈ keys(dict) ? castElement(; Z, msg=false) : return nothing
@@ -53,7 +53,7 @@ function _infoElement(Z::Int)
     str *= "\n  atomic number: Z = $Z"
     str *= "\n  atomic weight (relative atomic mass): " * repr(element.weight)
 
-    return println(str)
+    return msg ? println(str) : str
 
 end
 #...............................................................................
@@ -76,25 +76,26 @@ listElement(1; fmt=Info)
     atomic weight (relative atomic mass): 1.008
 ```
 """
-function listElement(Z::Int; fmt=Object)
+function listElement(Z::Int; fmt=Object, msg=true)
 
     strErr = "Error: invalid output type"
 
     return fmt === Object ? _stdElement(Z) : fmt === String ? _strElement(Z) :
-           fmt === Info ? _infoElement(Z) : error(strErr)
+           fmt === Info ? _infoElement(Z; msg) : error(strErr)
 
 end
-function listElement(elt::String; fmt=Object)
+function listElement(elt::String; fmt=Object, msg=true)
 
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
-    return listElement(Z; fmt)
+    return listElement(Z; fmt,msg)
 
 end
 #...............................................................................
 """
     listElements(Z1::Int, Z2::Int[; fmt=Object])
+    listElements(itrZ::UnitRange{Int}; fmt=Object)
 
 Properties of elements with atomic number in the range `Z1:Z2`.
 
