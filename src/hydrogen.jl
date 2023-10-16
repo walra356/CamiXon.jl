@@ -34,7 +34,7 @@ completes the definition of the problem.
     L_{n-l-1}^{2l+1}(2Z\rho/n)
 ```
 where ``L_{n-l-1}^{2l+1}(2Z\rho/n)`` is the generalized Laguerre polynomial
-[`CamiMath.generalized_laguerreL`](@ref) and
+`CamiMath.generalized_laguerreL` and
 ```math
     \mathcal{N}_{nl}
     = {\displaystyle \int\nolimits _{0}^{\infty}}x^{2l+2}e^{-x}
