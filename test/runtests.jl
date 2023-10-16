@@ -105,6 +105,7 @@ using Test
     @test find_last([:📑, :📌, :📢, :📌, :📞]) == find_last([1, 2, 3, 2, 5]) == find_last("aβcβd")
     @test [fdiff_weight(5, j) for j = 0:5] == [1, -5, 10, -10, 5, -1]
     @test isforward(fwd) == true
+    @test isregular(reg) == true
     @test a_direct(2, 1, 1, 2, 2) == 2 // 35
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
