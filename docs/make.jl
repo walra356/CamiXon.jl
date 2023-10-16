@@ -5,7 +5,7 @@ using Documenter
 makedocs(;
     modules=[CamiXon],
     authors="= <walra356@planet.nl> and contributors",
-    repo="https://github.com/walra356/CamiXon.jl/blob/{commit}{path}#L{line}",
+    #repo="https://github.com/walra356/CamiXon.jl/blob/{commit}{path}#L{line}",
     sitename="CamiXon.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
