@@ -29,8 +29,8 @@ struct Latex
 Boolean status of `val`, with options: `fwd` (forward) and `bwd` (backward).
 #### Example:
 ```
-isforward(fwd)
-  true
+julia? isforward(fwd)
+true
 ```
 """
 function isforward(val)
@@ -40,7 +40,6 @@ function isforward(val)
     return val === fwd ? true : val === bwd ? false : error(strErr)
 
 end
-# ============================= End ============================================
 
 # ============================= isregular(ordering) ============================
 """
