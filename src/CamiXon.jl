@@ -178,7 +178,6 @@ include("adams.jl")
 include("insch.jl")
 include("Coulomb_Integrals.jl")
 include("adams-moulton.jl")
-include("plot_private_sector.jl")
 include("plot_public_sector.jl")
 
 end

@@ -152,7 +152,9 @@ using Test
     @test stepedges([4, 2, 6]) == [0, 4, 6, 12]
     @test select125([1, 2, 4, 6, 8, 10, 13, 16, 18, 20, 40, 60, 80, 100]) == [2, 6, 10, 16, 20, 60, 100]
     @test step125.([5, 10, 21.3, 50, 100.1]) == [1, 2, 5, 10, 20]
-    @test latent_heat_vaporization("Li", 623.0) == -18473.64020109123
-    @test svp("Li", 623.0) == 0.0015230367024569058
+    @test latent_heat_vaporization("Li", 623) == -18473.64020109123
+    @test latent_heat_vaporization("Li", 400) == -19134.482122780522
+    @test svp("Li", 623) == 0.0015230367024569058
+    @test svp("Li", 400) == 7.901690229445235e-11
 
 end
