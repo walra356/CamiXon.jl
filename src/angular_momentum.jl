@@ -156,8 +156,9 @@ function CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false
         S = R * R
         A = Δ * T * S
         s = sign(R) < 0 ? "-" : ""
-        print(s * "√(" * strRational(A * (2J+1)) * ")")
     end
+
+    msg && print(s * "√(" * strRational(A * (2J + 1)) * ")")
 
     return sgn * sqrt(2J+1) * tJs
 
