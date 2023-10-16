@@ -122,6 +122,11 @@ svp(atomicnumber::Int, temp::Real)
 latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ```
 
+## Angular momentum
+```@docs
+CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
+```
+
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform

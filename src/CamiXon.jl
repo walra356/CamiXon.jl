@@ -76,6 +76,8 @@ export UG
 export svp
 export latent_heat_vaporization
 
+export CGC
+
 export fdiff_weight
 export fdiff_expansion_weights
 export fdiff_expansion
@@ -169,6 +171,7 @@ include("element.jl")
 include("isotope.jl")
 include("atom.jl")
 include("thermal-properties.jl")
+include("angular_momentum.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")

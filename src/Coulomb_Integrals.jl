@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------------------
 
 
-function _Racah_sqrt2(j1, m1, j2, m2, J, M)
+function _Racah_sqrt211111(j1, m1, j2, m2, J, M)
 
     a = Int(j1 + m1)
     b = Int(j1 - m1)
@@ -32,7 +32,7 @@ function _Racah_sqrt2(j1, m1, j2, m2, J, M)
 
 end
 # ........................................................
-function _Racah_denom(j1, m1, j2, m2, J, t::Int)
+function _Racah_denom11111(j1, m1, j2, m2, J, t::Int)
 
     a = Int(J - j2 + t + m1)
     b = Int(J - j1 + t - m2)
@@ -50,7 +50,7 @@ function _Racah_denom(j1, m1, j2, m2, J, t::Int)
 
 end
 # ........................................................
-function _Racah_sum(j1, m1, j2, m2, J)
+function _Racah_sum11111(j1, m1, j2, m2, J)
 
     o = big(0)
 

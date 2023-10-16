@@ -76,7 +76,8 @@ end
 Isotope table for all isotopes with atomic number from `Z1` to `Z2`.
 #### Example:
 ```
-latexIsotopeTable(1:3)
+o = latexIsotopeTable(1:3);
+println(o)
   \setlength{\tabcolsep}{3pt}
   \renewcommand{\arraystretch}{1.2}
   \begin{table}[H]
@@ -109,12 +110,12 @@ function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 
     o = continuation ? _continuation_table(Z1, Z2) : _init_table(Z1, Z2)
 
-    return println(o)
+    return o
 
 end
 function latexIsotopeTable(itrZ::UnitRange; continuation=false)
 
-    return latexIsotopeTable(itrZ.start, itrZ.stop; continuation=false)
+    return latexIsotopeTable(itrZ.start, itrZ.stop; continuation)
 
 end
 # ================================ End =========================================
