@@ -78,11 +78,10 @@ listElement(1; fmt=Info)
 """
 function listElement(Z::Int; fmt=Object)
 
-    fmt === Object && return _stdElement(Z)
-    fmt === String && return _strElement(Z)
-    fmt === Info && return _infoElement(Z)
+    strErr = "Error: invalid output type"
 
-    return error("Error: invalid output type")
+    return fmt === Object ? _stdElement(Z) : fmt === String ? _strElement(Z) :
+           fmt === Info ? _infoElement(Z) : error(strErr)
 
 end
 function listElement(elt::String; fmt=Object)
@@ -90,11 +89,7 @@ function listElement(elt::String; fmt=Object)
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
-    fmt === Object && return _stdElement(Z)
-    fmt === String && return _strElement(Z)
-    fmt === Info && return _infoElement(Z)
-
-    return error("Error: invalid output type")
+    return listElement(Z; fmt)
 
 end
 #...............................................................................

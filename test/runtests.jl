@@ -63,6 +63,7 @@ using Test
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
     @test listElement("H") == listElement(1)
     @test listElement(1; fmt=String) == "H, hydrogen, Z=1, weight=1.008"
+    @test isnothing(listElement(1; fmt=Info))
     @test listElements(1, 3) == listElements(1:3)
     @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026"]
     @test castIsotope(Z=1, A=1, msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
