@@ -125,6 +125,7 @@ latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ## Angular momentum
 ```@docs
 CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
+threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
 ```
 
 ## Grid

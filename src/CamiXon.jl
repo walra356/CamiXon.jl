@@ -77,6 +77,7 @@ export svp
 export latent_heat_vaporization
 
 export CGC
+export threeJsymbol
 
 export fdiff_weight
 export fdiff_expansion_weights
