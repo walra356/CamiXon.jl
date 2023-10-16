@@ -158,5 +158,6 @@ using Test
     @test svp("Yb", 763) == 2.2859295292626745
     @test svp("Li", 623) == 0.0015230367024569058
     @test svp("Li", 400) == 7.901690229445235e-11
-
+    @test latexIsotopeTable(1:3) == latexIsotopeTable(1,3)
+    
 end

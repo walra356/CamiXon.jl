@@ -71,6 +71,7 @@ end
 # ..............................................................................
 @doc raw"""
     latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
+    latexIsotopeTable(itrZ::UnitRange; continuation=false)
 
 Isotope table for all isotopes with atomic number from `Z1` to `Z2`.
 #### Example:
@@ -113,7 +114,7 @@ function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 end
 function latexIsotopeTable(itrZ::UnitRange; continuation=false)
 
-    return latexIsotopeTable(itrZ.start, irZ.stop; continuation=false)
+    return latexIsotopeTable(itrZ.start, itrZ.stop; continuation=false)
 
 end
 # ================================ End =========================================
