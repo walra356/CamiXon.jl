@@ -52,6 +52,7 @@ using Test
     @test grid_integration(real(ZH1s_generic) .^ 2, 1, grid.N, grid) ≈ 1.0
     @test sup(-5 // 2) == "⁻⁵ᐟ²"
     @test sub(-5 // 2) == "₋₅⸝₂"
+    @test sub("e") == "ₑ"
     @test frac(-5 // 2) == "-⁵/₂"
     @test strRational(-5) == "-5"
     @test strRational(-5 // 2) == "-5/2"
