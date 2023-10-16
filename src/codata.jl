@@ -364,7 +364,7 @@ end
 # ============ calibrationReport(E, Ecal; unitIn="Hartree") ====================
 
 @doc raw"""
-    calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
+    calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 
 Comparison of energy E with calibration value Ecal
 
@@ -380,7 +380,7 @@ calibrationReport(1.1, 1.0, codata; unitIn="Hartree")
   relative accuracy: ΔE/E = 0.0909091
 ```
 """
-function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
+function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 
     T = typeof(E)
 
@@ -397,14 +397,14 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree")
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
-    msg = "calibration report ($T):\n"
-    msg *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
-    msg *= @sprintf "E = %.17g %s \n" E unitIn
-    msg *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
+    str = "calibration report ($T):\n"
+    str *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
+    str *= @sprintf "E = %.17g %s \n" E unitIn
+    str *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute accuracy: ΔE = 0 (exact under $T precision)\n"
-    msg *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
+    str *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
                     "relative accuracy: ΔE/E = 0 (exact under $T precision)\n"
 
-    return println(msg)
+    return msg ? println(str) : str
 
 end

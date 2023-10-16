@@ -40,6 +40,7 @@ using Test
     #P = real(Z)
     #val = UF(0, P, grid)[1];
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
+    @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "calibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9
     @test def.atom.element.name == "hydrogen"
