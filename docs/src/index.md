@@ -116,6 +116,12 @@ RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 ```
 
+## Thermodynamic properties
+```@docs
+svp(atomicnumber::Int, temp::Real)
+latent_heat_vaporization(atomicnumber::Int, temp::Real)
+```
+
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform

@@ -704,13 +704,14 @@ dictIsotopes = Dict(
     102 => 1100
 
     )
+
 @doc raw"""
     dictAntoineCoefficients
 
 Antoine coefficients [A,B,C,D] for temperature ranges below and above the
 melting point. These coefficients are used in the Antoine equation to calculate
-the saturated vapor pressure ``p`` (in Pa) for metalic elements at temperature
-``T`` (in K),
+the saturated vapor pressure *p* (in Pa) for metalic elements at temperature
+`*T* (in K),
 
 ```math
 \mathrm{ln}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000
@@ -720,7 +721,7 @@ The quantity
 ```math
 L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000
 ```
-is the latent heat of vaporization (in Joule/K) at temperature ``T``.
+is the latent heat of vaporization (in Joule/K) at temperature *T*.
 
 Currently, only the coefficients for the metalic elements are implemented -
 see C. B. Alcock, V. P. Itkin and M. K. Horrigan, Canadian Metallurgical
@@ -739,7 +740,7 @@ Dict{Int64, Tuple{Any, Any, Tuple{Any, Any, Any}}} with 102 entries:
   32 => (nothing, nothing, (empty, 1211.4, empty))
   ⋮  => ⋮
 ```
-To calculate the saturated vapor pressure of Li at T=623 K we use
+To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use
 ```
 julia> svp("Li", 623.0, dictAntoineCoefficients)
 0.0015230367024569058

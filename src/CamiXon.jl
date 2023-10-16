@@ -73,6 +73,9 @@ export b_exchange
 export UF
 export UG
 
+export svp
+export latent_heat_vaporization
+
 export fdiff_weight
 export fdiff_expansion_weights
 export fdiff_expansion
