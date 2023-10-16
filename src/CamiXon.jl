@@ -1,7 +1,6 @@
 module CamiXon
 
 import CamiMath
-import CamiFITS
 
 using Printf
 using Dates           # used in fits_private_sector
