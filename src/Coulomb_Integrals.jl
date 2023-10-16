@@ -11,60 +11,6 @@
 #           a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 # ------------------------------------------------------------------------------
 
-
-function _Racah_sqrt211111(j1, m1, j2, m2, J, M)
-
-    a = Int(j1 + m1)
-    b = Int(j1 - m1)
-    c = Int(j2 + m2)
-    d = Int(j2 - m2)
-    e = Int(J + M)
-    f = Int(J - M)
-
-    a = a ≥ 0 ? factorial(big(a)) : return 0
-    b = b ≥ 0 ? factorial(big(b)) : return 0
-    c = c ≥ 0 ? factorial(big(c)) : return 0
-    d = d ≥ 0 ? factorial(big(d)) : return 0
-    e = e ≥ 0 ? factorial(big(e)) : return 0
-    f = f ≥ 0 ? factorial(big(f)) : return 0
-
-    return a * b * c * d * e * f
-
-end
-# ........................................................
-function _Racah_denom11111(j1, m1, j2, m2, J, t::Int)
-
-    a = Int(J - j2 + t + m1)
-    b = Int(J - j1 + t - m2)
-    c = Int(j1 + j2 - J - t)
-    d = Int(j1 - t - m1)
-    e = Int(j2 - t + m2)
-
-    a = a ≥ 0 ? factorial(big(a)) : return 0
-    b = b ≥ 0 ? factorial(big(b)) : return 0
-    c = c ≥ 0 ? factorial(big(c)) : return 0
-    d = d ≥ 0 ? factorial(big(d)) : return 0
-    e = e ≥ 0 ? factorial(big(e)) : return 0
-
-    return a * b * c * d * e * factorial(big(t))
-
-end
-# ........................................................
-function _Racah_sum11111(j1, m1, j2, m2, J)
-
-    o = big(0)
-
-    for t = 0:(j1+j2-J)
-        sign = iseven(t) ? 1 : -1
-        d = _Racah_denom(j1, m1, j2, m2, J, t)
-        o += d > 0 ? sign // d : 0
-    end
-
-    return o
-
-end
-# ........................................................
-
 @doc raw"""
     a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
