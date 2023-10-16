@@ -90,7 +90,7 @@ julia> latent_heat_vaporization("Li", 623.0)
 -18473.64020109123
 ```
 """
-function latent_heat_vaporization(atomicnumber::Int, temp::Float64)
+function latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
     T = float(temp)
     i = atomicnumber
@@ -117,7 +117,7 @@ function latent_heat_vaporization(atomicnumber::Int, temp::Float64)
     return L
 
 end
-function latent_heat_vaporization(element::String, temp::Float64)
+function latent_heat_vaporization(element::String, temp::Real)
 
     atomicnumber = dictAtomicNumbers[element]
 
