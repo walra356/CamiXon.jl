@@ -47,6 +47,7 @@ export dictAtomicNumbers
 export dictBigConversion
 export dictElements
 export dictIsotopes
+export dictMeltingPoints
 
 export bohrformula
 export Element
@@ -75,6 +76,7 @@ export UG
 
 export svp
 export latent_heat_vaporization
+export melting_point
 
 export CGC
 export threeJsymbol

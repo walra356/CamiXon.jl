@@ -598,7 +598,28 @@ dictIsotopes = Dict(
 
     )
 
-    dictMeltingPoints = Dict(
+@doc raw"""
+    dictMeltingPoints
+
+Melting points of the elements at standard pressure (1atm) - see Wikipedia
+
+#### Examples:
+```
+julia> dictMeltingPoints
+Dict{Int64, Union{Nothing, Real}} with 102 entries:
+  5  => 2349   
+  56 => 1000   
+  35 => 265.8  
+  55 => 301.7  
+  60 => 1297   
+  30 => 692.68 
+  32 => 1211.4 
+  6  => nothing
+  67 => 1734   
+  ⋮  => ⋮
+```
+"""
+dictMeltingPoints = Dict(
 
     1 => 13.99,
     2 => 0.95,
@@ -709,23 +730,19 @@ dictIsotopes = Dict(
     dictAntoineCoefficients
 
 Antoine coefficients [A,B,C,D] for temperature ranges below and above the
-melting point. These coefficients are used in the Antoine equation to calculate
-the saturated vapor pressure *p* (in Pa) for metalic elements at temperature
-`*T* (in K),
+melting points from [`dictMeltingPoints`](@ref). These coefficients are used 
+in the Antoine equation to calculate the saturated vapor pressure *p* (in Pa) 
+at temperature `*T* (in K),
 
 ```math
-\mathrm{ln}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000
+\mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000.
 ```
-
-The quantity
-```math
-L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000
-```
-is the latent heat of vaporization (in Joule/K) at temperature *T*.
 
 Currently, only the coefficients for the metalic elements are implemented -
 see C. B. Alcock, V. P. Itkin and M. K. Horrigan, Canadian Metallurgical
 Quarterly, 23, 309 (1984).
+
+Note that the melting point is taken to be pressure independent.
 
 #### Examples:
 ```

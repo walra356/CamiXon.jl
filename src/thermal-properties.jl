@@ -1,4 +1,34 @@
-    
+@doc raw"""
+    melting_point(atomicnumber::Int)
+    melting_point(element::String)
+
+Melting points of the elements at standard pressure (1atm).
+
+```math
+\mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000,
+```
+where A,B,C,D, are Antoine coefficients as collected in 
+[`CamiXon.dictAntoineCoefficients`](@ref).
+
+#### Example:
+```
+julia> melting_point("Li")
+453.65
+```
+"""
+function melting_point(atomicnumber::Int)
+
+    return dictMeltingPoints[atomicnumber]
+
+end
+function melting_point(element::String)
+
+    A = dictAtomicNumbers[element]
+
+    return melting_point(A)
+
+end
+
 @doc raw"""
     svp(atomicnumber::Int, temp::Real)
     svp(element::String, temp::Real)
@@ -10,19 +40,11 @@ Saturated vapor pressure of the elements  *p* (in Pa), by `atomicnumber` or
 \mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000,
 ```
 where A,B,C,D, are Antoine coefficients as collected in 
-[`CamiXon.dictAntoineCoefficients`](@ref)
-The quantity
-```math
-L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000
-```
-is the latent heat of vaporization (in Joule/K) at temperature ``T``.
-
-Currently, only the Antoine coefficients for the metalic elements are 
-implemented - see C. B. Alcock, V. P. Itkin and M. K. Horrigan, 
-Canadian Metallurgical Quarterly, 23, 309 (1984).
+[`CamiXon.dictAntoineCoefficients`](@ref).
 
 #### Examples:
-To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use
+To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use the
+function [`svp`](@ref),
 ```
 julia> svp("Li", 623.0)
 0.0015230367024569058
@@ -77,12 +99,8 @@ Latent heat of vaporization (in Joule/K) at temperature of the elements  *L(T)*
 L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000
 ```
 
-where A,B,C,D, are Antoine coefficients as collected in 
-[`CamiXon.dictAntoineCoefficients`](@ref)
-
-Currently, only the Antoine coefficients for the metalic elements are 
-implemented - see C. B. Alcock, V. P. Itkin and M. K. Horrigan, 
-Canadian Metallurgical Quarterly, 23, 309 (1984).
+where A,B,C,D, are thw Antoine coefficients collected in 
+[`CamiXon.dictAntoineCoefficients`](@ref).
 
 #### Example:
 ```

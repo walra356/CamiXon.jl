@@ -118,6 +118,7 @@ RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
 ## Thermodynamic properties
 ```@docs
+melting_point(atomicnumber::Int)
 svp(atomicnumber::Int, temp::Real)
 latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ```
@@ -886,6 +887,7 @@ dictAtomicNumbers
 dictBigConversion
 dictElements
 dictIsotopes
+dictMeltingPoints
 ```
 
 ## Index
