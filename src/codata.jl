@@ -266,7 +266,7 @@ listCodata(codata::Codata)
   R = 8.31446 J mol⁻¹K⁻¹
 ```
 """
-function listCodata(codata::Codata)
+function listCodata(codata::Codata; msg=true)
 
     ∆νCs = NamedValue(codata.∆νCs, "∆νCs",
                        sup(133)*"Cs hyperfine transition frequency")
@@ -290,11 +290,12 @@ function listCodata(codata::Codata)
 
     U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R]
 
+    str = ""
     for i ∈ eachindex(U)
-        println(U[i].name * " = " * strValue(U[i].val))
+        str *= U[i].name * " = " * strValue(U[i].val) * "\n"
     end
 
-    return
+    return msg ? println(str) : str
 
 end
 

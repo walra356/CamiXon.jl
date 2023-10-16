@@ -41,6 +41,7 @@ using Test
     #val = UF(0, P, grid)[1];
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
     @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "calibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
+    @test listCodata(codata; msg=false) == "∆νCs = 9192631770 Hz\nc = 299792458 m s⁻¹\nh = 6.62607e-34 J Hz⁻¹\nħ = 1.05457e-34 J s\ne = 1.60218e-19 C\nkB = 1.38065e-23 J K⁻¹\nNA = 6.02214e23 mol⁻¹\nKcd = 683 lm W⁻¹\nmₑ = 9.10938e-31 Kg\nR∞ = 1.09737e7 m⁻¹\nRy = 3.28984e15 Hz\nEₕ = 4.35974e-18 Hartree a.u.\nα = 0.00729735 \nμ₀ = 1.25664e-6 N A⁻²\nε₀ = 8.85419e-12 F m⁻¹\nKJ = 4.83598e14 Hz V⁻¹\nRK = 25812.8 Ω\nR = 8.31446 J mol⁻¹K⁻¹\n"
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9
     @test def.atom.element.name == "hydrogen"
