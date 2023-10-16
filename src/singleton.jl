@@ -35,11 +35,9 @@ isforward(fwd)
 """
 function isforward(val)
 
-    val === fwd && return true
+    strErr = "Error: invalid value of val (options: fwd, bwd)"
 
-    val === bwd && return false
-
-    error("Error: invalid value of val (options: fwd, bwd)")
+    return val === fwd ? true : val === bwd ? false : error(strErr)
 
 end
 # ============================= End ============================================
