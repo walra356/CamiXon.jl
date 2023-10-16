@@ -55,7 +55,7 @@ isregular(reg)
 """
 function isregular(val)
 
-    strErr = "Error: invalid value of val (options: reg, rev)"
+    strErr = "Error: invalid value of val (options: reg, rev)" 
 
     return val === reg ? true : val === rev ? false : error(strErr)
 
