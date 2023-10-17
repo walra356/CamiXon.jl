@@ -11,7 +11,9 @@ Dict{String, Int64} with 102 entries:
   "P"  => 15
   "Nb" => 41
     ⋮  =>  ⋮
-
+```
+#### Examples:
+```
 julia> Z = get(dictAtomicNumbers, "Rb", nothing)
 37
 
@@ -104,8 +106,7 @@ dictBigConversion = Dict(
 @doc raw"""
     dictElements
 
-Source:  Standard atomic weights of the elements 2021 (IUPAC Technical Report)
-#### Example:
+Standard atomic weights of the elements 2021 - see IUPAC Technical Report
 ```
 julia> dictElements
 Dict{Int64, Tuple{String, String, Any}} with 102 entries:
@@ -115,10 +116,18 @@ Dict{Int64, Tuple{String, String, Any}} with 102 entries:
   55 => ("caesium", "Cs", 132.91)
   60 => ("neodymium", "Nd", 144.24)
   30 => ("zinc", "Zn", 65.38)
-   ⋮ =>            ⋮
-
+   ⋮ =>  ⋮
+```
+#### Examples:
+```
 julia> get(dictElements, 37, nothing)
 ("rubidium", "Rb", 85.468)
+
+julia> listElement("Rb", fmt=Info)
+Element: rubidium
+  symbol: Rb
+  atomic number: Z = 37
+  atomic weight (relative atomic mass): 85.468
 ```
 """
 dictElements = Dict(
@@ -235,7 +244,6 @@ dictElements = Dict(
     dictIsotopes
 
 Sources: AME2020, LINDC(NDS)-0794 and INDC(NDS)-0833
-#### Example:
 ```
 julia> dictIsotopes
 Dict{Tuple{Int64, Int64}, Tuple{String, String, Int64, Int64, Int64, Float64, Float64, Real, Int64, Float64, Float64, Any, Any}} with 341 entries:
@@ -247,9 +255,27 @@ Dict{Tuple{Int64, Int64}, Tuple{String, String, Int64, Int64, Int64, Float64, Fl
   (76, 184) => ("¹⁸⁴Os", "osmium", 76, 184, 108, 5.3823, 183.952, 0, 1, 5.6e13,…
   (54, 129) => ("¹²⁹Xe", "xenon", 54, 129, 75, 4.7775, 128.905, 1//2, 1, 1.0e10…
       ⋮     =>                                ⋮
-
+```
+#### Example:
+```
 julia> get(dictIsotopes, (37,87), nothing)
 ("⁸⁷Rb", "rubidium", 37, 87, 50, 4.1989, 86.90918053, 3//2, -1, 4.97e10, 2.75129, 0.1335, 27.83)
+
+julia> listIsotope(37, 87, fmt=Info)
+Isotope: rubidium-87
+  symbol: ⁸⁷Rb
+  element: rubidium
+  atomic number: Z = 37
+  atomic mass number: A = 87
+  neutron number: N = 50
+  rms nuclear charge radius: R = 4.1989 fm
+  atomic mass: M = 86.90918053 amu
+  nuclear spin: I = 3/2 ħ
+  parity of nuclear state: π = odd
+  nuclear magnetic dipole moment: μI = 2.75129 μN
+  nuclear electric quadrupole moment: Q = 0.1335 barn
+  relative abundance: RA = 27.83%
+  lifetime: 4.97e10 years
 ```
 """
 dictIsotopes = Dict(
@@ -603,7 +629,6 @@ dictIsotopes = Dict(
 
 Melting points of the elements at standard pressure (1atm) - see Wikipedia
 
-#### Examples:
 ```
 julia> dictMeltingPoints
 Dict{Int64, Union{Nothing, Real}} with 102 entries:
@@ -617,6 +642,14 @@ Dict{Int64, Union{Nothing, Real}} with 102 entries:
   6  => nothing
   67 => 1734   
   ⋮  => ⋮
+```
+#### Examples:
+```
+julia> get(dictMeltingPoints, 3, nothing)
+453.65
+
+julia> melting_point("Li")
+453.65
 ```
 """
 dictMeltingPoints = Dict(
@@ -744,7 +777,6 @@ Quarterly, 23, 309 (1984).
 
 Note that the melting point is taken to be pressure independent.
 
-#### Examples:
 ```
 julia> dictAntoineCoefficients
 Dict{Int64, Tuple{Any, Any, Tuple{Any, Any, Any}}} with 102 entries:
@@ -757,10 +789,15 @@ Dict{Int64, Tuple{Any, Any, Tuple{Any, Any, Any}}} with 102 entries:
   32 => (nothing, nothing, (empty, 1211.4, empty))
   ⋮  => ⋮
 ```
-To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use
+#### Examples:
+To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use the
+Antoine equation implemented in thefunction [`svp`](@ref).
 ```
-julia> svp("Li", 623.0, dictAntoineCoefficients)
-0.0015230367024569058
+julia> svp(55, 400)
+0.39420306801845933
+
+julia> svp("Cs", 400)
+0.39420306801845933
 ```
 """
 dictAntoineCoefficients = Dict(

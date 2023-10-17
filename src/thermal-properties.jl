@@ -2,13 +2,7 @@
     melting_point(atomicnumber::Int)
     melting_point(element::String)
 
-Melting points of the elements at standard pressure (1atm).
-
-```math
-\mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000,
-```
-where A,B,C,D, are Antoine coefficients as collected in 
-[`CamiXon.dictAntoineCoefficients`](@ref).
+Melting point of a given `element` at standard pressure (1 atm).
 
 #### Example:
 ```
@@ -33,18 +27,16 @@ end
     svp(atomicnumber::Int, temp::Real)
     svp(element::String, temp::Real)
 
-Saturated vapor pressure of the elements  *p* (in Pa), by `atomicnumber` or 
-`element` for a given temperature *T* (in K).
+Saturated vapor pressure, *p* (in Pa), of a given `element` for a given 
+temperature *T* (in K),
 
 ```math
 \mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000,
 ```
-where A,B,C,D, are Antoine coefficients as collected in 
+where A,B,C,D, are the Antoine coefficients collected in 
 [`CamiXon.dictAntoineCoefficients`](@ref).
 
 #### Examples:
-To calculate the saturated vapor pressure of Li (in Pa) at T=623 K we use the
-function [`svp`](@ref),
 ```
 julia> svp("Li", 623.0)
 0.0015230367024569058
@@ -92,14 +84,14 @@ end
     latent_heat_vaporization(atomicnumber::Int, temp::Real)
     latent_heat_vaporization(element::String, temp:Real)
 
-Latent heat of vaporization (in Joule/K) at temperature of the elements  *L(T)* 
-(in J/K), by `atomicnumber` or `element` for a given temperature *T* (in K),
+Latent heat of vaporization, *L*(*T*) (in Joule/K), of a given `element` 
+for temperature *T* (in K), 
 
 ```math
-L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000
+L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000,
 ```
 
-where A,B,C,D, are thw Antoine coefficients collected in 
+where A,B,C,D, are the Antoine coefficients collected in 
 [`CamiXon.dictAntoineCoefficients`](@ref).
 
 #### Example:
