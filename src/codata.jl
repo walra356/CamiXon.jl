@@ -129,6 +129,7 @@ The fields are:
 * `  .KJ`: Josephson constant (`::Value`)
 * `  .RK`: Von Klitzing constant (`::Value`)
 * `   .R`: Molar gas constant (`::Value`)
+* `   .u`: unified atomic mass unit (`::Value`)
 * `.matE`: unit conversion matrix (Matrix{Float64})
 
 #### Example:
@@ -161,6 +162,7 @@ struct Codata
       KJ::Value
       RK::Value
        R::Value
+       u::Value
     matE::Matrix{Float64}
 
 end
@@ -203,6 +205,7 @@ function castCodata(year::Int)
       KJ = Value(2e.val/h.val, "Hz V"*sup(-1))
       RK = Value(h.val/e.val/e.val, "Ω")
        R = Value(NA.val*kB.val, "J mol"*sup(-1)*"K"*sup(-1))
+       u = Value(1.66053906660e-27, "kg")
 
     H = 2e-15 * c.val * R∞.val
     J = 1e+15 * h.val
@@ -230,7 +233,7 @@ function castCodata(year::Int)
         end
     end
 
-    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,M)
+    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,u,M)
 
     return o
 
@@ -244,26 +247,31 @@ end
 Method to list the fields of [`Codata`](@ref) by their symbolic name
 #### Example:
 ```
-codata = castCodata(2018)
-listCodata(codata::Codata)
-  ∆νCs = 9192631770 Hz
-  c = 299792458 m s⁻¹
-  h = 6.62607e-34 J Hz⁻¹
-  ħ = 1.05457e-34 J s
-  e = 1.60218e-19 C
-  kB = 1.38065e-23 J K⁻¹
-  NA = 6.02214e23 mol⁻¹
-  Kcd = 683 lm W⁻¹
-  mₑ = 9.10938e-31 Kg
-  R∞ = 1.09737e7 m⁻¹
-  Ry = 3.28984e15 Hz
-  Eₕ = 4.35974e-18 Hartree a.u.
-  α = 0.00729735
-  μ₀ = 1.25664e-6 N A⁻²
-  ε₀ = 8.85419e-12 F m⁻¹
-  KJ = 4.83598e14 Hz V⁻¹
-  RK = 25812.8 Ω
-  R = 8.31446 J mol⁻¹K⁻¹
+julia> codata = castCodata(2018);
+
+julia> listCodata(codata)
+∆νCs = 9192631770 Hz      - ¹³³Cs hyperfine transition frequency
+   c = 299792458 m s⁻¹    - speed of light in vacuum
+   h = 6.62607e-34 J Hz⁻¹ - Planck constant
+   ħ = 1.05457e-34 J s    - Planck constant (reduced)
+   e = 1.60218e-19 C      - elementary charge
+  kB = 1.38065e-23 J K⁻¹  - Boltzmann constant
+  NA = 6.02214e23 mol⁻¹   - Avogadro constant
+ Kcd = 683 lm W⁻¹         - Luminous efficacy
+  mₑ = 9.10938e-31 Kg     - electron rest mass
+  R∞ = 1.09737e7 m⁻¹      - Rydberg constant
+  Ry = 3.28984e15 Hz      - Rydberg frequency
+  Eₕ = 4.35974e-18 Hartree a.u. - Hartree atomic unit
+   α = 0.00729735         - fine-structure constant
+  μ₀ = 1.25664e-6 N A⁻²   - magnetic permitivity of vacuum
+  ε₀ = 8.85419e-12 F m⁻¹  - electric permitivity of vacuum
+  KJ = 4.83598e14 Hz V⁻¹  - Josephson constant
+  RK = 25812.8 Ω          - Von Klitzing constant
+   R = 8.31446 J mol⁻¹K⁻¹ - Molar gas constant
+   u = 1.66054e-27 kg     - unified atomic mass unit
+
+julia> codata.u.val
+1.6605390666e-27  
 ```
 """
 function listCodata(codata::Codata; msg=true)
@@ -287,12 +295,13 @@ function listCodata(codata::Codata; msg=true)
       KJ = NamedValue(codata.KJ, "KJ", "Josephson constant")
       RK = NamedValue(codata.RK, "RK", "Von Klitzing constant")
        R = NamedValue(codata.R, "R", "Molar gas constant")
+       u = NamedValue(codata.u, "u", "unified atomic mass unit")
 
-    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R]
+    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, u]
 
     str = ""
     for i ∈ eachindex(U)
-        str *= U[i].name * " = " * strValue(U[i].val) * "\n"
+        str *= lpad(U[i].name, 4) * " = " * rpad(strValue(U[i].val), 18) * " - " * U[i].comment * "\n"
     end
 
     return msg ? println(str) : str

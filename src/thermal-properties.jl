@@ -88,7 +88,7 @@ Latent heat of vaporization, *L*(*T*) (in Joule/K), of a given `element`
 for temperature *T* (in K), 
 
 ```math
-L(T) = B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000,
+L(T) = -(B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000),
 ```
 
 where A,B,C,D, are the Antoine coefficients collected in 
@@ -124,7 +124,7 @@ function latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
     L = B + C * T * log10(T) + D * T * T / 1000.0 # latent heat 0f vaporization
 
-    return L
+    return -L
 
 end
 function latent_heat_vaporization(element::String, temp::Real)

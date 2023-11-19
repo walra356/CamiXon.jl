@@ -41,7 +41,7 @@ using Test
     #val = UF(0, P, grid)[1];
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
     @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "calibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
-    @test listCodata(codata; msg=false) == "∆νCs = 9192631770 Hz\nc = 299792458 m s⁻¹\nh = 6.62607e-34 J Hz⁻¹\nħ = 1.05457e-34 J s\ne = 1.60218e-19 C\nkB = 1.38065e-23 J K⁻¹\nNA = 6.02214e23 mol⁻¹\nKcd = 683 lm W⁻¹\nmₑ = 9.10938e-31 Kg\nR∞ = 1.09737e7 m⁻¹\nRy = 3.28984e15 Hz\nEₕ = 4.35974e-18 Hartree a.u.\nα = 0.00729735 \nμ₀ = 1.25664e-6 N A⁻²\nε₀ = 8.85419e-12 F m⁻¹\nKJ = 4.83598e14 Hz V⁻¹\nRK = 25812.8 Ω\nR = 8.31446 J mol⁻¹K⁻¹\n"
+    @test listCodata(codata; msg=false) == "∆νCs = 9192631770 Hz      - ¹³³Cs hyperfine transition frequency\n   c = 299792458 m s⁻¹    - speed of light in vacuum\n   h = 6.62607e-34 J Hz⁻¹ - Planck constant\n   ħ = 1.05457e-34 J s    - Planck constant (reduced)\n   e = 1.60218e-19 C      - elementary charge\n  kB = 1.38065e-23 J K⁻¹  - Boltzmann constant\n  NA = 6.02214e23 mol⁻¹   - Avogadro constant\n Kcd = 683 lm W⁻¹         - Luminous efficacy\n  mₑ = 9.10938e-31 Kg     - electron rest mass\n  R∞ = 1.09737e7 m⁻¹      - Rydberg constant\n  Ry = 3.28984e15 Hz      - Rydberg frequency\n  Eₕ = 4.35974e-18 Hartree a.u. - Hartree atomic unit\n   α = 0.00729735         - fine-structure constant\n  μ₀ = 1.25664e-6 N A⁻²   - magnetic permitivity of vacuum\n  ε₀ = 8.85419e-12 F m⁻¹  - electric permitivity of vacuum\n  KJ = 4.83598e14 Hz V⁻¹  - Josephson constant\n  RK = 25812.8 Ω          - Von Klitzing constant\n   R = 8.31446 J mol⁻¹K⁻¹ - Molar gas constant\n   u = 1.66054e-27 kg     - unified atomic mass unit\n" 
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 9
     @test def.atom.element.name == "hydrogen"
@@ -157,9 +157,9 @@ using Test
     @test stepedges([4, 2, 6]) == [0, 4, 6, 12]
     @test select125([1, 2, 4, 6, 8, 10, 13, 16, 18, 20, 40, 60, 80, 100]) == [2, 6, 10, 16, 20, 60, 100]
     @test step125.([5, 10, 21.3, 50, 100.1]) == [1, 2, 5, 10, 20]
-    @test latent_heat_vaporization("Yb", 763) == -24170.448513975916
-    @test latent_heat_vaporization("Li", 623) == -18473.64020109123
-    @test latent_heat_vaporization("Li", 400) == -19134.482122780522
+    @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
+    @test latent_heat_vaporization("Li", 623) == 18473.64020109123
+    @test latent_heat_vaporization("Li", 400) == 19134.482122780522
     @test svp("Yb", 763) == 2.2859295292626745
     @test svp("Li", 623) == 0.0015230367024569058
     @test svp("Li", 400) == 7.901690229445235e-11
