@@ -1,17 +1,16 @@
-using CamiXon
-
 using Documenter
+using CamiXon
 
 makedocs(;
     modules=[CamiXon],
     authors="= <walra356@planet.nl> and contributors",
-    #repo="https://github.com/walra356/CamiXon.jl/blob/{commit}{path}#L{line}",
+    repo="github.com/walra356/CamiXon.jl.git",
     sitename="CamiXon.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         size_threshold_warn = 250000,
         size_threshold = 300000,
-        canonical="https://walra356.github.io/CamiXon.jl",
+        repolink="https://walra356.github.io/CamiXon.jl",
         assets=String[],
     ),
     pages=[
@@ -21,6 +20,6 @@ makedocs(;
 
 
 deploydocs(;
-    repo="github.com/walra356/CamiXon.jl",
+    repo="github.com/walra356/CamiXon.jl.git",
     devbranch = "main"
 )
