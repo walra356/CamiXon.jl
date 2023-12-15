@@ -1,3 +1,28 @@
 {
-    "julia.NumThreads": 0
+    "workbench.colorTheme": "Visual Studio Dark",
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ],
+    "julia.symbolCacheDownload": true,
+    "atomKeymap.promptV3Features": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.formatOnPaste": true,
+    "julia.enableTelemetry": true,
+    "julia.NumThreads": 0,
+    "git.confirmSync": false,
+    "git.suggestSmartCommit": false,
+    "git.autofetch": true,
+    "explorer.confirmDelete": false,
+    "editor.rulers": [
+        80
+    ],
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.fontSize": 12,
+    "editor.renderWhitespace": "none",
+    "editor.detectIndentation": false,
+    "settingsSync.ignoredSettings": [
+        "-julia.executablePath"
+    ],
+    "julia.environmentPath": "c:\\Users\\jwalrav1\\.julia\\dev\\CamiXon.jl",
+    "julia.executablePath": "\"C:\\Julia\\julia-1.9.4\\bin\\julia.exe\""
 }
