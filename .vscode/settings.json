@@ -17,7 +17,7 @@
         80
     ],
     "diffEditor.ignoreTrimWhitespace": false,
-    "editor.fontSize": 12,
+    "editor.fontSize": 14,
     "editor.renderWhitespace": "none",
     "editor.detectIndentation": false,
     "settingsSync.ignoredSettings": [
