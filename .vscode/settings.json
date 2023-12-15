@@ -23,6 +23,5 @@
     "settingsSync.ignoredSettings": [
         "-julia.executablePath"
     ],
-    "julia.environmentPath": "c:\\Users\\jwalrav1\\.julia\\dev\\CamiXon.jl",
     "julia.executablePath": "\"C:\\Julia\\julia-1.9.4\\bin\\julia.exe\""
 }
