@@ -435,7 +435,7 @@ function fwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 #   analytic function f(x) tabulated under the convention f[n,n+k] and
 #   evaluated at the interpolation position n+ξ.
 # ==============================================================================
-    Float = (Float64,Float32,Float16)
+    Float = (Float64, Float32, Float16, BigFloat) #######################################################################################
 
     a = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
@@ -461,7 +461,7 @@ function bwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 #   analytic function f(x) tabulated under the convention f[n-k,n] and
 #   evaluated at the interpolation position n+ξ.
 # ==============================================================================
-    Float = (Float64,Float32,Float16)
+    Float = (Float64, Float32, Float16, BigFloat) #######################################################################################
 
     b = T ∈ Float ? Base.ones(T,k+1) :
                     T <: Rational{}  ? Base.ones(T,k+1) :
