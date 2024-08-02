@@ -4,7 +4,7 @@
     dictAtomicNumbers
 ```
 julia> dictAtomicNumbers
-Dict{String, Int64} with 102 entries:
+Dict{String, Int64} with 102 entries: 
   "Pd" => 46
   "Si" => 14
   "C"  => 6
