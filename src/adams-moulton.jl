@@ -343,21 +343,35 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
 
     (Emin, E, Emax, ΔE) = init
 
+    d = round(Int, abs(log10(abs(ΔE))))
     Nuctp = def.pos.Nuctp
     Ntot = def.pos.N
-    cnts = "iterations"
     f = convertUnit(abs(ΔE), codata) # default input (Hartree) and output (xHz)
     strHz = strValue(f)
-    imax = modus == "prepare" ? "" : i > imax-1 ? "(maximum value)" : ""
-    strΔE = @sprintf "ΔE = %.17g %s" abs(ΔE) " Hartree (" * strHz *") - absolute convergence\n"
-    strΔErel = @sprintf "ΔE/E = %.17g %s" abs(ΔE/E) " - relative convergence\n"
+    strΔE = @sprintf "ΔE = %.3g %s" abs(ΔE) " Hartree (" * strHz *") - absolute convergence\n"
+    strΔErel = @sprintf "ΔE/E = %.3g %s" abs(ΔE/E) " - relative convergence\n"
+    strE = (@sprintf "E = %.*g" d E) * " Hartree\n"
 
-    msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "): \nnode condition satified after "
-    msg *= "$i " * cnts * imax
-    msg *= ": nodes = $(nodes), "
+    msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "):"
+    msg *= if modus == "prepare"  
+                if i<imax 
+                    "\nnode condition satified after $i iterations\n"
+                else
+                    "\nnode condition not satisfied after the maximum of $imax iterations\n"
+                end
+           elseif modus == "iterate" 
+                if i<imax 
+                    "\nconvergence to " * strHz * " reached after $i iterations\n"
+                else
+                    "\nconvergence not reached after the maximum of $imax iterations (try to boost the grid size a bit by increasing Nboost) \n"
+                end
+            else
+                error("iteration modus unknown")    
+            end
+    msg *= "nodes = $(nodes), "
     msg *= "Nuctp = $(Nuctp), "
     msg *= "Ntot = $(Ntot) \n"
-    msg *= @sprintf "E = %.17g %s\n" E "Hartree"
+    msg *= strE
     msg *= strΔE
     msg *= strΔErel
 
@@ -421,7 +435,8 @@ function adams_moulton_prepare(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}
 
     i, def, adams, init, Z = _set_bounds!(init, grid, def, adams)
 
-    msg = _message(i, 0, init, def; modus="prepare")
+    imax = 25
+    msg = _message(i, imax, init, def; modus="prepare")
 
     return msg, adams, init, Z
 
