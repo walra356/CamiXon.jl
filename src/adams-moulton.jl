@@ -531,7 +531,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal;
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
+E, def, adams, Z = adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=true);
 plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.

@@ -84,7 +84,7 @@ Element
 Isotope
 Atom
 Orbit
-Spinorbital
+Spinorbit
 Term
 listElement(Z::Int; fmt=Object)
 listElements(Z1::Int, Z2::Int; fmt=Object)
@@ -97,7 +97,7 @@ listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 castAtom(;Z=1, A=1, Q=0, msg=true)
 castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
-castSpinorbital(o::Orbit; up=true, msg=true)
+castSpinorbit(n::Int, ℓ::Int, mℓ::Int, up::Bool, msg:Bool)
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```
 ### Hydrogen

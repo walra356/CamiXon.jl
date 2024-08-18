@@ -65,8 +65,8 @@ export listAtoms
 export castAtom
 export Orbit
 export castOrbit
-export Spinorbital
-export castSpinorbital
+export Spinorbit
+export castSpinorbit
 export Term
 export createTerm
 export a_direct
