@@ -310,7 +310,7 @@ struct Spinorbit
     ms::Rational{Int}    # spin magnetic quantum number
 end
 
-# ============= castOrbit(n::Int, ℓ::Int, mℓ::Int, up::Bool, msg:Bool) ===========
+# ============= castSpinorbit(;n::Int, ℓ::Int, mℓ::Int, up::Bool, msg:Bool) ===========
 
 function _strSpinorbit(name, n, n′, ℓ, mℓ, up)
 
@@ -344,7 +344,7 @@ Spinorbital: 1s↑
 Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
 ```
 """
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=false)
+function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
     
     o = castOrbit(;n, ℓ, mℓ)
     
