@@ -480,8 +480,8 @@ function adams_moulton_iterate(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, ad
     (Emin, E, Emax, ΔE) = init
 
     test = convertUnit(Δν.val, codata; unitIn=Δν.unit, unitOut="Hartree")
-
-    test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
+    test = convert(T,test.val)
+    #test = T == BigFloat ? convert(T,test.val) : convert(T,test.val)
 
     Z = adams.Z
 
@@ -538,7 +538,9 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/hydrogen-1s.png)
 """
-function adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false)
+function adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=false)
+
+    adams = castAdams(E, grid, def)
 
     t1 = time()
     msg && println("\nt = " * _strΔt(t1,t1))
