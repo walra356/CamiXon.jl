@@ -803,7 +803,7 @@ Function:
 `β` = [`fdiff_adams_bashford_expansion_coeffs(k)`](@ref)
  ``→ [B_k^k(x),⋯\ B_0^k(x)]``
 
-`adams_bashford_integration_weights`
+`adams_bashford_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
  ``→ [A_k^k(x),⋯\ A_0^k(x)]``
 
