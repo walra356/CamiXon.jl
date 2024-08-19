@@ -527,14 +527,17 @@ on grid the `grid` with the Adams-Moulton method defined by `adams`.
 
 #### Example:
 ```
-Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
-    Def created for hydrogen 1s on exponential grid of 100 points
+julia> codata = castCodata(2022);
+julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
+julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
+julia> grid = autoGrid(atom, orbit, Float64; Nboost=10, msg=false);
+julia> def = castDef(grid, atom, orbit, codata);
+Def created for ¹H:1s on exponential grid of 1200 points
 
-E = 1.5Ecal;
-E, Z = adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=true);
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
+julia> E = initE(def);
+julia> E, Z = adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=false);
 ```
-The plot is made using `CairomMakie`.
+The plot is made using `CairoMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/hydrogen-1s.png)
 """
