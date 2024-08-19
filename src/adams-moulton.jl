@@ -516,7 +516,7 @@ end
 # ===================== adams_moulton_master ===================================
 
 @doc raw"""
-    adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=false)
+    adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=false)
 
 Solves the Schrödinger equation for an atom defined by `def` for energy `E`
 on grid the `grid` with the Adams-Moulton method defined by `adams`.
@@ -531,7 +531,7 @@ Ecal, grid, def, adams = demo_hydrogen(n=1, ℓ=0);
     Def created for hydrogen 1s on exponential grid of 100 points
 
 E = 1.5Ecal;
-E, def, adams, Z = adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=true);
+E, Z = adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=true);
 plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
@@ -560,6 +560,6 @@ function adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=fa
 
     def.orbit.n′ == count_nodes(Z, def) || error("Error: node condition violated - n′ = $(def.orbit.n′), nodes = $(nodes)")
 
-    return E, def, adams, Z
+    return E, Z
 
 end
