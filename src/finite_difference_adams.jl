@@ -58,10 +58,10 @@ julia> fdiff_adams_moulton_expansion_coeff(k)
 julia> D = denominator(gcd(β))
 1440
 
-julia> o = convert(Vector{Int},(β .* D)); println(o)
+julia> convert(Vector{Int},(β .* D)); println(o)
 [1440, -720, -120, -60, -38, -27]
 
-julia> k=20;
+julia> k = 20;
 julia> fdiff_adams_moulton_expansion_coeff(k)
 Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
@@ -115,14 +115,13 @@ julia> [create_adams_moulton_weights(k; rationalize=true, devisor=true, T=Int) f
  (5, 1440, [27, -173, 482, -798, 1427, 475])
 
 julia> k = 5;
-
-julia> x = create_adams_moulton_weights(k; rationalize=true, devisor=true); println(x)
+julia> w = create_adams_moulton_weights(k; rationalize=true, devisor=true); println(w)
 (5, 1440, [27, -173, 482, -798, 1427, 475])
 
-julia> x = create_adams_moulton_weights(k; rationalize=true, devisor=false); println(x)
+julia> w = create_adams_moulton_weights(k; rationalize=true, devisor=false); println(w)
 Rational{Int64}[3//160, -173//1440, 241//720, -133//240, 1427//1440, 95//288]
 
-julia> x = create_adams_moulton_weights(k; rationalize=false); println(x)
+julia> w = create_adams_moulton_weights(k; rationalize=false); println(w)
 [0.01875, -0.12013888888888889, 0.3347222222222222, -0.5541666666666667, 0.9909722222222223, 0.3298611111111111]
 ```
 """
