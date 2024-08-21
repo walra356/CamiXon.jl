@@ -71,7 +71,7 @@ function fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 
     nc = 19
 
-    if n ≤ nc
+    if k ≤ nc
         o = T == Int ? glAMe_Int[1:1+k] : glAMe_BigInt[1:1+k]
     else
         o = _ame_BigInt(k)
@@ -119,7 +119,7 @@ divisor. By default the output is in Float64, optionally the output is rational,
 """
 function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 
-    β = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
+    β = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; T)
 
     o = fdiff_expansion_weights(β)
 
@@ -190,7 +190,7 @@ function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
 # ==============================================================================
     nc = 17
 
-    if n ≤ nc
+    if k ≤ nc
         o = T == Int ? glABe_Int[1:1+k] : glABe_BigInt[1:1+k]
     else
         o = _abe_BigInt(k)
