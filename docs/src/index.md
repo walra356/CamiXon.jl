@@ -808,7 +808,7 @@ Function:
  ``→ [A_k^k(x),⋯\ A_0^k(x)]``
 
 ```@docs
-fdiff_adams_bashford_expansion_coeffs(k::Int)
+fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
 ```
 
 ### Adams-Moulton expansion
@@ -868,7 +868,6 @@ Functions:
 ```@docs
 fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
-fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
 ```
 
 ## Strings
