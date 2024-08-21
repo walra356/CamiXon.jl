@@ -84,7 +84,7 @@ using Test
     @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
     @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1, "Hz")) == "1 Hz"
-    @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
+    @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int} 
     @test lc_primitivetype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Int64
     @test primitivetype(Rational{UInt16}) == UInt16
     @test conditionalType(47, 46) == BigInt
