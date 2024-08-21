@@ -67,9 +67,9 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_moulton_expansion_coeffs(nmax::Int; T=Int, msg=true)
+function fdiff_adams_moulton_expansion_coeffs(kmax::Int; T=Int, msg=true)
 
-    n = nmax
+    n = kmax
     nc = 19
 
     if n ≤ nc
@@ -82,11 +82,11 @@ function fdiff_adams_moulton_expansion_coeffs(nmax::Int; T=Int, msg=true)
     return o
 
 end
-function fdiff_adams_moulton_expansion_coeff(n::Int; T=Int, msg=true)
+function fdiff_adams_moulton_expansion_coeff(k::Int; T=Int, msg=true)
 
-    o = fdiff_adams_moulton_expansion_coeffs(n; T, msg)
+    o = fdiff_adams_moulton_expansion_coeffs(k; T, msg)
 
-    return o[1+n]
+    return o[1+k]
 
 end
 
