@@ -52,6 +52,9 @@ julia> k = 5;
 julia> β = fdiff_adams_moulton_expansion_coeffs(k); println(β)
 Rational{Int64}[1//1, -1//2, -1//12, -1//24, -19//720, -3//160]
 
+julia> fdiff_adams_moulton_expansion_coeff(k)
+-3//160
+
 julia> D = denominator(gcd(β))
 1440
 
@@ -64,15 +67,14 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
-
-    n = Int(n)
+function fdiff_adams_moulton_expansion_coeff2(n::Int; T=Int, msg=true)
+    
     nc = 19
 
     if n ≤ nc
-        o = T == Int ? glAMe_Int[1:1+n][end] : glAMe_BigInt[1:1+n][end]
+        o = T == Int ? glAMe_Int[1:1+n][1+n] : glAMe_BigInt[1:1+n][1+n]
     else
-        o = _ame_BigInt(n)[end]
+        o = _ame_BigInt(n)[1+n]
         msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
     end
 
@@ -81,9 +83,9 @@ function fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
 end
 
 # ..............................................................................
-function fdiff_adams_moulton_expansion_coeffs(nmax::T; msg=true) where {T<:Integer}
+function fdiff_adams_moulton_expansion_coeffs(nmax::Int; T=Int, msg=true)
 
-    n = Int(nmax)
+    n = nmax
     nc = 19
 
     if n ≤ nc
@@ -94,6 +96,13 @@ function fdiff_adams_moulton_expansion_coeffs(nmax::T; msg=true) where {T<:Integ
     end
 
     return o
+
+end
+function fdiff_adams_moulton_expansion_coeff(n::Int; T=Int, msg=true)
+
+    o = fdiff_adams_moulton_expansion_coeffs(n; T, msg)
+
+    return o[1+n]
 
 end
 
@@ -144,8 +153,30 @@ end
 
 # ======================== fdiff_adams_bashford_expansion_coeffs(k) ===========
 
+global glABe_Int = Rational{Int64}[1, 1//2, 5//12, 3//8, 251//720, 95//288, 19087//60480, 
+    5257//17280, 1070017//3628800, 25713//89600, 26842253//95800320, 4777223//17418240, 
+    703604254357//2615348736000, 106364763817//402361344000, 1166309819657//4483454976000, 
+    25221445//98402304, 8092989203533249//32011868528640000, 85455477715379//342372925440000]
+
+# ..............................................................................
+global glABe_BigInt = convert(Vector{Rational{BigInt}}, glABe_Int)
+
+# ..............................................................................
+function _abe_BigInt(k)
+
+    a = Base.ones(Rational{BigInt},1+k)
+    
+    b = CamiXon.fdiff_adams_moulton_expansion_coeffs(k; msg=false)
+    o = CamiMath.polynom_product_expansion(a, b, k)
+
+    return o  # Note that D = denominator(gcd(o))
+
+end
+# ..............................................................................
+
 @doc raw"""
-    fdiff_adams_bashford_expansion_coeffs(k [; T=Int])
+    fdiff_adams_bashford_expansion_coeffs(kmax::Int [; T=Int [, msg=true]])
+    fdiff_adams_bashford_expansion_coeff(k::Int [; T=Int [, msg=true]])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
@@ -156,20 +187,57 @@ The weights are stored in *forward* order: ``[B_0^k,⋯\ B_k^k]`` -
 order of use in summation.
 #### Examples:
 ```
-k = 5
-o = fdiff_adams_bashford_expansion_coeffs(k); println(o)
- Rational{Int64}[1//1, 1//2, 5//12, 3//8, 251//720, 95//288]
+julia> o = fdiff_adams_moulton_expansion_coeffs(5); println(o)
+Rational{Int64}[1, -1//2, -1//12, -1//24, -19//720, -3//160]
+
+julia> fdiff_adams_moulton_expansion_coeff(0)
+1//1
+
+julia> fdiff_adams_moulton_expansion_coeff(5)
+-3//160
+
+julia> fdiff_adams_moulton_expansion_coeff(20)
+Integer-overflow protection: output converted to BigInt
+-12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int)
+function fdiff_adams_bashford_expansion_coeffs(nmax::Int; T=Int, msg=true)
 # ==============================================================================
 #   Adams-Bashford expansion coefficients
 # ==============================================================================
-    a = Base.ones(Rational{T},k+1)
+    n = Int(nmax)
+    nc = 17
 
-    b = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
-    o = CamiMath.polynom_product_expansion(a, b, k)
+    if n ≤ nc
+        o = T == Int ? glABe_Int[1:1+n] : glABe_BigInt[1:1+n]
+    else
+        o = _abe_BigInt(n)
+        msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
+    end
 
     return o  # Note that D = denominator(gcd(o))
 
-end
+    end
+function fdiff_adams_bashford_expansion_coeff(n::Int; T=Int, msg=true)
+    # ==============================================================================
+    #   Adams-Bashford expansion coefficients
+    # ==============================================================================
+      
+    o = fdiff_adams_bashford_expansion_coeffs(n; T, msg)
+        
+    return o[1+n]  
+
+    end
+
+function fdiff_adams_bashford_expansion_coeffs1(k::Int; T=Int)
+    # ==============================================================================
+    #   Adams-Bashford expansion coefficients
+    # ==============================================================================
+        a = Base.ones(Rational{T},k+1)
+    
+        b = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
+        o = CamiMath.polynom_product_expansion(a, b, k)
+    
+        return o  # Note that D = denominator(gcd(o))
+    
+    end

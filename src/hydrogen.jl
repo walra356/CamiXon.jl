@@ -128,7 +128,7 @@ function demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
 
     atom = castAtom(;Z=1, A=1, Q=0, msg=false)
     orbit = castOrbit(; n, ℓ, msg=false)
-    grid = autoGrid(atom, orbit, Float64; msg=false)
+    grid = autoGrid(atom, orbit, Float64; Nboost=10, msg=false)
     def = castDef(grid, atom, orbit, codata; msg=true )
     E = convert(grid.T, bohrformula(atom.Z, orbit.n))
     adams = castAdams(E, grid, def)
