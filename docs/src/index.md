@@ -780,10 +780,11 @@ obtained as the polynomial product of the two expansions,
 ```math
 (\sum_{p=0}^{\infty}B_p∇^p)f[n+1]
 =(\sum_{p=0}^{\infty}∇^p)(\sum_{p=0}^{\infty}b_p∇^p)f[n+1]
-=\ ( 1 + \frac{1}{2}∇ + \frac{5}{12}∇^2 + ⋯)f[n+1].
+=\ ( 1 + \frac{1}{2}∇ + \frac{5}{12}∇^2 + ⋯)f[n+1]
 ```
 
-The coefficients ``B_p`` are calculated numerically with the function
+where the vector ``β = [B_0,⋯\ B_k]`` contains the *Adams-Bashford expansion coefficients*,
+rational numbers generated numerically by the function
 [`fdiff_adams_bashford_expansion_coeffs(k)`](@ref). Evaluating the finite-difference
 expansion up to order ``k`` we obtain (after changing dummy index bring the
 summation in forward order)
@@ -791,24 +792,24 @@ summation in forward order)
 ```math
 \sum_{p=0}^{k}B_p∇^pf[n]
 =\sum_{p=0}^{k}B_p\sum_{j=0}^{p} c_j^if[n-j]
-= \sum_{j=0}^{k}A_j^k(x)f[n-j]
-= \sum_{j=0}^{k}A_{k-j}^k(x)f[n-k+j],
+= \sum_{j=0}^{k}A_j^kf[n-j]
+= \sum_{j=0}^{k}A_{k-j}^kf[n-k+j],
 ```
 
-where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point
+where the ``A_j^k= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point
 *Adams-Bashford integration weights*.
 
 Function:
 
 `β` = [`fdiff_adams_bashford_expansion_coeffs(k)`](@ref)
-``→ [B_k^k(x),⋯\ B_0^k(x)]``
+``→ [B_0,⋯\ B_k]``
 
 `adams_bashford_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
- ``→ [A_k^k(x),⋯\ A_0^k(x)]``
+ ``→ [A_k^k,⋯\ A_0^k]``
 
 `adams_bashford_weights` = [`create_adams_bashford_weights(k)`](@ref)
-``→ [A_k^k(x),⋯\ A_0^k(x)]``
+``→ [A_k^k,⋯\ A_0^k]``
 
 ```@docs
 fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
@@ -832,7 +833,7 @@ terms (order ``k``),
 y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 ```
 
-where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*,
+where the vector ``β = [b_0,⋯\ b_k]`` contains the *Adams-Moulton expansion coefficients*,
 rational numbers generated numerically by the function
 [`fdiff_adams_moulton_expansion_coeffs(k)`](@ref). Extracting the greatest
 common denominator, ``1/D``, the step becomes
@@ -851,11 +852,11 @@ dummy index bring the summation in forward order)
 ```math
 \sum_{p=0}^{k}b_p∇^pf[n]
 =\sum_{p=0}^{k}b_p\sum_{j=0}^{p} c_j^if[n-j]
-= \sum_{j=0}^{k}a_j^k(x)f[n-j]
-= \sum_{j=0}^{k}a_{k-j}^k(x)f[n-k+j],
+= \sum_{j=0}^{k}a_j^kf[n-j]
+= \sum_{j=0}^{k}a_{k-j}^kf[n-k+j],
 ```
 
-where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
+where the ``a_j^k= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
 *Adams-Moulton integration weights*.
 
 Functions:
