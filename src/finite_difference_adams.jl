@@ -36,7 +36,7 @@ end
 
 @doc raw"""
     fdiff_adams_moulton_expansion_coeff(k::Int; T=Int, msg=true)
-    fdiff_adams_moulton_expansion_coeffs(kmax::Int; T=Int, msg=true)
+    fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 
 Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
 defining ``k^{th}``-order Adams-Moulton expansion,
@@ -67,15 +67,14 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_moulton_expansion_coeffs(kmax::Int; T=Int, msg=true)
+function fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 
-    n = kmax
     nc = 19
 
     if n ≤ nc
-        o = T == Int ? glAMe_Int[1:1+n] : glAMe_BigInt[1:1+n]
+        o = T == Int ? glAMe_Int[1:1+k] : glAMe_BigInt[1:1+k]
     else
-        o = _ame_BigInt(n)
+        o = _ame_BigInt(k)
         msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
     end
 
@@ -185,11 +184,11 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_bashford_expansion_coeffs(nmax::Int; T=Int, msg=true)
+function fdiff_adams_bashford_expansion_coeffs(kmax::Int; T=Int, msg=true)
 # ==============================================================================
 #   Adams-Bashford expansion coefficients
 # ==============================================================================
-    n = Int(nmax)
+    n = kmax
     nc = 17
 
     if n ≤ nc
@@ -202,13 +201,10 @@ function fdiff_adams_bashford_expansion_coeffs(nmax::Int; T=Int, msg=true)
     return o  # Note that D = denominator(gcd(o))
 
     end
-function fdiff_adams_bashford_expansion_coeff(n::Int; T=Int, msg=true)
-    # ==============================================================================
-    #   Adams-Bashford expansion coefficients
-    # ==============================================================================
+function fdiff_adams_bashford_expansion_coeff(k::Int; T=Int, msg=true)
       
-    o = fdiff_adams_bashford_expansion_coeffs(n; T, msg)
+    o = fdiff_adams_bashford_expansion_coeffs(k; T, msg)
         
-    return o[1+n]  
+    return o[1+k]  
 
     end

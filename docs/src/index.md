@@ -830,7 +830,7 @@ y[n+1]-y[n]= (\sum_{p=0}^{k}b_p∇^p)f[n+1]+⋯.
 
 where ``b_0,⋯\ b_k`` are the *Adams-Moulton expansion coefficients*,
 rational numbers generated numerically by the function
-[`fdiff_adams_moulton_expansion_coeff(k)`](@ref). Extracting the greatest
+[`fdiff_adams_moulton_expansion_coeffk(k)`](@ref). Extracting the greatest
 common denominator, ``1/D``, the step becomes
 
 ```math
@@ -856,7 +856,7 @@ where the ``a_j^k(x)= \sum_{p=j}^{k} b_pc_j^p`` are the ``(k+1)``-point
 
 Functions:
 
-`β` = [`fdiff_adams_moulton_expansion_coeff(k)`](@ref) ``→ [b_0,⋯\ b_k]``
+`β` = [`fdiff_adams_moulton_expansion_coeffs(k)`](@ref) ``→ [b_0,⋯\ b_k]``
 
 `adams_moulton_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
@@ -866,9 +866,9 @@ Functions:
 ``→ [a_k^k,⋯\ a_0^k]``
 
 ```@docs
-fdiff_adams_moulton_expansion_coeffs(kmax::Int; T=Int, msg=true)
+fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
-fdiff_adams_bashford_expansion_coeffs(kmax::Int; T=Int, msg=true)
+fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
 ```
 
 ## Strings
