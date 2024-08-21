@@ -67,22 +67,6 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_moulton_expansion_coeff2(n::Int; T=Int, msg=true)
-    
-    nc = 19
-
-    if n ≤ nc
-        o = T == Int ? glAMe_Int[1:1+n][1+n] : glAMe_BigInt[1:1+n][1+n]
-    else
-        o = _ame_BigInt(n)[1+n]
-        msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
-    end
-
-    return o
-
-end
-
-# ..............................................................................
 function fdiff_adams_moulton_expansion_coeffs(nmax::Int; T=Int, msg=true)
 
     n = nmax
@@ -227,17 +211,4 @@ function fdiff_adams_bashford_expansion_coeff(n::Int; T=Int, msg=true)
         
     return o[1+n]  
 
-    end
-
-function fdiff_adams_bashford_expansion_coeffs1(k::Int; T=Int)
-    # ==============================================================================
-    #   Adams-Bashford expansion coefficients
-    # ==============================================================================
-        a = Base.ones(Rational{T},k+1)
-    
-        b = CamiXon.fdiff_adams_moulton_expansion_coeffs(T(k))
-        o = CamiMath.polynom_product_expansion(a, b, k)
-    
-        return o  # Note that D = denominator(gcd(o))
-    
     end

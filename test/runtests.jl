@@ -132,11 +132,11 @@ using Test
     @test trapezoidal_epw(5; rationalize=true) == [95 // 288, 317 // 240, 23 // 30, 793 // 720, 157 // 160]
     @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3 // 8, 7 // 6, 23 // 24]) ≈ 215.4166666
     @test create_adams_moulton_weights(3; rationalize=true) == [1 // 24, -5 // 24, 19 // 24, 3 // 8]
-    @test fdiff_adams_moulton_expansion_coeff(0) == 1//1
     @test fdiff_adams_moulton_expansion_coeffs(5) == [1 // 1, -1 // 2, -1 // 12, -1 // 24, -19 // 720, -3 // 160]
+    @test fdiff_adams_moulton_expansion_coeff(0) == 1//1
     @test fdiff_adams_moulton_expansion_coeff(20; msg=false) == -12365722323469980029 // 4817145976189747200000
-    @test fdiff_adams_bashford_expansion_coeff(0) == 1//1
     @test fdiff_adams_bashford_expansion_coeffs(5) == [1 // 1, 1 // 2, 5 // 12, 3 // 8, 251 // 720, 95 // 288]
+    @test fdiff_adams_bashford_expansion_coeff(0) == 1//1
     @test fdiff_adams_bashford_expansion_coeff(20; msg=false) == 8136836498467582599787//33720021833328230400000
     @test gridname(2) == "quasi-exponential"
     @test [gridfunction(2, n - 1, 0.1; p=1) for n = 1:5] == [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
