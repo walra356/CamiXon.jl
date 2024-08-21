@@ -95,6 +95,7 @@ export fdiff_adams_moulton_expansion_coeffs
 export create_adams_moulton_weights
 export fdiff_adams_bashford_expansion_coeff
 export fdiff_adams_bashford_expansion_coeffs
+export create_adams_bashford_weights
 export trapezoidal_epw
 export trapezoidal_integration
 

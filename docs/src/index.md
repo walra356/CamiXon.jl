@@ -772,9 +772,9 @@ we ask for the expansion of
 = (\sum_{p=0}^{\infty}b_p∇^p)f[n+1].
 ```
 
-This is known as the *Adams-Moulton expansion*. Its coefficients are
+This is known as the *Adams-Moulton expansion*. Its expansion coefficients are
 calculated numerically by the function
-`fdiff_expansion_adams_moulton_coeffs(k)`. The *Adams-Bashford expansion* is
+[`fdiff_adams_moulton_expansion_coeffs(k)`](@ref). The *Adams-Bashford expansion* is
 obtained as the polynomial product of the two expansions,
 
 ```math
@@ -784,7 +784,7 @@ obtained as the polynomial product of the two expansions,
 ```
 
 The coefficients ``B_p`` are calculated numerically with the function
-`fdiff_expansion_adams_bashford_coeffs(k)`. Evaluating the finite-difference
+[`fdiff_adams_bashford_expansion_coeffs(k)`](@ref). Evaluating the finite-difference
 expansion up to order ``k`` we obtain (after changing dummy index bring the
 summation in forward order)
 
@@ -801,14 +801,18 @@ where the ``A_j^k(x)= \sum_{p=j}^{k} B_pc_j^p`` are the ``(k+1)``-point
 Function:
 
 `β` = [`fdiff_adams_bashford_expansion_coeffs(k)`](@ref)
- ``→ [B_k^k(x),⋯\ B_0^k(x)]``
+``→ [B_k^k(x),⋯\ B_0^k(x)]``
 
 `adams_bashford_weights`
 = [`fdiff_expansion_weights(β, bwd, rev)`](@ref)
  ``→ [A_k^k(x),⋯\ A_0^k(x)]``
 
+`adams_bashford_weights` = [`create_adams_bashford_weights(k)`](@ref)
+``→ [A_k^k(x),⋯\ A_0^k(x)]``
+
 ```@docs
 fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
+create_adams_bashford_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
 ### Adams-Moulton expansion

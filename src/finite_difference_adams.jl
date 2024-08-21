@@ -38,8 +38,8 @@ end
     fdiff_adams_moulton_expansion_coeff(k::Int; T=Int, msg=true)
     fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 
-Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
-defining ``k^{th}``-order Adams-Moulton expansion,
+Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_k(x)]``.
+Note the *forward* vector ordering, which is the order of use in the summation:
 
 ```math
 -\frac{∇}{ln(1-∇)}
@@ -94,27 +94,36 @@ end
 @doc raw"""
     create_adams_moulton_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
 
-``k^{th}``-order Adams-Moulton weights vector,
+``k^{th}``-order Adams-Moulton weights vector ``a^k \equiv[a_k^k,⋯\ a_0^k]``.  
+Note the *reversed* vector ordering, which is the order of use in the summation:
+
 ```math
-y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j]
+y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j],
 ```
-The weights are stored in the vector ``a^k \equiv[a_k^k/D,⋯\ a_0^k/D]``
-under the convention ``a^k[j] \equiv a_{k-j}^k/D``, where ``a_j^k`` are the
-Adams-Moulton weight coefficients and ``D`` the corresponding Adams-Moulton
+where ``a^k[j] \equiv a_{k-j}^k``. The ``a_j^k`` are the
+Adams-Moulton weight coefficients and ``D`` is the corresponding Adams-Moulton
 divisor. By default the output is in Float64, optionally the output is rational,
  with or without specification of the gcd devisor.
 #### Example:
 ```
-[create_adams_moulton_weights(k; rationalize=true, devisor=true, T=Int) for k=1:8]
+julia> [create_adams_moulton_weights(k; rationalize=true, devisor=true, T=Int) for k=1:5]
 8-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
  (1, 2, [1, 1])
  (2, 12, [-1, 8, 5])
  (3, 24, [1, -5, 19, 9])
  (4, 720, [-19, 106, -264, 646, 251])
  (5, 1440, [27, -173, 482, -798, 1427, 475])
- (6, 60480, [-863, 6312, -20211, 37504, -46461, 65112, 19087])
- (7, 120960, [1375, -11351, 41499, -88547, 123133, -121797, 139849, 36799])
- (8, 3628800, [-33953, 312874, -1291214, 3146338, -5033120, 5595358, -4604594, 4467094, 1070017])
+
+julia> k = 5;
+
+julia> x = create_adams_moulton_weights(k; rationalize=true, devisor=true); println(x)
+(5, 1440, [27, -173, 482, -798, 1427, 475])
+
+julia> x = create_adams_moulton_weights(k; rationalize=true, devisor=false); println(x)
+Rational{Int64}[3//160, -173//1440, 241//720, -133//240, 1427//1440, 95//288]
+
+julia> x = create_adams_moulton_weights(k; rationalize=false); println(x)
+[0.01875, -0.12013888888888889, 0.3347222222222222, -0.5541666666666667, 0.9909722222222223, 0.3298611111111111]
 ```
 """
 function create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
@@ -161,27 +170,26 @@ end
     fdiff_adams_bashford_expansion_coeff(k::Int [; T=Int [, msg=true]])
     fdiff_adams_bashford_expansion_coeffs(k::Int [; T=Int [, msg=true]])
 
-``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
+``(k+1)``-point Adams-Bashford expansion coefficients ``B_k \equiv [B_0^k,⋯\ B_k^k]``. 
+Note the *forward* vector ordering, which is the order of use in the summation:
 
 ```math
 -\frac{∇}{(1-∇)ln(1-∇)}=\sum_{p=0}^{\infty}B_p∇^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ ⋯.
 ```
-The weights are stored in *forward* order: ``[B_0^k,⋯\ B_k^k]`` -
-order of use in summation.
 #### Examples:
 ```
-julia> o = fdiff_adams_moulton_expansion_coeffs(5); println(o)
-Rational{Int64}[1, -1//2, -1//12, -1//24, -19//720, -3//160]
+julia> o = fdiff_adams_bashford_expansion_coeffs(5); println(o)
+Rational{Int64}[1, 1//2, 5//12, 3//8, 251//720, 95//288]
 
-julia> fdiff_adams_moulton_expansion_coeff(0)
+julia> fdiff_adams_bashford_expansion_coeff(0)
 1//1
 
-julia> fdiff_adams_moulton_expansion_coeff(5)
--3//160
+julia> fdiff_adams_bashford_expansion_coeff(5)
+95//288
 
-julia> fdiff_adams_moulton_expansion_coeff(20)
+julia> fdiff_adams_bashford_expansion_coeff(20)
 Integer-overflow protection: output converted to BigInt
--12365722323469980029//4817145976189747200000
+8136836498467582599787//33720021833328230400000
 ```
 """
 function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
@@ -207,3 +215,49 @@ function fdiff_adams_bashford_expansion_coeff(k::Int; T=Int, msg=true)
     return o[1+k]  
 
     end
+
+    # ========================== create_adams_bashford_weights(k)====================
+
+@doc raw"""
+create_adams_bashford_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
+
+``k^{th}``-order Adams-Bashford weights vector ``b^k \equiv[b_k^k,⋯\ b_0^k]``. 
+Note the *reversed* order, which corresponds to the order of use in the summation.
+
+```math
+y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}b^k[j]f[n+1-k+j],
+```
+where ``b^k[j] \equiv b_{k-j}^k/D``. The ``b_j^k`` are the
+Adams-Bashford weight coefficients, with ``D`` the corresponding Adams-Moulton
+divisor. By default the output is in Float64, optionally the output is rational,
+with or without specification of the gcd devisor.
+#### Example:
+```
+julia> [create_adams_bashford_weights(k; rationalize=true, devisor=true, T=Int) for k=1:8]
+8-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
+ (1, 2, [-1, 3])
+ (2, 12, [5, -16, 23])
+ (3, 24, [-9, 37, -59, 55])
+ (4, 720, [251, -1274, 2616, -2774, 1901])
+ (5, 1440, [-475, 2877, -7298, 9982, -7923, 4277])
+ (6, 60480, [19087, -134472, 407139, -688256, 705549, -447288, 198721])
+ (7, 120960, [-36799, 295767, -1041723, 2102243, -2664477, 2183877, -1152169, 434241])
+ (8, 3628800, [1070017, -9664106, 38833486, -91172642, 137968480, -139855262, 95476786, -43125206, 14097247])
+```
+"""
+function create_adams_bashford_weights(k::Int; rationalize=false, devisor=false, T=Int)
+
+B = CamiXon.fdiff_adams_bashford_expansion_coeffs(k; T)
+
+o = fdiff_expansion_weights(B)
+
+if rationalize
+    D = Base.denominator(Base.gcd(o))       # Adams-Bashford devisor = Adams-Moulton devisor
+    o = devisor ? (k, D, Base.round.(T, o * D)) : o
+else
+    o = Base.convert(Vector{Float64},o)
+end
+
+return o
+
+end
