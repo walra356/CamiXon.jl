@@ -35,8 +35,8 @@ end
 # ..............................................................................
 
 @doc raw"""
-    fdiff_adams_moulton_expansion_coeff(n::T; msg=true) where {T<:Integer}
-    fdiff_adams_moulton_expansion_coeffs(n::T; msg=true) where {T<:Integer}
+    fdiff_adams_moulton_expansion_coeff(k::Int; T=Int, msg=true)
+    fdiff_adams_moulton_expansion_coeffs(kmax::Int; T=Int, msg=true)
 
 Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_p(x)]``
 defining ``k^{th}``-order Adams-Moulton expansion,
@@ -159,8 +159,8 @@ end
 # ..............................................................................
 
 @doc raw"""
-    fdiff_adams_bashford_expansion_coeffs(kmax::Int [; T=Int [, msg=true]])
     fdiff_adams_bashford_expansion_coeff(k::Int [; T=Int [, msg=true]])
+    fdiff_adams_bashford_expansion_coeffs(kmax::Int [; T=Int [, msg=true]])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
