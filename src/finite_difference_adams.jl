@@ -39,7 +39,7 @@ end
     fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 
 Finite difference expansion coefficient vector ``β ≡ [β_0(x),\ ⋯,\ β_k(x)]``.
-Note the *forward* vector ordering, which is the order of use in the summation:
+Note the *forward* vector ordering, which is the order of use in the summation below,
 
 ```math
 -\frac{∇}{ln(1-∇)}
@@ -95,7 +95,7 @@ end
     create_adams_moulton_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
 
 ``k^{th}``-order Adams-Moulton weights vector ``a^k \equiv[a_k^k,⋯\ a_0^k]``.  
-Note the *reversed* vector ordering, which is the order of use in the summation:
+Note the *reversed* vector ordering, which is the order of use in the summation below,
 
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}a^k[j]f[n+1-k+j],
@@ -171,7 +171,7 @@ end
     fdiff_adams_bashford_expansion_coeffs(k::Int [; T=Int [, msg=true]])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_k \equiv [B_0^k,⋯\ B_k^k]``. 
-Note the *forward* vector ordering, which is the order of use in the summation:
+Note the *forward* vector ordering, which is the order of use in the summation below,
 
 ```math
 -\frac{∇}{(1-∇)ln(1-∇)}=\sum_{p=0}^{\infty}B_p∇^p=1+\ \frac{1}{2}∇+\ \frac{5}{12}∇^2+\ ⋯.
@@ -222,27 +222,35 @@ function fdiff_adams_bashford_expansion_coeff(k::Int; T=Int, msg=true)
 create_adams_bashford_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
 
 ``k^{th}``-order Adams-Bashford weights vector ``b^k \equiv[b_k^k,⋯\ b_0^k]``. 
-Note the *reversed* order, which corresponds to the order of use in the summation.
+Note the *reversed* order, which corresponds to the order of use in the summation below,
 
 ```math
 y[n+1] = y[n] + \frac{1}{D}\sum_{j=0}^{k}b^k[j]f[n+1-k+j],
 ```
-where ``b^k[j] \equiv b_{k-j}^k/D``. The ``b_j^k`` are the
+where ``b^k[j] \equiv b_{k-j}^k``. The ``b_j^k`` are the
 Adams-Bashford weight coefficients, with ``D`` the corresponding Adams-Moulton
 divisor. By default the output is in Float64, optionally the output is rational,
 with or without specification of the gcd devisor.
 #### Example:
 ```
-julia> [create_adams_bashford_weights(k; rationalize=true, devisor=true, T=Int) for k=1:8]
+julia> [create_adams_bashford_weights(k; rationalize=true, devisor=true, T=Int) for k=1:5]
 8-element Vector{Tuple{Int64, Int64, Vector{Int64}}}:
  (1, 2, [-1, 3])
  (2, 12, [5, -16, 23])
  (3, 24, [-9, 37, -59, 55])
  (4, 720, [251, -1274, 2616, -2774, 1901])
  (5, 1440, [-475, 2877, -7298, 9982, -7923, 4277])
- (6, 60480, [19087, -134472, 407139, -688256, 705549, -447288, 198721])
- (7, 120960, [-36799, 295767, -1041723, 2102243, -2664477, 2183877, -1152169, 434241])
- (8, 3628800, [1070017, -9664106, 38833486, -91172642, 137968480, -139855262, 95476786, -43125206, 14097247])
+
+julia> k = 5;
+
+julia> w = create_adams_bashford_weights(k; rationalize=true, devisor=true); println(w)
+(5, 1440, [-475, 2877, -7298, 9982, -7923, 4277])
+
+julia> w = create_adams_bashford_weights(k; rationalize=true, devisor=false); println(w)
+Rational{Int64}[-95//288, 959//480, -3649//720, 4991//720, -2641//480, 4277//1440]
+
+julia> w = create_adams_bashford_weights(k; rationalize=false); println(w)
+[-0.3298611111111111, 1.9979166666666666, -5.0680555555555555, 6.9319444444444445, -5.502083333333333, 2.970138888888889]
 ```
 """
 function create_adams_bashford_weights(k::Int; rationalize=false, devisor=false, T=Int)
