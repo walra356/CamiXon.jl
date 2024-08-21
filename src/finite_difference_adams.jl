@@ -159,7 +159,7 @@ end
 
 @doc raw"""
     fdiff_adams_bashford_expansion_coeff(k::Int [; T=Int [, msg=true]])
-    fdiff_adams_bashford_expansion_coeffs(kmax::Int [; T=Int [, msg=true]])
+    fdiff_adams_bashford_expansion_coeffs(k::Int [; T=Int [, msg=true]])
 
 ``(k+1)``-point Adams-Bashford expansion coefficients ``B_p``.
 
@@ -184,17 +184,16 @@ Integer-overflow protection: output converted to BigInt
 -12365722323469980029//4817145976189747200000
 ```
 """
-function fdiff_adams_bashford_expansion_coeffs(kmax::Int; T=Int, msg=true)
+function fdiff_adams_bashford_expansion_coeffs(k::Int; T=Int, msg=true)
 # ==============================================================================
 #   Adams-Bashford expansion coefficients
 # ==============================================================================
-    n = kmax
     nc = 17
 
     if n ≤ nc
-        o = T == Int ? glABe_Int[1:1+n] : glABe_BigInt[1:1+n]
+        o = T == Int ? glABe_Int[1:1+k] : glABe_BigInt[1:1+k]
     else
-        o = _abe_BigInt(n)
+        o = _abe_BigInt(k)
         msg && T == Int && println("Integer-overflow protection: output converted to BigInt")
     end
 
