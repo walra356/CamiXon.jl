@@ -81,7 +81,7 @@ using Test
     @test castSpinorbit(n=1, ℓ=0, msg=false) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     @test createTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
-    @test convertUnit(1, codata; unitIn="Hz", unitOut="Joule") == Value(6.62607015e-34, "Joule")
+    @test convertUnit(1, codata; unitIn="Hz", unitOut="J") == Value(6.62607015e-34, "J")
     @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
     @test strValue(Value(1, "Hz")) == "1 Hz"
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int} 

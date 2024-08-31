@@ -210,7 +210,7 @@ function castCodata(year::Int)
         R∞ = Value(10973731.568160, "m" * sup(-1))
         u = Value(1.66053906660e-27, "kg")
     else
-        error("Error: codata$(year) not implemented")
+        error("Error: codata$(year) not implemented - try codata(2022) ")
     end
 
     Ry = Value(R∞.val * c.val, "Hz")
@@ -225,20 +225,27 @@ function castCodata(year::Int)
     H = 2e-15 * c.val * R∞.val
     J = 1e+15 * h.val
     V = 1e+15 * h.val / e.val
+    invM = 1e+15 * h.val / c.val
+    invCm= 1e+13 * h.val / c.val
+    K = h.val/kB.val
 
-    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21*H 0.5e+21*H 1e21/J 1e21/V;
-        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18*H 0.5e+18*H 1e18/J 1e18/V;
-        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15*H 0.5e+15*H 1e15/J 1e15/V;
-        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12*H 0.5e+12*H 1e12/J 1e12/V;
-        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9*H 0.5e+9*H 1e9/J 1e9/V;
-        1 1 1 1 1 1 1e3 1e6 1e9 1e+6*H 0.5e+6*H 1e6/J 1e6/V;
-        1 1 1 1 1 1 1 1e3 1e6 1e3*H 0.5e+3*H 1e3/J 1e3/V;
-        1 1 1 1 1 1 1 1 1e3 1*H 0.5*H 1/J 1/V;
-        1 1 1 1 1 1 1 1 1 1e-3*H 0.5e-3*H 1e-3/J 1e-3/V;
-        1 1 1 1 1 1 1 1 1 1 0.5 2.2937122783963e17 1/27.211386245988;
-        1 1 1 1 1 1 1 1 1 1 1 2*2.2937122783963e17 2/27.211386245988;
-        1 1 1 1 1 1 1 1 1 1 1 1 1/6.241509074e18;
-        1 1 1 1 1 1 1 1 1 1 1 1 1]
+    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21*H 0.5e+21*H 1e21/J 1e21/V 1e-4c.val 1e-6/K 1e-9/K 1e-12/K;        # 1 - μHz
+        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18*H 0.5e+18*H 1e18/J 1e18/V 1e-1c.val 1e-3/K 1e-6/K 1e-9/K;            # 2 - mHz
+        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15*H 0.5e+15*H 1e15/J 1e15/V 100c.val 1/K 1e-3/K 1e-6/K;                   # 3 - Hz
+        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12*H 0.5e+12*H 1e12/J 1e12/V 1e5c.val 1e3/K 1/K 1e-3/K;                       # 4 - kHz
+        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9*H 0.5e+9*H 1e9/J 1e9/V 1e8c.val 1e6/K 1e3/K 1/K;                               # 5 - MHz
+        1 1 1 1 1 1 1e3 1e6 1e9 1e+6*H 0.5e+6*H 1e6/J 1e6/V 1e11c.val 1e9/K 1e6/K 1e3/K;                               # 6 - GHz
+        1 1 1 1 1 1 1 1e3 1e6 1e3*H 0.5e+3*H 1e3/J 1e3/V 1e14c.val 1e12/K 1e9/K 1e6/K;                                 # 7 - THz
+        1 1 1 1 1 1 1 1 1e3 1*H 0.5*H 1/J 1/V 1.e17c.val 1e15/K 1e12/K 1e9/K;                                          # 8 - PHz
+        1 1 1 1 1 1 1 1 1 1e-3*H 0.5e-3*H 1e-3/J 1e-3/V 1.e20c.val 1e18/K 1e15/K 1e12/K;                               # 9 - EHz
+        1 1 1 1 1 1 1 1 1 1 0.5 1/Eh.val e.val/Eh.val 50/R∞.val kB.val/Eh.val 1e-3kB.val/Eh.val 1e-6kB.val/Eh.val;     # 10 - Hartree
+        1 1 1 1 1 1 1 1 1 1 1 2/Eh.val 2e.val/Eh.val 100/R∞.val 2kB.val/Eh.val 2e-3kB.val/Eh.val 2e-6kB.val/Eh.val;    # 11 - Rydberg
+        1 1 1 1 1 1 1 1 1 1 1 1 e.val 100h.val*c.val kB.val 1e-3kB.val 1e-6kB.val;                                     # 12 - Joule
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1e-2h.val*c.val/e.val kB.val/e.val 1e-3kB.val/e.val 1e-6kB.val/e.val;                # 13 - eV
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-2Eh.val*c.val/kB.val 1e-5Eh.val*c.val/kB.val 1e-8Eh.val*c.val/kB.val;           # 14 - cm-1
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-3 1e-6;                                                                       # 15 K
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-3;                                                                          # 17 mK
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]                                                                             # 18 μK
 
     N = Int(sqrt(length(M)))
 
@@ -328,63 +335,67 @@ end
 @doc raw"""
     convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 
-Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, Joule, and eV
+Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, J eV, cm-1, K, mK μK
 
 default input: Hartree
 
 default output: xHz ∈ {μHz, mHz, Hz, kHz, MHz, GHz, THz, PHz, EHz}
 #### Example:
 ```
-codata = castCodata(2018)
-convertUnit(1, codata; unitIn="Hz", unitOut="Joule")
-  6.62607015e-34
+julia> codata = castCodata(2018);
+julia> convertUnit(1, codata; unitIn="Hz", unitOut="J")
+Value(6.62607015e-34, "J")
 
-convertUnit(1, codata; unitIn="Hartree", unitOut="Hz")
-  Value(6.57968392050182e15, "Hz")
+julia> convertUnit(1, codata; unitIn="Hartree", unitOut="Hz")
+Value(6.579683920501762e15, "Hz")
 
-f = convertUnit(1, codata) # default input (Hartree) and output (xHz)
-strf = strValue(f)
-  "6.57968 PHz"
+julia> f = convertUnit(1, codata) # default input (Hartree) and output (xHz);
+julia> strf = strValue(f)
+"6.57968 PHz"
 ```
 """
 function convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
-# ==============================================================================
-#  convertUnit(val, codata; unitIn="kHz", unitOut="MHz")
-# ==============================================================================
-    U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz"]
-        Base.push!(U,"Hartree")
-        Base.push!(U,"Rydberg")
-        Base.push!(U,"Joule")
-        Base.push!(U,"eV")
-
-    unitIn ∈ U || error("Error: unitIn = $(unitIn) unknown unit type")
-
-    M = codata.matE
-
-    v = zeros(Float64,length(U))
-    i = findfirst(x -> x==unitIn, U)
-    v[i] = val
-    w = M * v
-
-    if unitOut == "xHz"
-        i = findfirst(x -> x=="Hz", U)
-        unitOut = 1e18 ≤  w[i] ? "EHz" :
-                  1e15 ≤  w[i] < 1e18 ? "PHz" :
-                  1e12 ≤  w[i] < 1e15 ? "THz" :
-                  1e9  ≤  w[i] < 1e12 ? "GHz" :
-                  1e6  ≤  w[i] < 1e9  ? "MHz" :
-                  1e3  ≤  w[i] < 1e6  ? "kHz" :
-                  1e0  ≤  w[i] < 1e3  ? "Hz"  :
-                  1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
-    else
-        unitOut ∈ U || error("Error: unitOut = $(unitOut) unknown unit type")
+    # ==============================================================================
+    #  convertUnit(val, codata; unitIn="kHz", unitOut="MHz")
+    # ==============================================================================
+        U = ["μHz","mHz","Hz","kHz","MHz","GHz","THz","PHz","EHz"]
+            Base.push!(U,"Hartree")
+            Base.push!(U,"Rydberg")
+            Base.push!(U,"J")
+            Base.push!(U,"eV")
+            Base.push!(U,"cm-1")
+            Base.push!(U,"K")
+            Base.push!(U,"mK")
+            Base.push!(U,"μK")
+    
+        unitIn ∈ U || error("Error: unitIn = $(unitIn) unknown unit type")
+    
+        M = codata.matE
+    
+        v = zeros(Float64,length(U))
+        i = findfirst(x -> x==unitIn, U)
+        v[i] = val
+        w = M * v
+    
+        if unitOut == "xHz"
+            i = findfirst(x -> x=="Hz", U)
+            unitOut = 1e18 ≤  w[i] ? "EHz" :
+                      1e15 ≤  w[i] < 1e18 ? "PHz" :
+                      1e12 ≤  w[i] < 1e15 ? "THz" :
+                      1e9  ≤  w[i] < 1e12 ? "GHz" :
+                      1e6  ≤  w[i] < 1e9  ? "MHz" :
+                      1e3  ≤  w[i] < 1e6  ? "kHz" :
+                      1e0  ≤  w[i] < 1e3  ? "Hz"  :
+                      1e-3 ≤  w[i] < 1e0  ? "mHz" : "μHz"
+        else
+            unitOut ∈ U || error("Error: unitOut = $(unitOut) unknown unit type")
+        end
+    
+        i = findfirst(x -> x==unitOut, U)
+    
+        return Value(w[i],unitOut)
+    
     end
-
-    i = findfirst(x -> x==unitOut, U)
-
-    return Value(w[i],unitOut)
-
-end
 
 # ============ calibrationReport(E, Ecal; unitIn="Hartree") ====================
 
