@@ -358,13 +358,13 @@ end
 @doc raw"""
     silvera_goldman_triplet(r::T) where T<:Real
 
-Parametrization of the triplet ``(^{1}\Sigma_{g}^{+})`` potential of the electronic 
+Parametrization of the triplet ``(^{3}\Sigma_{u}^{+})`` potential of the electronic 
 ground state of ``\mathrm{H}_{2}``, 
 
 The triplet potential is given by
 
 ```math
-   V_{t}(r)=\mathrm{exp}\left(0.09678-1.10173r-0.0394r^{2}\right)+F(r)\left(-6.5r^{-6}-124r^{-8}-3285r^{-10}\right)
+   V_{t}(r)=\mathrm{exp}\left(0.09678-1.10173\thinspace r-0.0394\thinspace r^{2}\right)+F(r)\left(-6.5\thinspace r^{-6}-124\thinspace r^{-8}-3285r^{-10}\thinspace \right)
 ```
 where 
 ```math
@@ -384,7 +384,7 @@ function silvera_goldman_triplet(r::T) where T<:Real
 
     Fr = r > 10.04 ? 1.0 : exp(-(10.04/r-1.0)^2)
    
-    o = exp(0.09678 - 1.10173 * r - 0.03945 * r^2) + Fr * (-6.5/r^6-124.0/r^8-3285.0/r^10)
+    o = exp(0.09678 - 1.10173r - 0.03945r^2) + Fr * (-6.5/r^6-124.0/r^8-3285.0/r^10)
 
     return o
 
@@ -393,7 +393,7 @@ end
 @doc raw"""
     silvera_goldman_exchange(r::T) where T<:Real
 
-Parametrization of the exchange energy difference between the singlet ``(^{3}\Sigma_{u}^{+})`` and 
+Parametrization of the exchange energy difference between singlet ``(^{3}\Sigma_{u}^{+})`` and 
 triplet ``(^{1}\Sigma_{g}^{+})`` potentials  of ``\mathrm{H}_{2}``, 
 ```math
     J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right)
@@ -414,10 +414,9 @@ function silvera_goldman_exchange(r::T) where T<:Real
 end
 
 @doc raw"""
-    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
     silvera_goldman_singlet(r::T) where T<:Real 
 
-Parametrization of the singlet ``(^{3}\Sigma_{u}^{+})`` potential  of ``\mathrm{H}_{2}``, 
+Parametrization of the singlet ``(^{1}\Sigma_{g}^{+})`` potential  of ``\mathrm{H}_{2}``, 
 ```math
    V_{s}(r)=V_{t}(r)-J(r)
 ```
