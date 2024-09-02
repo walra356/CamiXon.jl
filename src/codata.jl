@@ -210,11 +210,11 @@ function castCodata(year::Int)
         R∞ = Value(10973731.568160, "m" * sup(-1))
         u = Value(1.66053906660e-27, "kg")
     else
-        error("Error: codata$(year) not implemented - try codata(2022) ")
+        error("Error: codata$(year) not implemented - use codata 2018 or 2022 ")
     end
 
     Ry = Value(R∞.val * c.val, "Hz")
-    Eh = Value(2Ry.val * h.val, "Hartree a.u.")
+    Eh = Value(2Ry.val * h.val, "J")
     α = Value(sqrt(Eh.val / me.val) / c.val, "")
     μ0 = Value(2α.val * h.val / e.val / e.val / c.val, "N A" * sup(-2))
     ε0 = Value(1 / μ0.val / c.val / c.val, "F m" * sup(-1))
@@ -225,8 +225,6 @@ function castCodata(year::Int)
     H = 2e-15 * c.val * R∞.val
     J = 1e+15 * h.val
     V = 1e+15 * h.val / e.val
-    invM = 1e+15 * h.val / c.val
-    invCm= 1e+13 * h.val / c.val
     K = h.val/kB.val
 
     M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21*H 0.5e+21*H 1e21/J 1e21/V 1e-4c.val 1e-6/K 1e-9/K 1e-12/K;        # 1 - μHz
