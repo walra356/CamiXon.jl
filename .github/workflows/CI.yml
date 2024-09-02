@@ -48,6 +48,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Check out repository
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - uses: actions/setup-node@v3
         name: Set up Node.js
         with:
@@ -64,4 +66,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

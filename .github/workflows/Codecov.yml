@@ -1,4 +1,8 @@
 codecov: 
+  - name: Upload coverage to Codecov
+    uses: codecov/codecov-action@v4
+      env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     token: 478dfc31-6769-4c04-8b5d-1156d0f76d43
     bot: "codecov-io"
     ci: "github.com"
@@ -9,6 +13,8 @@ codecov:
     notify:
         after_n_builds: 2
         wait_for_ci: yes
+
+    
     
 coverage:
   range: 60..80
