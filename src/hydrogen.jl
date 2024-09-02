@@ -362,23 +362,25 @@ end
     silvera_goldman_singlet(r::T) where T<:Real 
 
 Parametrization of the singlet ``(^{3}\Sigma_{u}^{+})`` and triplet ``(^{1}\Sigma_{g}^{+})`` potentials of the electronic 
-ground state of H\sub(2) (see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)).
+ground state of H$\sub(2)$ (see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)).
 
 The triplet potential is given by
 
 ```math
-   Vt(r) = exp(0.09678 - 1.10173 * r - 0.03945 * r^2) + Fr * (-6.5/r^6-124.0/r^8-3285.0/r^10)
+   V_{t}(r)=\mathrm{exp}\left(0.09678-1.10173r-0.0394r^{2}\right)+F(r)\left(-6.5r^{-6}-124r^{-8}-3285r^{-10}\right)
 ```
 where 
 ```math
    F(r)&=\begin{cases}
-    
-\mathrm{exp}\left[-\left(\frac{10.04}{r}-1\right)^{2}\right] & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}\\    
-1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.    }
+\mathrm{exp}\left[-\left(\frac{10.04}{r}-1\right)^{2}\right] & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}\\
+1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}
 \end{cases}
-
-
-Parametrization of the exchange energy between the singlet ``(^{3}\Sigma_{u}^{+})`` and triplet ``(^{1}\Sigma_{g}^{+})`` potentials.es}ng)
+```
+The parametrization of the exchange energy difference between singlet ``(^{3}\Sigma_{u}^{+})`` and 
+triplet ``(^{1}\Sigma_{g}^{+})`` potential is given by
+```math
+    J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right).
+```
 """
 function silvera_goldman_triplet(r::T) where T<:Real 
 # ====================================================== 
