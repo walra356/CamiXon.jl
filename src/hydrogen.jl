@@ -356,13 +356,10 @@ end
 #gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]
 
 @doc raw"""
-    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
-    silvera_soldman_triplet(r::T) where T<:Real
-    silvera_goldman_exchange(r::T) where T<:Real
-    silvera_goldman_singlet(r::T) where T<:Real 
+    silvera_goldman_triplet(r::T) where T<:Real
 
-Parametrization of the singlet ``(^{3}\Sigma_{u}^{+})`` and triplet ``(^{1}\Sigma_{g}^{+})`` potentials of the electronic 
-ground state of H$\sub(2)$ (see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)).
+Parametrization of the triplet ``(^{1}\Sigma_{g}^{+})`` potential of the electronic 
+ground state of ``\mathrm{H}_{2}``, 
 
 The triplet potential is given by
 
@@ -371,16 +368,12 @@ The triplet potential is given by
 ```
 where 
 ```math
-   F(r)&=\begin{cases}
+   F(r) = \begin{cases}
 \mathrm{exp}\left[-\left(\frac{10.04}{r}-1\right)^{2}\right] & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}\\
 1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}
 \end{cases}
 ```
-The parametrization of the exchange energy difference between singlet ``(^{3}\Sigma_{u}^{+})`` and 
-triplet ``(^{1}\Sigma_{g}^{+})`` potential is given by
-```math
-    J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right).
-```
+see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
 function silvera_goldman_triplet(r::T) where T<:Real 
 # ====================================================== 
@@ -396,6 +389,17 @@ function silvera_goldman_triplet(r::T) where T<:Real
     return o
 
 end
+
+@doc raw"""
+    silvera_goldman_exchange(r::T) where T<:Real
+
+Parametrization of the exchange energy difference between the singlet ``(^{3}\Sigma_{u}^{+})`` and 
+triplet ``(^{1}\Sigma_{g}^{+})`` potentials  of ``\mathrm{H}_{2}``, 
+```math
+    J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right)
+```
+see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
+"""
 function silvera_goldman_exchange(r::T) where T<:Real 
 # ====================================================== 
 #    I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)
@@ -408,6 +412,17 @@ function silvera_goldman_exchange(r::T) where T<:Real
     return o
 
 end
+
+@doc raw"""
+    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
+    silvera_goldman_singlet(r::T) where T<:Real 
+
+Parametrization of the singlet ``(^{3}\Sigma_{u}^{+})`` potential  of ``\mathrm{H}_{2}``, 
+```math
+   V_{s}(r)=V_{t}(r)-J(r)
+```
+
+"""
 function silvera_goldman_singlet(r::T) where T<:Real 
 
     U = silvera_goldman_triplet(r)
@@ -417,6 +432,14 @@ function silvera_goldman_singlet(r::T) where T<:Real
     return o
 
 end
+
+
+@doc raw"""
+    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
+
+Parametrization of the singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}`` 
+for given rolational angular momentum ℓ.
+"""
 function silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
 
     me = 9.1093837139e-31

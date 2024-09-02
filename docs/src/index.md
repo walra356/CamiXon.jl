@@ -115,6 +115,9 @@ RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 silvera_goldman_triplet(r::T) where T<:Real
+silvera_goldman_singlet(r::T) where T<:Real
+silvera_goldman_exchange(r::T) where T<:Real
+silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
 ```
 
 ## Thermodynamic properties
