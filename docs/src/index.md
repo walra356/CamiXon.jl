@@ -26,8 +26,8 @@ The starting point is the 1D Schrödinger equation,
 ```math
 \tilde{χ}_{l}^{′′}+2[Z_{\mathrm{eff}}(ρ)/ρ-l(l+1)/2ρ^{2}+ε_{l}]\tilde{χ}_{l}=0,
 ```
-where $\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)$ is the reduced
-radial wavefunction and $ε_{l}=-κ _{l}^{2}$ is the
+where ``\tilde{\chi}_{l}(\rho)=\rho\tilde{R}_{l}(\rho)`` is the reduced
+radial wavefunction and ``ε_{l}=-κ _{l}^{2}`` is the
 corresponding binding energy in Hartree atomic units (a.u.). As compared
 to the hydrogenic case, the atomic number ``Z`` has been replaced by
 ``Z_{\mathrm{eff}}(ρ)``, the *effective nuclear charge* at radial distance
@@ -100,7 +100,7 @@ castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```
-### Hydrogen
+## Hydrogen
 
 ```@docs
 bohrformula(Z::Int, n::Int)
@@ -109,7 +109,7 @@ reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Rea
 restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 demo_hydrogen(; n=3, ℓ=2)
 ```
-#### Some special cases
+### Some special cases
 ```@docs
 RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2s(Z::U, r::T) where {U <: Real, T <:Real}

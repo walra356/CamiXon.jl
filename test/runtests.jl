@@ -8,8 +8,8 @@ import CamiMath
 using LinearAlgebra
 using Test
 
-@testset "CamiXon.jl" begin
-    codata = castCodata(2022) 
+@testset "CamiXon.jl" begin 
+    codata = castCodata(2022)
     codata = castCodata(2018)
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=2, ℓ=0; msg=false)
@@ -172,6 +172,12 @@ using Test
     @test CGC(3, 0, 4, -1, 5, -1; msg=true) == parse(BigFloat, "-0.36364052611670255269921486774521555203216489725107181148303161368088211274565")
     @test threeJsymbol(3, 0, 4, -1, 5, 1; msg=true) == parse(BigFloat, "-0.1096417439724123565166029917781360897459044055433631161836138910409772907333476")
     @test latexIsotopeTable(1:10) == latexIsotopeTable(1,10)
-    @test latexIsotopeTable(11:22; continuation=true) == latexIsotopeTable(11,22; continuation=true)
+    @test latexIsotopeTable(11:22; continuation=true) == latexIsotopeTable(11,22; continuation=true) 
+    @test silvera_goldman_triplet(10) == -7.71843646003074e-6
+    @test silvera_goldman_singlet(10) == -8.696198020341206e-6
+    @test silvera_goldman_exchange(10) == 9.777615603104656e-7
+    grid = castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
+    @test silvera_goldman_potential(grid; ℓ=0, S=1)[700] == -1.2954953056510744e-6
+    @test silvera_goldman_potential(grid; ℓ=0, S=0)[700] == -0.00020738307676731113
 
 end
