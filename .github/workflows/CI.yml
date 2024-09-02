@@ -22,7 +22,13 @@ jobs:
         arch:
           - x64
     steps:
-      - uses: actions/checkout@v4
+      #- uses: actions/checkout@v4      
+      - uses: actions/checkout@main
+      - uses: codecov/codecov-action@v3
+        with:
+          #fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }} # required
+          verbose: true # optional (default = false)
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
