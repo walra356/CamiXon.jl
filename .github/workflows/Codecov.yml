@@ -1,11 +1,8 @@
 codecov: 
-  - name: Upload coverage to Codecov
-    uses: codecov/codecov-action@v4
-      env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     token: 478dfc31-6769-4c04-8b5d-1156d0f76d43
     bot: "codecov-io"
-    ci: "github.com"
+    ci: 
+      - "github.com"
     strict_yaml_branch: "yaml-config"
     max_report_age: 24
     disable_default_path_fixes: no
@@ -16,8 +13,3 @@ codecov:
 
     
     
-coverage:
-  range: 60..80
-  round: down
-  precision: 2
-
