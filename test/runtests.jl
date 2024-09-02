@@ -9,7 +9,7 @@ using LinearAlgebra
 using Test
 
 @testset "CamiXon.jl" begin
-    codata = castCodata(2022)
+    codata = castCodata(2022) 
     codata = castCodata(2018)
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=2, ℓ=0; msg=false)
