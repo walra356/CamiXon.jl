@@ -47,14 +47,7 @@ jobs:
           - html
 
     steps:
-      #- uses: actions/checkout@v4
-      - uses: actions/checkout@main
-        name: Check out repository
-      - uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: true # optional (default = false)
-          token: ${{ secrets.CODECOV_TOKEN }} # required
-          verbose: true # optional (default = false)
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         name: Set up Node.js
         with:
