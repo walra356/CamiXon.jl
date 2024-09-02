@@ -38,7 +38,7 @@ jobs:
           file: lcov.info
 
   docs:
-    name: 'Documentation: ${{ matrix.format }}'
+    name: 'Documentation: ${{ matrix.format }}' 
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
