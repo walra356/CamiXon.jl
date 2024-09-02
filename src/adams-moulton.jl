@@ -48,7 +48,7 @@ function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
         o[n][2,2] = r′[n] * two * num / r[n]               # d in Johnson (2.69)
     end
 
-    r1 = T(1.0e-100)  # quasi zero
+    r1 = T(eps(Float64))  # quasi zero
     o[1][2,1] = r′[1] * two * (-E - Zval / r1 + s[1])
     o[1][2,2] = r′[1] * two * num / r1
 

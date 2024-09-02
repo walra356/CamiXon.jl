@@ -114,6 +114,7 @@ demo_hydrogen(; n=3, ℓ=2)
 RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2p(Z::U, r::T) where {U <: Real, T <:Real}
+silvera_goldman_triplet(r::T) where T<:Real
 ```
 
 ## Thermodynamic properties

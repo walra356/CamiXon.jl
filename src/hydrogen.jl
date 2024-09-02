@@ -354,3 +354,85 @@ end
 
 #χHe1s(r) = 4.0 * sqrt(2) * r * exp(-2.0r) + im * 4.0 * sqrt(2) * exp(-2.0r) * (1 - 2.0r)
 #gridHe1s(grid) = [χHe1s(grid.r[n]) for n=1:grid.N]
+
+@doc raw"""
+    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
+    silvera_soldman_triplet(r::T) where T<:Real
+    silvera_goldman_exchange(r::T) where T<:Real
+    silvera_goldman_singlet(r::T) where T<:Real 
+
+Parametrization of the singlet ``(^{3}\Sigma_{u}^{+})`` and triplet ``(^{1}\Sigma_{g}^{+})`` potentials of the electronic 
+ground state of H\sub(2) (see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)).
+
+The triplet potential is given by
+
+```math
+   Vt(r) = exp(0.09678 - 1.10173 * r - 0.03945 * r^2) + Fr * (-6.5/r^6-124.0/r^8-3285.0/r^10)
+```
+where 
+```math
+   F(r)&=\begin{cases}
+    
+\mathrm{exp}\left[-\left(\frac{10.04}{r}-1\right)^{2}\right] & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}\\    
+1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.    }
+\end{cases}
+
+
+Parametrization of the exchange energy between the singlet ``(^{3}\Sigma_{u}^{+})`` and triplet ``(^{1}\Sigma_{g}^{+})`` potentials.es}ng)
+"""
+function silvera_goldman_triplet(r::T) where T<:Real 
+# ====================================================== 
+#    I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)
+#
+#    Hartree: 219474.6 cm-1    
+# ======================================================
+
+    Fr = r > 10.04 ? 1.0 : exp(-(10.04/r-1.0)^2)
+   
+    o = exp(0.09678 - 1.10173 * r - 0.03945 * r^2) + Fr * (-6.5/r^6-124.0/r^8-3285.0/r^10)
+
+    return o
+
+end
+function silvera_goldman_exchange(r::T) where T<:Real 
+# ====================================================== 
+#    I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980)
+#
+#    Hartree: 219474.6 cm-1    
+# ====================================================== 
+   
+    o = exp(-0.288 - 0.275 * r - 0.176 * r^2 + 0.0068 * r^3) 
+
+    return o
+
+end
+function silvera_goldman_singlet(r::T) where T<:Real 
+
+    U = silvera_goldman_triplet(r)
+    J = silvera_goldman_exchange(r)
+    o = U - J
+
+    return o
+
+end
+function silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
+
+    me = 9.1093837139e-31
+    mp = 1.007276466926 * 1.66054e-27
+    mc = 2me/mp # conversion from molecular reduced units to Hartree a.u.
+
+    if iszero(S)
+        o = [silvera_goldman_singlet(grid.r[i]) for i=1:grid.N]    # singlet potential
+    else
+        o = [silvera_goldman_triplet(grid.r[i]) for i=1:grid.N]    # triplet potential
+    end
+    
+    if ℓ > 0
+        num = convert(T, ℓ*(ℓ + 1)) * mc
+        rot = [num*(grid.r[i])^-2 for i=1:grid.N]
+        o .+= rot
+    end
+
+    return o
+    
+end

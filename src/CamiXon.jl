@@ -125,6 +125,10 @@ export hydrogenic_reduced_wavefunction
 export RH1s
 export RH2s
 export RH2p
+export silvera_goldman_triplet
+export silvera_goldman_singlet
+export silvera_goldman_exchange
+export silvera_goldman_potential
 export restore_wavefunction
 export reduce_wavefunction
 

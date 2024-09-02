@@ -134,7 +134,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     Z = convert(T, Z)
     num = convert(T, ℓ*(ℓ + 1)//2)
 
-    r1 = T(1.0e-100)  # quasi zero
+    r1 = T(eps(Float64))  # quasi zero
     pot = ℓ > 0 ? [(-Z + num/r[n])/r[n] for n=1:N] : [-Z/r[n] for n=1:N]
     pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
     pot = convert.(T,pot)
