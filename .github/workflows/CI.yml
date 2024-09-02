@@ -62,5 +62,6 @@ jobs:
       - name: Build the manual
         run: julia --color=yes --project=docs/ docs/make.jl
         env:
+          CODECOV_TOKEN=478dfc31-6769-4c04-8b5d-1156d0f76d43
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
