@@ -1,15 +1,14 @@
 codecov: 
-      token: "478dfc31-6769-4c04-8b5d-1156d0f76d43"
-  bot: "codecov-io"
-  ci:
-    - "github.com"
-  strict_yaml_branch: "yaml-config"
-  max_report_age: 24
-  disable_default_path_fixes: no
-  require_ci_to_pass: yes
-  notify:
-    after_n_builds: 2
-    wait_for_ci: yes
+    token: 478dfc31-6769-4c04-8b5d-1156d0f76d43
+    bot: "codecov-io"
+    ci: "github.com"
+    strict_yaml_branch: "yaml-config"
+    max_report_age: 24
+    disable_default_path_fixes: no
+    require_ci_to_pass: yes
+    notify:
+        after_n_builds: 2
+        wait_for_ci: yes
     
 coverage:
   range: 60..80
