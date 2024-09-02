@@ -44,7 +44,7 @@ jobs:
       fail-fast: false
       matrix:
         format:
-          - html
+          - html 
 
     steps:
       - uses: actions/checkout@v4
