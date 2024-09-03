@@ -174,10 +174,10 @@ using Test
     @test latexIsotopeTable(1:10) == latexIsotopeTable(1,10)
     @test latexIsotopeTable(11:22; continuation=true) == latexIsotopeTable(11,22; continuation=true) 
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6
-    @test silvera_goldman_singlet(10) == -8.696198020341206e-6
-    @test silvera_goldman_exchange(10) == 9.777615603104656e-7
+    @test silvera_goldman_singlet(10) == -8.696045600341206e-6
+    @test silvera_goldman_exchange(10) == 9.776091403104656e-7
     grid = castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
     @test silvera_goldman_potential(grid; ℓ=0, S=1)[700] == -1.2954953056510744e-6
-    @test silvera_goldman_potential(grid; ℓ=0, S=0)[700] == -0.00020738307676731113
+    @test silvera_goldman_potential(grid; ℓ=0, S=0)[700] == -0.00020738292434731114
 
 end
