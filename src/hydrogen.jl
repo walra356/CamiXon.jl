@@ -358,8 +358,8 @@ end
 @doc raw"""
     silvera_goldman_triplet(r::T) where T<:Real
 
-Parametrization in *Hartree a.u.* of the triplet ``(^{3}\Sigma_{u}^{+})`` potential of the electronic 
-ground state of ``\mathrm{H}_{2}``, 
+Parametrization in *Hartree* a.u. of the triplet ``(^{3}\Sigma_{u}^{+})`` potential of the electronic 
+ground state of ``\mathrm{H}_{2}`` (Eh = 219474.6 cm-1), 
 
 ```math
    V_{t}(r)=\mathrm{exp}\left(0.09678-1.10173\thinspace r-0.0394\thinspace r^{2}\right)+F(r)\left(-6.5\thinspace r^{-6}-124\thinspace r^{-8}-3285r^{-10}\thinspace \right)
@@ -370,7 +370,6 @@ ground state of ``\mathrm{H}_{2}``,
 1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}
 \end{cases}
 ```
-N.B. Eh = 219474.6 cm-1
 see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
 function silvera_goldman_triplet(r::T) where T<:Real 
@@ -391,7 +390,7 @@ end
 @doc raw"""
     silvera_goldman_exchange(r::T) where T<:Real
 
-Parametrization in *Hartree a.u." of the exchange energy difference between singlet ``(^{3}\Sigma_{u}^{+})`` 
+Parametrization in *Hartree* a.u. of the exchange energy difference between singlet ``(^{3}\Sigma_{u}^{+})`` 
 and triplet ``(^{1}\Sigma_{g}^{+})`` potentials  of ``\mathrm{H}_{2}`` (Eh = 219474.6 cm-1), 
 ```math
     J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right)
@@ -415,11 +414,10 @@ end
 @doc raw"""
     silvera_goldman_singlet(r::T) where T<:Real 
 
-Parametrization in *Hartree a.u." of the singlet ``(^{1}\Sigma_{g}^{+})`` potential (in Hartee a.u.) of ``\mathrm{H}_{2}``, 
+Parametrization in *Hartree* a.u. of the singlet ``(^{1}\Sigma_{g}^{+})`` potential of ``\mathrm{H}_{2}`` (Eh = 219474.6 cm-1), 
 ```math
    V_{s}(r)=V_{t}(r)-J(r)
 ```
-N.B. Eh = 219474.6 cm-1
 see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
 function silvera_goldman_singlet(r::T) where T<:Real 
@@ -436,8 +434,8 @@ end
 @doc raw"""
     silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
 
-Grid representation of the singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}`` 
-for given rolational angular momentum ℓ.
+Grid representation of singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}`` 
+for given angular momentum ℓ.
 """
 function silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
 
