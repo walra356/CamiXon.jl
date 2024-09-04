@@ -153,10 +153,13 @@ struct Codata
       NA::Value
      Kcd::Value
       me::Value
+      mp::Value
       R∞::Value
       Ry::Value
       Eh::Value
        α::Value
+      μB::Value
+      μN::Value
       μ0::Value
       ε0::Value
       KJ::Value
@@ -194,7 +197,8 @@ function castCodata(year::Int)
         kB = Value(1.380649e-23, "J K" * sup(-1))
         NA = Value(6.02214076e23, "mol" * sup(-1))
         Kcd = Value(683, "lm W" * sup(-1))
-        me = Value(9.1093837139e-31, "Kg")
+        me = Value(9.1093837139e-31, "kg")
+        mp = Value(1.67262192595e-27, "kg")
         R∞ = Value(10973731.568157, "m" * sup(-1))
         u = Value(1.66053906892e-27, "kg")
     elseif year == 2018
@@ -206,7 +210,8 @@ function castCodata(year::Int)
         kB = Value(1.380649e-23, "J K" * sup(-1))
         NA = Value(6.02214076e23, "mol" * sup(-1))
         Kcd = Value(683, "lm W" * sup(-1))
-        me = Value(9.1093837015e-31, "Kg")
+        me = Value(9.1093837015e-31, "kg")
+        mp = Value(1.67262192595e-27, "kg")
         R∞ = Value(10973731.568160, "m" * sup(-1))
         u = Value(1.66053906660e-27, "kg")
     else
@@ -221,6 +226,9 @@ function castCodata(year::Int)
     KJ = Value(2e.val / h.val, "Hz V" * sup(-1))
     RK = Value(h.val / e.val / e.val, "Ω")
     R = Value(NA.val * kB.val, "J mol" * sup(-1) * "K" * sup(-1))
+    a0 = Value(ħ.val/ α.val / me.val/ c.val, "m")
+    μB = Value(e.val * ħ.val / 2.0 / me.val, "J T" * sup(-1))
+    μN = Value(e.val * ħ.val / 2.0 / mp.val, "J T" * sup(-1))
 
     H = 2e-15 * c.val * R∞.val
     J = 1e+15 * h.val
@@ -253,7 +261,7 @@ function castCodata(year::Int)
         end
     end
 
-    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,R∞,Ry,Eh,α,μ0,ε0,KJ,RK,R,u,M)
+    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,mp,R∞,Ry,Eh,α,μB,μN,μ0,ε0,KJ,RK,R,u,M)
 
     return o
 
@@ -268,7 +276,6 @@ Method to list the fields of [`Codata`](@ref) by their symbolic name
 #### Example:
 ```
 julia> codata = castCodata(2018);
-
 julia> listCodata(codata)
 ∆νCs = 9192631770 Hz      - ¹³³Cs hyperfine transition frequency
    c = 299792458 m s⁻¹    - speed of light in vacuum
@@ -278,11 +285,14 @@ julia> listCodata(codata)
   kB = 1.38065e-23 J K⁻¹  - Boltzmann constant
   NA = 6.02214e23 mol⁻¹   - Avogadro constant
  Kcd = 683 lm W⁻¹         - Luminous efficacy
-  mₑ = 9.10938e-31 Kg     - electron rest mass
+  mₑ = 9.10938e-31 kg     - electron mass
+  mₚ = 9.10938e-31 kg     - proton mass
   R∞ = 1.09737e7 m⁻¹      - Rydberg constant
   Ry = 3.28984e15 Hz      - Rydberg frequency
-  Eₕ = 4.35974e-18 Hartree a.u. - Hartree atomic unit
+  Eₕ = 4.35974e-18 J      - Hartree atomic unit
    α = 0.00729735         - fine-structure constant
+  μB = 9.27401e-24 J T⁻¹  - Bohr magneton
+  μN = 5.05078e-27 J T⁻¹  - nuclear magneton
   μ₀ = 1.25664e-6 N A⁻²   - magnetic permitivity of vacuum
   ε₀ = 8.85419e-12 F m⁻¹  - electric permitivity of vacuum
   KJ = 4.83598e14 Hz V⁻¹  - Josephson constant
@@ -305,11 +315,14 @@ function listCodata(codata::Codata; msg=true)
       kB = NamedValue(codata.kB, "kB", "Boltzmann constant")
       NA = NamedValue(codata.NA, "NA", "Avogadro constant")
      Kcd = NamedValue(codata.Kcd, "Kcd", "Luminous efficacy")
-      me = NamedValue(codata.me, "m"*sub("e"), "electron rest mass")
+      me = NamedValue(codata.me, "m"*sub("e"), "electron mass")
+      mp = NamedValue(codata.me, "m"*sub("p"), "proton mass")
       R∞ = NamedValue(codata.R∞, "R∞", "Rydberg constant")
       Ry = NamedValue(codata.Ry, "Ry", "Rydberg frequency")
       Eh = NamedValue(codata.Eh, "E"*sub("h"), "Hartree atomic unit")
        α = NamedValue(codata.α, "α", "fine-structure constant")
+      μB = NamedValue(codata.μB, "μB", "Bohr magneton")
+      μN = NamedValue(codata.μN, "μN", "nuclear magneton")
       μ0 = NamedValue(codata.μ0, "μ"*sub(0), "magnetic permitivity of vacuum")
       ε0 = NamedValue(codata.ε0, "ε"*sub(0), "electric permitivity of vacuum")
       KJ = NamedValue(codata.KJ, "KJ", "Josephson constant")
@@ -317,7 +330,7 @@ function listCodata(codata::Codata; msg=true)
        R = NamedValue(codata.R, "R", "Molar gas constant")
        u = NamedValue(codata.u, "u", "unified atomic mass unit")
 
-    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, R∞, Ry, Eh, α, μ0, ε0, KJ, RK, R, u]
+    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, mp, R∞, Ry, Eh, α, μB, μN, μ0, ε0, KJ, RK, R, u]
 
     str = ""
     for i ∈ eachindex(U)
