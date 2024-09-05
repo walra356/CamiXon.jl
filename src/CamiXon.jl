@@ -129,6 +129,7 @@ export silvera_goldman_triplet
 export silvera_goldman_singlet
 export silvera_goldman_exchange
 export silvera_goldman_potential
+export rotbarrier
 export restore_wavefunction
 export reduce_wavefunction
 

@@ -177,7 +177,8 @@ using Test
     @test silvera_goldman_singlet(10) == -8.696045600341206e-6
     @test silvera_goldman_exchange(10) == 9.776091403104656e-7
     grid = castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
-    @test silvera_goldman_potential(grid; ℓ=0, S=1)[700] == -1.2954953056510744e-6
-    @test silvera_goldman_potential(grid; ℓ=0, S=0)[700] == -0.00020738292434731114
+    @test silvera_goldman_potential(grid; S=1)[700] == -1.2954953056510744e-6
+    @test silvera_goldman_potential(grid; S=0)[700] == -0.00020738292434731114
+    @test rotbarrier(grid; ℓ=1)[700] == 0.040933194979134294
 
 end

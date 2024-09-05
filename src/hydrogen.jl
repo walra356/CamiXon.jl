@@ -365,7 +365,7 @@ ground state of ``\mathrm{H}_{2}`` (Eh = 219474.6 cm-1),
    V_{t}(r)=\mathrm{exp}\left(0.09678-1.10173\thinspace r-0.0394\thinspace r^{2}\right)+F(r)\left(-6.5\thinspace r^{-6}-124\thinspace r^{-8}-3285r^{-10}\thinspace \right)
 ```
 ```math
-   \mathrm{where}\,\,\,\,\,\,\,\,\, F(r) = \begin{cases}
+   \mathrm{where}\ \ \ \ \ \ \ \  F(r) = \begin{cases}
 \mathrm{exp}\left[-\left(\frac{10.04}{r}-1\right)^{2}\right] & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}\\
 1 & \mathrm{for}\,\,\,r<10.04\,\mathrm{a.u.}
 \end{cases}
@@ -432,27 +432,48 @@ end
 
 
 @doc raw"""
-    silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
+    silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
 
-Grid representation of singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}`` 
-for given angular momentum ℓ.
+Grid representation in *Hartree* a.u. of the singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}``,
+```math
+    \mathcal{V}(r)=V_{D}(r)+J(r)\mathbf{s}_{1}\cdot\mathbf{s}_{2},
+```
+where ``\mathbf{S} = \mathbf{s}_{1}+\mathbf{s}_{2}`` and 
+```math
+    V_{D}(r)=\frac{1}{4}[V_{s}(r)+3V_{t}(r)] \ \mathrm{and}\ J(r)=V_{t}(r)-V_{s}(r)
+```
+are known as the direct and exchange contribution, respectively.
+    
+see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
-function silvera_goldman_potential(grid::Grid{T}; ℓ=0, S=0) where T<:Real
-
-    me = 9.1093837139e-31
-    mp = 1.007276466926 * 1.66054e-27
-    mc = 2me/mp # conversion from molecular reduced units to Hartree a.u.
+function silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
 
     if iszero(S)
         o = [silvera_goldman_singlet(grid.r[i]) for i=1:grid.N]    # singlet potential
     else
         o = [silvera_goldman_triplet(grid.r[i]) for i=1:grid.N]    # triplet potential
     end
+
+    return o
     
+end
+
+@doc raw"""
+    rotbarrier(grid::Grid{T}; ℓ=0) where T<:Real
+
+Grid representation of rotational barrier potential in wavenumber notation,
+```math
+\frac{\ell(\ell+1)}{r^{2}},
+``` 
+where ℓ is the rotational quantum number.
+"""
+function rotbarrier(grid::Grid{T}; ℓ=0) where T<:Real
+
     if ℓ > 0
-        num = convert(T, ℓ*(ℓ + 1)) * mc
-        rot = [num*(grid.r[i])^-2 for i=1:grid.N]
-        o .+= rot
+        num = convert(T, ℓ*(ℓ + 1))
+        o = [num*(grid.r[i])^-2 for i=1:grid.N]
+    else
+        o = zeros(T, grid.N)
     end
 
     return o
