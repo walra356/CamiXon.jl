@@ -441,8 +441,8 @@ where ``\mathbf{S} = \mathbf{s}_{1}+\mathbf{s}_{2}`` and
 ```math
     V_{D}(r)=\frac{1}{4}[V_{s}(r)+3V_{t}(r)] \ \mathrm{and}\ J(r)=V_{t}(r)-V_{s}(r)
 ```
-are known as the direct and exchange contribution, respectively. Here ``Vs{t}`` is the singlet potential ([`silvera_goldman_singlet`](@ref)), 
-``V_{t}`` is the triplet potential ([`silvera_goldman_triplet`](@ref)) and ``J(r)`` is the exchange ([`silvera_goldman_exchange`](@ref)).
+are known as the direct and exchange contribution, respectively. For ``V{s}`` see [`silvera_goldman_singlet`](@ref), 
+for ``V_{t}`` see [`silvera_goldman_triplet`](@ref) and for ``J(r)`` see [`silvera_goldman_exchange`](@ref).
     
 see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
