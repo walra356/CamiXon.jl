@@ -395,7 +395,6 @@ and triplet ``(^{1}\Sigma_{g}^{+})`` potentials  of ``\mathrm{H}_{2}`` (Eh = 219
 ```math
     J(r)=\mathrm{exp}\left(-0.288-0.275\thinspace r-0.176\thinspace r^{2}+0.0068\thinspace r^{3}\right)
 ```
-N.B. Eh = 219474.6 cm-1
 see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
 function silvera_goldman_exchange(r::T) where T<:Real 
@@ -418,7 +417,7 @@ Parametrization in *Hartree* a.u. of the singlet ``(^{1}\Sigma_{g}^{+})`` potent
 ```math
    V_{s}(r)=V_{t}(r)-J(r)
 ```
-see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
+where ``V_{t}`` is the triplet potential ([`silvera_goldman_triplet`](@ref)) and ``J(r)`` is the exchange contribution ([`silvera_goldman_triplet`](@ref)).
 """
 function silvera_goldman_singlet(r::T) where T<:Real 
 
@@ -463,7 +462,7 @@ end
 
 Grid representation of rotational barrier potential in wavenumber notation,
 ```math
-\frac{\ell(\ell+1)}{r^{2}},
+V_{rot}(r) = \frac{\ell(\ell+1)}{r^{2}},
 ``` 
 where ℓ is the rotational quantum number.
 """
