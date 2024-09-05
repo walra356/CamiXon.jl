@@ -158,6 +158,7 @@ struct Codata
       Ry::Value
       Eh::Value
        α::Value
+      a0::Value
       μB::Value
       μN::Value
       μ0::Value
@@ -261,7 +262,7 @@ function castCodata(year::Int)
         end
     end
 
-    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,mp,R∞,Ry,Eh,α,μB,μN,μ0,ε0,KJ,RK,R,u,M)
+    o = Codata(∆νCs,c,h,ħ,e,kB,NA,Kcd,me,mp,R∞,Ry,Eh,α,a0,μB,μN,μ0,ε0,KJ,RK,R,u,M)
 
     return o
 
@@ -321,6 +322,7 @@ function listCodata(codata::Codata; msg=true)
       Ry = NamedValue(codata.Ry, "Ry", "Rydberg frequency")
       Eh = NamedValue(codata.Eh, "E"*sub("h"), "Hartree atomic unit")
        α = NamedValue(codata.α, "α", "fine-structure constant")
+      a0 = NamedValue(codata.a0, "a0", "Bohr radius")
       μB = NamedValue(codata.μB, "μB", "Bohr magneton")
       μN = NamedValue(codata.μN, "μN", "nuclear magneton")
       μ0 = NamedValue(codata.μ0, "μ"*sub(0), "magnetic permitivity of vacuum")
@@ -330,7 +332,7 @@ function listCodata(codata::Codata; msg=true)
        R = NamedValue(codata.R, "R", "Molar gas constant")
        u = NamedValue(codata.u, "u", "unified atomic mass unit")
 
-    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, mp, R∞, Ry, Eh, α, μB, μN, μ0, ε0, KJ, RK, R, u]
+    U =  [∆νCs, c, h, ħ, e, kB, NA, Kcd, me, mp, R∞, Ry, Eh, α, a0, μB, μN, μ0, ε0, KJ, RK, R, u]
 
     str = ""
     for i ∈ eachindex(U)
