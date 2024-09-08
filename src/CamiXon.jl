@@ -120,6 +120,7 @@ export adams_moulton_solve
 export adams_moulton_prepare
 export adams_moulton_iterate
 export adams_moulton_master
+
 export demo_hydrogen
 export hydrogenic_reduced_wavefunction
 export RH1s
@@ -186,8 +187,8 @@ include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")
 include("hydrogen.jl")
-include("outsch.jl")
 include("adams.jl")
+include("outsch.jl")
 include("insch.jl")
 include("Coulomb_Integrals.jl")
 include("adams-moulton.jl")

@@ -126,6 +126,38 @@ function adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
 
 end
 
+
+function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    am = def.am
+    k = def.k
+
+    Minv = adams.Minv
+    G = adams.G
+
+    N  = def.pos.N
+    Na = def.pos.Na
+    Nb = def.pos.Nb
+    Nuctp = def.pos.Nuctp
+
+    for n=Na:Nuctp-1
+        P = am[1:k] ⋅ [G[n+1-k+j][1,2] * imag(Z[n+1-k+j]) for j=0:k-1]
+        Q = am[1:k] ⋅ [G[n+1-k+j][2,1] * real(Z[n+1-k+j]) for j=0:k-1]
+        z = Z[n] + (P + Q*im)
+        z = Minv[n+1] * [real(z), imag(z)]
+        Z[n+1] = z[1] + z[2]*im
+    end
+
+    norm = abs(real(Z[Nuctp]))
+
+    Z[1:Nuctp] /= norm    # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
+
+    #def.pos.Na = get_Na(Z, def)
+
+    return Z
+
+end
+
 # ======================= adams_moulton_inward section =========================
 
 function _prepend!(Z2, n, m, G, am, k)
@@ -175,6 +207,66 @@ function adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T})
 
 end
 function adams_moulton_inward_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    N = grid.N
+    k = grid.k
+    Z = adams.Z
+    Nuctp = def.pos.Nuctp
+    sgn = isodd(def.orbit.n′) ? -1.0 : 1.0
+
+    Z2 = INSCH(E, grid, def, adams)
+
+    for n=N-k-1:-1:Nuctp
+        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
+    end
+
+    norm = abs(real(Z2[1]))
+    Z2 /= norm
+    Z2 *= sgn             # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
+
+    ΔQ = imag(Z[Nuctp]) - imag(Z2[1])
+
+    Z[Nuctp:N] = Z2
+
+    #def.pos.Na = get_Na(Z, def)
+    #def.pos.Nb = get_Nb(Z, def)
+
+    return ΔQ, Z
+
+end
+
+
+function adams_moulton_inward!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+    N = grid.N
+    k = grid.k
+    Z = adams.Z
+    Nuctp = def.pos.Nuctp
+    sgn = isodd(def.orbit.n′) ? -1.0 : 1.0
+
+    Z2 = INSCH(E, grid, def, adams)
+    Nb = def.pos.Nb
+
+    Nb+k ≤ N || error("Error: grid boost required (increase NBoost)")
+    for n=Nb-1:-1:Nuctp
+        _prepend!(Z2, n, adams.Minv, adams.G, def.am, k)
+    end
+
+    norm = abs(real(Z2[1]))
+    Z2 /= norm
+    Z2 *= sgn             # set amplitude at u.c.t.p. to +1/-1 (nodes even/odd)
+
+    ΔQ = imag(Z[Nuctp]) - imag(Z2[1])
+
+    Z[Nuctp:N] = Z2
+
+    #def.pos.Na = get_Na(Z, def)
+    #def.pos.Nb = get_Nb(Z, def)
+
+    return ΔQ, Z
+
+end
+function adams_moulton_inward_WJ!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     N = grid.N
     k = grid.k
@@ -566,3 +658,4 @@ function adams_moulton_master(E, grid, def; Δν=Value(1,"kHz"), imax=25, msg=fa
     return E, Z
 
 end
+

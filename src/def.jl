@@ -193,7 +193,7 @@ end
 
 Grid index of the starting point for outward numerical integration. This is
 `k+1` or the point marking the end of the quasiclassical region below the
-lower classical turning point (`lctp`) as marked by the WKB threshold value
+lower classical turning point (`lctp`) as determined by the WKB threshold value
 (`def.pos.cWKB`).
 #### Example:
 ```
@@ -233,9 +233,9 @@ end
 @doc raw"""
     get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 
-Grid index of the stopping for outward numerical integration. This is `N-k-1`
+Grid index of the stopping point for outward numerical integration. This is `N-k-1`
 or the point marking the start of the quasiclassical region above the
-upper classical turning point (`Nuctp`) as marked by the WKB threshold value
+upper classical turning point (`Nuctp`) as determined by the WKB threshold value
 (`def.pos.cWKB`).
 #### Example:
 ```

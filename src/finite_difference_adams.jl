@@ -218,7 +218,7 @@ function fdiff_adams_bashford_expansion_coeff(k::Int; T=Int, msg=true)
     # ========================== create_adams_bashford_weights(k)====================
 
 @doc raw"""
-create_adams_bashford_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
+    create_adams_bashford_weights(k::Int [; rationalize=false [, devisor=false [, T=Int]]])
 
 ``k^{th}``-order Adams-Bashford weights vector ``b^k \equiv[b_k^k,⋯\ b_0^k]``. 
 Note the *reversed* order, which corresponds to the order of use in the summation below,

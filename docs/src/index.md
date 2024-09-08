@@ -102,6 +102,8 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```
 ## Hydrogen
 
+### Atomic properties
+
 ```@docs
 bohrformula(Z::Int, n::Int)
 hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
@@ -109,11 +111,15 @@ reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Rea
 restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
 demo_hydrogen(; n=3, ℓ=2)
 ```
-### Some special cases
+#### Some special cases
 ```@docs
 RH1s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 RH2p(Z::U, r::T) where {U <: Real, T <:Real}
+```
+
+### Molecular properties
+```@docs
 silvera_goldman_triplet(r::T) where T<:Real
 silvera_goldman_singlet(r::T) where T<:Real
 silvera_goldman_exchange(r::T) where T<:Real

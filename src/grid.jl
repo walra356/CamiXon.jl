@@ -1,4 +1,102 @@
-# ========== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
+# ======================== gridfunction(n, h; deriv=0) =========================
+
+function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
+    # ==============================================================================
+    #  gridfunction(n, h) = (exp((n-1) * h)-1.0) # gridfunction from Walter Johnson
+    # ==============================================================================
+        deriv ≥ 0 || return 0.0
+    
+        f = deriv > 0 ? h^(deriv)*exp(n*h) : exp(n*h)-1
+    
+        return f
+    
+    end
+    
+    # ..............................................................................
+    
+    function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
+    # ==============================================================================
+    # jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential 
+    # ==============================================================================
+        deriv ≥ 0 || return T(0)
+        deriv ≤ p || return T(0)
+    
+        nul = T(0)
+    
+        f = deriv > 0 ? h^(deriv)*CamiMath.texp(n*h, nul, p-deriv) : 
+                                  CamiMath.texp(n*h, nul, p) - 1  
+                                   # note: texp() not exp()
+    
+        return f
+    
+    end
+    
+    # ..............................................................................
+    
+    function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
+    # ==============================================================================
+    #  linear_gridfunction(n, h; deriv) = n * h
+    # ==============================================================================
+        deriv ≥ 0 || return T(0)
+        deriv ≤ 1 || return T(0)
+    
+        f = deriv > 0 ? h : h * n
+    
+        return f
+    
+    end
+    
+    # ........................ gridname(ID) ........................................
+    @doc raw"""
+        gridname(ID::Int)
+    
+    Name corresponding to the grid ID.
+    #### Example:
+    ```
+    n = gridname(2); println("The grid type with ID = 2 is called '$n'.")
+      The grid type with ID = 2 is called 'quasi-exponential'.
+    ```
+    """
+    function gridname(ID::Int)
+    # ==============================================================================
+    #  Name used for `Grid` of given `grid.ID`
+    # ==============================================================================
+    
+        ID == 1 && return "exponential"
+        ID == 2 && return "quasi-exponential"
+        ID == 3 && return "linear (uniform)"
+        ID == 4 && return "polynomial"
+    
+        return error("Error: unknown grid name")
+    
+    end
+    
+    # .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
+    
+    function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
+    
+        Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
+               ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
+               ID == 3 ? r0 * _linear_gridfunction(N, h)  :
+               ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : error("Error: unknown grid type")
+    
+        ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
+        name = gridname(ID::Int)
+        str_h = repr(h, context=:compact => true)
+        str_r0 = repr(r0, context=:compact => true)
+        str_Rmax = repr(Rmax, context=:compact => true)
+        strA = "Grid created: $(name), $(T), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
+    
+        ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
+        ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
+        ID == 3 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
+        ID == 4 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
+    
+        return error("Error: unknown grid type")
+    
+    end
+    
+    # ========== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
 
 """
     Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
@@ -137,12 +235,13 @@ end
 tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1:n]``.
 #### Example:
 ```
-ID = 4 # linear grid
-f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
-grid = castGrid(ID, length(f), Float64; r0=1.0, h=1.0, k=3)  # linear grid
-f′= grid_differentiation(f, grid; k=3); println("f′= $(f′)")
-  Grid created: linear, Float64, Rmax = 6.0 a.u., Ntot = 6, p = 1, h = 1.0, r0 = 1.0
-  f′= [0.0, 2.0, 4.0, 6.0, 7.999999999999998, 9.999999999999993]
+julia> ID = 3; # linear grid
+julia> f = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0];
+julia> grid = castGrid(ID, length(f), Float64; r0=1.0, h=1.0, k=3, msg=true);
+Grid created: linear, Float64, Rmax = 6.0 a.u., Ntot = 6, p = 1, h = 1.0, r0 = 1.0
+
+julia> f′= grid_differentiation(f, grid; k=3); println("f′= $(f′)")
+f′= [0.0, 1.9999999999999991, 4.0, 6.000000000000001, 8.0, 10.0]
 ```
 """
 function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
