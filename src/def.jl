@@ -74,6 +74,7 @@ struct Def{T}
     k::Int                  # Adams-Moulton order
     am::Vector{T}           # Adams-Moulton weight coefficients
     matLD::Matrix{T}        # Lagrangian differentiation matrix
+    Δ::Vector{T}            # temp vector in matMinv
 end
 
 # ========= castDef(grid, atom::Atom, orbit::Orbit, codata::Codata) ============
@@ -145,10 +146,11 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
+    Δ = zeros(T,N)
 
     msg && println(_defspecs(grid, atom, orbit))
 
-    return Def(T, atom, orbit, codata, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
+    return Def(T, atom, orbit, codata, pot, scr, o1, o2, o3, pos, epn, k, am, matLD, Δ)
 
 end
 
