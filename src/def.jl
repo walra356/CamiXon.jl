@@ -56,6 +56,7 @@ Type with fields:
 * `     .k`: Adams-Moulton order (`::Int`)
 * `    .am`: Adams-Moulton weight coefficients (`::Vector{T}`)
 * ` .matLD`: Lagrangian differentiation matrix (`::Matrix{T}`)
+* `     .Δ`: temp vector in matMinv (`::Vector{T}`)
 
 The object `Def` is best created with the function [`castDef`](@ref).
 """
