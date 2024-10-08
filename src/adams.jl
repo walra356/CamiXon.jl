@@ -13,7 +13,7 @@ struct Adams{T}
     G::Vector{Matrix{T}}
     σ::Vector{Matrix{T}}
     Minv::Vector{Matrix{T}}
-    Z::Vector{Complex{T}}
+    Z::Vector{Complex{T}} 
 
 end
 
