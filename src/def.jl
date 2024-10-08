@@ -33,7 +33,7 @@ mutable struct Pos
     Nb::Int
     N::Int
     nodes::Int
-    cWKB::Float64
+    cWKB::Real
 end
 
 # ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============

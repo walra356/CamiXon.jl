@@ -42,10 +42,10 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 end
 
 @doc raw"""
-    updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+    updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 """
-function updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+function updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
     E = convert(def.T, E)
     G = matG(E, grid, def)

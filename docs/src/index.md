@@ -234,7 +234,7 @@ the form of a tabulated function of `N` elements.
 ```@docs
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-updateAdams!(adams::Adams{T}, E, grid::Grid{T}, def::Def{T}) where T<:Real
+updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 initE(def::Def{T}; E=nothing) where T<:Real
 ```
 
