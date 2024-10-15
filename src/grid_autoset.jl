@@ -29,10 +29,12 @@ function autoRmax(atom::Atom, orbit::Orbit)
 #  Discretization range in atomic units
 # ==============================================================================
      n = orbit.n
+     ℓ = orbit.ℓ
     Zc = atom.Zc
 
     #Rmax = 4(n^2+20)/Zc
     Rmax = (2n^2 + 20n + 62)/Zc
+    #Rmax = (3n^2 -ℓ*(ℓ+1))/Zc
 
     return Rmax
 
