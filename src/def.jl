@@ -36,10 +36,51 @@ mutable struct Pos
     cWKB::Real
 end
 
-# ===========   Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ============
+# =========== Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD) ============
 
 @doc raw"""
     Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
+
+Type with fields:
+* `  .atom::Atom`             : atom object
+* ` .orbit::Orbit`            : orbit object
+* `.codata::Codata`           : codata object
+* `   .pot::Vector{T}`        : tabulated potential function
+* `   .scr::Vector{T}`        : tabulated screening function
+*  .potscr::Vector{T}`        : tabulated screened potential function
+* `     .G::Vector{Matrix{T}}`: vector of zero-filled matrices
+* `     .σ::Vector{Matrix{T}}`: vector of zero-filled matrices
+* `  .Minv::Vector{Matrix{T}}`: vector of zero-filled matrices
+* `   .pos::Pos`              : object with fields Na, Nlctp, Nmin, Nuctp, Nb, N and nodes
+* `   .epn::Int`              : number of endpoints trapezoidal correction - must be odd
+* `     .k::Int`              : Adams-Moulton order 
+* `    .am::Vector{T}`        : Adams-Moulton weight coefficients
+* ` .matLD::Matrix{T}`        : Lagrangian differentiation matrix
+
+The object `Def` is best created with the function [`castDef`](@ref).
+"""
+struct Def{T}
+    atom::Atom
+    orbit::Orbit
+    codata::Codata
+    pot::Vector{T}          # tabulated potential function
+    scr::Vector{T}          # tabulated screening function
+    potscr::Vector{T}       # tabulated screened potential function
+    G::Vector{Matrix{T}}    # uninitialized vector of matrices
+    σ::Vector{Matrix{T}}    # uninitialized vector of matrices
+    Minv::Vector{Matrix{T}} # uninitialized vector of matrices
+    pos::Pos                # object containing Nmin, Na, Nuctp, Nb, N and nodes
+    epn::Int                # number of endpoints trapezoidal correction
+    k::Int                  # Adams-Moulton order
+    am::Vector{T}           # Adams-Moulton weight coefficients
+    matLD::Matrix{T}        # Lagrangian differentiation matrix
+end
+
+
+# ===========   Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD) ============
+
+@doc raw"""
+    Def1(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
 * `     .T`: gridType (`::Type`)
@@ -59,7 +100,7 @@ Type with fields:
 
 The object `Def` is best created with the function [`castDef`](@ref).
 """
-struct Def{T}
+struct Def1{T}
     T::Type
     atom::Atom
     orbit::Orbit
@@ -139,18 +180,20 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
     pot = convert.(T,pot)
     scr = isnothing(scr) ? zeros(T,N) : scr
-    o1 = [fill(convert(T,0), (2,2)) for n=1:N]
-    o2 = [fill(convert(T,0), (2,2)) for n=1:N]
-    o3 = [fill(convert(T,1), (2,2)) for n=1:N]
+    potscr = pot .+ scr
+    G = [fill(convert(T,0), (2,2)) for n=1:N]
+    σ = [fill(convert(T,0), (2,2)) for n=1:N]
+    Minv = [fill(convert(T,1), (2,2)) for n=1:N]
     pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, cWKB)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
     msg && println(_defspecs(grid, atom, orbit))
 
-    return Def(T, atom, orbit, codata, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
+    return Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
 
 end
+# ..............................................................................
 
 @doc raw"""
     initE(def::Def{T}) where T<:Real

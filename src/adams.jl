@@ -47,7 +47,7 @@ end
 """
 function updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
-    E = convert(def.T, E)
+    E = convert(T, E)
     G = matG(E, grid, def)
     σ = matσ(E, grid, def)
     M = matMinv(E, grid, def, def.am[end])

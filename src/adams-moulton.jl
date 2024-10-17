@@ -7,7 +7,7 @@ function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 # matG - coupling matrix - Johnson (2.54)
 # ==============================================================================
     r′= grid.r′
-    o = def.o1
+    o = def.G
     v = def.pot
     s = def.scr
 
@@ -33,7 +33,7 @@ function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
     r = grid.r
     r′= grid.r′
-    o = def.o2
+    o = def.σ
     Zval = def.atom.Z
     ℓ = def.orbit.ℓ
     s = def.scr
@@ -68,7 +68,7 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
     r′= grid.r′
     v = def.pot
     s = def.scr
-    o = def.o3
+    o = def.Minv
 
     pot = v .+ s
 
@@ -352,7 +352,7 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
     strΔErel = @sprintf "ΔE/E = %.3g %s" abs(ΔE/E) " - relative convergence\n"
     strE = (@sprintf "E = %.*g" d E) * " Hartree\n"
 
-    msg = "\n" * modus * "_adams_moulton (" * string(def.T) * "):"
+    msg = "\n" * modus * "_adams_moulton (" * string(T) * "):"
     msg *= if modus == "prepare"  
                 if i<imax 
                     "\nnode condition satified after $i iterations\n"
