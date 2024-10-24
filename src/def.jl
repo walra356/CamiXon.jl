@@ -141,7 +141,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     pot = ℓ > 0 ? [(-Z + num/r[n])/r[n] for n=1:N] : [-Z/r[n] for n=1:N]
     pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
     pot = convert.(T,pot)
-    scr = isnothing(scr) ? zeros(T,N) : scr
+    scr = isnothing(scr) ? zeros(T,N) : convert(T,scr)
     potscr = pot .+ scr
     G = [fill(convert(T,0), (2,2)) for n=1:N]
     σ = [fill(convert(T,0), (2,2)) for n=1:N]

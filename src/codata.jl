@@ -422,6 +422,7 @@ default input: Hartree
 ```
 codata = castCodata(2018)
 calibrationReport(1.1, 1.0, codata; unitIn="Hartree")
+
   calibration report (Float64):
   Ecal = 1.0 Hartree
   E = 1.1 Hartree
@@ -446,7 +447,7 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
-    str = "calibration report ($T):\n"
+    str = "\ncalibration report ($T):\n"
     str *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
     str *= @sprintf "E = %.17g %s \n" E unitIn
     str *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
