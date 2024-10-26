@@ -434,10 +434,10 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 
     T = typeof(E)
 
-    V = BigFloat
+    B = BigFloat
 
-    E = convert(V, E)
-    Ecal = convert(V, Ecal)
+    E = convert(B, E)
+    Ecal = convert(B, Ecal)
 
     ΔE = abs(E-Ecal)
     ΔErel = ΔE/E
@@ -449,7 +449,7 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 
     str = "\ncalibration report ($T):\n"
     str *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
-    str *= @sprintf "E = %.17g %s \n" E unitIn
+    T == B ? (str *= @sprintf "E = %.25g %s \n" E unitIn) : (str *= @sprintf "E = %.17g %s \n" E unitIn)
     str *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute accuracy: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
