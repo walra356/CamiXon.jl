@@ -113,9 +113,9 @@ demo_hydrogen(; n=3, ℓ=2)
 ```
 #### Some special cases
 ```@docs
-RH1s(Z::U, r::T) where {U <: Real, T <:Real}
-RH2s(Z::U, r::T) where {U <: Real, T <:Real}
-RH2p(Z::U, r::T) where {U <: Real, T <:Real}
+RH1s(Z::Int, r::T) where T<:Real
+RH2s(Z::Int, r::T) where T<:Real
+RH2p(Z::Int, r::T) where T<:Real
 ```
 
 ### Molecular properties
