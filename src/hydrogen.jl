@@ -267,10 +267,14 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/RH1s.png)
 """
-function RH1s(Z::U, r::T) where {U <: Real, T <:Real}
+function RH1s(Z::Int, r::T) where T <:Real
 
-    p = 2.0 * Z^(3/2) * exp(-Z*r)
-    q = -2.0 * Z^(5/2) * exp(-Z*r)
+    one = T(1)
+    two = T(2)
+    Z = T(Z)
+
+    p = two * Z^(3/2) * exp(-Z*r)
+    q = -two * Z^(5/2) * exp(-Z*r)
 
     return p + im * q
 
@@ -305,10 +309,15 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2s.png)
 """
-function RH2s(Z::U, r::T) where {U <: Real, T <:Real}
 
-    P = 2.0 * (Z/2)^(3/2) * (1.0-Z*r/2.0) * exp(-Z*r/2.0)
-    Q = -2.0 * (Z/2)^(5/2) * (2.0 - Z*r/2.0) * exp(-Z*r/2.0)
+function RH2s(Z::Int, r::T) where T <:Real
+
+    one = T(1)
+    two = T(2)
+    Z = T(Z)
+
+    P = two * (Z/two)^(3/2) * (one-Z*r/two) * exp(-Z*r/two)
+    Q = -two * (Z/two)^(5/2) * (two - Z*r/two) * exp(-Z*r/two)
 
     return P + im * Q
 
@@ -343,10 +352,16 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2p.png)
 """
-function RH2p(Z::U, r::T) where {U <: Real, T <:Real}
 
-    P = 2.0 * (Z/2)^(3/2) * sqrt(1/3) * (Z*r/2.0) * exp(-Z*r/2.0)
-    Q = 2.0 * (Z/2)^(5/2) * sqrt(1/3) * (1.0 - Z*r/2.0) * exp(-Z*r/2.0)
+function RH2p(Z::Int, r::T) where T <:Real
+
+    one = T(1)
+    two = T(2)
+    tri = T(3)
+    Z = T(Z)
+   
+    P = two * (Z/two)^(3/2) * sqrt(1/tri) * (Z*r/two) * exp(-Z*r/two)
+    Q = two * (Z/two)^(5/2) * sqrt(1/tri) * (one - Z*r/two) * exp(-Z*r/two)
 
     return P + im * Q
 
