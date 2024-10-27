@@ -239,7 +239,7 @@ end
 # =============================== RHqs(Z, r) ===================================
 
 @doc raw"""
-    RH1s(Z::U, r::T) where {U <: Real, T <:Real}
+    RH1s(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
@@ -283,7 +283,7 @@ end
 # =============================== RH2p(Z, r) ===================================
 
 @doc raw"""
-    RH2s(Z::U, r::T) where {U <: Real, T <:Real}
+    RH2s(Z::Int, r::T) where T <:Real
 
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
@@ -326,8 +326,8 @@ end
 # =============================== RH2p(Z, r) ===================================
 
 @doc raw"""
-    RH2p(Z::U, r::T) where {U <: Real, T <:Real}
-
+    RH2p(Z::Int, r::T) where T <:Real
+    
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```math
