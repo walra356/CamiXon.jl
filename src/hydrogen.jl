@@ -140,7 +140,7 @@ end
 # =================== restore_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
 Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
 to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
@@ -176,7 +176,7 @@ The plot is made using `CairomMakie`.
 NB.: `compare_functions` is not included in the `CamiXon` package.
 ![Image](./assets/compareXH1s.png)
 """
-function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
     χ = real(Z)
     χ′= imag(Z)
@@ -195,7 +195,7 @@ end
 # =================== reduce_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+    reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
 Conversion from the *ordinary* radial wavefunction ``\tilde{R}_{nl}(ρ)``
 to the *reduced* radial wavefuntion
@@ -223,7 +223,7 @@ RH1s_example ≈ RH1s_generic
     true
 ```
 """
-function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{V}) where {T<:Real, V<:Real}
+function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 
     R = real(Z)
     R′= imag(Z)
