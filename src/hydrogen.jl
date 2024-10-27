@@ -309,7 +309,6 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2s.png)
 """
-
 function RH2s(Z::Int, r::T) where T <:Real
 
     one = T(1)
@@ -327,7 +326,7 @@ end
 
 @doc raw"""
     RH2p(Z::Int, r::T) where T <:Real
-    
+
 Analytic expression for the *hydrogenic* 1s reduced radial wavefunction
 and its derivative in the format ``Z = \tilde{R} + i \tilde{R}^′``, where
 ```math
@@ -352,7 +351,6 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/RH2p.png)
 """
-
 function RH2p(Z::Int, r::T) where T <:Real
 
     one = T(1)
