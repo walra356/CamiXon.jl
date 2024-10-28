@@ -1,6 +1,6 @@
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, Rmax::Int)
+    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
 
 Type with fields:
 * `   .Na::Int`: grid index of last leading point
@@ -10,7 +10,6 @@ Type with fields:
 * `   .Nb::Int`: grid index first trailing point
 * `    .N::Int`: grid index last point
 * `.nodes::Int`: number of nodes
-* ` .Rmax::Int`: physical Range of grid in a.u.
 
 Mutable struct to hold special grid indices as well as the number of nodes;
 `Pos` is one of the fields of the [`Def`](@ref) object
@@ -33,7 +32,6 @@ mutable struct Pos
     Nb::Int
     N::Int
     nodes::Int
-    Rmax::Int
 end
 
 # =========== Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD) ============
@@ -121,7 +119,7 @@ def = castDef(grid, atom, orbit, codata);
     Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; Rmax=0, scr=nothing, msg=true) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
@@ -145,7 +143,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; Rmax=0
     G = [fill(convert(T,0), (2,2)) for n=1:N]
     σ = [fill(convert(T,0), (2,2)) for n=1:N]
     Minv = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, Rmax)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, Rmax)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, Rmax)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
