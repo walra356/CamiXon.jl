@@ -1,16 +1,16 @@
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, cWKB::Float64)
+    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int, Rmax::Int)
 
 Type with fields:
-* `   .Na`: grid index of last leading point (`::Int`)
-* `.Nlctp`: grid index of lower classical turning point (`::Int`)
-* ` .Nmin`: grid index of (screened) potential minimum (`::Int`)
-* `.Nuctp`: grid index of upper classical turning point (`::Int`)
-* `   .Nb`: grid index first trailing point (`::Int`)
-* `    .N`: grid index last point (`::Int`)
-* `.nodes`: number of nodes  (`::Int`)
-* ` .cWKB`: WKB threshold level determining Na and Nb (`::Float64`)
+* `   .Na::Int`: grid index of last leading point
+* `.Nlctp::Int`: grid index of lower classical turning point
+* ` .Nmin::Int`: grid index of (screened) potential minimum
+* `.Nuctp::Int`: grid index of upper classical turning point
+* `   .Nb::Int`: grid index first trailing point
+* `    .N::Int`: grid index last point
+* `.nodes::Int`: number of nodes
+* ` .Rmax::Int`: physical Range of grid in a.u.
 
 Mutable struct to hold special grid indices as well as the number of nodes;
 `Pos` is one of the fields of the [`Def`](@ref) object
@@ -33,7 +33,7 @@ mutable struct Pos
     Nb::Int
     N::Int
     nodes::Int
-    cWKB::Real
+    Rmax::Int
 end
 
 # =========== Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD) ============
@@ -121,7 +121,7 @@ def = castDef(grid, atom, orbit, codata);
     Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; Rmax=0, scr=nothing, msg=true) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
@@ -145,7 +145,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     G = [fill(convert(T,0), (2,2)) for n=1:N]
     σ = [fill(convert(T,0), (2,2)) for n=1:N]
     Minv = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 1.0e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, cWKB)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, Rmax)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, Rmax)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
@@ -223,10 +223,9 @@ function get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 #  grid index of starting point outward numerical integration
 # ==============================================================================
     k = def.k
-    cWKB = def.pos.cWKB
     #ref = T(1.0e-10)
 
-    Na = findfirst(x -> abs(x) > cWKB, real(Z))
+    Na = findfirst(x -> abs(x) > 1.0e-7, real(Z))
     Na = isnothing(Na) ? k+1 : Na > 0 ? max(k+1, Na) : k+1
 
     return Na
@@ -266,11 +265,8 @@ function get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 # ==============================================================================
     k = def.k
     N = def.pos.N
-    cWKB = def.pos.cWKB
 
-    cWKB = T(cWKB)
-
-    Nb = findlast(x -> abs(x) > cWKB, real(Z))
+    Nb = findlast(x -> abs(x) > 1.0e-7, real(Z))
     Nb = isnothing(Nb) ? N-k : Nb > 0 ? min(N-k, Nb) : N-k
 
     return Nb

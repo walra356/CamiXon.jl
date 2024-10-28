@@ -67,7 +67,6 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     k = grid.k
     v = def.pot
     s = def.scr
-    cWKB = def.pos.cWKB
     Nuctp = def.pos.Nuctp
 
     p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
@@ -78,7 +77,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     #Nb = findfirst(x -> 0 < abs(x) < cWKB, P)
 
-    Nb = findlast(x -> abs(x) > cWKB, P)
+    Nb = findlast(x -> abs(x) > 1.0e-7, P)
     Nb = def.pos.Nb = isnothing(Nb) ? N-k : min(N-k, Nb)
 
     Z = P .+ im * Q
