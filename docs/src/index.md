@@ -106,7 +106,7 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 ```@docs
 bohrformula(Z::Int, n::Int)
-hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
+hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid{T}) where T<:Real
 reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 demo_hydrogen(; n=3, ℓ=2)

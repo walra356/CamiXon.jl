@@ -19,7 +19,8 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
+    hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid{T}) where T<:Real
+
 
 Analytic expression for the hydrogenic wavefunction written in the format
 ``Z = \tilde{χ} + i \tilde{χ}^′``, where ``\tilde{χ}_{nℓ}(ρ)`` is
