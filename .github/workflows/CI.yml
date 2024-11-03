@@ -47,9 +47,9 @@ jobs:
       matrix:
         format:
           - html 
-
     steps:
       - uses: actions/checkout@v4
+        name: Check out repository
       - uses: actions/setup-node@v4
         name: Set up Node.js
         with:
