@@ -377,7 +377,7 @@ end
 
 Finite difference lagrangian interpolation (by default *third* order) at real
 position v (in index units) with respect to the elements of the uniformly
-tabulated analytic function `f[1:N]`. The interpolation points lie on a
+tabulated analytic function `f[1:N]`. The interpolation points are situated on a
 Lagrange polynomial of degree ``k`` (by default *third* degree) running through
 ``k+1`` subsequenct points of the tabulated function. Outside the tabulated
 range, the method represents extrapolation on the lagrangian polynomial defined

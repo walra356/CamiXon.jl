@@ -62,11 +62,12 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/H1_25n.png)
 """
-function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
+function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid{T}) where T<:Real
 
     n = orbit.n
     ℓ = orbit.ℓ
     r = grid.r
+
 
     norm = _hydrogenic_norm(n, ℓ)
 
@@ -78,7 +79,7 @@ function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid)
     P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) for i ∈ eachindex(r)]
     Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) + a*r[i]*CamiMath.polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
-    return P + im * Q
+    return T.(P) + im * T.(Q)
 
 end
 
