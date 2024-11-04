@@ -31,16 +31,16 @@ struct Latex
 
 # ============================= isforward(notation) ===========================
 
-"""
-    function isforward(val)
-
-Boolean status of `val`, with options: `fwd` (forward) and `bwd` (backward).
+#"""
+#    function isforward(val)
+#
+#Boolean status of `val`, with options: `fwd` (forward) and `bwd` (backward).
 #### Example:
-```
-julia? isforward(fwd)
-true
-```
-"""
+# ```
+# julia> isforward(fwd)
+#true
+# ```
+# """
 #function isforward(val)
 
 #    strErr = "Error: invalid value of val (options: fwd, bwd)"
