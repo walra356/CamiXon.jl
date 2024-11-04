@@ -669,7 +669,7 @@ lagrangian-interpolation expansion.
 
 ```@docs
 fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=CamiMath.bwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, v::V; k=3) where T<:Real, V<:Real
+fdiff_interpolation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
 ```
 
 ### Lagrangian differentiation
