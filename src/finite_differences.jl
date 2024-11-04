@@ -6,11 +6,6 @@
 #                               finite_differences.jl
 # ==============================================================================
 
-fwd = CamiMath.fwd
-bwd = CamiMath.bwd
-reg = CamiMath.reg
-rev = CamiMath.rev
-
 # ==================== fdiff_weight(k, j) ======================================
 @doc raw"""
     fdiff_weight(k::Int, j::Int)
