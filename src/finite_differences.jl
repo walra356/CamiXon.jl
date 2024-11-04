@@ -1,3 +1,16 @@
+# SPDX-License-Identifier: MIT
+
+# author: Jook Walraven - 14-2-2023
+
+# ==============================================================================
+#                               finite_differences.jl
+# ==============================================================================
+
+fwd = CamiMath.fwd
+bwd = CamiMath.bwd
+reg = CamiMath.reg
+rev = CamiMath.rev
+
 # ==================== fdiff_weight(k, j) ======================================
 @doc raw"""
     fdiff_weight(k::Int, j::Int)
@@ -142,14 +155,14 @@ revBk = fdiff_expansion_weights(β, bwd, rev); println("revBk = $(revBk)")
 """
 function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
-    if isforward(notation)
+    if CamiMath.isforward(notation)
 
-        o = isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
-                                  rev_fwd_expansion_weights(coeffs)
+        o = CamiMath.isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
+                                           rev_fwd_expansion_weights(coeffs)
     else
 
-        o = isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
-                                  rev_bwd_expansion_weights(coeffs)
+        o = CamiMath.isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
+                                           rev_bwd_expansion_weights(coeffs)
     end
 
     return o
@@ -228,7 +241,7 @@ relation with [`fdiff_interpolation(f, v, k=3)`](@ref).
 """
 function fdiff_expansion(coeffs, f, notation=bwd)
 
-    ordering = isforward(notation) ? reg : rev
+    ordering = CamiMath.isforward(notation) ? reg : rev
     w = fdiff_expansion_weights(coeffs, notation, ordering)
 
     return w ⋅ f
@@ -321,7 +334,7 @@ k = 5
 """
 function fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_interpolation_expansion_coeffs(-ξ, k) :
+    o = CamiMath.isforward(notation) ? fwd_interpolation_expansion_coeffs(-ξ, k) :
                               bwd_interpolation_expansion_coeffs(ξ, k)
     return o
 
@@ -350,20 +363,20 @@ end
 #...............................................................................
 function fdiff_interpolation_expansion_weights(ξ::T, k=3, notation=bwd, ordering=rev) where T<:Real
 
-    o = isforward(notation) ? fwd_interpolation_expansion_weights(-ξ, k, ordering) :
-                              bwd_interpolation_expansion_weights(ξ, k, ordering)
+    o = CamiMath.isforward(notation) ? fwd_interpolation_expansion_weights(-ξ, k, ordering) :
+                                       bwd_interpolation_expansion_weights(ξ, k, ordering)
     return o
 
 end
 function fdiff_interpolation_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
-    if isforward(notation)
+    if CamiMath.isforward(notation)
 
-        o = isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
+        o = CamiMath.isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
                                   rev_fwd_expansion_weights(coeffs)
     else
 
-        o = isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
+        o = CamiMath.isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
                                   rev_bwd_expansion_weights(coeffs)
     end
 
@@ -517,8 +530,8 @@ o = fdiff_differentiation_expansion_coeffs(ξ, k); println(o)
 """
 function fdiff_differentiation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 
-    o = isforward(notation) ? fwd_differentiation_expansion_coeffs(ξ, k) :
-                              bwd_differentiation_expansion_coeffs(ξ, k)
+    o = CamiMath.isforward(notation) ? fwd_differentiation_expansion_coeffs(ξ, k) :
+                                       bwd_differentiation_expansion_coeffs(ξ, k)
     return o
 
 end

@@ -1,3 +1,11 @@
+# SPDX-License-Identifier: MIT
+
+# author: Jook Walraven - 14-2-2023
+
+# ==============================================================================
+#                               Def.jl
+# ==============================================================================
+
 # ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
 @doc raw"""
     Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)

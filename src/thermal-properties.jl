@@ -1,3 +1,11 @@
+# SPDX-License-Identifier: MIT
+
+# author: Jook Walraven - 14-2-2023
+
+# ==============================================================================
+#                               thermal-properties.jl
+# ==============================================================================
+
 @doc raw"""
     melting_point(atomicnumber::Int)
     melting_point(element::String)

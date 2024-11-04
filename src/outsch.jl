@@ -1,3 +1,11 @@
+# SPDX-License-Identifier: MIT
+
+# author: Jook Walraven - 14-2-2023
+
+# ==============================================================================
+#                               outsch.jl
+# ==============================================================================
+
 # ======================== OUTSCH(E, grid, def, σ) =============================
 
 function _matOUTSCH(k::Int, matLD::Matrix{T}, matσ::Vector{Matrix{T}}) where T<:Real

@@ -134,12 +134,6 @@ svp(atomicnumber::Int, temp::Real)
 latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ```
 
-## Angular momentum
-```@docs
-CGC(j1::Real, m1::Real, j2::Real, m2::Real, J::Real, M::Real; msg=false)
-threeJsymbol(j1::Real, m1::Real, j2::Real, m2::Real, j3::Real, m3::Real; msg=false)
-```
-
 ## Grid
 
 The `Grid` object is the backbone for the numerical procedure on a non-uniform
@@ -395,8 +389,8 @@ Coefficients:
 [`fdiff_weight(k,j)`](@ref) `` → c_j^k=(-1)^j\binom{k}{j}``
 
 ```@docs
-isforward(notation)
-isregular(ordering)
+# isforward(notation)
+# isregular(ordering)
 fdiff_weight(k::Int, j::Int)
 ```
 
@@ -508,8 +502,8 @@ where the `coeffs`  ``  β ≡ [β_0,⋯\ β_k]`` are user supplied to
 define the expansion.
 
 ```@docs
-fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
-fdiff_expansion(coeffs, f, notation=bwd)
+fdiff_expansion_weights(coeffs, notation=CamiMath.bwd, ordering=CamiMath.rev)
+fdiff_expansion(coeffs, f, notation=CamiMath.bwd)
 ```
 
 ### Lagrange-polynomial interpolation/extrapolation
@@ -674,8 +668,8 @@ where the vector
 lagrangian-interpolation expansion.
 
 ```@docs
-fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
-fdiff_interpolation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
+fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=CamiMath.bwd) where T<:Real
+fdiff_interpolation(f::Vector{T}, v::V; k=3) where T<:Real, V<:Real
 ```
 
 ### Lagrangian differentiation
@@ -746,7 +740,7 @@ where
 
 ```@docs
 fdiff_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
-fdiff_differentiation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
+fdiff_differentiation(f::Vector{T}, v::V; k=3) where T<:Real, V<:Real
 create_lagrange_differentiation_matrix(k::Int)
 ```
 

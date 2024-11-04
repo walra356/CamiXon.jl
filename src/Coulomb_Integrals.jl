@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: MIT
 
-
+# author: Jook Walraven - 14-2-2023
 
 # ==============================================================================
 #                               CoulombIntegrals.jl
-#                           Jook Walraven - 14-2-2023
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
@@ -49,8 +48,8 @@ function a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
     Δ1 = CamiMath.triangle_coefficient(l, k, l)
     Δ2 = CamiMath.triangle_coefficient(l′, k, l′)
-    T = _Racah_sqrt2(l, 0, k, 0, l, 0) * _Racah_sqrt2(l, -ml, k, 0, l, ml) * _Racah_sqrt2(l′, 0, k, 0, l′, 0) * _Racah_sqrt2(l′, -ml′, k, 0, l′, ml′)
-    S = _Racah_sum(l, 0, k, 0, l) * _Racah_sum(l, -ml, k, 0, l) * _Racah_sum(l′, 0, k, 0, l′) * _Racah_sum(l′, -ml′, k, 0, l′)
+    T = CamiMath._Racah_sqrt2(l, 0, k, 0, l, 0) * CamiMath._Racah_sqrt2(l, -ml, k, 0, l, ml) * CamiMath._Racah_sqrt2(l′, 0, k, 0, l′, 0) * CamiMath._Racah_sqrt2(l′, -ml′, k, 0, l′, ml′)
+    S = CamiMath._Racah_sum(l, 0, k, 0, l) * CamiMath._Racah_sum(l, -ml, k, 0, l) * CamiMath._Racah_sum(l′, 0, k, 0, l′) * CamiMath._Racah_sum(l′, -ml′, k, 0, l′)
 
     a = (2l + 1) * (2l′ + 1) * Δ1 * Δ2 * S
     o = a * a * T
@@ -97,8 +96,8 @@ function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
     abs(l-l′) ≤ k ≤ l+l′ || return 0
 
     Δ = CamiMath.triangle_coefficient(l, k, l′)
-    T = _Racah_sqrt2(l, 0, k, 0, l′, 0) * _Racah_sqrt2(l, -ml, k, ml-ml′, l′, ml′)
-    S = _Racah_sum(l, 0, k, 0, l′) * _Racah_sum(l, -ml, k, ml-ml′, l′)
+    T = CamiMath._Racah_sqrt2(l, 0, k, 0, l′, 0) * CamiMath._Racah_sqrt2(l, -ml, k, ml-ml′, l′, ml′)
+    S = CamiMath._Racah_sum(l, 0, k, 0, l′) * CamiMath._Racah_sum(l, -ml, k, ml-ml′, l′)
 
     o = abs((2l+1) * (2l′+1) * Δ * Δ * S * S * T)
     num = Int(numerator(o))

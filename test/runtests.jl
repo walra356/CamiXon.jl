@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 using CamiXon
-import CamiMath
+using CamiMath
 
 # using IntervalSets
 #using BenchmarkTools
@@ -109,8 +109,8 @@ using Test
     @test find_last([:📑, :📌, :📢, :📌, :📞], :📌; dict=true) == [:📌 => 4]
     @test find_last([:📑, :📌, :📢, :📌, :📞]) == find_last([1, 2, 3, 2, 5]) == find_last("aβcβd")
     @test [fdiff_weight(5, j) for j = 0:5] == [1, -5, 10, -10, 5, -1]
-    @test isforward(fwd) == true
-    @test isregular(reg) == true
+    #@test isforward(fwd) == true
+    #@test isregular(reg) == true
     @test a_direct(2, 1, 1, 2, 2) == 2 // 35
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
@@ -169,8 +169,6 @@ using Test
     @test svp("Li", 623) == 0.0015230367024569058
     @test svp("Li", 400) == 7.901690229445235e-11
     @test melting_point("Li") == 453.65
-    @test CGC(3, 0, 4, -1, 5, -1; msg=true) == parse(BigFloat, "-0.36364052611670255269921486774521555203216489725107181148303161368088211274565")
-    @test threeJsymbol(3, 0, 4, -1, 5, 1; msg=true) == parse(BigFloat, "-0.1096417439724123565166029917781360897459044055433631161836138910409772907333476")
     @test latexIsotopeTable(1:10) == latexIsotopeTable(1,10)
     @test latexIsotopeTable(11:22; continuation=true) == latexIsotopeTable(11,22; continuation=true) 
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6

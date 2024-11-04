@@ -1,16 +1,24 @@
+# SPDX-License-Identifier: MIT
+
+# author: Jook Walraven - 14-2-2023
+
+# ==============================================================================
+#                               singleton.jl
+# ==============================================================================
+
 # =========================== singletons =======================================
 
-struct fwd
-    end
+#struct fwd
+#    end
 
-struct bwd
-    end
+#struct bwd
+#    end
 
-struct reg
-    end
+#struct reg
+#    end
 
-struct rev
-    end
+#struct rev
+#    end
 
 struct Object
     end
@@ -33,13 +41,13 @@ julia? isforward(fwd)
 true
 ```
 """
-function isforward(val)
+#function isforward(val)
 
-    strErr = "Error: invalid value of val (options: fwd, bwd)"
+#    strErr = "Error: invalid value of val (options: fwd, bwd)"
 
-    return val === fwd ? true : val === bwd ? false : error(strErr)
+#    return val === fwd ? true : val === bwd ? false : error(strErr)
 
-end
+#end
 
 # ============================= isregular(ordering) ============================
 """
@@ -52,11 +60,11 @@ isregular(reg)
   true
 ```
 """
-function isregular(val)
+#function isregular(val)
 
-    strErr = "Error: invalid value of val (options: reg, rev)" 
+#    strErr = "Error: invalid value of val (options: reg, rev)" 
 
-    return val === reg ? true : val === rev ? false : error(strErr)
+#    return val === reg ? true : val === rev ? false : error(strErr)
 
-end
+#end
 # ============================= End ===========================

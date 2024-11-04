@@ -2,6 +2,11 @@ module CamiXon
 
 import CamiMath
 
+fwd = CamiMath.fwd
+bwd = CamiMath.bwd
+reg = CamiMath.reg
+rev = CamiMath.rev
+
 using Printf
 using Dates           # used in fits_private_sector
 #using IntervalSets
@@ -13,12 +18,12 @@ export sub
 export frac
 export strRational
 
-export fwd
-export bwd
-export reg
-export rev
-export isforward
-export isregular
+#export fwd
+#export bwd
+#export reg
+#export rev
+#export isforward
+#export isregular
 export Object
 export Info
 export Latex
@@ -77,9 +82,6 @@ export UG
 export svp
 export latent_heat_vaporization
 export melting_point
-
-export CGC
-export threeJsymbol
 
 export fdiff_weight
 export fdiff_expansion_weights
@@ -182,7 +184,6 @@ include("element.jl")
 include("isotope.jl")
 include("atom.jl")
 include("thermal-properties.jl")
-include("angular_momentum.jl")
 include("grid.jl")
 include("grid_autoset.jl")
 include("def.jl")
