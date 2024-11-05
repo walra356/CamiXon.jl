@@ -155,15 +155,9 @@ grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
-## Adams-Moulton integration
 
-The Adams-Moulton method is used for numerical integration of the reduces
-radial wave equation. In the present implementation it is constructed on top
-the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
-and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
-`grid`, `def` and `adams`.
 
-### Def
+## Def
 
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
@@ -218,6 +212,14 @@ get_Nmin(def::Def{T}) where T<:Real
 get_Nuctp(E::T, def::Def{T}) where T<:Real
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
+
+## Adams-Moulton integration
+
+The Adams-Moulton method is used for numerical integration of the reduces
+radial wave equation. In the present implementation it is constructed on top
+the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
+and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
+`grid`, `def` and `adams`.
 
 ### Adams
 
