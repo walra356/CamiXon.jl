@@ -160,6 +160,36 @@ grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, 
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
+## Pos
+
+The `Pos` object serves within [`Def`](@ref) object to contain the position
+indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
+Adams-Moulton integration. These positions are contained in the fields
+`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
+Alternatively, they can be determined with the functions [`get_Na`](@ref),
+[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
+
+```@docs
+Pos
+castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
+updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
+```
+
+#### Pos-related functions
+```@docs
+getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
+getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
+getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
+getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
+get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+get_Nlctp(E::T, def::Def{T}) where T<:Real
+get_Nmin(def::Def{T}) where T<:Real
+get_Nuctp(E::T, def::Def{T}) where T<:Real
+getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
+count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
+```
+
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
 ```
 codata = castCodata(2018)
@@ -191,31 +221,6 @@ NB.: `plot_potentials` is not included in the `CamiXon` package.
 ```@docs
 Def{T}
 castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
-```
-
-#### Pos and Pos-related functions
-
-The `Pos` object serves within [`Def`](@ref) object to contain the position
-indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
-Adams-Moulton integration. These positions are contained in the fields
-`def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
-Alternatively, they can be determined with the functions [`get_Na`](@ref),
-[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
-```@docs
-Pos
-castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
-updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
-getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
-getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
-getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
-getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
-get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nlctp(E::T, def::Def{T}) where T<:Real
-get_Nmin(def::Def{T}) where T<:Real
-get_Nuctp(E::T, def::Def{T}) where T<:Real
-getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
-count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
 
 ## Adams-Moulton integration

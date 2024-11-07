@@ -82,6 +82,7 @@ function castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
     end
 
     nodes = 0
+    ΔNlctp = 0.0
     ΔNuctp = 0.0
     cWKB = 1e-7
 
