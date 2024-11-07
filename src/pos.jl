@@ -21,6 +21,7 @@ Type with fields:
 * `   .Nb::Int`: grid index first trailing point
 * `    .N::Int`: grid index last point
 * `.nodes::Int`: number of nodes in reduced wavefunction (r ≠ 0)
+* `.ΔNlctp::Float64`: lctp offset with respect to Nlctp (1.0 ≤ ΔN ≤ 1.0)
 * `.ΔNuctp::Float64`: uctp offset with respect to Nuctp (-1.0 ≤ ΔN ≤ 0.0)
 
 Mutable struct to hold special grid indices as well as the number of nodes
