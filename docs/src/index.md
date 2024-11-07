@@ -214,6 +214,7 @@ get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
 get_Nmin(def::Def{T}) where T<:Real
 get_Nuctp(E::T, def::Def{T}) where T<:Real
+getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
 

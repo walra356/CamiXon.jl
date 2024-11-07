@@ -155,6 +155,8 @@ export getNmax
 export getNcut
 export getΔNcut
 
+export getΔNuctp
+
 export get_Na
 export get_Nb
 export get_Nlctp
