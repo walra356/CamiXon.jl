@@ -29,13 +29,13 @@ and the (negative) offset of the exact uctp with respect to Nuctp.
 `Pos` is one of the fields of the [`Def`](@ref) object
 #### Examples:
 ```
-julia> pos = Pos(1, 2, 3, 4, 5, 6, 7, 8.0);
+julia> pos = Pos(1, 2, 3, 4, 5, 6, 7, 8.0, 9.0, 10.0);
 julia> pos.Nuctp
 4
 
 julia> pos.Nuctp = 8;
 julia> pos
-Pos(1, 2, 3, 8, 5, 6, 7, 8.0)
+Pos(1, 2, 3, 8, 5, 6, 7, 8.0, 9.0, 10.0)
 ```
 """
 mutable struct Pos
