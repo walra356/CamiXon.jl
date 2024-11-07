@@ -54,6 +54,22 @@ using Test
     @test get_Nuctp(E, def) == 76
     @test grid_integration(real(Z) .^ 2, 1, grid.N, grid) ≈ 1.0
     @test grid_integration(real(ZH1s_generic) .^ 2, 1, grid.N, grid) ≈ 1.0
+    f = [-exp(-x^2) for x=-1.0:0.01:1.0];
+    f0 = -0.606530659712633;
+    @test getNmin(f, 1:201) == 101
+    @test getNmax(f, 1:201) == 201
+    @test getNcut(f0, f, 1, 101) == 30
+    @test getNcut(f0, f, 101, 201) == 172
+    Nlcut = getNcut(f0, f, 1, 101);
+    Nucut = getNcut(f0, f, 101, 201);
+    @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
+    @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
+    ΔNlcut = getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)
+    ΔNucut = getΔNcut(f0, f, Nucut, bwd; ϵ = 1e-6, k=7)
+    coordsfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
+    coordsbwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
+    @test polynomial(coordsfwd, ΔNlcut) ≈ f0
+    @test polynomial(coordsbwd, ΔNucut) ≈ f0
     @test sup(-5 // 2) == "⁻⁵ᐟ²"
     @test sub(-5 // 2) == "₋₅⸝₂"
     @test sub("e") == "ₑ"

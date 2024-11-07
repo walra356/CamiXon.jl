@@ -149,12 +149,19 @@ export autoGrid
 export grid_differentiation
 export grid_integration
 
+
+export getNmin
+export getNmax
+export getNcut
+export getΔNcut
+
 export get_Na
 export get_Nb
 export get_Nlctp
 export get_Nmin
 export get_Nuctp
 export Pos
+export castPos
 export Def
 export castDef
 export initE
@@ -186,6 +193,7 @@ include("atom.jl")
 include("thermal-properties.jl")
 include("grid.jl")
 include("grid_autoset.jl")
+include("pos.jl")
 include("def.jl")
 include("hydrogen.jl")
 include("adams.jl")

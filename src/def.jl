@@ -3,46 +3,8 @@
 # author: Jook Walraven - 14-2-2023
 
 # ==============================================================================
-#                               Def.jl
+#                               def.jl
 # ==============================================================================
-
-# ================== Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes) =================
-@doc raw"""
-    Pos(Na::Int, Nlctp::Int, Nmin::Int, Nuctp::Int, Nb::Int, N::Int, nodes::Int)
-
-Type with fields:
-* `   .Na::Int`: grid index of last leading point
-* `.Nlctp::Int`: grid index of lower classical turning point
-* ` .Nmin::Int`: grid index of (screened) potential minimum
-* `.Nuctp::Int`: grid index of upper classical turning point
-* `   .Nb::Int`: grid index first trailing point
-* `    .N::Int`: grid index last point
-* `.nodes::Int`: number of nodes
-* `.ΔNuctp::Float64`: (negative) offset of uctp with respect to Nuctp
-
-Mutable struct to hold special grid indices as well as the number of nodes;
-`Pos` is one of the fields of the [`Def`](@ref) object
-#### Examples:
-```
-pos = Pos(1, 2, 3, 4, 5, 6, 7, 8)
-pos.Nuctp
-    4
-
-pos.Nuctp = 8
-pos
-    Pos(1, 2, 3, 9, 5, 6, 7, 8)
-```
-"""
-mutable struct Pos
-    Na::Int
-    Nlctp::Int
-    Nmin::Int
-    Nuctp::Int
-    Nb::Int
-    N::Int
-    nodes::Int
-    ΔNuctp::Float64
-end
 
 # =========== Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD) ============
 
@@ -55,7 +17,7 @@ Type with fields:
 * `.codata::Codata`           : codata object
 * `   .pot::Vector{T}`        : tabulated potential function
 * `   .scr::Vector{T}`        : tabulated screening function
-*  .potscr::Vector{T}`        : tabulated screened potential function
+* `.potscr::Vector{T}`        : tabulated screened potential function
 * `     .G::Vector{Matrix{T}}`: vector of zero-filled matrices
 * `     .σ::Vector{Matrix{T}}`: vector of zero-filled matrices
 * `  .Minv::Vector{Matrix{T}}`: vector of zero-filled matrices
@@ -153,7 +115,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     G = [fill(convert(T,0), (2,2)) for n=1:N]
     σ = [fill(convert(T,0), (2,2)) for n=1:N]
     Minv = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNuctp)
+    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 

@@ -155,8 +155,6 @@ grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
 ```
 
-
-
 ## Def
 
 The `Def` object serves to define the problem to be solved and to contain in
@@ -205,6 +203,11 @@ Alternatively, they can be determined with the functions [`get_Na`](@ref),
 [`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
 ```@docs
 Pos
+castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
+getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
+getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
+getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
+getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
 get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
