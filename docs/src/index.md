@@ -204,6 +204,7 @@ Alternatively, they can be determined with the functions [`get_Na`](@ref),
 ```@docs
 Pos
 castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
+updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
 getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
@@ -212,7 +213,7 @@ get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 get_Nlctp(E::T, def::Def{T}) where T<:Real
 get_Nmin(def::Def{T}) where T<:Real
-get_Nuctp(E::T, def::Def{T}) where T<:Real
+# get_Nuctp(E::T, def::Def{T}) where T<:Real
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
 

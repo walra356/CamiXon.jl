@@ -162,6 +162,7 @@ export get_Nmin
 export get_Nuctp
 export Pos
 export castPos
+export updatePos!
 export Def
 export castDef
 export initE
