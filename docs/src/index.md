@@ -160,6 +160,11 @@ grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, 
 The `Def` object serves to define the problem to be solved and to contain in
 the field `def.Z` the solution as a discrete function of `N` elements.
 
+```@docs
+Def{T}
+castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+```
+
 ## Pos
 
 The `Pos` object serves within [`Def`](@ref) object to contain the position
@@ -217,11 +222,6 @@ plot_potentials(E, grid, def)
 The plot is made using `CairomMakie`.
 NB.: `plot_potentials` is not included in the `CamiXon` package.
 ![Image](./assets/potential.png)
-
-```@docs
-Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
-```
 
 ## Adams-Moulton integration
 

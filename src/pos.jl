@@ -104,7 +104,6 @@ potential energy (screened Coulomb potential) `Veff[n]` tabulated on the [`Grid`
 function updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
 
     N = grid.N
-    k = grid.k
 
     firstabove = Veff[1] > E ? true : false
      lastabove = Veff[N] > E ? true : false

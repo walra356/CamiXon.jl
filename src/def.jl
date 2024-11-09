@@ -68,7 +68,7 @@ function _defspecs(grid, atom, orbit)
 end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata[; scr=nothing[, msg=true]]) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=true]]]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
@@ -91,7 +91,7 @@ def = castDef(grid, atom, orbit, codata);
     Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing, msg=true) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
@@ -115,7 +115,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=no
     G = [fill(convert(T,0), (2,2)) for n=1:N]
     σ = [fill(convert(T,0), (2,2)) for n=1:N]
     Minv = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
+    pos = isnothing(pos) ? Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  : pos # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
