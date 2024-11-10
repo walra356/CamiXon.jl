@@ -101,16 +101,25 @@ export create_adams_bashford_weights
 export trapezoidal_epw
 export trapezoidal_integration
 
-export matG
-export matσ
+export matG # kanweg --------------------------------------
+export matσ 
 export matMinv
-export OUTSCH
+export matG1 # new --------------------------------------
+export matσ1
+export matMinv1
+export OUTSCH # kanweg --------------------------------------
 export OUTSCH_WKB
 export OUTSCH_WJ
-export Adams
+export OUTSCH! # new ------------------------------------
+export OUTSCH_WKB!
+export OUTSCH_WJ!
+export Adams # kanweg --------------------------------------
 export castAdams
 export updateAdams!
-export INSCH
+export Adams1 # new --------------------------------------
+export castAdams1
+export updateAdams1
+export INSCH # kanweg --------------------------------------
 export INSCH_WKB
 export INSCH_WJ
 export adams_moulton_inward
@@ -139,7 +148,7 @@ export reduce_wavefunction
 export Grid
 export gridname
 export gridfunction
-export castGrid #
+export castGrid # kanweg
 export castGrid1 
 export findIndex
 export autoRmax

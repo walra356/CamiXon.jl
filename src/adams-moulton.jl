@@ -16,6 +16,7 @@
 coupling matrix - Johnson (2.54)
 """
 function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+# kanweg #################################################################
 
     r′= grid.r′
     o = def.G
@@ -67,6 +68,7 @@ end
 coupling matrix - Johnson (2.54)
 """
 function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+# kanweg #################################################################
 
         r = grid.r
         r′= grid.r′
@@ -135,6 +137,7 @@ end
 Adams-Moulton correction matrix - Johnson (2.56)
 """
 function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+# kanweg #################################################################
     
     N = grid.N
     r′= grid.r′
