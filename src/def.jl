@@ -92,7 +92,7 @@ function _defspecs(grid::Grid{T}, def::Def{T}) where T<:Real
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
     strN = Q ≠ 0 ? " ion" : ", neutral atom"
 
-    str = atom.isotope.symbol * strQ
+    str = def.atom.isotope.symbol * strQ
 
     return str * ":$o on $g grid of $(grid.N) points"
 
