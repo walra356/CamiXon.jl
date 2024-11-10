@@ -101,6 +101,10 @@ export create_adams_bashford_weights
 export trapezoidal_epw
 export trapezoidal_integration
 
+export Init
+export castInit
+export init!
+
 export matG # kanweg --------------------------------------
 export matσ 
 export matMinv
@@ -125,15 +129,24 @@ export INSCH_WJ
 export INSCH! # new --------------------------------------
 export INSCH_WKB!
 export INSCH_WJ!
-export adams_moulton_inward
+export adams_moulton_inward # kanweg --------------------------------------
 export adams_moulton_outward
 export adams_moulton_normalized
+export adams_moulton_outward! # new --------------------------------------
+export adams_moulton_inward!
+export adams_moulton_normalized!
 export adams_moulton_patch
 export count_nodes
-export adams_moulton_solve
+export adams_moulton_solve # kanweg --------------------------------------
 export adams_moulton_prepare
 export adams_moulton_iterate
 export adams_moulton_master
+export adams_moulton_solve! # new --------------------------------------
+export adams_moulton_solve_refine!
+export adams_moulton_nodes
+export adams_moulton_iterate!
+export adams_moulton_precise!
+export adams_moulton_report
 
 export demo_hydrogen
 export hydrogenic_reduced_wavefunction
@@ -212,6 +225,7 @@ include("grid.jl")
 include("grid_autoset.jl")
 include("pos.jl")
 include("def.jl")
+include("init.jl")
 include("hydrogen.jl")
 include("adams.jl")
 include("outsch.jl")
