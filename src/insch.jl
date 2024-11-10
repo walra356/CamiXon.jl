@@ -71,7 +71,7 @@ end
     INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
  
 Ansatz solution for the *inward* integration of the radial wave equation for the first ``k`` points 
-on the [`grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
+on the [`Grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
 for energy `E` at distances *far above* the upper classical turning point - uctp)
 """
 function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
