@@ -254,6 +254,7 @@ matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
 
 #### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
+Init{T} where T<:Real
 adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
 ```
 

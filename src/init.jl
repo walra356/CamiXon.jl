@@ -11,7 +11,7 @@
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    Init{T}
+    Init{T} where T<:Real
 
 * Emin::T     # lowest allowed energy
 * E::T        # trial energy
