@@ -149,7 +149,7 @@ function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) whe
 
     Nb = def.pos.Nb = def.pos.Nb - k
     
-    Q[Nb-k:Nb+k] = grid_differentiation1(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
+    Q[Nb-k:Nb+k] = grid_differentiation(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
     
     for n=Nb-k:Nb+k
         Z[n] = P[n] + im * Q[n]
