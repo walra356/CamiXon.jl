@@ -150,33 +150,53 @@ Method to create the Grid object
 `ID = 4`: polynomial grid
 #### Examples:
 ```
-h = 0.1
-r0 = 1.0
-grid = castGrid(1, 4, Float64; h, r0, msg=true)
-grid.r
-  create exponential Grid: Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
-  [eps(Float64), 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
+julia> h = 0.1; r0 = 1.0;
+julia> grid = castGrid(1, 4, Float64; h, r0, msg=true);
+julia> grid.r
+create exponential Grid: Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
+ [eps(Float64), 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
 
-grid = castGrid(2, 4, Float64; p = 4, h, r0, msg=true))
-grid.r
-  create quasi-exponential Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, p = 4, h = 0.1, r0 = 1.0
-  [eps(Float64), 0.10517083333333321, 0.22140000000000004, 0.3498375]
+julia> grid = castGrid(2, 4, Float64; p = 4, h, r0, msg=true))
+julia> grid.r
+create quasi-exponential Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, p = 4, h = 0.1, r0 = 1.0
+ [eps(Float64), 0.10517083333333321, 0.22140000000000004, 0.3498375]
 
-grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0, msg=true)
-grid.r
-  create polynomial Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, coords = [0.0, 1.0, 0.5, 0.166666, 0.0416666], h = 0.1, r0 = 1.0
-  [eps(Float64), 0.10517083333333334, 0.2214, 0.3498375000000001]
+julia> grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0, msg=true)
+julia> grid.r
+create polynomial Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, coords = [0.0, 1.0, 0.5, 0.166666, 0.0416666], h = 0.1, r0 = 1.0
+ [eps(Float64), 0.10517083333333334, 0.2214, 0.3498375000000001]
 
-grid = castGrid(4, 4, Float64; h, r0, msg=true)
-grid.r
-  create linear Grid: Float64, Rmax = 0.4 a.u., Ntot = 4, p = 1, h = 0.1, r0 = 1.0
-  [eps(Float64), 0.1, 0.2, 0.3]
+julia> grid = castGrid(4, 4, Float64; h, r0, msg=true);
+julia> grid.r
+create linear Grid: Float64, Rmax = 0.4 a.u., Ntot = 4, p = 1, h = 0.1, r0 = 1.0
+ [eps(Float64), 0.1, 0.2, 0.3]
 
-grid.r′
-  [0.1, 0.1, 0.1, 0.1]
+julia> grid.r′
+ [0.1, 0.1, 0.1, 0.1]
 ```
 """
 function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=false)
+# kanweg
+# ==============================================================================
+#  castGrid: creates the grid object
+# ==============================================================================
+    h = convert(T, h)
+    r0 = convert(T, r0)
+    coords = convert.(T, coords)
+    epw = [convert.(T, trapezoidal_epw(n; rationalize=true)) for n=1:2:epn]
+    name = gridname(ID)
+
+    r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
+    r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]     # r′= dr/dn
+
+    r[1] = T == BigFloat ? T(eps(Float64)) : T(eps(Float64))
+
+    msg && println(_gridspecs(ID, N, T; h, r0,  p, coords, epn, k, msg))
+
+    return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
+
+end
+function castGrid1(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=false)
 # ==============================================================================
 #  castGrid: creates the grid object
 # ==============================================================================
@@ -205,18 +225,18 @@ end
 The grid index corresponding to the position `rval` on the `grid`.
 #### Example:
 ```
-h = 0.1
-r0 = 1.0
-grid = castGrid(1, 4, Float64; h, r0)
-r = grid.r; println("r[3] = $(r[3])")
-  Grid created: exponential, Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
-  r[3] = 0.22140275816016985
+julia> h = 0.1; r0 = 1.0;
+julia> grid = castGrid(1, 4, Float64; h, r0);
 
-findIndex(0.222, grid)
-  3
+julia> r = grid.r; println("r[3] = $(r[3])")
+r[3] = 0.22140275816016985
+
+julia> findIndex(0.222, grid)
+3
 ```
 """
 function findIndex(rval::T, grid::Grid{T}) where T<:Number
+# kanweg
 # ==============================================================================
 #  grid index of rval, e.g., rval -> classical turning point
 # ==============================================================================

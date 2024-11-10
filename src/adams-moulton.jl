@@ -6,14 +6,17 @@
 #                         adams-moulton.jl
 # ==============================================================================
 
-"""
-    matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+# ------------------------------------------------------------------------------
+#                       matG(E, grid, def) 
+# ------------------------------------------------------------------------------
 
 """
+    matG(E::T, pot::Vector{T}, grid::Grid{T}) where T<:Real
+
+coupling matrix - Johnson (2.54)
+"""
 function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-# ==============================================================================
-# matG - coupling matrix - Johnson (2.54)
-# ==============================================================================
+
     r′= grid.r′
     o = def.G
     v = def.pot
@@ -31,47 +34,108 @@ function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     return o
 
 end
+function matG1(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+# ==============================================================================
+# matG - coupling matrix - Johnson (2.54)
+# ==============================================================================
+    
+    G = def.G
+    r′= grid.r′
+
+    two = T(2)
+    nul = T(0)
+    pot = def.potscr
+
+    for n ∈ eachindex(G)
+        G[n][1,1] = nul
+        G[n][1,2] =  r′[n]
+        G[n][2,1] =  r′[n] * two * (-E + pot[n])
+        G[n][2,2] = nul
+    end
+
+    return G
+
+end
+
+# ------------------------------------------------------------------------------
+#                       matσ(E, grid, def) 
+# ------------------------------------------------------------------------------
+
 @doc raw"""
     matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
+coupling matrix - Johnson (2.54)
 """
 function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+        r = grid.r
+        r′= grid.r′
+        o = def.σ
+        Zval = def.atom.Z
+        ℓ = def.orbit.ℓ
+        s = def.scr
+    
+        one = T(1)
+        two = T(2)
+        num = -T(ℓ + 1)
+    
+        for n ∈ eachindex(o)
+            o[n][1,2] = r′[n]                                  # b in Johnson (2.69)
+            o[n][2,1] = r′[n] * two * (-E - Zval/r[n] + s[n])  # c in Johnson (2.69)
+            o[n][2,2] = r′[n] * two * num / r[n]               # d in Johnson (2.69)
+        end
+    
+        r1 = T(eps(Float64))  # quasi zero
+        o[1][2,1] = r′[1] * two * (-E - Zval / r1 + s[1])
+        o[1][2,2] = r′[1] * two * num / r1
+    
+        return o
+    
+end
+function matσ1(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matσ - coupling matrix - Johnson (2.54)
 # ==============================================================================
+    
+    σ = def.σ
+    
     r = grid.r
     r′= grid.r′
-    o = def.σ
     Zval = def.atom.Z
     ℓ = def.orbit.ℓ
     s = def.scr
 
+    nul = T(0)
     one = T(1)
     two = T(2)
     num = -T(ℓ + 1)
 
-    for n ∈ eachindex(o)
-        o[n][1,2] = r′[n]                                  # b in Johnson (2.69)
-        o[n][2,1] = r′[n] * two * (-E - Zval/r[n] + s[n])  # c in Johnson (2.69)
-        o[n][2,2] = r′[n] * two * num / r[n]               # d in Johnson (2.69)
+    for n ∈ eachindex(σ)
+        σ[n][1,1] = nul
+        σ[n][1,2] = r′[n]                                  # b in Johnson (2.69)
+        σ[n][2,1] = r′[n] * two * (-E - Zval/r[n] + s[n])  # c in Johnson (2.69)
+        σ[n][2,2] = r′[n] * two * num / r[n]               # d in Johnson (2.69)
     end
 
     r1 = T(eps(Float64))  # quasi zero
-    o[1][2,1] = r′[1] * two * (-E - Zval / r1 + s[1])
-    o[1][2,2] = r′[1] * two * num / r1
+    σ[1][2,1] = r′[1] * two * (-E - Zval / r1 + s[1])
+    σ[1][2,2] = r′[1] * two * num / r1
 
-    return o
+    return σ
 
 end
 
-@doc raw"""
-    matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+# ------------------------------------------------------------------------------
+#                       matMinv(E, grid, def, amEnd) 
+# ------------------------------------------------------------------------------
 
+@doc raw"""
+    matMinv1(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+Adams-Moulton correction matrix - Johnson (2.56)
 """
 function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
-# ==============================================================================
-# matMinv - Adams-Moulton correction matrix - Johnson (2.56)
-# ==============================================================================
+    
     N = grid.N
     r′= grid.r′
     v = def.pot
@@ -93,6 +157,33 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
     Δ = [one - o[n][1,2]*o[n][2,1] for n ∈ eachindex(o)]
 
     return o ./ Δ
+
+end
+function matMinv1(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+# ==============================================================================
+# matMinv - Adams-Moulton correction matrix - Johnson (2.56)
+# ==============================================================================
+
+    Minv = def.Minv
+    r′= grid.r′
+    amEnd = def.am[end]
+    
+    one = T(1)
+    two = T(2)
+    pot = def.potscr
+    
+    for n ∈ eachindex(Minv) # Johnson (2.56)
+        Minv[n][1,1] = one
+        Minv[n][1,2] = r′[n] * amEnd
+        Minv[n][2,1] = r′[n] * amEnd * two * (-E + pot[n])
+        Minv[n][2,2] = one
+    end
+    
+    for n ∈ eachindex(Minv)
+        Minv[n] ./= (one - Minv[n][1,2]*Minv[n][2,1])
+    end
+
+    return Minv
 
 end
 

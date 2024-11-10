@@ -139,7 +139,8 @@ export reduce_wavefunction
 export Grid
 export gridname
 export gridfunction
-export castGrid
+export castGrid #
+export castGrid1 
 export findIndex
 export autoRmax
 export autoNtot

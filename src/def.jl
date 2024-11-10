@@ -52,6 +52,7 @@ end
 # ========= castDef(grid, atom::Atom, orbit::Orbit, codata::Codata) ============
 
 function _defspecs(grid, atom, orbit)
+# kanweg #######################################################################
 
     g = grid.name
     o = orbit.name
@@ -66,9 +67,24 @@ function _defspecs(grid, atom, orbit)
     return "Def created for "* str *":$o on $g grid of $(grid.N) points"
 
 end
+function _defspecs1(grid::Grid{T}, def::Def{T}) where T<:Real
+
+g = grid.name
+o = def.orbit.name
+Q = def.atom.Q
+
+strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
+strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
+strN = Q ≠ 0 ? " ion" : ", neutral atom"
+
+str = atom.isotope.symbol * strQ
+
+return str * ":$o on $g grid of $(grid.N) points"
+
+end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=true]]]) where T <: Real
+    castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=true]]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`Grid`](@ref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
