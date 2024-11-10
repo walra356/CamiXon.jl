@@ -122,7 +122,7 @@ def = castDef(grid, atom, orbit, codata);
     Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
-function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing, msg=true) where T <: Real
+function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing) where T <: Real
 # ================================================================================
 # castDef(grid, atom, orbit, codata) # reference arrays
 # ================================================================================
@@ -150,7 +150,7 @@ function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=no
     am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
     matLD = convert.(T, create_lagrange_differentiation_matrix(k))
 
-    msg && println(_defspecs(grid, atom, orbit))
+    # msg && println(_defspecs(grid, atom, orbit))
 
     return Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
 
