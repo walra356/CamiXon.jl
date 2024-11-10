@@ -1,7 +1,7 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 authors = ["= <walra356@planet.nl> and contributors"]
-version = "1.8.29" 
+version = "1.8.30" 
 
 [deps]
 CamiMath = "d302b3f7-c8ae-418d-9fc2-2c0a42bddda0"
