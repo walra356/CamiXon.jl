@@ -156,8 +156,8 @@ function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real,
     N = grid.N
     r = grid.r
 
-    UG_inner = [grid_integration(r.^k .* P1 .* P2, 1:n, grid) for n=2:N]
-    UG_outer = [grid_integration((1.0 ./ r).^(k+1) .* P1 .* P2, n:N, grid) for n=2:N]
+    UG_inner = [grid_integration(r.^k .* P1 .* P2, grid, 1:n) for n=2:N]
+    UG_outer = [grid_integration((1.0 ./ r).^(k+1) .* P1 .* P2, grid, n:N) for n=2:N]
 
     o = (UG_inner .* r[2:N].^-(k+1)) .+ (UG_outer .* r[2:N].^k)
 

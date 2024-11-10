@@ -419,7 +419,7 @@ function adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
     Nuctp = def.pos.Nuctp
     N = grid.N
 
-    norm = grid_integration(real(Z) .^2, 1, N, grid)
+    norm = grid_integration(real(Z) .^2, grid, 1, N)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
@@ -438,7 +438,7 @@ function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
     
     N = grid.N
 
-    norm = grid_integration(real(Z) .^2, 1, N, grid)
+    norm = grid_integration(real(Z) .^2, grid, 1, N)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 

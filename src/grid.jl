@@ -302,10 +302,12 @@ function grid_differentiation(f::Vector{T}, grid::Grid{T}, itr::UnitRange; k=3) 
 
 end
 
-# =============== grid_integration(f, n1, n2, grid) ===================
+# =============== grid_integration(f, grid, n1, n2) ===================
 
 @doc raw"""
-    grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
+    grid_integration(f::Vector{T}, grid::Grid{T}) where T<:Real
+    grid_integration(f::Vector{T}, grid::Grid{T}, n1::Int, n2::Int) where T<:Real
+    grid_integration(f::Vector{T}, grid::Grid{T}, itr::UnitRange) where T<:Real
 
 Integral of the function ``f=[f_0,⋯\ f_n]`` tabulated on a [`Grid`](@ref)
 using the trapezoidal rule optimized with endpoint correction by the
@@ -319,22 +321,46 @@ polynonials of degree ``d=0,\ 1,⋯\ k-1``, where ``k=`` `grid.epn`.
 For ``k=1`` the rule reduces to the ordinary trapezoidal rule (weights = [1/2]).
 #### Example:
 ```
-f1s(r) = 2.0*r*exp(-r);  # hydrogen 1s wavefunction (reduced and unit normalized)
-N = 1000;
-grid = castGrid(1, N, Float64; h=0.01, r0=0.005)
-    create exponential Grid: Float64, Rmax = 110.127 (a.u.), Ntot = 1000, h = 0.01, r0 = 0.005
+julia> f1s(r) = 2.0*r*exp(-r);  # hydrogen 1s wavefunction (reduced and unit normalized)
+julia> N = 1000;
+julia> grid = castGrid(1, N, Float64; h=0.01, r0=0.005, msg=true);
+Grid created: exponential, Float64, Rmax = 110.127 a.u., Ntot = 1000, h = 0.01, r0 = 0.005
 
-r = grid.r;
-f2 = [f1s(r[n])^2 for n=1:N];
-grid_integration(f2, 1:N, grid) == grid_integration(f2, 1, N, grid)
-    true
+julia> r = grid.r;
+julia> f2 = [f1s(r[n])^2 for n=1:N];
+julia> grid_integration(f2, grid) == grid_integration(f2, grid, 1:N) == grid_integration(f2, grid, 1, N)
+true
 
-norm = grid_integration(f2, 1:N, grid)
-
-    1.0
+julia> norm = grid_integration(f2, grid)
+1.0
 ```
 """
-function grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {T<:Real, V<:Real}
+function grid_integration(f::Vector{T}, grid::Grid{T}) where T<:Real
+# ==============================================================================
+#  trapezoidal integral over the grid indices [n1:n2] with 1 ≤ n1,n2 ≤ N
+# ==============================================================================
+
+    r′= grid.r′
+    N = grid.N
+
+    epn = grid.epn   # endpoint number
+    epw = grid.epw   # endpoint weights array
+    
+    if N ≥ 2epn
+        epi = epn÷2+1        # index endpoint weights
+    else
+        epn = Base.isodd(N÷2) ? (N÷2) : N÷2-1           # endpoint number
+        epi = Base.isodd(N÷2) ? (N÷2)÷2+1 : (N÷2-1)÷2+1 # index endpoint weights
+    end
+
+    w = Base.ones(T,N)
+    w[1:epn] = epw[epi]
+    w[N-epn+1:N] = Base.reverse(epw[epi])
+
+    return LinearAlgebra.dot(f .* r′, w)
+
+end
+function grid_integration(f::Vector{T}, grid::Grid{T}, n1::Int, n2::Int) where T<:Real
 # ==============================================================================
 #  trapezoidal integral over the grid indices [n1:n2] with 1 ≤ n1,n2 ≤ N
 # ==============================================================================
@@ -361,8 +387,8 @@ function grid_integration(f::Vector{T}, n1::Int, n2::Int, grid::Grid{V}) where {
     return LinearAlgebra.dot(f .* r′, w)
 
 end
-function grid_integration(f::Vector{T}, itr::UnitRange, grid::Grid{V}) where {T<:Real, V<:Real}
+function grid_integration(f::Vector{T}, grid::Grid{T}, itr::UnitRange) where T<:Real
 
-    return grid_integration(f, itr.start, itr.stop, grid)
+    return grid_integration(f, grid, itr.start, itr.stop)
 
 end

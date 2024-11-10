@@ -84,7 +84,7 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     Nuctp = def.pos.Nuctp
 
     p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
-    I = [grid_integration(p, Nuctp:i, grid) for i=Nuctp:N]  # quasi-classical integral
+    I = [grid_integration(p, grid, Nuctp:i) for i=Nuctp:N]  # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[Nuctp:N])                       # WKB solution
     P = prepend!(P,zeros(Nuctp-1))
     Q = grid_differentiation(P, grid)
@@ -142,7 +142,7 @@ function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) whe
     
     for n=Nuctp:N
         p[n] = sqrt(abs(pot[n]-E))                         # quasi-classical momentum   
-        I[n] = grid_integration(p, Nuctp:n, grid)
+        I[n] = grid_integration(p, grid, Nuctp:n)
         P[n] = exp(-I[n])/sqrt(p[n])                       # WKB solution
         def.pos.Nb = P[n] > 1.0e-30 ? n : break
     end

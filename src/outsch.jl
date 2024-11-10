@@ -220,7 +220,7 @@ function OUTSCH_WKB(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) whe
     Nlctp = def.pos.Nlctp
 
     p = sqrt.(abs.(v .+ s .- E))                                     # quasi-classical momentum
-    I = [grid_integration(p, i:Nlctp, grid) for i=1:Nlctp]           # quasi-classical integral
+    I = [grid_integration(p, grid, i:Nlctp) for i=1:Nlctp]           # quasi-classical integral
     P = exp.(-I) ./ sqrt.(p[1:Nlctp])                                # WKB solution
     P = append!(P,zeros(N-Nlctp))
     Q = grid_differentiation(P, grid)
@@ -249,7 +249,7 @@ function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) wh
 
     for n=Nlctp:-1:1
         p[n] = sqrt(abs(pot[n]-E))                             # quasi-classical momentum
-        I[n] = grid_integration(p, n:Nlctp, grid)
+        I[n] = grid_integration(p, grid, n:Nlctp)
         P[n] = exp(-I[n])/sqrt(p[n])                           # WKB solution
         def.pos.Na = P[n] > 1.0e-30 ? n : break
     end
