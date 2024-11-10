@@ -122,6 +122,9 @@ export updateAdams1
 export INSCH # kanweg --------------------------------------
 export INSCH_WKB
 export INSCH_WJ
+export INSCH! # new --------------------------------------
+export INSCH_WKB!
+export INSCH_WJ!
 export adams_moulton_inward
 export adams_moulton_outward
 export adams_moulton_normalized
@@ -156,7 +159,8 @@ export autoNtot
 export autoPrecision
 export autoSteps
 export autoGrid
-export grid_differentiation
+export grid_differentiation # kanweg --------------------------------------
+export grid_differentiation1 # new --------------------------------------
 export grid_integration
 
 

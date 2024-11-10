@@ -62,11 +62,17 @@ function _nexto!(o::Vector{Complex{T}}, ρ::T, ρN::T, a::Vector{T}, b::Vector{T
     return o
 
 end
-# ..............................................................................
+
+# ------------------------------------------------------------------------------
+#                       INSCH!(Z, E, grid, def)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
-    INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-
+    INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+ 
+Ansatz solution for the *inward* integration of the radial wave equation for the first ``k`` points 
+on the [`grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
+for energy `E` at distances *far above* the upper classical turning point - uctp)
 """
 function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
@@ -95,7 +101,63 @@ function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     return Z2
 
 end
+function INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    
+    Z = INSCH_WKB!(Z, E, grid, def)
+
+    return Z
+
+end
+
+# ------------------------------------------------------------------------------
+#                       INSCH_WKB!(Z, E, grid, def)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+WKB Ansatz of `k+1` points for [`INSCH!`](@ref)
+"""
+function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+
+    N = grid.N
+    r = grid.r
+    k = grid.k
+    Nuctp = def.pos.Nuctp
+    two = T(2)
+    pot = def.potscr
+
+    p = Array{T,1}(undef,N)
+    I = Array{T,1}(undef,N)
+    P = Array{T,1}(undef,N)
+    Q = Array{T,1}(undef,N)
+    
+    for n=Nuctp:N
+        p[n] = sqrt(abs(pot[n]-E))                         # quasi-classical momentum   
+        I[n] = grid_integration(p, Nuctp:n, grid)
+        P[n] = exp(-I[n])/sqrt(p[n])                       # WKB solution
+        def.pos.Nb = P[n] > 1.0e-30 ? n : break
+    end
+
+    Nb = def.pos.Nb = def.pos.Nb - k
+    
+    Q[Nb-k:Nb+k] = grid_differentiation1(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
+    
+    for n=Nb-k:Nb+k
+        Z[n] = P[n] + im * Q[n]
+    end 
+    
+    return Z
+
+end
+
+# ------------------------------------------------------------------------------
+#                       INSCH_WJ!(Z, E, grid, def)
+# ------------------------------------------------------------------------------
+
 function INSCH_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+
+############ "kept for the record" #####################
 
     N = def.pos.N
     r = grid.r
@@ -136,3 +198,61 @@ function INSCH_WJ(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Re
     return Z[N-k:N]
 
 end
+function INSCH_WJ!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}, a::Vector{BigFloat}, b::Vector{BigFloat}, c::Vector{BigFloat}, o::Vector{Complex{BigFloat}}) where T<:Real
+
+    ############ "kept for the record" #####################
+    
+    N = grid.N
+    r = grid.r
+    k = def.k
+    
+    B = BigFloat
+
+    Zc = convert(B, def.atom.Zc)
+     ℓ = convert(B, def.orbit.ℓ)
+     E = convert(B, E)
+
+    one = T(1)
+    two = T(2)
+    den = one
+
+    λ = sqrt(-2E)
+    ζ = Zc/λ
+    
+    a[1] = T(1)
+    b[1] = -λ
+    c[1] = T(1)
+
+    smax = ceil(Int,max(2ζ,k))
+    for s=2:smax
+        b[s] = ((ζ+k)*(ζ-k+one)-ℓ*(ℓ+one)) * a[s-1] / (two*k)
+        a[s] = (ℓ*(ℓ+one)-(ζ-k)*(ζ-k+one)) * a[s-1] / (two*λ*k)
+    end
+
+    a1 = a[1:smax]
+    b1 = b[1:smax]
+    c1 = c[1:smax]
+    
+    ρN = convert(B, r[N])
+    for n=0:k
+        den = one
+        ρ = convert(B, r[N-k+n])
+        for i=2:smax
+            den *= ρ
+            c1[i] = one/den
+        end
+        a′ = a1 ⋅ c1
+        b′ = b1 ⋅ c1
+        o[n+1] = (ρ/ρN)^ζ * exp(-λ*(ρ-ρN)) * (a′ + b′*im) # Johnson (2.77) and (2,78)
+    end
+
+    #o .*= 1.0e-300 #real(o[1])
+
+    Z[N-k:N] = convert.(Complex{T}, o)
+
+    def.pos.Nb = N - k
+
+    return Z
+
+end
+

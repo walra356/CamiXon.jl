@@ -254,10 +254,14 @@ function findIndex(rval::T, grid::Grid{T}) where T<:Number
 
 end
 
-# =============== grid_differentiation(f, grid; k=3)) ======================
+# ------------------------------------------------------------------------------
+#                       grid_differentiation(f, grid; k=3)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
+    grid_differentiation(f::Vector{T}, grid::Grid{T}, n1::Int, n2::Int; k=3) where T<:Real
+    grid_differentiation(f::Vector{T}, grid::Grid{T}, itr::UnitRange; k=3) where T<:Real
 
 ``k^{th}``-order lagrangian *differentiation* of the analytic function ``f``,
 tabulated in forward order on a [`Grid`](@ref) of ``n`` points, ``f[1:n]``.
@@ -276,10 +280,25 @@ function grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
 
     r′= grid.r′
 
-    l = length(f)
-    f′= [fdiff_differentiation(f, T(v); k) for v=1:l]
+    f′= [fdiff_differentiation(f, T(i); k) for i ∈ eachindex(f)]
 
     return f′ ./ r′
+
+end
+function grid_differentiation(f::Vector{T}, grid::Grid{T}, n1::Int, n2::Int; k=3) where T<:Real
+
+    f = f[n1:n2]
+    r′= grid.r′[n1:n2]
+
+    l = length(f)
+    f′ = [fdiff_differentiation(f, T(v); k) for v=1:l]
+
+    return f′ ./ r′
+
+end
+function grid_differentiation(f::Vector{T}, grid::Grid{T}, itr::UnitRange; k=3) where T<:Real
+
+    return grid_differentiation(f, grid, itr.start, itr.stop; k)
 
 end
 

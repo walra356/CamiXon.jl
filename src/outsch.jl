@@ -6,8 +6,6 @@
 #                               outsch.jl
 # ==============================================================================
 
-# ======================== OUTSCH(E, grid, def, σ) =============================
-
 function kanweg_matOUTSCH(k::Int, matLD::Matrix{T}, matσ::Vector{Matrix{T}}) where T<:Real
 
     mat = fill(T(0),(2k,2k))
@@ -71,13 +69,17 @@ function _vecOUTSCH(k::Int, matLD::Matrix{T}, p::T, q::T) where T<:Real
 
 end
 
-@doc raw"""
-    OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}})) where T<:Real
+# ------------------------------------------------------------------------------
+#                       INSCH!(Z, E, grid, def)
+# ------------------------------------------------------------------------------
 
-Solution of the Schrödinger for the first ``k`` points on the `grid`, where
-``k`` is the Adams-Moulton order. The WKB solution for energy `E` is used
-when the WKB approximation is valid (for nonzero angular momentum at distances
-below the inner classical turning point - ictp)
+@doc raw"""
+    OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+
+Ansatz solution for the *outward* integration of the radial wave equation for the first ``k`` points 
+on the [`grid`](@ref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
+Walter Johnson Ansatz is used; for ``ℓ > 5`` the Ansatz is based on the WKB solution for energy `E` 
+at distances *far below* the inner classical turning point - ictp)
 
 #### Example:
 ```

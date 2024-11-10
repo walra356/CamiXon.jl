@@ -171,6 +171,8 @@ using Test
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
+    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2, 5) ≈ [2.0, 4.0, 6.0, 8.0]
+    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2:5) ≈ [2.0, 4.0, 6.0, 8.0]
     @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], 1:5, castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
     @test edges(1:5, 2.5, 2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4, 2, 6]) == [0, 4, 6, 12]
