@@ -58,7 +58,6 @@ end
 #                   updateAdams!(adams, E, grid, def)
 # ------------------------------------------------------------------------------
 
-
 @doc raw"""
     updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 

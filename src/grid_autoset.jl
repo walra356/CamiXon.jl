@@ -143,18 +143,6 @@ Step size parameter (h) and range parameter (r0) (rule of thumb values).
     (0.1, 0.004540199100968777)
 ```
 """
-function autoSteps1(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real # kanweg
-# ==============================================================================
-#  Step size parameter (h) and range parameter (r0)
-# ==============================================================================
-
-    h = 10/Ntot
-
-    r0 = Rmax / gridfunction(ID, Ntot, h; p, coords)
-
-    return h, r0
-
-end
 function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
     # ==============================================================================
     #  Step size parameter (h) and range parameter (r0)
