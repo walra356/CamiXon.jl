@@ -134,7 +134,7 @@ function _infoIsotope(Z::Int, A::Int)
     str *= "\n  relative abundance: RA = " * strRA
     str *= "\n  lifetime: " * strT½
 
-    return println(str)
+    return str
 
 end
 # ..............................................................................
@@ -146,7 +146,7 @@ Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 Output options: `fmt` =  `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
-julia> listIsotope(1,3; fmt=Info)
+julia> info = listIsotope(1,3; fmt=Info); println(info)
 Isotope: tritium-3
   symbol: ³T
   element: tritium
