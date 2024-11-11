@@ -66,7 +66,7 @@ function _strAtom(Z::Int, A::Int, Q::Int)
 
 end
 #...............................................................................
-function _infoAtom(Z::Int, A::Int, Q::Int)
+function _infoAtom(Z::Int, A::Int, Q::Int; msg=true)
 
     dict = dictIsotopes
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
@@ -80,7 +80,9 @@ function _infoAtom(Z::Int, A::Int, Q::Int)
     str *= "\n  atomic charge: Z = $Z"
     str *= "\n  Rydberg charge: Zc = $(Q+1)"
 
-    return println(str)
+    msg && println(str)
+
+    return str
 
 end
 #...............................................................................
@@ -103,25 +105,25 @@ Atom: tritium, neutral atom
   Rydberg charge: Zc = 1
 ```
 """
-function listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
+function listAtom(Z::Int, A::Int, Q::Int; fmt=Object, msg=true)
 
     fmt === Object && return _stdAtom(Z, A, Q)
     fmt === String && return _strAtom(Z, A, Q)
-    fmt === Info && return _infoAtom(Z, A, Q)
+    fmt === Info && return _infoAtom(Z, A, Q; msg)
 
-    return error("Error: invalid output type")
+    fmt === Latex && throw(DomainError(fmt))
 
 end
-function listAtom(elt::String, A::Int, Q::Int; fmt=Object)
+function listAtom(elt::String, A::Int, Q::Int; fmt=Object, msg=true)
 
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
     fmt === Object && return _stdAtom(Z, A, Q)
     fmt === String && return _strAtom(Z, A, Q)
-    fmt === Info && return _infoAtom(Z, A, Q)
+    fmt === Info && return _infoAtom(Z, A, Q; msg)
 
-    return error("Error: invalid output type")
+    fmt === Latex && throw(DomainError(fmt))
 
 end
 
@@ -162,16 +164,16 @@ function listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
     for Z=Z1:Z2
         for A=1:3Z
             next = listAtom(Z, A, Q; fmt)
-            isnothing(next) ? false : Base.push!(o, next)
+            isnothing(next) ? true : Base.push!(o, next)
         end
     end
 
     return o
 
 end
-function listAtoms(itrZ::UnitRange{Int}, Q::Int; fmt=Object)
+function listAtoms(itr::UnitRange{Int}, Q::Int; fmt=Object)
 
-    return listAtoms(itrZ.start,itrZ.stop, Q; fmt)
+    return listAtoms(itr.start, itr.stop, Q; fmt)
 
 end
 
