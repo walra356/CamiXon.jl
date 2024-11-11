@@ -171,8 +171,6 @@ The `Pos` object serves within [`Def`](@ref) object to contain the position
 indices `def.Na`, `def.Nb`, `def.Nlctp`, `def.Nmin`, `def.Nuctp` used in
 Adams-Moulton integration. These positions are contained in the fields
 `def.pos.Na`, `def.pos.Nb`, `def.pos.Nlctp`, `def.pos.Nmin`, `def.pos.Nuctp`.
-Alternatively, they can be determined with the functions [`get_Na`](@ref),
-[`get_Nb`](@ref), [`get_Nlctp`](@ref), [`get_Nmin`](@ref), [`get_Nuctp`](@ref).
 
 ```@docs
 Pos
