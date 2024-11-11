@@ -25,7 +25,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(atom:Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
 
 
 Analytic expression for the hydrogenic wavefunction written in the format
