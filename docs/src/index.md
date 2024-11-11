@@ -235,7 +235,6 @@ the form of a tabulated function of `N` elements.
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-initE(def::Def{T}; E=nothing) where T<:Real
 ```
 
 #### Adams related functions

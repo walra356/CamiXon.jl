@@ -117,16 +117,11 @@ export updateAdams!
 export INSCH!
 export INSCH_WKB!
 export INSCH_WJ!
-export adams_moulton_outward! # new --------------------------------------
+export adams_moulton_outward!
 export adams_moulton_inward!
 export adams_moulton_normalized!
 export adams_moulton_patch
-export count_nodes
-export adams_moulton_solve # kanweg --------------------------------------
-export adams_moulton_prepare
-export adams_moulton_iterate
-export adams_moulton_master
-export adams_moulton_solve! # new --------------------------------------
+export adams_moulton_solve!
 export adams_moulton_solve_refine!
 export adams_moulton_nodes
 export adams_moulton_iterate!
@@ -168,11 +163,6 @@ export getΔNcut
 
 export getΔNuctp
 
-export get_Na
-export get_Nb
-export get_Nlctp
-export get_Nmin
-export get_Nuctp
 export Pos
 export castPos
 export updatePos!
