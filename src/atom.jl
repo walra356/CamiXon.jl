@@ -6,9 +6,11 @@
 #                               atom.jl
 # ==============================================================================
 
-# ======================== Atom(name, symbol, Z, I, Q, M, I, gI) ===============
+# ------------------------------------------------------------------------------
+#                  Atom(Z, A, Q, Zc, element, isotope)
+# ------------------------------------------------------------------------------
 
-"""
+@doc raw"""
     Atom(Z, A, Q, Zc, element, isotope)
 
 Type with fields:
@@ -31,9 +33,10 @@ struct Atom                           # Isotopic properties
 end
 # ================================ End =========================================
 
-# =========== castAtom(Z, A, Q, msg=true)) ================================
+# ------------------------------------------------------------------------------
+#                       listAtom(Z, A, Q; fmt=Object)
+# ------------------------------------------------------------------------------
 
-#...............................................................................
 function _stdAtom(Z::Int, A::Int, Q::Int)
 
     dict = dictIsotopes
@@ -81,7 +84,7 @@ function _infoAtom(Z::Int, A::Int, Q::Int)
 
 end
 #...............................................................................
-"""
+@doc raw"""
     listAtom(Z::Int, A::Int, Q::Int[; fmt=Object])
 
 Properties of atom with atomic number `Z`, atomic mass number `A`,
@@ -121,8 +124,11 @@ function listAtom(elt::String, A::Int, Q::Int; fmt=Object)
     return error("Error: invalid output type")
 
 end
-#...............................................................................
-"""
+
+# ------------------------------------------------------------------------------
+#                       listAtoms(Z1, Z2, Q; fmt=Object)
+# ------------------------------------------------------------------------------
+@doc raw"""
     listAtoms(Z1::Int, Z2::Int, Q::Int[; fmt=Object])
 
 Properties of atoms with atomic number in the range `Z1:Z3` and
@@ -168,9 +174,12 @@ function listAtoms(itrZ::UnitRange{Int}, Q::Int; fmt=Object)
     return listAtoms(itrZ.start,itrZ.stop, Q; fmt)
 
 end
-#...............................................................................
 
-"""
+# ------------------------------------------------------------------------------
+#                       castAtom(;Z=1, A=1, Q=0, msg=false)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
     castAtom(;Z=1, A=1, Q=0, msg=false)
     castAtom(elt::String; A=1, Q=0, msg=false)
 
@@ -225,206 +234,5 @@ function castAtom(elt::String; A=1, Q=0, msg=false)
     msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
-
-end
-
-# ======================== Orbit(name, n, n′, ℓ, up) ===========================
-
-"""
-    Orbit(name, n, n′, ℓ, mℓ)
-
-Type for specification of *atomic orbitals* with fields:
-* `.name`: name
-* ` .n`:  principal quantum number
-* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
-* ` .ℓ`:  orbital angular momentum valence electron
-* `.mℓ`:  orbital angular momentum projection valence electron
-
-The type `Orbit` is best created with the function `castOrbit`.
-"""
-struct Orbit
-    name::String          # LS term notation
-     n::Int               # principal quantum number
-    n′::Int               # radial quantum number (number of nodes)
-     ℓ::Int               # orbital angular momentum valence electron
-    mℓ::Int               # orbital angular momentum projection valence electron
-end
-# ================================ End =========================================
-
-
-# ======================== castOrbital(n::Int, ℓ::Int) ===========
-
-function _specsOrbit(name, n, n′, ℓ, mℓ)
-
-    str = "Orbital: $(name)
-    principal quantum number: n = $n
-    radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
-    orbital angular momentum of valence electron: ℓ = $ℓ
-    orbital angular momentum projection of valence electron: mℓ = $(mℓ)"
-
-    return str
-
-end
-
-"""
-    castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
-
-Create `Orbit` with fields:
-* `.name`: name
-* ` .n`:  principal quantum number
-* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
-* ` .ℓ`:  orbital angular momentum valence electron
-* `.mℓ`:  orbital angular momentum projection valence electron
-#### Examples:
-```
-castOrbit(n=1, ℓ=0)
- Orbit created: 1s (n = 1, n′ = 0, ℓ = 0)
- Orbit("1s", 1, 0, 0)
-```
-"""
-function castOrbit(;n=1, ℓ=0, mℓ=0, msg=false)
-
-    ℓ < n || return error("Error: ℓ < n rule not satisfied")
-    (-ℓ ≤ mℓ ≤ ℓ) || return error("Error: -ℓ ≤ mℓ ≤ ℓ rule not satisfied")
-
-    strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
-
-    name = ℓ > 15 ? "[n=$(n), ℓ=$(ℓ)]" : string(n) * strL[ℓ + 1]
-
-    n′ = n - ℓ - 1
-
-    msg && println(_specsOrbit(name, n, n′, ℓ, mℓ) )
-
-    return Orbit(name, n, n′, ℓ, mℓ)
-
-end
-
-# ========== Spinorbit(name::String, orbit::Orbit, ms::Rational(Int)) ===========
-
-"""
-    Spinorbit
-
-Type for specification of *atomic Spinorbitals* with fields:
-* ` .name`: spinorbital name (string)
-* `.orbit`: orbital object (Orbit)
-* `   .ms`: spin magnetic quantum number (Rational{Int})
-
-The type `Spinorbit` is best created with the function `castSpinorbit`.
-"""
-struct Spinorbit
-    name::String         # spinorbital name
-    orbit::Orbit         # electronic orbital
-    ms::Rational{Int}    # spin magnetic quantum number
-end
-
-# ============= castSpinorbit(;n::Int, ℓ::Int, mℓ::Int, up::Bool, msg:Bool) ===========
-
-function _strSpinorbit(name, n, n′, ℓ, mℓ, up)
-
-    str = "Spinorbital: $(name)
-    principal quantum number: n = $n
-    radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
-    orbital angular momentum of valence electron: ℓ = $ℓ
-    orbital angular momentum projection of valence electron: mℓ = $(mℓ)
-    spin magnetic quantum number: ms = " * (up ? "1/2" : "-1/2")
-
-    return str
-
-end
-
-"""
-    castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
-
-Create `Spinorbit` with fields:
-* ` .name`: spinorbital name (string)
-* `.orbit`: orbital object (Orbit)
-* `   .ms`: spin magnetic quantum number (Rational{Int})
-#### Example:
-```
-julia> castSpinorbit(n=1, ℓ=0, msg=true)
-Spinorbital: 1s↑
-    principal quantum number: n = 1
-    radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
-    orbital angular momentum of valence electron: ℓ = 0
-    orbital angular momentum projection of valence electron: mℓ = 0
-    spin magnetic quantum number: ms = 1/2
-Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
-```
-"""
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
-    
-    o = castOrbit(;n, ℓ, mℓ)
-    
-    name = o.name * string(up ? :↑ : :↓)
-
-    msg && println(_strSpinorbit(name, o.n, o.n′, o.ℓ, o.mℓ, up) )
-
-    return Spinorbit(name, o, (up ? 1//2 : -1//2))
-
-end
-
-
-# ======================== Term(name, n, ℓ, S, L, J) ===========
-
-"""
-    Term(name::String, n::Int, ℓ::Int, S::Real, L::Int, J::Real)
-
-Type for specification of atomic *fine-structure Terms* with fields:
-* `name`: name
-* ` .n`:  principal quantum number
-* `.n′`:  radial quantum number (number of nodes in wavefunction)
-* ` .ℓ`:  orbital angular momentum valence electron
-* ` .S`:  total electron spin in units of ħ
-* ` .L`:  total orbital angular momentum in units of ħ
-* ` .J`:  total electronic angular momentum in units of ħ
-
-The type `Term` is best created with the function `createTerm`.
-"""
-struct Term
-    name::String         # LS term notation
-    n::Int               # principal quantum number
-    n′::Int              # radial quantum number (number of nodes)
-    ℓ::Int               # orbital angular momentum valence electron
-    S::Real              # total electron spin as integer or rational number
-    L::Int               # total orbital angular momentum
-    J::Real              # total electronic angular momentum
-end
-
-# ===================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
-
-"""
-    createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
-
-Specify Term in the *Term notatation* with fields:
-* `.n`: principal quantum number
-* `.n′`: radial quantum number (number of nodes - autogenerated)
-* `.ℓ`: orbital angular momentum valence electron
-* `.S`: total electron spin
-* `.L`: total orbital angular momentum
-* `.J`: total electronic angular momentum
-#### Examples:
-```
-term_H1I = createTerm(1; ℓ=0, S=1//2, L=0, J=1//2)
- Term created: 1s ²S₁⸝₂, n = 1, n′ = 0, ℓ = 0, S = 1//2, L = 0, J = 1//2
- Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
-```
-"""
-function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
-
-    S = typeof(S) ∈ [Float16,Float32,Float64] ? rationalize(S) : S
-    J = typeof(J) ∈ [Float16,Float32,Float64] ? rationalize(J) : J
-
-    strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
-
-    name = string(n) * strL[ℓ + 1] * ' ' * sup(Int(2S + 1)) * uppercase(strL[L + 1]) * sub(J)
-
-    ℓ < n || return error("Error: ℓ < n rule not satisfied")
-    abs(L-S) ≤ J ≤ (L+S)  || return error("Error: Δ(LSJ) condition not satisfied")
-
-    n′ = n - ℓ - 1
-
-    msg && println("Term created: $(name); n = $n,  n′ = $(n′), ℓ = $ℓ, S = $S, L = $L, J = $J")
-
-    return Term(name, n, n′, ℓ, S, L, J)
 
 end
