@@ -248,8 +248,8 @@ matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 #### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
 Init{T} where T<:Real
-adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
-adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 ```
 
 #### Radial integration - outward
@@ -269,8 +269,7 @@ adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) wher
 
 #### Radial integration - boundary condition applied and convergence test
 ```@docs
-adams_moulton_normalized(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
-adams_moulton_patch(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams-Moulton Master procedures

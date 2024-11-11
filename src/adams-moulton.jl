@@ -255,10 +255,10 @@ function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
 end
 
-# =============== adams_moulton_solve(E, grid, def, adams) =====================
+# =============== adams_moulton_solve!(Z, E, grid, def, adams) =====================
 
 @doc raw"""
-    adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+    adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
 Numerical solution of the 1D Schrödinger equation for the radial motion of a
 *valence* electron of energy `E`. Output: the improved `Adams` object, the
@@ -280,24 +280,6 @@ The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
 ![Image](./assets/hydrogen-1s-prepared.png)
 """
-function adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
-
-    adams = updateAdams!(adams, E, grid, def)
-        Z = adams_moulton_outward(def, adams)
-    ΔQ, Z = adams_moulton_inward(E, grid, def, adams)
-    ΔE, Z = adams_moulton_normalized(Z, ΔQ, grid, def)
-
-    if def.pos.Na == def.k + 1
-         Z = adams_moulton_patch(Z, def, adams)
-    end
-
-    for n ∈ eachindex(Z)
-        adams.Z[n] = Z[n]
-    end
-
-    return adams, ΔE, Z
-
-end
 function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
     updatePos!(def.pos, E, def.potscr, grid)
@@ -312,6 +294,10 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
     return adams, ΔE, Z
 
 end
+@doc raw"""
+    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+    
+"""
 function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
     adams = updateAdams!(adams, E, grid, def)
