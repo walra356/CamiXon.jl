@@ -294,8 +294,21 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
     return adams, ΔE, Z
 
 end
+@doc raw"""
+    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+    
+"""
+function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
+    adams = updateAdams!(adams, E, grid, def)
+        
+    Z = adams_moulton_outward!(Z, def, adams)
+ΔQ, Z = adams_moulton_inward!(Z, def, adams)
+ΔE, Z = adams_moulton_normalize!(Z, ΔQ, grid, def)
 
+    return adams, ΔE, Z
+
+end
 
 # ======================= adams_moulton_master sector ==========================
 
