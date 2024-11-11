@@ -18,14 +18,14 @@ The fields are:
 * `.unit`: unit specifier (`::String`)
 #### Example:
 ```
-f = Value(1,"Hz")
-  Value(1, "Hz")
+julia> f = Value(1,"Hz")
+Value(1, "Hz")
 
-f.val
-  1
+julia> f.val
+1
 
-f.unit
-  "Hz"
+julia> f.unit
+"Hz"
 ```
 """
 struct Value
@@ -44,9 +44,11 @@ String expression for a [`Value`](@ref) object in `:compact => true`
 representation
 #### Example:
 ```
-f = Value(1,"Hz")
-strValue(f)
-  "1 Hz"
+julia> f = Value(1,"Hz")
+Value(1, "Hz")
+
+julia> strValue(f)
+"1 Hz"
 ```
 """
 function strValue(f::Value)
@@ -75,11 +77,14 @@ Named Value object
 The object `NamedValue` is best created using [`castNamedValue`](@ref).
 #### Example:
 ```
-f = Value(1,"Hz")
-  Value(1, "Hz", "frequency")
+julia> f = Value(1,"Hz")
+Value(1, "Hz")
 
-f.name
-  "frequency"
+julia> f = castNamedValue(f, name="frequency", comment="comment")
+NamedValue(Value(1, "Hz"), "frequency", "comment")
+
+julia> f.name
+"frequency"
 ```
 """
 struct NamedValue
@@ -98,10 +103,12 @@ end
 Method to create a [`NamedValue`](@ref) object
 #### Example
 ```
-v = Value(1.602176634e-19, "C")
-nv = castNamedValue(v; name="e")
-nv.name * " = " * strValue2(nv.val)
-  "e = 1.60218e-19 C"
+julia> v = Value(1.602176634e-19, "C");
+
+julia> nv = castNamedValue(v; name="e");
+
+julia> nv.name * " = " * strValue(nv.val)
+"e = 1.60218e-19 C"
 ```
 """
 function castNamedValue(val::Value; name=" ", comment=" ")
@@ -142,12 +149,13 @@ The fields are:
 
 #### Example:
 ```
-codata = castCodata(2018)
-codata.μ0
-  Value(1.2566370621250601e-6, "N A⁻²")
+julia> codata = castCodata(2022);
 
-codata.μ0.val
-  1.2566370621250601e-6
+julia> codata.μ0
+Value(1.2566370612696005e-6, "N A⁻²")
+
+julia> codata.μ0.val
+1.2566370612696005e-6
 ```
 """
 struct Codata
@@ -187,12 +195,13 @@ end
 Method to create the [`Codata`](@ref) object
 #### Example:
 ```
-codata = castCodata(2018)
-strValue.([codata.∆νCs,codata.c,codata.h])
- 3-element Vector{String}:
-  "9192631770 Hz"
-  "299792458 m s⁻¹"
-  "6.62607e-34 J Hz⁻¹"
+julia> codata = castCodata(2022);
+
+julia> strValue.([codata.∆νCs,codata.c,codata.h])
+3-element Vector{String}:
+ "9192631770 Hz"
+ "299792458 m s⁻¹"
+ "6.62607e-34 J Hz⁻¹"
 ```
 """
 function castCodata(year::Int)
@@ -285,6 +294,7 @@ Method to list the fields of [`Codata`](@ref) by their symbolic name
 #### Example:
 ```
 julia> codata = castCodata(2018);
+
 julia> listCodata(codata)
 ∆νCs = 9192631770 Hz      - ¹³³Cs hyperfine transition frequency
    c = 299792458 m s⁻¹    - speed of light in vacuum
@@ -309,7 +319,13 @@ julia> listCodata(codata)
    R = 8.31446 J mol⁻¹K⁻¹ - Molar gas constant
    u = 1.66054e-27 kg     - unified atomic mass unit
 
-julia> codata.u.val
+julia> codata = castCodata(2022);
+
+julia> strValue.([codata.∆νCs,codata.c,codata.h])
+3-element Vector{String}:
+ "9192631770 Hz"
+ "299792458 m s⁻¹"
+ "6.62607e-34 J Hz⁻¹"
 1.6605390666e-27  
 ```
 """
@@ -428,14 +444,14 @@ Comparison of energy E with calibration value Ecal
 default input: Hartree
 #### Example:
 ```
-codata = castCodata(2018)
-calibrationReport(1.1, 1.0, codata; unitIn="Hartree")
+julia> codata = castCodata(2022)
+julia> calibrationReport(1.1, 1.0, codata; unitIn="Hartree")
 
-  calibration report (Float64):
-  Ecal = 1.0 Hartree
-  E = 1.1 Hartree
-  absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
-  relative accuracy: ΔE/E = 0.0909091
+calibration report (Float64):
+Ecal = 1 Hartree
+E = 1.1000000000000001 Hartree
+absolute accuracy: ΔE = 0.1 Hartree (657.968 THz)
+relative accuracy: ΔE/E = 0.0909091
 ```
 """
 function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
