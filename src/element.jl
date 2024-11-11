@@ -74,14 +74,14 @@ Properties of element with atomic number `Z`.
 Output options: `fmt` =  `Object` (default), `String`, `Info`.
 #### Example:
 ```
-listElement("H") == listElement(1)
-  true
+julia> listElement("H") == listElement(1)
+true
 
-listElement(1; fmt=Info)
-  Element: hydrogen
-    symbol: H
-    atomic number: Z = 1
-    atomic weight (relative atomic mass): 1.008
+julia> listElement(1; fmt=Info)
+Element: hydrogen
+  symbol: H
+  atomic number: Z = 1
+  atomic weight (relative atomic mass): 1.008
 ```
 """
 function listElement(Z::Int; fmt=Object, msg=true)
@@ -111,22 +111,28 @@ Output options: `fmt` =  `Object` (default), `String`, `Info`.
 
 #### Example
 ```
-listElements(1,3) == listElements(1:3)
-  true
+julia> listElements(1,3) == listElements(1:3)
+true
 
-listElements(1:3; fmt=Info)
-  Element: hydrogen
-    symbol: H
-    atomic number: Z = 1
-    atomic weight (relative atomic mass): 1.008
-  Element: helium
-    symbol: He
-    atomic number: Z = 2
-    atomic weight (relative atomic mass): 4.0026
-  Element: lithium
-    symbol: Li
-    atomic number: Z = 3
-    atomic weight (relative atomic mass): 6.94
+julia> listElements(1:3; fmt=Info);
+Element: hydrogen
+  symbol: H
+  atomic number: Z = 1
+  atomic weight (relative atomic mass): 1.008
+Element: helium
+  symbol: He
+  atomic number: Z = 2
+  atomic weight (relative atomic mass): 4.0026
+Element: lithium
+  symbol: Li
+  atomic number: Z = 3
+  atomic weight (relative atomic mass): 6.94
+
+julia> listElements(1:3; fmt=String)
+3-element Vector{Any}:
+ "H, hydrogen, Z=1, weight=1.008"
+ "He, helium, Z=2, weight=4.0026"
+ "Li, lithium, Z=3, weight=6.94"    
 ```
 """
 function listElements(Z1::Int, Z2::Int; fmt=Object)
@@ -135,7 +141,7 @@ function listElements(Z1::Int, Z2::Int; fmt=Object)
 
     for Z=Z1:Z2
         next = listElement(Z; fmt)
-        isnothing(next) ? false : Base.push!(o, next)
+        isnothing(next) ? true : Base.push!(o, next)
     end
 
     return o

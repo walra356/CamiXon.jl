@@ -233,7 +233,8 @@ function castCodata(year::Int)
         R∞ = Value(10973731.568160, "m" * sup(-1))
         u = Value(1.66053906660e-27, "kg")
     else
-        error("Error: codata$(year) not implemented - use codata 2018 or 2022 ")
+       #error("Error: codata$(year) not implemented - use codata 2018 or 2022 ")
+        throw(DomainError(year))
     end
 
     Ry = Value(R∞.val * c.val, "Hz")
