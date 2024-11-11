@@ -294,21 +294,8 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
     return adams, ΔE, Z
 
 end
-@doc raw"""
-    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
-    
-"""
-function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
-    adams = updateAdams!(adams, E, grid, def)
-        
-    Z = adams_moulton_outward!(Z, def, adams)
-ΔQ, Z = adams_moulton_inward!(Z, def, adams)
-ΔE, Z = adams_moulton_normalize!(Z, ΔQ, grid, def)
 
-    return adams, ΔE, Z
-
-end
 
 # ======================= adams_moulton_master sector ==========================
 
@@ -397,6 +384,10 @@ function _strΔt(tstop::T, tstart::T) where T<:Real
 
 end
 
+@doc raw"""
+    adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
+    
+"""
 function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_nodes! =====") 
@@ -443,7 +434,11 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}
     return def, adams, init, Z
 
 end
-# ..............................................................................
+
+@doc raw"""
+    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+    
+"""
 function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_iterate! =====")  
@@ -490,7 +485,11 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid
     return def, adams, init, Z
 
 end
-# ..............................................................................
+
+@doc raw"""
+    adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
+    
+"""
 function adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
 
     println("Reset parameters to BigFloat precision:")
