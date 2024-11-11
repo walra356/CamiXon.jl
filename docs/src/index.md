@@ -253,7 +253,7 @@ adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Rea
 
 #### Radial integration - outward
 ```@docs
-OUTSCH!(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real

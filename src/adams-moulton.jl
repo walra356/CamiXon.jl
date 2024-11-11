@@ -85,7 +85,7 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    matMinv1(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 Adams-Moulton correction matrix - Johnson (2.56)
 """
