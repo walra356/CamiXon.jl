@@ -64,7 +64,7 @@ using Test
     def = castDef(grid, atom, orbit, codata)
     RH2s_example = [RH2s(1, grid.r[n]) for n = 1:grid.N]
     ZH2s_example = reduce_wavefunction(RH2s_example, grid)
-    ZH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
     @test ZH2s_example ≈ ZH2s_generic
     E = 0 
     scr = zeros(grid.T,grid.N)
@@ -78,7 +78,7 @@ using Test
     def = castDef(grid, atom, orbit, codata)
     RH2p_example = [RH2p(1, grid.r[n]) for n = 1:grid.N]
     ZH2p_example = reduce_wavefunction(RH2p_example, grid)
-    ZH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
     @test ZH2p_example ≈ ZH2p_generic
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false)
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
@@ -89,7 +89,7 @@ using Test
     grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
     def = castDef(grid, atom, orbit, codata)
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n = 1:grid.N]
-    ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
     ZH1s_example = reduce_wavefunction(RH1s_example, grid)
     @test ZH1s_example ≈ ZH1s_generic
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
