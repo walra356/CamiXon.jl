@@ -79,25 +79,46 @@ calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 
 ## Atomic properties
 
+### Element
 ```@docs
 Element
-Isotope
-Atom
-Orbit
-Spinorbit
-Term
+castElement(;Z=1, msg=true)
 listElement(Z::Int; fmt=Object)
 listElements(Z1::Int, Z2::Int; fmt=Object)
-castElement(;Z=1, msg=true)
-listIsotope(Z::Int, A::Int; fmt=Object)
+```
+
+### Isotope
+```@docs
+Isotope
+castIsotope(;Z=1, A=1, msg=true)
+listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
 listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
-castIsotope(;Z=1, A=1, msg=true)
+```
+
+### Atom
+```@docs
+Atom
+castAtom(;Z=1, A=1, Q=0, msg=true)
 listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
-castAtom(;Z=1, A=1, Q=0, msg=true)
+```
+
+### Orbital
+```@docs
+Orbit
 castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
+```
+
+### Spinorbital
+```@docs
+Spinorbit
 castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
+```
+
+### Term
+```@docs
+Term
 createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```
 ## Hydrogen
@@ -107,9 +128,9 @@ createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```@docs
 bohrformula(Z::Int, n::Int)
 hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid{T}) where T<:Real
+demo_hydrogen(; n=3, ℓ=2)
 reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
 restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
-demo_hydrogen(; n=3, ℓ=2)
 ```
 #### Some special cases
 ```@docs

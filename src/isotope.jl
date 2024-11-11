@@ -148,7 +148,7 @@ Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 Output options: `fmt` =  `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
-julia> info = listIsotope(1,3; fmt=Info); println(info)
+julia> listIsotope(1,3; fmt=Info);
 Isotope: tritium-3
   symbol: ³T
   element: tritium
