@@ -119,11 +119,7 @@ function listAtom(elt::String, A::Int, Q::Int; fmt=Object, msg=true)
     dict = dictAtomicNumbers
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
-    fmt === Object && return _stdAtom(Z, A, Q)
-    fmt === String && return _strAtom(Z, A, Q)
-    fmt === Info && return _infoAtom(Z, A, Q; msg)
-
-    fmt === Latex && throw(DomainError(fmt))
+    return listAtom(Z, A, Q; fmt, msg)
 
 end
 
