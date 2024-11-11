@@ -69,7 +69,7 @@ end
     listElement(Z::Int[; fmt=Object])
     listElement(elt::String[; fmt=Object])
 
-Properties of element with atomic number `Z`.
+Properties of element with atomic number `Z` and symbolic name `elt`
 
 Output options: `fmt` =  `Object` (default), `String`, `Info`.
 #### Example:
@@ -103,9 +103,9 @@ end
 #...............................................................................
 """
     listElements(Z1::Int, Z2::Int[; fmt=Object])
-    listElements(itrZ::UnitRange{Int}; fmt=Object)
+    listElements(itr::UnitRange{Int}; fmt=Object)
 
-Properties of elements with atomic number in the range `Z1:Z2`.
+Properties of elements with atomic number in the range `itr = Z1:Z2`.
 
 Output options: `fmt` =  `Object` (default), `String`, `Info`.
 
@@ -147,9 +147,9 @@ function listElements(Z1::Int, Z2::Int; fmt=Object)
     return o
 
 end
-function listElements(itrZ::UnitRange{Int}; fmt=Object)
+function listElements(itr::UnitRange{Int}; fmt=Object)
 
-    return listElements(itrZ.start,itrZ.stop; fmt)
+    return listElements(itr.start,itr.stop; fmt)
 
 end
 # ------------------------------------------------------------------------------
@@ -161,16 +161,19 @@ Create Atom with fields
 * `  .name`:  name of element
 * `.symbol`:  symbol of element
 * `.weight`:  relative atomic mass (atomic weight)
+
+  `Z`: atomic number (nuclear charge number)
+`elt`: symbolic element name
 #### Example:
 ```
-castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
-  true
+julia> castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
+true
 
-element = castElement(;Z=1, msg=true)
-element
-  Element created: H, hydrogen, Z=1, weight=1.008
+julia> element = castElement(;Z=1, msg=true);
+Element created: H, hydrogen, Z=1, weight=1.008
 
-  Element("hydrogen", "H", 1.008)
+julia> element = castElement(;Z=1, msg=false)
+Element("hydrogen", "H", 1.008)
 ```
 """
 function castElement(;Z=1, msg=true)

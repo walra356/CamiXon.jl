@@ -31,7 +31,7 @@ The type `Isotope` is best created with the function [`castIsotope`](@ref).
 struct Isotope                     # Isotopic properties
      symbol::String                # isotope symbol
      name::String                  # name isotope
-     Z::Int                        # atomic number
+     Z::Int                        # atomic number (nuclear charge number)
      A::Int                        # atomic mass number (amu)
      N::Int                        # neutron number
      R::Float64                    # rms charge radius (Fermi)
@@ -146,21 +146,21 @@ Properties of isotopes with atomic number `Z` and atomic mass number `A`.
 Output options: `fmt` =  `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
-listIsotope(1,3; fmt=Info)
-  Isotope: tritium-3
-    symbol: ³T
-    element: tritium
-    atomic number: Z = 1
-    atomic mass number: A = 3
-    neutron number: N = 2
-    rms nuclear charge radius: R = 1.7591 fm
-    atomic mass: M = 3.016049281 amu
-    nuclear spin: I = 1/2 ħ
-    parity of nuclear state: π = even
-    nuclear magnetic dipole moment: μI = 2.97896246μN
-    nuclear electric quadrupole moment: Q = 0.0barn
-    relative abundance: RA = trace
-    lifetime: 12.33 years
+julia> listIsotope(1,3; fmt=Info)
+Isotope: tritium-3
+  symbol: ³T
+  element: tritium
+  atomic number: Z = 1
+  atomic mass number: A = 3
+  neutron number: N = 2
+  rms nuclear charge radius: R = 1.7591 fm
+  atomic mass: M = 3.016049281 amu
+  nuclear spin: I = 1/2 ħ
+  parity of nuclear state: π = even
+  nuclear magnetic dipole moment: μI = 2.97896246 μN
+  nuclear electric quadrupole moment: Q = 0.0 barn
+  relative abundance: RA = trace
+  lifetime: 12.33 years
 ```
 """
 function listIsotope(Z::Int, A::Int; fmt=Object)
@@ -176,20 +176,21 @@ end
 # ..............................................................................
 """
     listIsotopes(Z1::Int, Z2::Int; fmt=Object)
+    listIsotopes(itr; fmt=Object)
 
-All isotopes with atomic number from `Z1` to `Z2`.
+All isotopes with atomic number in the range `itr = Z1:Z2`.
 
 Output options: `Object` (default), `String`, `Latex`, `Info`.
 #### Example:
 ```
-listIsotopes(1,3) == listIsotopes(1:3)
- true
+julia> listIsotopes(1,3) == listIsotopes(1:3)
+true
 
-listIsotopes(1:1; fmt=Info)
- 3-element Vector{Any}:
-  Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
-  Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
-  Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
+julia> listIsotopes(1:1; fmt=Object)
+3-element Vector{Any}:
+ Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+ Isotope("²D", "deuterium", 1, 2, 1, 2.1421, 2.014101778, 1, 1, 1.0e100, 0.857438231, 0.0028578, 0.0145)
+ Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
 ```
 """
 function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
@@ -199,16 +200,16 @@ function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
     for Z=Z1:Z2
         for A=1:3Z
             next = listIsotope(Z, A; fmt)
-            isnothing(next) ? false : Base.push!(o, next)
+            isnothing(next) ? true : Base.push!(o, next)
         end
     end
 
     return o
 
 end
-function listIsotopes(itrZ; fmt=Object)
+function listIsotopes(itr; fmt=Object)
 
-    return listIsotopes(itrZ.start, itrZ.stop; fmt)
+    return listIsotopes(itr.start, itrZ.stop; fmt)
 
 end
 
@@ -244,32 +245,22 @@ Create Isotope with fields
 * `     .mdm`: nuclear magnetic dipole moment (`::Float64`)
 * `     .eqm`: nuclear electric quadrupole moment (`::Float64`)
 * `     .T½`:  lifetime in years (`::Float64`)
+
+`Z`: atomic number (nuclear charge number)
+`elt`: symbolic element name
 #### Examples:
 ```
-castIsotope("Rb"; A=87) == castIsotope(Z=37, A=87)
-  true
+julia> castIsotope("Rb"; A=87) == castIsotope(Z=37, A=87)
+true
 
-isotope = castIsotope(Z=1, A=3)
-  Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0, nothing)
+julia> isotope = castIsotope(Z=1, A=3)
+Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
 
-isotope.T½
-  12.33
+julia> "$(isotope.T½) seconds"
+"12.33 seconds"
 
-castIsotope(Z=1, A=3, msg=true);
-  Isotope created: tritium-3
-      symbol: ³T
-      element: tritium
-      atomic number: Z = 1
-      atomic mass number: A = 3
-      neutron number: N = 2
-      rms nuclear charge radius: R = 1.7591 fm
-      atomic mass: M = 3.016049281 amu
-      nuclear spin: I = 1/2 ħ
-      parity of nuclear state: π = ⁺
-      nuclear magnetic dipole moment: μI = 2.97896246μN
-      nuclear electric quadrupole moment: Q = 0.0barn
-      relative abundance: RA = trace
-      lifetime: 12.33 years
+julia> castIsotope(Z=1, A=3, msg=true);
+Isotope created: ³T, tritium, Z=1, A=3, N=2, R=1.7591, M=3.016049281, I=1/2⁺, μI=2.97896246, Q=0.0, RA=trace, (radioactive)
 ```
 """
 function castIsotope(;Z=1, A=1, msg=false)
