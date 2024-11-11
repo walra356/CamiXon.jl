@@ -51,8 +51,9 @@ where ``L_{n-l-1}^{2l+1}(2Z\rho/n)`` is the generalized Laguerre polynomial
 is the norm of the wavefunction.
 #### Example:
 ```
+atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=25, ℓ=10)
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+
 def = castDef(grid, atom, orbit, codata)
 Zval = 1
 Z = hydrogenic_reduced_wavefunction(Zval, orbit, grid);
@@ -67,7 +68,7 @@ plot_wavefunction(Z, 1:grid.N, grid, def)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/H1_25n.png)
+![Image](./assets/H1_25n.svg)
 """
 function hydrogenic_reduced_wavefunction(Zval, orbit::Orbit, grid::Grid{T}) where T<:Real
 

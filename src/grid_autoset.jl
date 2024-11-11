@@ -249,7 +249,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rma
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 3 : 2) :
          (p < 1) & (length(coords) ≥ 2) ? 4 : error("Error: unknown grid")
 
-    Ntot = Ntot == 0 ? autoNtot1(orbit) : Ntot
+    Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
     Rmax = autoRmax!(Rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
