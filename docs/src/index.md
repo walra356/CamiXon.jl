@@ -186,11 +186,6 @@ getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
 getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
-get_Na(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nb(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
-get_Nlctp(E::T, def::Def{T}) where T<:Real
-get_Nmin(def::Def{T}) where T<:Real
-get_Nuctp(E::T, def::Def{T}) where T<:Real
 getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
 count_nodes(Z::Vector{Complex{T}}, def::Def{T}) where T<:Real
 ```
@@ -260,17 +255,17 @@ adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Rea
 
 #### Radial integration - outward
 ```@docs
-OUTSCH(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
-adams_moulton_outward(def::Def{T}, adams::Adams{T}) where T<:Real
+OUTSCH!(E::T, grid::Grid{T}, def::Def{T}, σ::Vector{Matrix{T}}) where T<:Real
+OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
 ```
 
 #### Radial integration - inward
 ```@docs
-#INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-adams_moulton_inward(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
 ```
 
 #### Radial integration - boundary condition applied and convergence test

@@ -30,7 +30,7 @@ rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
     rmax = 63.0 a.u.
 ```
 """
-function autoRmax(atom::Atom, orbit::Orbit)
+function autoRmax(atom::Atom, orbit::Orbit) # kanweg
 # ==============================================================================
 #  Discretization range in atomic units
 # ==============================================================================
@@ -44,6 +44,21 @@ function autoRmax(atom::Atom, orbit::Orbit)
 
     return Rmax
 
+end
+function autoRmax!(Rmax::T, atom::Atom, orbit::Orbit) where T<:Real
+    # ==============================================================================
+    #  Discretization range in atomic units
+    # ==============================================================================
+         n = orbit.n
+         ℓ = orbit.ℓ
+        Zc = atom.Zc
+    
+        #Rmax = 4(n^2+20)/Zc
+        Rmax = Rmax > 0 ? Rmax : 2(2n^2 + 20n + 62)/Zc
+        #Rmax = (3.0* n^2 -ℓ*(ℓ+1))/Zc
+    
+        return Rmax
+    
 end
 
 # .......................... autoNtot(orbit) ...................................
@@ -128,7 +143,7 @@ Step size parameter (h) and range parameter (r0) (rule of thumb values).
     (0.1, 0.004540199100968777)
 ```
 """
-function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+function autoSteps1(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real # kanweg
 # ==============================================================================
 #  Step size parameter (h) and range parameter (r0)
 # ==============================================================================
@@ -139,6 +154,19 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 
     return h, r0
 
+end
+function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+    # ==============================================================================
+    #  Step size parameter (h) and range parameter (r0)
+    # ==============================================================================
+    
+        Ntot = ID < 3 ? Ntot-1 : I > 3 ? Ntot - 1 : Ntot
+        
+        h = T(10)/Ntot
+        r0 = Rmax / gridfunction(ID, Ntot, h; p, coords)
+    
+        return h, r0
+    
 end
 
 # ..............................................................................
@@ -223,7 +251,9 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
+
+    Rmax = T(Rmax)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
@@ -231,11 +261,11 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, e
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 3 : 2) :
          (p < 1) & (length(coords) ≥ 2) ? 4 : error("Error: unknown grid")
 
-    Ntot = autoNtot(orbit, Nboost)
-    Rmax = autoRmax(atom, orbit)
+    Ntot = Ntot == 0 ? autoNtot1(orbit) : Ntot
+    Rmax = autoRmax!(Rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
-    h, r0 = autoSteps(ID, Ntot, Rmax; p, coords)
+    h, r0 = autoSteps1(ID, Ntot, T(Rmax); p, coords)
 
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 

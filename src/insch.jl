@@ -68,41 +68,6 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
- 
-Ansatz solution for the *inward* integration of the radial wave equation for the first ``k`` points 
-on the [`Grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
-for energy `E` at distances *far above* the upper classical turning point - uctp)
-"""
-function INSCH(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-
-    N = grid.N
-    r = grid.r
-    k = grid.k
-    v = def.pot
-    s = def.scr
-    Nuctp = def.pos.Nuctp
-
-    p = sqrt.(abs.(v .+ s .- E))                            # quasi-classical momentum
-    I = [grid_integration(p, grid, Nuctp:i) for i=Nuctp:N]  # quasi-classical integral
-    P = exp.(-I) ./ sqrt.(p[Nuctp:N])                       # WKB solution
-    P = prepend!(P,zeros(Nuctp-1))
-    Q = grid_differentiation(P, grid)
-
-    #Nb = findfirst(x -> 0 < abs(x) < cWKB, P)
-
-    Nb = findlast(x -> abs(x) > 1.0e-7, P)
-    Nb = def.pos.Nb = isnothing(Nb) ? N-k : min(N-k, Nb)
-
-    Z = P .+ im * Q
-
-    Z2 = copy(Z[Nb:N])
-
-    return Z2
-
-end
-
-@doc raw"""
     INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
  
 Ansatz solution for the *inward* integration of the radial wave equation for the first ``k`` points 

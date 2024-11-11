@@ -176,27 +176,6 @@ julia> grid.r′
 ```
 """
 function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=false)
-# kanweg
-# ==============================================================================
-#  castGrid: creates the grid object
-# ==============================================================================
-    h = convert(T, h)
-    r0 = convert(T, r0)
-    coords = convert.(T, coords)
-    epw = [convert.(T, trapezoidal_epw(n; rationalize=true)) for n=1:2:epn]
-    name = gridname(ID)
-
-    r = r0 * [gridfunction(ID, n-1, h; p, coords) for n=1:N]
-    r′= r0 * [gridfunction(ID, n-1, h; p, coords, deriv=1) for n=1:N]     # r′= dr/dn
-
-    r[1] = T == BigFloat ? T(eps(Float64)) : T(eps(Float64))
-
-    msg && println(_gridspecs(ID, N, T; h, r0,  p, coords, epn, k, msg))
-
-    return Grid(ID, name, T, N, r, r′, h, r0, epn, epw, k)
-
-end
-function castGrid1(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=false)
 # ==============================================================================
 #  castGrid: creates the grid object
 # ==============================================================================

@@ -10,66 +10,11 @@ using Test
 
 @testset "CamiXon.jl" begin 
     codata = castCodata(2022)
-    codata = castCodata(2018)
-    atom = castAtom(Z=1, A=1, Q=0)
-    orbit = castOrbit(n=2, ℓ=0; msg=false)
-    grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false)
-    def = castDef(grid, atom, orbit, codata)
-    RH2s_example = [RH2s(1, grid.r[n]) for n = 1:grid.N]
-    ZH2s_example = reduce_wavefunction(RH2s_example, grid)
-    ZH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
-    @test ZH2s_example ≈ ZH2s_generic
-    orbit = castOrbit(n=2, ℓ=1; msg=false)
-    grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false)
-    def = castDef(grid, atom, orbit, codata)
-    RH2p_example = [RH2p(1, grid.r[n]) for n = 1:grid.N]
-    ZH2p_example = reduce_wavefunction(RH2p_example, grid)
-    ZH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
-    @test ZH2p_example ≈ ZH2p_generic
-    orbit = castOrbit(n=1, ℓ=0)
-    grid = autoGrid(atom, orbit, Float64)
-    def = castDef(grid, atom, orbit, codata)
-    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n = 1:grid.N]
-    ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
-    ZH1s_example = reduce_wavefunction(RH1s_example, grid)
-    @test ZH1s_example ≈ ZH1s_generic
-    E = initE(def)
-    #adams = castAdams(E, grid, def)
-    E, Z = adams_moulton_master(E, grid, def; Δν=Value(1, "kHz"), imax=25, msg=false)
-    @test ((real(ZH1s_example .- Z)) .< [1.0e-7 for i = 1:grid.N]) == ones(Bool, grid.N)
-    @test ((imag(ZH1s_example .- Z)) .< [1.0e-7 for i = 1:grid.N]) == ones(Bool, grid.N)
-    #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    #P = real(Z)
-    #val = UF(0, P, grid)[1];
-    @test round(Int, UF(0, real(Z), grid)[1]) == 1
-    @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "\ncalibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
     @test listCodata(codata; msg=false) == "∆νCs = 9192631770 Hz      - ¹³³Cs hyperfine transition frequency\n   c = 299792458 m s⁻¹    - speed of light in vacuum\n   h = 6.62607e-34 J Hz⁻¹ - Planck constant\n   ħ = 1.05457e-34 J s    - Planck constant (reduced)\n   e = 1.60218e-19 C      - elementary charge\n  kB = 1.38065e-23 J K⁻¹  - Boltzmann constant\n  NA = 6.02214e23 mol⁻¹   - Avogadro constant\n Kcd = 683 lm W⁻¹         - Luminous efficacy\n  mₑ = 9.10938e-31 kg     - electron mass\n  mₚ = 1.67262e-27 kg     - proton mass\n  R∞ = 1.09737e7 m⁻¹      - Rydberg constant\n  Ry = 3.28984e15 Hz      - Rydberg frequency\n  Eₕ = 4.35974e-18 J      - Hartree atomic unit\n   α = 0.00729735         - fine-structure constant\n  a0 = 5.29177e-11 m      - Bohr radius\n  μB = 9.27401e-24 J T⁻¹  - Bohr magneton\n  μN = 5.05078e-27 J T⁻¹  - nuclear magneton\n  μ₀ = 1.25664e-6 N A⁻²   - magnetic permitivity of vacuum\n  ε₀ = 8.85419e-12 F m⁻¹  - electric permitivity of vacuum\n  KJ = 4.83598e14 Hz V⁻¹  - Josephson constant\n  RK = 25812.8 Ω          - Von Klitzing constant\n   R = 8.31446 J mol⁻¹K⁻¹ - Molar gas constant\n   u = 1.66054e-27 kg     - unified atomic mass unit\n"
-    @test grid.name == "exponential"
-    @test findIndex(0.0042, grid) == 9
-    @test def.atom.element.name == "hydrogen"
-    @test def.pos.Na == 8
-    @test def.pos.Nb == 103
-    @test get_Na(Z, def) == 8
-    @test get_Nb(Z, def) == 103
-    @test get_Nuctp(E, def) == 76
-    @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
-    @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
-    f = [-exp(-x^2) for x=-1.0:0.01:1.0];
-    f0 = -0.606530659712633;
-    @test getNmin(f, 1:201) == 101
-    @test getNmax(f, 1:201) == 201
-    @test getNcut(f0, f, 1, 101) == 30
-    @test getNcut(f0, f, 101, 201) == 172
-    Nlcut = getNcut(f0, f, 1, 101);
-    Nucut = getNcut(f0, f, 101, 201);
-    @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
-    @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
-    ΔNlcut = getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)
-    ΔNucut = getΔNcut(f0, f, Nucut, bwd; ϵ = 1e-6, k=7)
-    coordsfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
-    coordsbwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
-    @test polynomial(coordsfwd, ΔNlcut) ≈ f0
-    @test polynomial(coordsbwd, ΔNucut) ≈ f0
+    @test convertUnit(1, codata; unitIn="Hz", unitOut="J") == Value(6.62607015e-34, "J")
+    @test convertUnit(1, codata) == Value(6.579683920499964, "PHz")
+    @test strValue(Value(1, "Hz")) == "1 Hz"
+    @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "\ncalibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
     @test sup(-5 // 2) == "⁻⁵ᐟ²"
     @test sub(-5 // 2) == "₋₅⸝₂"
     @test sub("e") == "ₑ"
@@ -98,14 +43,80 @@ using Test
     @test castSpinorbit(n=1, ℓ=0, msg=false) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
     @test Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     @test createTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=false) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
-    @test convertUnit(1, codata; unitIn="Hz", unitOut="J") == Value(6.62607015e-34, "J")
-    @test convertUnit(1, codata) == Value(6.579683920501762, "PHz")
-    @test strValue(Value(1, "Hz")) == "1 Hz"
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int} 
     @test lc_primitivetype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Int64
     @test primitivetype(Rational{UInt16}) == UInt16
-    @test conditionalType(47, 46) == BigInt
+    @test conditionalType(47, 46) == BigInt  
     @test typeof(bigconvert([[1 // 1, 1 // 2], [1 // 1, 1 // 2]])) == Vector{Vector{Rational{BigInt}}}
+#   ================================================================================= 
+    atom = castAtom(Z=1, A=1, Q=0)
+#   ---------------------------------------------------------------------------------
+    orbit = castOrbit(n=2, ℓ=0; msg=false)
+    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
+    def = castDef(grid, atom, orbit, codata)
+    RH2s_example = [RH2s(1, grid.r[n]) for n = 1:grid.N]
+    ZH2s_example = reduce_wavefunction(RH2s_example, grid)
+    ZH2s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    @test ZH2s_example ≈ ZH2s_generic
+    E = 0 
+    scr = zeros(grid.T,grid.N)
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ((real(ZH2s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+    @test ((imag(ZH2s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+#   ---------------------------------------------------------------------------------
+    orbit = castOrbit(n=2, ℓ=1; msg=false)
+    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
+    def = castDef(grid, atom, orbit, codata)
+    RH2p_example = [RH2p(1, grid.r[n]) for n = 1:grid.N]
+    ZH2p_example = reduce_wavefunction(RH2p_example, grid)
+    ZH2p_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    @test ZH2p_example ≈ ZH2p_generic
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false)
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ((real(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+    @test ((imag(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+#   ---------------------------------------------------------------------------------
+    orbit = castOrbit(n=1, ℓ=0)
+    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
+    def = castDef(grid, atom, orbit, codata)
+    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n = 1:grid.N]
+    ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid)
+    ZH1s_example = reduce_wavefunction(RH1s_example, grid)
+    @test ZH1s_example ≈ ZH1s_generic
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ((real(ZH1s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+    @test ((imag(ZH1s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+    #grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def, adams; imax=5, ϵ=1e-20, msg=false)
+#   ----------------------------------------------------------------------------------------    
+    
+    #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
+    #P = real(Z)
+    #val = UF(0, P, grid)[1];
+    @test round(Int, UF(0, real(Z), grid)[1]) == 1
+    @test grid.name == "exponential"
+    @test findIndex(0.0042, grid) == 184
+    @test def.atom.element.name == "hydrogen"
+    @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
+    @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
+    f = [-exp(-x^2) for x=-1.0:0.01:1.0];
+    f0 = -0.606530659712633;
+    @test getNmin(f, 1:201) == 101
+    @test getNmax(f, 1:201) == 201
+    @test getNcut(f0, f, 1, 101) == 30
+    @test getNcut(f0, f, 101, 201) == 172
+    Nlcut = getNcut(f0, f, 1, 101);
+    Nucut = getNcut(f0, f, 101, 201);
+    @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
+    @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
+    ΔNlcut = getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)
+    ΔNucut = getΔNcut(f0, f, Nucut, bwd; ϵ = 1e-6, k=7)
+    coordsfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
+    coordsbwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
+    @test polynomial(coordsfwd, ΔNlcut) ≈ f0
+    @test polynomial(coordsbwd, ΔNucut) ≈ f0
+  
     @test find_all([:📑, :📌, :📢, :📌, :📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌, :📢, :📌, :📞]; count=true) == [1, 2, 1, 1]
     @test find_all([:📑, :📌, :📢, :📌, :📞], :📌) == [[2, 4]]
@@ -169,7 +180,7 @@ using Test
     @test autoRmax(atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
     @test autoPrecision(100.0, orbit) == Float64
-    @test autoSteps(1, 100, 100) == (0.1, 0.004540199100968777)
+    @test autoSteps(1, 100, 100) ==  (0.10101010101010101, 0.004540199100968777)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2, 5) ≈ [2.0, 4.0, 6.0, 8.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2:5) ≈ [2.0, 4.0, 6.0, 8.0]

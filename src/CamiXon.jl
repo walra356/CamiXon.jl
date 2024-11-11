@@ -105,33 +105,18 @@ export Init
 export castInit
 export init!
 
-export matG # kanweg --------------------------------------
+export matG
 export matσ 
 export matMinv
-export matG1 # new --------------------------------------
-export matσ1
-export matMinv1
-export OUTSCH # kanweg --------------------------------------
-export OUTSCH_WKB
-export OUTSCH_WJ
-export OUTSCH! # new ------------------------------------
+export OUTSCH!
 export OUTSCH_WKB!
 export OUTSCH_WJ!
-export Adams # kanweg --------------------------------------
+export Adams
 export castAdams
 export updateAdams!
-export Adams1 # new --------------------------------------
-export castAdams1
-export updateAdams1
-export INSCH # kanweg --------------------------------------
-export INSCH_WKB
-export INSCH_WJ
-export INSCH! # new --------------------------------------
+export INSCH!
 export INSCH_WKB!
 export INSCH_WJ!
-export adams_moulton_inward # kanweg --------------------------------------
-export adams_moulton_outward
-export adams_moulton_normalized
 export adams_moulton_outward! # new --------------------------------------
 export adams_moulton_inward!
 export adams_moulton_normalized!
@@ -164,8 +149,7 @@ export reduce_wavefunction
 export Grid
 export gridname
 export gridfunction
-export castGrid # kanweg
-export castGrid1 
+export castGrid
 export findIndex
 export autoRmax
 export autoNtot
