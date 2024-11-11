@@ -110,7 +110,7 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
 
 end
 # ..............................................................................
-function _infoIsotope(Z::Int, A::Int)
+function _infoIsotope(Z::Int, A::Int, msg=true)
 
     dict = dictIsotopes
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
@@ -133,6 +133,8 @@ function _infoIsotope(Z::Int, A::Int)
     str *= "\n  nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * " barn"
     str *= "\n  relative abundance: RA = " * strRA
     str *= "\n  lifetime: " * strT½
+
+    msg && println(str)
 
     return str
 
@@ -163,14 +165,12 @@ Isotope: tritium-3
   lifetime: 12.33 years
 ```
 """
-function listIsotope(Z::Int, A::Int; fmt=Object)
+function listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
 
     fmt === Object && return _stdIsotope(Z, A)
     fmt === String && return _strIsotope(Z, A)
     fmt === Latex && return _texIsotope(Z, A)
-    fmt === Info && return _infoIsotope(Z, A)
-
-    return error("Error: unknown output type")
+    fmt === Info && return _infoIsotope(Z, A, msg)
 
 end
 # ..............................................................................
@@ -209,7 +209,7 @@ function listIsotopes(Z1::Int, Z2::Int; fmt=Object)
 end
 function listIsotopes(itr; fmt=Object)
 
-    return listIsotopes(itr.start, itrZ.stop; fmt)
+    return listIsotopes(itr.start, itr.stop; fmt)
 
 end
 
