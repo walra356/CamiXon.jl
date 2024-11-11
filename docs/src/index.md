@@ -242,13 +242,14 @@ updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```@docs
 matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matMinv(E::T, grid::Grid{T}, def::Def{T}, amEnd::T) where T<:Real
+matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
 Init{T} where T<:Real
 adams_moulton_solve(E::T, grid::Grid{T}, def::Def{T}, adams::Adams) where T<:Real
+adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Radial integration - outward
