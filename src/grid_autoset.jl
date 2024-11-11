@@ -253,7 +253,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rma
     Rmax = autoRmax!(Rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
-    h, r0 = autoSteps1(ID, Ntot, T(Rmax); p, coords)
+    h, r0 = autoSteps(ID, Ntot, T(Rmax); p, coords)
 
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
