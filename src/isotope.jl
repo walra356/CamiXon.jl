@@ -256,7 +256,7 @@ true
 julia> isotope = castIsotope(Z=1, A=3)
 Isotope("³T", "tritium", 1, 3, 2, 1.7591, 3.016049281, 1//2, 1, 12.33, 2.97896246, 0.0, nothing)
 
-julia> isotope.T½, "seconds"
+julia> string(isotope.T½) *  " seconds"
 "12.33 seconds"
 
 julia> castIsotope(Z=1, A=3, msg=true);
