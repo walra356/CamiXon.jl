@@ -54,7 +54,8 @@ using Test
     @test castSpinorbit(n=1, ℓ=0, msg=true) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
  #   @test Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
-    @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int} 
+    @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
+    @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
     @test lc_primitivetype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Int64
     @test primitivetype(Rational{UInt16}) == UInt16
     @test conditionalType(47, 46) == BigInt  
