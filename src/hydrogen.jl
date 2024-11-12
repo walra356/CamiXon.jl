@@ -113,43 +113,6 @@ julia> bohrformula(Z,n)
 """
 bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2
 
-# ========================= demo_hydrogen(; n=3, ℓ=2) ==========================
-
-@doc raw"""
-    demo_hydrogen(codata=castCodata(2022); n=3, ℓ=2)
-
-Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
-and rotational quantum number `ℓ`.
-
-#### Example:
-```
-julia> codata = castCodata(2022);
-
-julia> Ecal, grid, def, adams = demo_hydrogen(codata; n=1, ℓ=0);
-Def created for ¹H:1s on exponential grid of 120 points
-
-E = 1.5Ecal
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=25, msg=true);
-
-plot_wavefunction(Z, 1:def.pos.N, grid, def; reduced=false)
-```
-The plot is made using `CairomMakie`. Note the discontinuity in the derivative.
-NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/hydrogen-1s.png)
-"""
-function demo_hydrogen(codata=castCodata(2022); n=3, ℓ=2)
-
-    atom = castAtom(;Z=1, A=1, Q=0, msg=false)
-    orbit = castOrbit(; n, ℓ, msg=false)
-    grid = autoGrid(atom, orbit, Float64)
-    def = castDef(grid, atom, orbit, codata; msg=true )
-    E = convert(grid.T, bohrformula(atom.Z, orbit.n))
-    adams = castAdams(E, grid, def)
-
-    return E, grid, def, adams
-
-end
-
 # =================== reduce_wavefunction(Z, grid) ============================
 
 @doc raw"""

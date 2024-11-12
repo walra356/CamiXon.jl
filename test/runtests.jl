@@ -64,6 +64,16 @@ using Test
 
 #   ---------------------------------------------------------------------------------
     #grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def, adams; imax=5, ϵ=1e-20, msg=false)
+    #   ---------------------------------------------------------------------------------------- 
+    atom = castAtom(Z=1, A=1, Q=0; msg=false);
+    orbit = castOrbit(n=2, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
+    ZH2s_example = reduce_wavefunction(RH2s_example, grid);
+    ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    @test ZH2s_example ≈ ZH2s_generic 
+    RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
+    @test RH2s_example ≈ RH2s_generic 
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
@@ -218,6 +228,7 @@ using Test
     grid = castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
     @test silvera_goldman_potential(grid; S=1)[700] == -1.2954953056510744e-6
     @test silvera_goldman_potential(grid; S=0)[700] == -0.00020738292434731114
+    @test rotbarrier(grid; ℓ=0)[700] == 0.0
     @test rotbarrier(grid; ℓ=1)[700] == 0.040933194979134294
 
 end
