@@ -167,10 +167,10 @@ Isotope: tritium-3
 """
 function listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
 
-    fmt === Object && return _stdIsotope(Z, A)
-    fmt === String && return _strIsotope(Z, A)
-    fmt === Latex && return _texIsotope(Z, A)
-    fmt === Info && return _infoIsotope(Z, A, msg)
+    return fmt === Object ? _stdIsotope(Z, A) :
+           fmt === String ? _strIsotope(Z, A) :
+           fmt === Latex ? _texIsotope(Z, A) :
+           fmt === Info ? _infoIsotope(Z, A, msg) : throw(DomainError(fmt))
 
 end
 # ..............................................................................

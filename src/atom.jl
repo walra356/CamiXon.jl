@@ -107,11 +107,9 @@ Atom: tritium, neutral atom
 """
 function listAtom(Z::Int, A::Int, Q::Int; fmt=Object, msg=true)
 
-    fmt === Object && return _stdAtom(Z, A, Q)
-    fmt === String && return _strAtom(Z, A, Q)
-    fmt === Info && return _infoAtom(Z, A, Q; msg)
-
-    fmt === Latex && throw(DomainError(fmt))
+    return fmt === Object ? _stdAtom(Z, A, Q) :
+           fmt === String ? _strAtom(Z, A, Q) :
+           fmt === Info ? _infoAtom(Z, A, Q; msg) : throw(DomainError(fmt))
 
 end
 function listAtom(elt::String, A::Int, Q::Int; fmt=Object, msg=true)

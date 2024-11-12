@@ -88,6 +88,7 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid{T}
     P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) for i ∈ eachindex(r)]
     Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) + a*r[i]*CamiMath.polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
+    P[1] = T(0)
     return T.(P) + im * T.(Q)
 
 end
@@ -149,63 +150,6 @@ function demo_hydrogen(codata=castCodata(2022); n=3, ℓ=2)
 
 end
 
-# =================== restore_wavefunction(Z, grid) ============================
-
-@doc raw"""
-    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
-
-Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
-to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
-```math
-    \tilde{R}_{nl}(ρ)=\tilde{\chi}_{nl}(ρ)/ρ,
-```
-where ``ρ`` is the radial distance to the nucleus in a.u..
-#### Example:
-```
-julia> codata = castCodata(2022);
-julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
-julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
-julia> grid = autoGrid(atom, orbit, Float64);
-julia> def = castDef(grid, atom, orbit, codata);
-julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-julia> ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
-julia> RH1s_generic = restore_wavefunction(ZH1s_generic, grid);
-julia> RH1s_example ≈ RH1s_generic
-false
-
-julia> RH1s_example ≈ RH1s_generic
-false 
-
-julia> ZH1s_example ≈ ZH1s_generic
-true
-
-julia> f1 = real(ZH1s_example);
-
-julia> f2 = real(ZH1s_generic);
-
-julia> compare_functions(f1, f2, 1:grid.N, grid)
-```
-The plot is made using `CairomMakie`.
-NB.: `compare_functions` is not included in the `CamiXon` package.
-![Image](./assets/compareXH1s.png)
-"""
-function restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
-
-    χ = real(Z)
-    χ′= imag(Z)
-    r = grid.r
-
-    R = χ ./ r
-    R′= (χ′ .- χ ./ r) ./ r
-
-    R[1] = fdiff_interpolation(R[2:end], 0) # extrapolate to r=0 to handle division by "zero"
-    R′[1] = fdiff_interpolation(R′[2:end], 0)
-
-
-    return R + im * R′
-
-end
 # =================== reduce_wavefunction(Z, grid) ============================
 
 @doc raw"""
@@ -219,22 +163,22 @@ to the *reduced* radial wavefuntion
 where ``ρ`` is the radial distance to the nucleus in a.u..
 #### Example:
 ```
-atom = castAtom(Z=1, A=1, Q=0; msg=false);
-orbit = castOrbit(n=1, ℓ=0; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata);
+julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
+julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
+julia> grid = autoGrid(atom, orbit, Float64);
+julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
+julia> ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+julia> @test ZH1s_example ≈ ZH1s_generic
+Test Passed
 
-RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-ZH1s_generic = hydrogenic_reduced_wavefunction(1, orbit, grid);
-
-ZH1s_example = reduce_wavefunction(RH1s_example, grid);
-RH1s_generic = restore_wavefunction(ZH1s_generic, grid);
-
-ZH1s_example ≈ ZH1s_generic
-    true
-
-RH1s_example ≈ RH1s_generic
-    true
+julia> f1 = real(ZH1s_example);
+julia> f2 = real(ZH1s_generic);
+julia> compare_functions(f1, f2, 1:grid.N, grid)
+```
+The plot is made using `CairomMakie`.
+NB.: `compare_functions` is not included in the `CamiXon` package.
+![Image](./assets/compareXH1s.png)
 ```
 """
 function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
@@ -247,6 +191,48 @@ function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
     χ′= r .* R′ + R
 
     return χ + im * χ′
+
+end
+
+# =================== restore_wavefunction(Z, grid) ============================
+
+@doc raw"""
+    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+
+Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
+to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
+```math
+    \tilde{R}_{nl}(ρ)=\tilde{\chi}_{nl}(ρ)/ρ,
+```
+where ``ρ`` is the radial distance to the nucleus in a.u..
+#### Example:
+```
+julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
+julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
+julia> grid = autoGrid(atom, orbit, Float64);
+julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
+julia> RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
+
+julia> @test RH1s_example ≈ RH1s_generic 
+Test Passed
+"""
+function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+
+    χ = real(Z)
+    χ′= imag(Z)
+    r = grid.r
+    k = grid.k
+    ℓ = orbit.ℓ
+    Zval = atom.Z          # do not confuse the nuclear charge number Z with with the reduced wavefuntion Z
+
+    R = χ ./ r
+    R′= (χ′ .- χ ./ r) ./ r
+
+    R′[1] = fdiff_interpolation(R′[2:end], 0; k)   # extrapolate to r=0 to handle "division by zero"
+    R[1] = ℓ > 0 ? T(0) : R′[1] * convert(T, -(ℓ + 1)//Zval )  # construct R[1] from R′[1] - see OUTSCH.jl
+
+    return R + im * R′
 
 end
 

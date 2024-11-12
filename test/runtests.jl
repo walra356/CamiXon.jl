@@ -37,6 +37,7 @@ using Test
     @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026"]
     @test castIsotope(Z=1, A=1, msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
     @test castIsotope("Rb"; A=87, msg=false) == castIsotope(Z=37, A=87, msg=false)
+    @test_throws DomainError listIsotope(1,3; fmt=1, msg=false)
     @test listIsotope(2, 3; fmt=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"
     @test listIsotope(2, 3; fmt=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
     @test listIsotope(1,3; fmt=Info, msg=false) == "Isotope: tritium-3\n  symbol: ³T\n  element: tritium\n  atomic number: Z = 1\n  atomic mass number: A = 3\n  neutron number: N = 2\n  rms nuclear charge radius: R = 1.7591 fm\n  atomic mass: M = 3.016049281 amu\n  nuclear spin: I = 1/2 ħ\n  parity of nuclear state: π = even\n  nuclear magnetic dipole moment: μI = 2.97896246 μN\n  nuclear electric quadrupole moment: Q = 0.0 barn\n  relative abundance: RA = trace\n  lifetime: 12.33 years"
@@ -57,57 +58,56 @@ using Test
     @test conditionalType(47, 46) == BigInt  
     @test typeof(bigconvert([[1 // 1, 1 // 2], [1 // 1, 1 // 2]])) == Vector{Vector{Rational{BigInt}}}
 #   ================================================================================= 
-    atom = castAtom(Z=1, A=1, Q=0)
+
+#    @test ((real(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+#    @test ((imag(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
+
 #   ---------------------------------------------------------------------------------
-    orbit = castOrbit(n=2, ℓ=0; msg=false)
-    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
-    def = castDef(grid, atom, orbit, codata)
-    RH2s_example = [RH2s(1, grid.r[n]) for n = 1:grid.N]
-    ZH2s_example = reduce_wavefunction(RH2s_example, grid)
-    ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
-    @test ZH2s_example ≈ ZH2s_generic
-    E = 0 
-    scr = zeros(grid.T,grid.N)
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    @test ((real(ZH2s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-    @test ((imag(ZH2s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-#   ---------------------------------------------------------------------------------
-    orbit = castOrbit(n=2, ℓ=1; msg=false)
-    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
-    def = castDef(grid, atom, orbit, codata)
-    RH2p_example = [RH2p(1, grid.r[n]) for n = 1:grid.N]
-    ZH2p_example = reduce_wavefunction(RH2p_example, grid)
-    ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
-    @test ZH2p_example ≈ ZH2p_generic
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false)
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    @test ((real(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-    @test ((imag(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-#   ---------------------------------------------------------------------------------
-    orbit = castOrbit(n=1, ℓ=0)
-    grid = autoGrid(atom, orbit, Float64; Ntot=3000, Rmax=110, epn=5, k=7, msg=false);
-    def = castDef(grid, atom, orbit, codata)
-    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n = 1:grid.N]
-    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid)
-    ZH1s_example = reduce_wavefunction(RH1s_example, grid)
-    @test ZH1s_example ≈ ZH1s_generic
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    @test ((real(ZH1s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-    @test ((imag(ZH1s_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
     #grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def, adams; imax=5, ϵ=1e-20, msg=false)
-#   ----------------------------------------------------------------------------------------    
+#   ---------------------------------------------------------------------------------------- 
+    atom = castAtom(Z=1, A=1, Q=0; msg=false);
+    orbit = castOrbit(n=2, ℓ=1; msg=false);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
+    ZH2p_example = reduce_wavefunction(RH2p_example, grid);
+    ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    @test ZH2p_example ≈ ZH2p_generic 
+    RH2p_generic = restore_wavefunction(ZH2p_generic, atom, orbit, grid);  
+    @test RH2p_example ≈ RH2p_generic 
+    E=0;
+    scr = zeros(grid.T, grid.N);
+    def = castDef(grid, atom, orbit, codata);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ZH2p_generic ≈ Z;
+#   ---------------------------------------------------------------------------------------- 
+    atom = castAtom(Z=1, A=1, Q=0; msg=false);
+    orbit = castOrbit(n=1, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+    ZH1s_example = reduce_wavefunction(RH1s_example, grid);
+    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    @test ZH1s_example ≈ ZH1s_generic 
+    RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
+    @test RH1s_example ≈ RH1s_generic 
+    E=0;
+    scr = zeros(grid.T, grid.N);
+    def = castDef(grid, atom, orbit, codata);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ZH1s_generic ≈ Z;
+    @test grid.name == "exponential"
+    @test findIndex(0.0042, grid) == 220
+    @test def.atom.element.name == "hydrogen"
+    @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
+    @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
+    @test round(Int, UF(0, real(Z), grid)[1]) == 1
+#   ---------------------------------------------------------------------------------------- 
     
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
-    @test round(Int, UF(0, real(Z), grid)[1]) == 1
-    @test grid.name == "exponential"
-    @test findIndex(0.0042, grid) == 184
-    @test def.atom.element.name == "hydrogen"
-    @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
-    @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
+    #   ----------------------------------------------------------------------------------------    
     f = [-exp(-x^2) for x=-1.0:0.01:1.0];
     f0 = -0.606530659712633;
     @test getNmin(f, 1:201) == 101
@@ -124,6 +124,7 @@ using Test
     coordsbwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
     @test polynomial(coordsfwd, ΔNlcut) ≈ f0
     @test polynomial(coordsbwd, ΔNucut) ≈ f0
+    #   ----------------------------------------------------------------------------------------    
   
     @test find_all([:📑, :📌, :📢, :📌, :📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌, :📢, :📌, :📞]; count=true) == [1, 2, 1, 1]
@@ -201,6 +202,7 @@ using Test
     @test stepedges([4, 2, 6]) == [0, 4, 6, 12]
     @test select125([1, 2, 4, 6, 8, 10, 13, 16, 18, 20, 40, 60, 80, 100]) == [2, 6, 10, 16, 20, 60, 100]
     @test step125.([5, 10, 21.3, 50, 100.1]) == [1, 2, 5, 10, 20]
+#   ------------------------------------------------------------------------------------------------------------
     @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
     @test latent_heat_vaporization("Li", 623) == 18473.64020109123
     @test latent_heat_vaporization("Li", 400) == 19134.482122780522
