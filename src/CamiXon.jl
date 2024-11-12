@@ -73,7 +73,7 @@ export castOrbit
 export Spinorbit
 export castSpinorbit
 export Term
-export createTerm
+export castTerm
 export a_direct
 export b_exchange
 export UF

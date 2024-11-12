@@ -177,7 +177,7 @@ end
 # ===================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
 
 @doc raw"""
-    createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
+    castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 Specify Term in the *Term notatation* with fields:
 * `.n`: principal quantum number
@@ -188,12 +188,12 @@ Specify Term in the *Term notatation* with fields:
 * `.J`: total electronic angular momentum
 #### Examples:
 ```
-term_H1I = createTerm(1; ℓ=0, S=1//2, L=0, J=1//2)
+term_H1I = castTerm(1; ℓ=0, S=1//2, L=0, J=1//2)
 Term created: 1s ²S₁⸝₂; n = 1,  n′ = 0, ℓ = 0, S = 1//2, L = 0, J = 1//2
 Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
-function createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
+function castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
     S = typeof(S) ∈ [Float16,Float32,Float64] ? rationalize(S) : S
     J = typeof(J) ∈ [Float16,Float32,Float64] ? rationalize(J) : J

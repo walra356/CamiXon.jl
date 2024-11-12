@@ -213,7 +213,7 @@ function castAtom(;Z=1, A=1, Q=0, msg=false)
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
 
-    msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
+    msg && println("Atom created: " * listAtom(Z, A, Q; fmt=Info) )
 
     return Atom(Z, A, Q, 1+Q, element, isotope)
 

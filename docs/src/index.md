@@ -119,7 +119,7 @@ castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
 ### Term
 ```@docs
 Term
-createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
+castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 ```
 ## Hydrogen
 
