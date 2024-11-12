@@ -73,7 +73,18 @@ using Test
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     @test ZH2s_example ≈ ZH2s_generic 
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
-    @test RH2s_example ≈ RH2s_generic 
+    @test RH2s_example ≈ RH2s_generic
+#   ---------------------------------------------------------------------------------------- 
+    atom = castAtom(Z=1, A=1, Q=0; msg=false);
+    orbit = castOrbit(n=10, ℓ=6; msg=false);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    ZH10i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    E=0;
+    scr = zeros(grid.T, grid.N);
+    def = castDef(grid, atom, orbit, codata);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
@@ -89,7 +100,7 @@ using Test
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    @test ZH2p_generic ≈ Z;
+    @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
@@ -105,7 +116,7 @@ using Test
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    @test ZH1s_generic ≈ Z;
+    @test ZH1s_generic ≈ Z
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 220
     @test def.atom.element.name == "hydrogen"
