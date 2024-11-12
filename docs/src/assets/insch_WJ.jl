@@ -1,4 +1,61 @@
 
+
+# ======================== Pos(Nmin, Na, Nuctp, Nb, N, nodes) ===================
+
+
+# ====================== INSCH sector ==========================================
+
+function _nexta!(a::Vector{T}, aEnd::T, ℓ::T, σ::T, λ::T) where T <: Real
+
+    k = T(length(a))
+
+    one = T(1)
+    two = T(2)
+    add = (ℓ*(ℓ+one)-(σ-k)*(σ-k+one)) * aEnd / (two*λ*k)
+
+    Base.push!(a, add)
+
+    return a
+
+end
+# ..............................................................................
+function _nextb!(b::Vector{T}, aEnd::T, ℓ::T, σ::T) where T <: Real
+
+    k = T(length(b))
+
+    one = T(1)
+    two = T(2)
+    add = ((σ+k)*(σ-k+one)-ℓ*(ℓ+one)) * aEnd / (two*k)
+
+    Base.push!(b, add)
+
+    return b
+
+end
+# ..............................................................................
+function _nexto!(o::Vector{Complex{T}}, ρ::T, ρN::T, a::Vector{T}, b::Vector{T}, σ::T, λ::T) where T <: Real
+
+    n = length(a)
+
+    one = T(1)
+    two = T(2)
+    den = one
+
+    c::Vector{T} = [1]
+
+    for i = 2:n
+        den *= ρ
+        Base.push!(c, one/den)
+    end
+
+    a′ = a ⋅ c
+    b′ = b ⋅ c
+
+    Base.push!(o, (ρ/ρN)^σ * exp(-λ*(ρ-ρN)) * (a′ + b′*im))   #  α′=sum([α[s]ρ^(1-s) for s ∈ eachindex(α)], with α ∈ {a,b}
+
+    return o
+
+end
 function INSCH_WJ!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}, a::Vector{BigFloat}, b::Vector{BigFloat}, c::Vector{BigFloat}, o::Vector{Complex{BigFloat}}) where T<:Real
 
     ############ "kept for the record" #####################
