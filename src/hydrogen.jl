@@ -116,7 +116,7 @@ bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2
 # ========================= demo_hydrogen(; n=3, ℓ=2) ==========================
 
 @doc raw"""
-    demo_hydrogen(; n=3, ℓ=2, codata=castCodata(2018))
+    demo_hydrogen(codata=castCodata(2022); n=3, ℓ=2)
 
 Solves Schrödinger equation for hydrogen atom with principal quantum number `n`
 and rotational quantum number `ℓ`.
@@ -197,7 +197,7 @@ end
 # =================== restore_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    restore_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+    restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
 
 Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
 to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
