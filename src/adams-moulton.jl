@@ -287,7 +287,7 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
         
     Z = OUTSCH!(Z, E, grid, def, adams)
     Z = adams_moulton_outward!(Z, def, adams)
-    Z = INSCH_WKB!(Z, E, grid, def)
+    Z = INSCH!(Z, E, grid, def)
 ΔQ, Z = adams_moulton_inward!(Z, def, adams)
 ΔE, Z = adams_moulton_normalize!(Z, ΔQ, grid, def)
 
