@@ -89,7 +89,7 @@ end
 # ================================ lc_eltype(o) ==============================
 
 @doc raw"""
-    lc_eltype(o)
+    lc_eltype(o) ≡ eltype
 
 Lowest common eltype of a collection.
 #### Examples:
@@ -114,12 +114,12 @@ Float64
 function lc_eltype(o)
 
     T = eltype(o)
-    U = eltype(T)
+ #   U = eltype(T)
 
-    while T ≠ U
-        T = U
-        U = eltype(T)
-    end
+ #   while T ≠ U
+ #       T = U
+ #       U = eltype(T)
+ #   end
 
     return T
 

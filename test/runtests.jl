@@ -65,9 +65,7 @@ using Test
 #    @test ((real(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
 #    @test ((imag(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
 
-#   ---------------------------------------------------------------------------------
-    #grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def, adams; imax=5, ϵ=1e-20, msg=false)
-    #   ---------------------------------------------------------------------------------------- 
+#   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -126,6 +124,9 @@ using Test
     @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
     @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
+    grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def, adams; imax=5, ϵ=1e-20, msg=false);
+    
+    @test ZH1s_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
