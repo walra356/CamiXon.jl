@@ -64,11 +64,6 @@ using Test
     @test primitivetype(Rational{UInt16}) == UInt16
     @test conditionalType(47, 46) == BigInt  
     @test typeof(bigconvert([[1 // 1, 1 // 2], [1 // 1, 1 // 2]])) == Vector{Vector{Rational{BigInt}}}
-#   ================================================================================= 
-
-#    @test ((real(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-#    @test ((imag(ZH2p_example .- Z)) .< [1.0e-6 for i = 1:grid.N]) == ones(Bool, grid.N)
-
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
@@ -208,7 +203,8 @@ using Test
     @test [gridfunction(2, n - 1, 0.1; p=1) for n = 1:5] == [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
     @test [gridfunction(1, n - 1, 0.1) for n = 1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
     @test [gridfunction(2, n - 1, 0.1; p=4) for n = 1:4] == [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
-    @test [gridfunction(4, n - 1, 0.1; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24]) for n = 1:3] == [0.0, 0.10517083333333334, 0.2214]
+    @test [gridfunction(4, n - 1, 0.1; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24]) for n = 1:3] == [0.0, 0.10517083333333334, 0.2214]  
+    @test_throws DomainError gridfunction(5, 0, 0.1; p=1)
     @test castGrid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10000000000000009, 0.19999999999999996]
     @test castGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517091807564771, 0.22140275816016985]
     @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333321, 0.22140000000000004]

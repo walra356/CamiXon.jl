@@ -199,16 +199,12 @@ r′= [gridfunction(3, n-1, h; deriv=1) for n=1:5]     # linear (first derivativ
 """
 function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
 
-    ID == 1 && return _walterjohnson(n, h; deriv)
-    ID == 2 && return _jw_gridfunction(n, h; deriv, p)
-    ID == 3 && return _linear_gridfunction(n, h; deriv)
-    ID == 4 && return CamiMath.polynomial(coords, h*n; deriv)
-
-    return error("Error: unknown gridfunction")
+    return  ID == 1 ? _walterjohnson(n, h; deriv) :
+            ID == 2 ? _jw_gridfunction(n, h; deriv, p) :
+            ID == 3 ? _linear_gridfunction(n, h; deriv) :
+            ID == 4 ? CamiMath.polynomial(coords, h*n; deriv) : throw(DomainError(ID))
 
 end
-
-# = autoGrid(atom, orbit, T; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true) ===
 
 @doc raw"""
     autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
@@ -254,26 +250,6 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rma
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
     h, r0 = autoSteps(ID, Ntot, T(Rmax); p, coords)
-
-    return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
-
-end
-function autoGrid(atom::Atom, orbits::Vector{Orbit}, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=false)
-
-    T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (enforced by automatic type promotion)")
-
-    ID = (p < 1) & (length(coords) < 2) ? 1 :
-         (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 4 : 2) :
-         (p < 1) & (length(coords) ≥ 2) ? 3 : error("Error: unknown grid")
-
-    R = round.(Int, [autoRmax(atom, orbits[i]) for i ∈ eachindex(orbits)])
-    Rmax = maximum(R)
-    Ntot = maximum([autoNtot(orbits[i], Nboost)*Rmax÷R[i] for i ∈ eachindex(orbits)])
-    h,r0 = autoSteps(ID, Ntot, Rmax; p, coords)
-
-    for i ∈ eachindex(orbits)
-        autoPrecision(Rmax, orbits[i]) == BigFloat ? T = BigFloat : false
-    end
 
     return castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
