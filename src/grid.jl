@@ -22,7 +22,7 @@ function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
     
     # ..............................................................................
     
-    function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
+function _jw_gridfunction(n::Int, h::T; p=5, deriv=0) where T <: Real
     # ==============================================================================
     # jw_gridfunction(n, h [; p=5[, deriv=0]]) based on truncated exponential 
     # ==============================================================================
@@ -37,70 +37,70 @@ function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
     
         return f
     
-    end
+end
     
-    # ..............................................................................
+# ..............................................................................
     
-    function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
-    # ==============================================================================
-    #  linear_gridfunction(n, h; deriv) = n * h
-    # ==============================================================================
-        deriv ≥ 0 || return T(0)
-        deriv ≤ 1 || return T(0)
-    
-        f = deriv > 0 ? h : h * n
-    
-        return f
-    
-    end
-    
-    # ........................ gridname(ID) ........................................
-    @doc raw"""
-        gridname(ID::Int)
-    
-    Name corresponding to the grid ID.
-    #### Example:
-    ```
-    n = gridname(2); println("The grid type with ID = 2 is called '$n'.")
-      The grid type with ID = 2 is called 'quasi-exponential'.
-    ```
-    """
-    function gridname(ID::Int)
-    # ==============================================================================
-    #  Name used for `Grid` of given `grid.ID`
-    # ==============================================================================
-    
-        return ID == 1 ? "exponential" :
-               ID == 2 ? "quasi-exponential" :
-               ID == 3 ? "linear (uniform)" :
-               ID == 4 ? "polynomial" : throw(DomainError(ID))
-    
-    end
-    
-    # .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
-    
-    function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
-    
-        Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
-               ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
-               ID == 3 ? r0 * _linear_gridfunction(N, h)  :
-               ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : throw(DomainError(ID))
+function _linear_gridfunction(n::Int, h::T; deriv=0) where T <: Real
+# ==============================================================================
+#  linear_gridfunction(n, h; deriv) = n * h
+# ==============================================================================
+    deriv ≥ 0 || return T(0)
+    deriv ≤ 1 || return T(0)
 
-        ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
-        name = gridname(ID::Int)
-        str_h = repr(h, context=:compact => true)
-        str_r0 = repr(r0, context=:compact => true)
-        str_Rmax = repr(Rmax, context=:compact => true)
-        strA = "Grid created: $(name), $(T), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
+    f = deriv > 0 ? h : h * n
     
-        ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
-        ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
-        ID == 3 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
-        ID == 4 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
+    return f
     
-        return error("Error: unknown grid type")
+end
     
-    end
+# ........................ gridname(ID) ........................................
+@doc raw"""
+    gridname(ID::Int)
+    
+Name corresponding to the grid ID.
+#### Example:
+```
+julia> gridname(2)
+"quasi-exponential"
+```
+"""
+function gridname(ID::Int)
+# ==============================================================================
+#  Name used for `Grid` of given `grid.ID`
+# ==============================================================================
+    
+    return ID == 1 ? "exponential" :
+           ID == 2 ? "quasi-exponential" :
+           ID == 3 ? "linear (uniform)" :
+           ID == 4 ? "polynomial" : throw(DomainError(ID))
+   
+end
+    
+# .............. _gridspecs(ID, N, mytype, h, r0; p=5, coords=[0,1]) ...........
+    
+function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=true)
+    
+    Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
+           ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
+           ID == 3 ? r0 * _linear_gridfunction(N, h)  :
+           ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : throw(DomainError(ID))
+
+    ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
+    name = gridname(ID::Int)
+    str_h = repr(h, context=:compact => true)
+    str_r0 = repr(r0, context=:compact => true)
+    str_Rmax = repr(Rmax, context=:compact => true)
+    strA = "Grid created: $(name), $(T), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
+    
+    ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
+    ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
+    ID == 3 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
+    ID == 4 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
+    
+    return error("Error: unknown grid type")
+    
+end
     
     # ========== Grid (ID, name, Type, N, r, r′, h, r0, epn, epw, k) ===============
 
@@ -148,29 +148,25 @@ Method to create the Grid object
 `ID = 4`: polynomial grid
 #### Examples:
 ```
-julia> h = 0.1; r0 = 1.0;
-julia> grid = castGrid(1, 4, Float64; h, r0, msg=true);
-julia> grid.r
-create exponential Grid: Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
- [eps(Float64), 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
+julia> grid = castGrid(1, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
+Grid created: exponential, Float64, Rmax = 0.491825 a.u., Ntot = 4, h = 0.1, r0 = 1.0
 
-julia> grid = castGrid(2, 4, Float64; p = 4, h, r0, msg=true))
-julia> grid.r
-create quasi-exponential Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, p = 4, h = 0.1, r0 = 1.0
- [eps(Float64), 0.10517083333333321, 0.22140000000000004, 0.3498375]
+julia> grid = castGrid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
+Grid created: quasi-exponential, Float64, Rmax = 0.491733 a.u., Ntot = 4, p = 4, h = 0.1, r0 = 1.0
 
-julia> grid = castGrid(3, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h, r0, msg=true)
-julia> grid.r
-create polynomial Grid: Float64, Rmax = 0.491733 a.u., Ntot = 4, coords = [0.0, 1.0, 0.5, 0.166666, 0.0416666], h = 0.1, r0 = 1.0
- [eps(Float64), 0.10517083333333334, 0.2214, 0.3498375000000001]
-
-julia> grid = castGrid(4, 4, Float64; h, r0, msg=true);
-julia> grid.r
-create linear Grid: Float64, Rmax = 0.4 a.u., Ntot = 4, p = 1, h = 0.1, r0 = 1.0
- [eps(Float64), 0.1, 0.2, 0.3]
+julia> grid = castGrid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
+Grid created: linear (uniform), Float64, Rmax = 0.4 a.u., Ntot = 4, p = 1, h = 0.1, r0 = 1.0
 
 julia> grid.r′
- [0.1, 0.1, 0.1, 0.1]
+4-element Vector{Float64}:
+ 0.1
+ 0.1
+ 0.1
+ 0.1
+
+julia> grid = castGrid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
+Grid created: polynomial, Float64, Rmax = 0.491733 a.u., Ntot = 4, coords = [0.0, 1.0, 0.5, 0.16666666666666666, 0.041666666666666664], h = 0.1, r0 = 1.0
+ 
 ```
 """
 function castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=5, msg=false)

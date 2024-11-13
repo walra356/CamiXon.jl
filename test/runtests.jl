@@ -59,6 +59,9 @@ using Test
     orbit = castOrbit(n=2, ℓ=0);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
+    castGrid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
+    castGrid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
+    castGrid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
