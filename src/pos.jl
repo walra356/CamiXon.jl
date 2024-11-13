@@ -329,35 +329,3 @@ function getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) 
     return o
     
 end
-
-# ------------------------------------------------------------------------------
-#                      getΔNuctp(E, Veff, pos) 
-# ------------------------------------------------------------------------------
-
-@doc raw"""
-    getΔNuctp(E::T, Veff::Vector{T}, pos::Pos{T}) where T<:Real
-
-Update the [`Pos`](@ref) object starting from the energy `E`, and the effective 
-potential energy (screened Coulomb potential) `Veff[n]` tabulated on the [`Grid`](@ref). 
-"""
-function getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
-    
-    coords = CamiMath.lagrange_polynom(Veff, pos.Nuctp-3, pos.Nuctp, bwd)
-
-    imax = 0.0
-    imin = -1.0
-    Δi = (imax+imin)/2.0   
-    ϵ = 0.0001 
-
-    while Δi  > ϵ
-        if CamiMath.polynomial(coords, Δi) > E
-            imax = Δi
-        elseif CamiMath.polynomial(coords, Δi) < E
-            imin = Δi
-        end
-        Δi = (imax+imin)/2.0
-    end
-
-    return Δi
-    
-end

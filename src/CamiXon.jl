@@ -160,8 +160,6 @@ export getNmax
 export getNcut
 export getΔNcut
 
-export getΔNuctp
-
 export Pos
 export castPos
 export updatePos!

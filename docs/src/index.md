@@ -204,7 +204,6 @@ getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNmax(f::Vector{T}, start::Int, stop::Int) where T<:Real
 getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
 getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
-getΔNuctp(E::T, Veff::Vector{T}, pos::Pos) where T<:Real
 ```
 
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index

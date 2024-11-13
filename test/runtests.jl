@@ -141,8 +141,8 @@ using Test
     f0 = -0.606530659712633;
     @test getNmin(f, 1:201) == 101
     @test getNmax(f, 1:201) == 201
-    @test getNcut(f0, f, 1, 101) == 30
-    @test getNcut(f0, f, 101, 201) == 172
+    @test getNcut(f0, f, 1:101) == 30
+    @test getNcut(f0, f, 101:201) == 172
     Nlcut = getNcut(f0, f, 1, 101);
     Nucut = getNcut(f0, f, 101, 201);
     @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
