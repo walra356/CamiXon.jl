@@ -53,7 +53,7 @@ end
 @doc raw"""
     updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
-Upate [`Adams`](@ref) object.
+Update [`Adams`](@ref) object.
 """
 function updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
