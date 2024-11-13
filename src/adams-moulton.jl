@@ -209,19 +209,14 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{
     Nb+k ≤ N || error("Error: grid boost required (increase Ntot)")
 
     for n=Nb:-1:Nuctp
-        if real(Z[n+1]) < 1.0e50
-            for j=0:(k-1)
-                amP[j+1] = G[n+k-j][1,2] * imag(Z[n+k-j])
-                amQ[j+1] = G[n+k-j][2,1] * real(Z[n+k-j])
-            end
-            z = Z[n+1] - (am ⋅ amP + im*(am ⋅ amQ))
-            z1 = m[n][1,1] * real(z) - m[n][1,2] * imag(z)          
-            z2 = m[n][2,1] * real(z) - m[n][2,2] * imag(z)
-            Z[n] = z1 - im*z2
-            n -= 1
-        else
-            Z[n+1:N] .*= 1.0e-50
+        for j=0:(k-1)
+            amP[j+1] = G[n+k-j][1,2] * imag(Z[n+k-j])
+            amQ[j+1] = G[n+k-j][2,1] * real(Z[n+k-j])
         end
+        z = Z[n+1] - (am ⋅ amP + im*(am ⋅ amQ))
+        z1 = m[n][1,1] * real(z) - m[n][1,2] * imag(z)          
+        z2 = m[n][2,1] * real(z) - m[n][2,2] * imag(z)
+        Z[n] = z1 - im*z2
     end
    
     norm = P0/real(Z[Nuctp])
