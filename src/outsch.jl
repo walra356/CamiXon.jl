@@ -47,7 +47,7 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-   OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+   OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 Ansatz solution for the *outward* integration of the radial wave equation for the first ``k`` points 
 on the [`Grid`](@ref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
@@ -86,7 +86,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
-function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     ℓ = def.orbit.ℓ
     
@@ -97,10 +97,10 @@ function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams:
 end
 
 @doc raw"""
-    OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+    OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     r = grid.r
     k = def.k

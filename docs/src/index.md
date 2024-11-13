@@ -252,7 +252,7 @@ the form of a tabulated function of `N` elements.
 ```@docs
 Adams
 castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams related functions
@@ -266,23 +266,23 @@ matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 #### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
 Init{T} where T<:Real
-adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
-adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - outward
 ```@docs
-OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
-OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
+adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - inward
 ```@docs
 INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
+adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - boundary condition applied and convergence test
@@ -293,7 +293,7 @@ adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{
 #### Adams-Moulton Master procedures
 ```@docs
 adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
-adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
 adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
 adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 ```

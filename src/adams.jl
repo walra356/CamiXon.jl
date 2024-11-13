@@ -22,14 +22,6 @@ struct Adams{T}
     G::Vector{Matrix{T}}
     σ::Vector{Matrix{T}}
     Minv::Vector{Matrix{T}}
-    Z::Vector{Complex{T}} 
-
-end
-struct Adams1{T}
-
-    G::Vector{Matrix{T}}
-    σ::Vector{Matrix{T}}
-    Minv::Vector{Matrix{T}}
 
 end
 
@@ -50,7 +42,7 @@ function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
     σ = matσ(E, grid, def)
     M = matMinv(E, grid, def)
 
-    return Adams1(G, σ, M)
+    return Adams(G, σ, M)
 
 end
 
@@ -59,16 +51,16 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 Upate [`Adams`](@ref) object.
 """
-function updateAdams!(adams::Adams1{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 G = matG(E, grid, def)
 σ = matσ(E, grid, def)
 M = matMinv(E, grid, def)
 
-return Adams1(G, σ, M)
+return Adams(G, σ, M)
 
 end

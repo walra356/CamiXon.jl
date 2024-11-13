@@ -135,7 +135,7 @@ end
     adams_moulton_outward!(def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     k = def.k
     am = def.am[1:k]
@@ -188,7 +188,7 @@ end
     adams_moulton_inward!(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     k = def.k
     am = def.am[1:k]
@@ -288,7 +288,7 @@ The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
 ![Image](./assets/hydrogen-1s-prepared.png)
 """
-function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     updatePos!(def.pos, E, def.potscr, grid)
     adams = updateAdams!(adams, E, grid, def)
@@ -303,10 +303,10 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
 
 end
 @doc raw"""
-    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     
 """
-function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     adams = updateAdams!(adams, E, grid, def)
         
@@ -462,10 +462,10 @@ end
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
 """
-function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_iterate! =====")  
     

@@ -151,8 +151,7 @@ export autoNtot
 export autoPrecision
 export autoSteps
 export autoGrid
-export grid_differentiation # kanweg --------------------------------------
-export grid_differentiation1 # new --------------------------------------
+export grid_differentiation
 export grid_integration
 
 
