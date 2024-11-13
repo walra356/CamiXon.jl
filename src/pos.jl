@@ -298,10 +298,8 @@ function getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) 
         while imax-imin > ϵ
             if CamiMath.polynomial(coords, o) ≤ f0
                 imax = o
-            elseif CamiMath.polynomial(coords, o) ≥ f0
-                imin = o
             else
-                println("noise level")
+                imin = o
             end
             o = (imax+imin)/2.0
         end
@@ -317,10 +315,8 @@ function getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) 
         while imax-imin > ϵ
             if CamiMath.polynomial(coords, o) ≥ f0
                 imax = o
-            elseif CamiMath.polynomial(coords, o) ≤ f0
-                imin = o
             else
-                println("noise level")
+                imin = o
             end
             o = (imax+imin)/2.0
         end
