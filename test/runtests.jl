@@ -55,7 +55,7 @@ using Test
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
