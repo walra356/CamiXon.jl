@@ -93,12 +93,10 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     str_Rmax = repr(Rmax, context=:compact => true)
     strA = "Grid created: $(name), $(T), Rmax = "  * str_Rmax * " a.u., Ntot = $N, "
     
-    ID == 1 && return strA * "h = " * str_h * ", r0 = " * str_r0
-    ID == 2 && return strA * "p = $p, h = " * str_h * ", r0 = " * str_r0
-    ID == 3 && return strA * "p = 1, h = " * str_h * ", r0 = " * str_r0
-    ID == 4 && return strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0
-    
-    return error("Error: unknown grid type")
+    return ID == 1 ? strA * "h = " * str_h * ", r0 = " * str_r0 :
+           ID == 2 ? strA * "p = $p, h = " * str_h * ", r0 = " * str_r0 :
+           ID == 3 ? strA * "p = 1, h = " * str_h * ", r0 = " * str_r0 :
+           ID == 4 ? strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0 : throw(DomainError(ID))
     
 end
     
