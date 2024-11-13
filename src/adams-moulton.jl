@@ -117,7 +117,10 @@ function matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
 
 end
 
-# ======================= adams_moulton_outward ================================
+# ------------------------------------------------------------------------------
+#                  adams_moulton_outward!(def, adams)
+# ------------------------------------------------------------------------------
+
 function _updatenodes!(nodes::Int, z::T) where T<:Real
 
     s = iseven(nodes) ? true : false
@@ -177,6 +180,10 @@ function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams
 
 end
 
+# ------------------------------------------------------------------------------
+#                  adams_moulton_inward!(E, grid, def, adams)
+# ------------------------------------------------------------------------------
+
 @doc raw"""
     adams_moulton_inward!(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
@@ -193,11 +200,8 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1
     G = adams.G
 
     N  = def.pos.N
-    ############# Na = def.pos.Na
     Nb = def.pos.Nb
     Nuctp = def.pos.Nuctp
-    #############Nlctp = def.pos.Nlctp
-    ##############ΔNuctp = def.pos.ΔNuctp
     
     P0 = real(Z[Nuctp])
     Q0 = imag(Z[Nuctp])
@@ -232,7 +236,9 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams1
 
 end
 
-# ======================= adams_moulton_normalized =============================
+# ------------------------------------------------------------------------------
+#                  adams_moulton_normalize!(Z, ΔQ, grid, def)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
@@ -255,7 +261,9 @@ function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, 
 
 end
 
-# =============== adams_moulton_solve!(Z, E, grid, def, adams) =====================
+# ------------------------------------------------------------------------------
+#                  adams_moulton_solve!(Z, E, grid, def, adams)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
@@ -310,9 +318,10 @@ function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T},
 
 end
 
-# ======================= adams_moulton_master sector ==========================
+# -----------------------------------------------------------------------------------------
+#                 adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true)
+# -----------------------------------------------------------------------------------------
 
-# ..............................................................................
 function _set_bounds!(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     n′= def.orbit.n′     # radial quantum number (number of nodes)
@@ -342,7 +351,7 @@ function _set_bounds!(init::NTuple{4,T}, grid::Grid{T}, def::Def{T}, adams::Adam
     return i, def, adams, init, Z
 
 end
-# ..............................................................................
+# .................................................................................................
 function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prepare") where T<:Real
 
     nodes = def.pos.nodes
@@ -386,7 +395,7 @@ function _message(i::Int, imax::Int, init::NTuple{4,T}, def::Def{T}; modus="prep
     msg *= strΔErel
 
 end
-# ..............................................................................
+# ..........................................................................................................
 function _strΔt(tstop::T, tstart::T) where T<:Real
 
     Δt = tstop-tstart
@@ -396,7 +405,7 @@ function _strΔt(tstop::T, tstart::T) where T<:Real
     return str
 
 end
-
+# ..........................................................................................................
 @doc raw"""
     adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
     
@@ -447,6 +456,10 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}
     return def, adams, init, Z
 
 end
+
+# --------------------------------------------------------------------------------------------------------------
+#            adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-6, msg=true)
+# --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
     adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
@@ -499,11 +512,15 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid
 
 end
 
+# --------------------------------------------------------------------------------------------------------------
+#                 adams_moulton_precise!(Z, init, grid, def; imax=10, ϵ=1e-6, msg=false)
+# --------------------------------------------------------------------------------------------------------------
+
 @doc raw"""
-    adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
+    adams_moulton_precise!(Z, init, grid, def; imax=10, ϵ=1e-6, msg=false)
     
 """
-function adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
+function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
 
     println("Reset parameters to BigFloat precision:")
 
@@ -526,6 +543,14 @@ function adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg
     
 end
 
+# --------------------------------------------------------------------------------------------------------------
+#          adams_moulton_report(E, ΔE, grid, def; unitIn="Hartree", name="name" , msg=true)
+# --------------------------------------------------------------------------------------------------------------
+
+@doc raw"""
+    adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
+
+"""
 function adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 
     Δf = convertUnit(abs(ΔE), def.codata)

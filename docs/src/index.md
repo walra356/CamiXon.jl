@@ -295,6 +295,7 @@ adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{
 adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
 adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams1{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
 adams_moulton_precise!(Z, init, grid, def, adams; imax=10, ϵ=1e-6, msg=false)
+adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 ```
 
 ## Coulomb integrals
