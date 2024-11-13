@@ -117,7 +117,7 @@ function _strSpinorbit(name, n, n′, ℓ, mℓ, up)
 end
 
 @doc raw"""
-    castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
+    castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=false)
 
 Create `Spinorbit` with fields:
 * ` .name`: spinorbital name (string)
@@ -135,7 +135,7 @@ Spinorbital: 1s↑
 Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
 ```
 """
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
+function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=false)
     
     o = castOrbit(;n, ℓ, mℓ)
     
@@ -162,7 +162,7 @@ Type for specification of atomic *fine-structure Terms* with fields:
 * ` .L`:  total orbital angular momentum in units of ħ
 * ` .J`:  total electronic angular momentum in units of ħ
 
-The type `Term` is best created with the function `createTerm`.
+The type `Term` is best created with the function `castTerm`.
 """
 struct Term
     name::String         # LS term notation
@@ -177,7 +177,7 @@ end
 # ===================== createTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2) ===========
 
 @doc raw"""
-    castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
+    castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=false)
 
 Specify Term in the *Term notatation* with fields:
 * `.n`: principal quantum number
@@ -188,12 +188,12 @@ Specify Term in the *Term notatation* with fields:
 * `.J`: total electronic angular momentum
 #### Examples:
 ```
-term_H1I = castTerm(1; ℓ=0, S=1//2, L=0, J=1//2)
+julia> castTerm(1; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 Term created: 1s ²S₁⸝₂; n = 1,  n′ = 0, ℓ = 0, S = 1//2, L = 0, J = 1//2
 Term("1s ²S₁⸝₂", 1, 0, 0, 1//2, 0, 1//2)
 ```
 """
-function castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
+function castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=false)
 
     S = typeof(S) ∈ [Float16,Float32,Float64] ? rationalize(S) : S
     J = typeof(J) ∈ [Float16,Float32,Float64] ? rationalize(J) : J

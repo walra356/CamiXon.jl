@@ -90,20 +90,13 @@ atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
 Optional: scr (supply screening array)
 #### Example:
 ```
-codata = castCodata(2018)
-atom = castAtom(Z=1, A=1, Q=0)
-orbit = castOrbit(n=7, ℓ=2)
-grid = autoGrid(atom, orbit, Float64)
-def = castDef(grid, atom, orbit, codata);
-    Element created: H, hydrogen, Z=1, weight=1.008
-    Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
-    Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
-    Orbital: 7d
-        principal quantum number: n = 7
-        radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
-        orbital angular momentum of valence electron: ℓ = 2
-    Grid created: exponential, Float64, Rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
-    Def created for hydrogen 7d on exponential grid of 400 points
+julia> codata = castCodata(2018)
+julia> atom = castAtom(Z=1, A=1, Q=0);
+julia> orbit = castOrbit(n=7, ℓ=2);
+julia> grid = autoGrid(atom, orbit, Float64);
+
+julia> castDef(grid, atom, orbit, codata, msg=true);
+Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
 function castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing, msg=false) where T <: Real
