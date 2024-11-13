@@ -71,6 +71,7 @@ function init!(init::Init{T}, ΔE::T, def::Def{T}) where T<:Real
         elseif nodes < n′
             Emin = init.Emin = max(E, Emin)
             init.E = (E-ΔE+Emin)/two
+            println("Warning: code coverage: untested code path - report to author")
         else
             init.E = iseven(n′) ? E-ΔE : E+ΔE  # teken nu goed?
             init.ΔE = ΔE
