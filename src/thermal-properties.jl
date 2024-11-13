@@ -53,7 +53,7 @@ julia> svp("Li", 623.0)
 function svp(atomicnumber::Int, temp::Real)
 
     T = float(temp)
-    i = atomicnumber
+    Z = atomicnumber
     d = CamiXon.dictAntoineCoefficients
 
     groupA = [3, 4, 11, 13, 19, 21, 22, 23, 26, 27, 28, 29, 30, 31, 37, 39, 40, 45, 46, 47, 48, 49, 50, 55, 56, 57, 58, 59, 60, 64, 65, 68, 71, 78, 79, 80, 81, 82, 90, 91, 92, 93, 94, 96]
@@ -61,15 +61,14 @@ function svp(atomicnumber::Int, temp::Real)
     groupC = [1, 2, 5, 7, 8, 9, 10, 14, 15, 16, 17, 18, 32, 33, 34, 35, 36, 43, 51, 52, 53, 54, 61, 83, 84, 85, 86, 87, 88, 89, 97, 98, 99, 100, 101, 102]
     groupD = (6)
 
-    (Tmin, mp, Tmax) = d[i][3]
+    (Tmin, mp, Tmax) = d[Z][3]
 
-    if i ∈ groupA
-        (A, B, C, D) = (T ≤ mp) ? d[i][1] : d[i][2]
-    elseif i ∈ groupB
-        (A, B, C, D) = (T ≤ mp) ? d[i][1] :
-            println("Antoine coefficients for T > m.p. = $(mp) not found")
+    if Z ∈ groupA
+        (A, B, C, D) = (T ≤ mp) ? d[Z][1] : d[Z][2]
+    elseif Z ∈ groupB
+        (A, B, C, D) = (T ≤ mp) ? d[Z][1] : throw(DomainError(Z, "Antoine coefficients for T > m.p. = $(mp) not found"))
     else
-        println("Antoine coefficients not found")
+        throw(DomainError(Z, "Antoine coefficients not found"))
     end
 
     lp = A + B / T + C * log10(T) + D * T / 1000.0
@@ -111,7 +110,7 @@ julia> latent_heat_vaporization("Li", 623.0)
 function latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
     T = float(temp)
-    i = atomicnumber
+    Z = atomicnumber
     d = CamiXon.dictAntoineCoefficients
 
     groupA = [3, 4, 11, 13, 19, 21, 22, 23, 26, 27, 28, 29, 30, 31, 37, 39, 40, 45, 46, 47, 48, 49, 50, 55, 56, 57, 58, 59, 60, 64, 65, 68, 71, 78, 79, 80, 81, 82, 90, 91, 92, 93, 94, 96]
@@ -119,15 +118,14 @@ function latent_heat_vaporization(atomicnumber::Int, temp::Real)
     groupC = [1, 2, 5, 7, 8, 9, 10, 14, 15, 16, 17, 18, 32, 33, 34, 35, 36, 43, 51, 52, 53, 54, 61, 83, 84, 85, 86, 87, 88, 89, 97, 98, 99, 100, 101, 102]
     groupD = (6)
 
-    (Tmin, mp, Tmax) = d[i][3]
+    (Tmin, mp, Tmax) = d[Z][3]
 
-    if i ∈ groupA
-        (A, B, C, D) = (T ≤ mp) ? d[i][1] : d[i][2]
-    elseif i ∈ groupB
-        (A, B, C, D) = (T ≤ mp) ? d[i][1] :
-                println("Antoine coefficients for T > m.p. = $(mp) not found")
+    if Z ∈ groupA
+        (A, B, C, D) = (T ≤ mp) ? d[Z][1] : d[Z][2]
+    elseif Z ∈ groupB
+        (A, B, C, D) = (T ≤ mp) ? d[Z][1] : throw(DomainError(Z, "Antoine coefficients for T > m.p. = $(mp) not found"))
     else
-        println("Antoine coefficients not found")
+        throw(DomainError(Z, "Antoine coefficients not found"))
     end
 
     L = B + C * T * log10(T) + D * T * T / 1000.0 # latent heat 0f vaporization

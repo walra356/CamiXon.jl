@@ -236,9 +236,11 @@ using Test
     @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
     @test latent_heat_vaporization("Li", 623) == 18473.64020109123
     @test latent_heat_vaporization("Li", 400) == 19134.482122780522
+    @test_throws DomainError latent_heat_vaporization(1, 100)
     @test svp("Yb", 763) == 2.2859295292626745
     @test svp("Li", 623) == 0.0015230367024569058
     @test svp("Li", 400) == 7.901690229445235e-11
+    @test_throws DomainError svp("H", 400)
     @test melting_point("Li") == 453.65
     @test latexIsotopeTable(1:10) == latexIsotopeTable(1,10)
     @test latexIsotopeTable(11:22; continuation=true) == latexIsotopeTable(11,22; continuation=true) 

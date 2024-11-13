@@ -443,7 +443,7 @@ end
 """
 function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
 
-    println("Reset parameters to BigFloat precision:")
+    println("\nReset parameters to BigFloat precision:")
 
     B = BigFloat
     Z = convert.(Complex{B}, Z)
