@@ -109,7 +109,7 @@ function listAtom(Z::Int, A::Int, Q::Int; fmt=Object, msg=true)
 
     return fmt === Object ? _stdAtom(Z, A, Q) :
            fmt === String ? _strAtom(Z, A, Q) :
-           fmt === Info ? _infoAtom(Z, A, Q; msg) : throw(DomainError(fmt))
+           fmt === Info ? _infoAtom(Z, A, Q; msg) : throw(DomainError(fmt, "unknown output format"))
 
 end
 function listAtom(elt::String, A::Int, Q::Int; fmt=Object, msg=true)

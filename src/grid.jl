@@ -73,7 +73,7 @@ function gridname(ID::Int)
     return ID == 1 ? "exponential" :
            ID == 2 ? "quasi-exponential" :
            ID == 3 ? "linear (uniform)" :
-           ID == 4 ? "polynomial" : throw(DomainError(ID))
+           ID == 4 ? "polynomial" : throw(DomainError(ID, "unknown gridfunction"))
    
 end
     
@@ -84,7 +84,7 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
            ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
            ID == 3 ? r0 * _linear_gridfunction(N, h)  :
-           ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : throw(DomainError(ID))
+           ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : throw(DomainError(ID, "unknown gridfunction"))
 
     ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
     name = gridname(ID::Int)
@@ -96,7 +96,7 @@ function _gridspecs(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1],
     return ID == 1 ? strA * "h = " * str_h * ", r0 = " * str_r0 :
            ID == 2 ? strA * "p = $p, h = " * str_h * ", r0 = " * str_r0 :
            ID == 3 ? strA * "p = 1, h = " * str_h * ", r0 = " * str_r0 :
-           ID == 4 ? strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0 : throw(DomainError(ID))
+           ID == 4 ? strA * "coords = $(coords), h = " * str_h * ", r0 = " * str_r0 : throw(DomainError(ID, "unknown gridfunction"))
     
 end
     

@@ -170,7 +170,7 @@ function listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
     return fmt === Object ? _stdIsotope(Z, A) :
            fmt === String ? _strIsotope(Z, A) :
            fmt === Latex ? _texIsotope(Z, A) :
-           fmt === Info ? _infoIsotope(Z, A, msg) : throw(DomainError(fmt))
+           fmt === Info ? _infoIsotope(Z, A, msg) : throw(DomainError(fmt, "unknown output format"))
 
 end
 # ..............................................................................

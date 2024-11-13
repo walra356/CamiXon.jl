@@ -202,7 +202,7 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
     return  ID == 1 ? _walterjohnson(n, h; deriv) :
             ID == 2 ? _jw_gridfunction(n, h; deriv, p) :
             ID == 3 ? _linear_gridfunction(n, h; deriv) :
-            ID == 4 ? CamiMath.polynomial(coords, h*n; deriv) : throw(DomainError(ID))
+            ID == 4 ? CamiMath.polynomial(coords, h*n; deriv) : throw(DomainError(ID, "unknown gridfunction"))
 
 end
 
