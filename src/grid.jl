@@ -70,12 +70,10 @@ function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
     #  Name used for `Grid` of given `grid.ID`
     # ==============================================================================
     
-        ID == 1 && return "exponential"
-        ID == 2 && return "quasi-exponential"
-        ID == 3 && return "linear (uniform)"
-        ID == 4 && return "polynomial"
-    
-        return error("Error: unknown grid name")
+        return ID == 1 ? "exponential" :
+               ID == 2 ? "quasi-exponential" :
+               ID == 3 ? "linear (uniform)" :
+               ID == 4 ? "polynomial" : throw(DomainError(ID))
     
     end
     
@@ -86,8 +84,8 @@ function _walterjohnson(n::Int, h::T; deriv=0) where T <: Real
         Rmax = ID == 1 ? r0 * _walterjohnson(N, h) :
                ID == 2 ? r0 * _jw_gridfunction(N, h; p) :
                ID == 3 ? r0 * _linear_gridfunction(N, h)  :
-               ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : error("Error: unknown grid type")
-    
+               ID == 4 ? r0 * CamiMath.polynomial(coords, h*N) : throw(DomainError(ID))
+
         ID = ID ≠ 2 ? ID : p == 1 ? 3 : 2
         name = gridname(ID::Int)
         str_h = repr(h, context=:compact => true)
