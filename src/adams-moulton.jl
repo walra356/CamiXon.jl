@@ -140,15 +140,13 @@ function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams
     k = def.k
     am = def.am[1:k]
 
-    amP = Array{T,1}(undef,k)
-    amQ = Array{T,1}(undef,k)
+    P = Array{T,1}(undef,k)
+    Q = Array{T,1}(undef,k)
 
     m = adams.Minv
     G = adams.G
 
-    N  = def.pos.N
     Na = def.pos.Na
-    Nb = def.pos.Nb
     Nuctp = def.pos.Nuctp
     Nlctp = def.pos.Nlctp
 
@@ -156,10 +154,10 @@ function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams
    
     for n=Na:Nuctp-1
         for j=0:(k-1)
-            amP[j+1] = G[n+1-k+j][1,2] * imag(Z[n+1-k+j])
-            amQ[j+1] = G[n+1-k+j][2,1] * real(Z[n+1-k+j])
+            P[j+1] = G[n+1-k+j][1,2] * imag(Z[n+1-k+j])
+            Q[j+1] = G[n+1-k+j][2,1] * real(Z[n+1-k+j])
         end
-        z = Z[n] + (am ⋅ amP + im*(am ⋅ amQ))
+        z = Z[n] + (am ⋅ P + im*(am ⋅ Q))
         z1 = m[n+1][1,1] * real(z) + m[n+1][1,2] * imag(z)          
         z2 = m[n+1][2,1] * real(z) + m[n+1][2,2] * imag(z)
         Z[n+1] = z1 + im*z2
