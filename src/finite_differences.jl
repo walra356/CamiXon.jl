@@ -6,7 +6,10 @@
 #                               finite_differences.jl
 # ==============================================================================
 
-# ==================== fdiff_weight(k, j) ======================================
+# ------------------------------------------------------------------------------
+#                               fdiff_weight(k, j)
+# ------------------------------------------------------------------------------
+
 @doc raw"""
     fdiff_weight(k::Int, j::Int)
 
@@ -32,9 +35,10 @@ function fdiff_weight(k::Int, j::Int)
 
 end
 
-# ============== fdiff_expansion_weights(coeffs, bwd, rev) =====================
+# ------------------------------------------------------------------------------
+#                  fdiff_expansion_weights(coeffs, bwd, rev)
+# ------------------------------------------------------------------------------
 
-# ..............................................................................
 function reg_fwd_expansion_weights(coeffs)
 
     k = Base.length(coeffs)-1
@@ -164,9 +168,10 @@ function fdiff_expansion_weights(coeffs, notation=bwd, ordering=rev)
 
 end
 
-# =========== fdiff_expansion(coeffs, f, notation=bwd) =========================
+# ------------------------------------------------------------------------------
+#                  fdiff_expansion(coeffs, f, notation=bwd)
+# ------------------------------------------------------------------------------
 
-# ..............................................................................
 @doc raw"""
     fdiff_expansion(coeffs, f[, notation=bwd])
 
@@ -243,9 +248,10 @@ function fdiff_expansion(coeffs, f, notation=bwd)
 
 end
 
-# ======= fdiff_interpolation_expansion_coeffs(k, x, notation=bwd) =============
+# ------------------------------------------------------------------------------
+#           fdiff_interpolation_expansion_coeffs(k, x, notation=bwd)
+# ------------------------------------------------------------------------------
 
-#...............................................................................
 function fwd_interpolation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
     o = Base.ones(T,k+1)
@@ -330,14 +336,15 @@ k = 5
 function fdiff_interpolation_expansion_coeffs(ξ::T, k=3, notation=bwd) where T<:Real
 
     o = CamiMath.isforward(notation) ? fwd_interpolation_expansion_coeffs(-ξ, k) :
-                              bwd_interpolation_expansion_coeffs(ξ, k)
+                                       bwd_interpolation_expansion_coeffs(ξ, k)
     return o
 
 end
 
-# ============== fdiff_interpolation_expansion_weights(coeffs) =================
+# ------------------------------------------------------------------------------
+#                  fdiff_interpolation_expansion_weights(coeffs)
+# ------------------------------------------------------------------------------
 
-#...............................................................................
 function fwd_interpolation_expansion_weights(ξ::T, k=3, ordering=reg) where T<:Real
 
     α = fdiff_interpolation_expansion_coeffs(ξ, k, fwd)
@@ -368,18 +375,21 @@ function fdiff_interpolation_expansion_weights(coeffs, notation=bwd, ordering=re
     if CamiMath.isforward(notation)
 
         o = CamiMath.isregular(ordering) ? reg_fwd_expansion_weights(coeffs) :
-                                  rev_fwd_expansion_weights(coeffs)
+                                           rev_fwd_expansion_weights(coeffs)
     else
 
         o = CamiMath.isregular(ordering) ? reg_bwd_expansion_weights(coeffs) :
-                                  rev_bwd_expansion_weights(coeffs)
+                                           rev_bwd_expansion_weights(coeffs)
     end
 
     return o
 
 end
 
-# ======================== fdiff_interpolation(f, x; k=3) ======================
+# ------------------------------------------------------------------------------
+#                          fdiff_interpolation(f, x; k=3)
+# ------------------------------------------------------------------------------
+
 @doc raw"""
     fdiff_interpolation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
 
@@ -434,9 +444,10 @@ function fdiff_interpolation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
 
 end
 
-# ============== fdiff_differentiation_expansion_coeffs(ξ, k) =================
+# ------------------------------------------------------------------------------
+#                fdiff_differentiation_expansion_coeffs(ξ, k)
+# ------------------------------------------------------------------------------
 
-#...............................................................................
 function fwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 # ==============================================================================
 #   Forward difference expansion coefficients for differentiation of an
@@ -489,7 +500,6 @@ function bwd_differentiation_expansion_coeffs(ξ::T, k=3) where T<:Real
 
 end
 #...............................................................................
-
 @doc raw"""
     fdiff_differentiation_expansion_coeffs(ξ::T [, k=3 [, notation=bwd]]) where T<:Real
 
@@ -531,7 +541,9 @@ function fdiff_differentiation_expansion_coeffs(ξ::T, k=3, notation=bwd) where 
 
 end
 
-# ================= fdiff_differentiation(f, v; k=3) ==============================
+# ------------------------------------------------------------------------------
+#                   fdiff_differentiation(f, v; k=3)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     fdiff_differentiation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
@@ -572,7 +584,9 @@ function fdiff_differentiation(f::Vector{T}, v::V; k=3) where {T<:Real, V<:Real}
 
 end
 
-# ============ create_lagrange_differentiation_matrix(k) =======================
+# ------------------------------------------------------------------------------
+#                   create_lagrange_differentiation_matrix(k)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     create_lagrange_differentiation_matrix(k::Int)
@@ -606,7 +620,9 @@ function create_lagrange_differentiation_matrix(k::Int)
 
 end
 
-# =========== trapezoidal_epw(k; rationalize=false, devisor=false) =========
+# ------------------------------------------------------------------------------
+#             trapezoidal_epw(k; rationalize=false, devisor=false)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     trapezoidal_epw(k::Int [; rationalize=false [, devisor=false]])
@@ -670,7 +686,9 @@ function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
 
 end
 
-# ======================== trapezoidal_integration(f, domain; k=5) =============
+# ------------------------------------------------------------------------------
+#                 trapezoidal_integration(f, domain; k=5)
+# ------------------------------------------------------------------------------
 
 @doc raw"""
     trapezoidal_integration(f, x1, x2, weights)
