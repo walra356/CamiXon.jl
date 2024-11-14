@@ -654,8 +654,7 @@ function trapezoidal_epw(k::Int; rationalize=false, devisor=false)
 # trapezoidal_epw(k; rationalize=false, devisor=false)
 # ==============================================================================
     strWarn = "Warning: k = $(k) → $(k-1) (trapezoidal rule requires odd k)"
-    Base.isodd(k) ? true :
-                   (k=k+1; println(strWarn))
+    Base.isodd(k) ? true : (k=k+1; println(strWarn))
 
     l = k - 1
     σ = Base.Matrix{Int}(undef,k,k)
