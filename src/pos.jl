@@ -220,18 +220,19 @@ end
 
 @doc raw"""
     getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
+    getNcut(f0::T, f::Vector{T}, itr::UnitRange) where T<:Real
 
 Index corresponding to the intersection point of the discrete function ``f[n]`` with the value ``f0`` 
 in the interval ``start ≤ n ≤ stop``, 
 
 ```math
-    f[n_cut] = f0.
+    f[n_{cut}] = f0.
 ```
 
 Condition: ``f[n]`` must be monotonically increasing or decreasing on the interval ``start ≤ n ≤ stop``.
 
-NB. For a monotonically *decreasing* function ``n_cut`` is approximated by the *largest* ``n`` for which ``f[n] > f0``.
-For a monotonically *increasing* function  ``n_cut`` is approximated by the *smallest* ``n`` for which ``f[n] > f0``.
+NB. For a monotonically *decreasing* function ``n_{cut}`` is approximated by the *largest* ``n`` for which ``f[n] > f0``.
+For a monotonically *increasing* function  ``n_{cut}`` is approximated by the *smallest* ``n`` for which ``f[n] > f0``.
 """
 function getNcut(f0::T, f::Vector{T}, start::Int, stop::Int) where T<:Real
     
