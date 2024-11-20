@@ -161,18 +161,11 @@ grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
 ```@docs
-CamiDiff.Grid{T}
-gridname(ID::Int)
-gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castCamiDiff.Grid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=7, msg=true)
-findIndex(rval::T, grid::CamiDiff.Grid{T}) where T<:Number
 autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
 autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
-grid_differentiation(f::Vector{T}, grid::CamiDiff.Grid{T}; k=3) where T<:Real
-grid_integration(f::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 
 ## Def
