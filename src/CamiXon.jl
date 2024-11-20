@@ -13,6 +13,15 @@ sub(i) = CamiMath.sub(i)
 frac(i) = CamiMath.frac(i)
 strRational(i) = CamiMath.strRational(i)
 
+struct Object
+end
+
+struct Info
+end
+
+struct Latex
+end
+
 using Printf
 using Dates           # used in fits_private_sector
 #using IntervalSets
@@ -144,12 +153,7 @@ export edges
 export steps
 export stepcenters
 export stepedges
-#export centerticks
-#export edgeticks
-#export centers
-#export edges
 
-include("singleton.jl")
 include("julia.jl")
 include("codata.jl")
 include("dicts.jl")
