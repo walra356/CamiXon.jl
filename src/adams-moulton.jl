@@ -243,7 +243,7 @@ function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.
     
     N = grid.N
 
-    norm = grid_integration(real(Z) .^2, grid, 1, N)
+    norm = CamiDiff.grid_integration(real(Z) .^2, grid, 1, N)
 
     ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
 
