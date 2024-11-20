@@ -192,7 +192,7 @@ function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, g
     R = χ ./ r
     R′= (χ′ .- χ ./ r) ./ r
 
-    R′[1] = fdiff_interpolation(R′[2:end], 0; k)   # extrapolate to r=0 to handle "division by zero"
+    R′[1] = CamiDiff.fdiff_interpolation(R′[2:end], 0; k)   # extrapolate to r=0 to handle "division by zero"
     R[1] = ℓ > 0 ? T(0) : R′[1] * convert(T, -(ℓ + 1)//Zval )  # construct R[1] from R′[1] - see OUTSCH.jl
 
     return R + im * R′
