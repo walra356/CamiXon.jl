@@ -157,7 +157,7 @@ function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::D
 
     for n=Nlctp:-1:1
         p[n] = sqrt(abs(pot[n]-E))                             # quasi-classical momentum
-        I[n] = grid_integration(p, grid, n:Nlctp)
+        I[n] = CamiDiff.grid_integration(p, grid, n:Nlctp)
         P[n] = exp(-I[n])/sqrt(p[n])                           # WKB solution
         def.pos.Na = P[n] > 1.0e-30 ? n : break
     end
