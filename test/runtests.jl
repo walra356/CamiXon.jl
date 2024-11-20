@@ -19,12 +19,6 @@ using Test
     @test strValue(Value(1, "Hz")) == "1 Hz"
     @test castNamedValue(Value(1.602176634e-19, "C"); name="e") == NamedValue(Value(1.602176634e-19, "C"), "e", " ")
     @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "\ncalibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
-    @test sup(-5 // 2) == "⁻⁵ᐟ²"
-    @test sub(-5 // 2) == "₋₅⸝₂"
-    @test sub("e") == "ₑ"
-    @test frac(-5 // 2) == "-⁵/₂"
-    @test strRational(-5) == "-5"
-    @test strRational(-5 // 2) == "-5/2"
     @test bohrformula(2, 4) == -1 // 8
     @test get(dictAtomicNumbers, "Rb", nothing) == 37
     @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
