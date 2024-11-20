@@ -124,8 +124,8 @@ function castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codat
     σ = [fill(convert(T,0), (2,2)) for n=1:N]
     Minv = [fill(convert(T,1), (2,2)) for n=1:N]
     pos = isnothing(pos) ? Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  : pos # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
-    am = convert.(T, create_adams_moulton_weights(k; rationalize=true))
-    matLD = convert.(T, create_lagrange_differentiation_matrix(k))
+    am = convert.(T, CamiDiff.create_adams_moulton_weights(k; rationalize=true))
+    matLD = convert.(T, CamiDiff.create_lagrange_differentiation_matrix(k))
 
     msg && println(_defspecs(grid, atom, orbit))
 
