@@ -122,6 +122,7 @@ export autoRmax
 export autoNtot
 export autoPrecision
 export autoSteps
+export autoGrid
 
 export getNmin
 export getNmax
