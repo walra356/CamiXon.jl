@@ -7,6 +7,11 @@ bwd = CamiMath.bwd
 reg = CamiMath.reg
 rev = CamiMath.rev
 
+sup(i) = CamiMath.sup(i)
+sub(i) = CamiMath.sub(i)
+frac(i) = CamiMath.frac(i)
+strRational(i) = CamiMath.strRational(i)
+
 using Printf
 using Dates           # used in fits_private_sector
 #using IntervalSets
@@ -185,7 +190,6 @@ include("singleton.jl")
 include("julia.jl")
 include("codata.jl")
 include("dicts.jl")
-include("strings.jl")
 include("latex.jl")
 include("finite_differences.jl")
 include("finite_difference_adams.jl")
