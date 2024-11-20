@@ -1,6 +1,6 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
-authors = ["= <walra356@planet.nl> and contributors"]
+authors = ["Jook Walraven <69215586+walra356@users.noreply.github.com> and contributors"]
 version = "1.8.37" 
 
 [deps]
@@ -12,7 +12,7 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
 julia = "1"
-CamiMath = "0.1.11"
+CamiMath = "0.1.12"
 CamiDiff = "0.0.4"
 
 [extras]
