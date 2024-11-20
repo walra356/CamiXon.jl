@@ -151,59 +151,10 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
         Ntot = ID < 3 ? Ntot-1 : I > 3 ? Ntot - 1 : Ntot
         
         h = T(10)/Ntot
-        r0 = Rmax / gridfunction(ID, Ntot, h; p, coords)
+        r0 = Rmax / CamiDiff.gridfunction(ID, Ntot, h; p, coords)
     
         return h, r0
     
-end
-
-# ..............................................................................
-
-@doc raw"""
-    gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-
-* `ID = 1`: exponential grid function,
-```math
-    f[n] = \text{exp}(h(n-1)) - 1.0
-```
-* `ID = 2`: quasi-exponential grid function degree `p` (linear grid for `p = 1`),
-```math
-    f[n] = h(n-1) + \frac{1}{2}(h(n-1))^2 + ⋯ + \frac{1}{p!}(h(n-1))^p
-```
-* `ID = 3`: linear grid function,
-```math
-    f[n] = h(n-1)
-```
-* `ID = 4`: polynomial grid function of degree `p = length(c)` based on `polynom` ``c = [c_1,c_2,⋯\ c_p]``,
-```math
-    f[n] = c_1h(n-1) + c_2(h(n-1))^2 + ⋯ + c_p(h(n-1))^p
-```
-#### Examples:
-```
-h = 0.1
-r = [gridfunction(1, n-1, h) for n=1:5]                            # exponential
- [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032, 0.49182469764127035]
-
-r = [gridfunction(2, n-1, h; p = 4) for n=1:5]  # quasi exponential (degree p=4)
- [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375, 0.49173333333333336]
-
-r = [gridfunction(3, n-1, h) for n=1:5]              # linear
-  [0.0, 0.1, 0.2, 0.3, 0.4]
-
-r′= [gridfunction(3, n-1, h; deriv=1) for n=1:5]     # linear (first derivative)
-   [0.1, 0.1, 0.1, 0.1, 0.1]
-
-  r = [gridfunction(4, n-1, h; coords = [0,1,1/2,1/6,1/24]) for n=1:5]  # polynomial of degree 4)
-   [0.0, 0.10517083333333334, 0.2214, 0.3498375000000001, 0.49173333333333336]
-```
-"""
-function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-
-    return  ID == 1 ? _walterjohnson(n, h; deriv) :
-            ID == 2 ? _jw_gridfunction(n, h; deriv, p) :
-            ID == 3 ? _linear_gridfunction(n, h; deriv) :
-            ID == 4 ? CamiMath.polynomial(coords, h*n; deriv) : throw(DomainError(ID, "unknown gridfunction"))
-
 end
 
 @doc raw"""

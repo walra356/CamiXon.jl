@@ -176,61 +176,7 @@ using Test
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
-#   -------------------------------------------------------------------------------------------------------------------------
-    @test fdiff_interpolation_expansion_coeffs(-1, 5) == [1, 1, 1, 1, 1, 1]
-    coeffs = fdiff_interpolation_expansion_coeffs(-1, 5);
-    @test fdiff_interpolation_expansion_weights(coeffs) ==  [-1, 6, -15, 20, -15, 6]
-    @test fdiff_interpolation_expansion_coeffs(1, 5, fwd) == [1, -1, 1, -1, 1, -1]
-    coeffs = fdiff_interpolation_expansion_coeffs(1, 5, fwd);
-    fdiff_interpolation_expansion_weights(coeffs, fwd, reg) == [6, -15, 20, -15, 6, -1]
-    fdiff_interpolation_expansion_weights(coeffs, fwd, rev) == [-1, 6, -15, 20, -15, 6]
-    fdiff_interpolation_expansion_weights(coeffs, bwd, reg) == [0, 3, -6, 7, -4, 1]
-    fdiff_interpolation_expansion_weights(coeffs, bwd, rev) == [1, -4, 7, -6, 3, 0]
-    @test fdiff_interpolation_expansion_weights(1, 5, fwd, reg) == [0, 1, 0, 0, 0, 0]
-    @test fdiff_interpolation_expansion_weights(1, 5, fwd, rev) == [0, 0, 0, 0, 1, 0]
-    @test fdiff_interpolation_expansion_weights(-1, 5, bwd, reg) == [6, -15, 20, -15, 6, -1]
-    @test fdiff_interpolation_expansion_weights(-1, 5, bwd, rev) == [-1, 6, -15, 20, -15, 6]
-    @test fdiff_interpolation_expansion_weights(1, 5, fwd) == [0, 0, 0, 0, 1, 0]
-    @test [fdiff_interpolation([ν^3 for ν = -5:2], ν; k=3) for ν = 1:0.5:8] == [-125.0, -91.125, -64.0, -42.875, -27.0, -15.625, -8.0, -3.375, -1.0, -0.125, 0.0, 0.125, 1.0, 3.375, 8.0]
-    @test fdiff_expansion_weights([0, 1, 2, 3, 4, 5], fwd, reg) == [-3, 15, -33, 37, -21, 5]
-    @test fdiff_expansion_weights([0, 1, 2, 3, 4, 5], fwd, rev) == [5, -21, 37, -33, 15, -3]
-    @test fdiff_expansion_weights([0, 1, 2, 3, 4, 5], bwd, rev) == [-5, 29, -69, 85, -55, 15]
-    @test fdiff_expansion_weights([0, 1, 2, 3, 4, 5], bwd, reg) == [15, -55, 85, -69, 29, -5]
-    @test fdiff_expansion_weights([0, 1, 2, 3, 4, 5]) == [-5, 29, -69, 85, -55, 15]
-    @test fdiff_expansion([1, -1, 1, -1], [1, 4, 9, 16], fwd) == 0
-    @test fdiff_expansion([1, 1, 1, 1], [1, 4, 9, 16], bwd) == 25
-    @test fdiff_expansion([1, 1, 1, 1], [1, 4, 9, 16]) == 25
-    @test fdiff_differentiation_expansion_coeffs(0, 3) == [0 // 1, 1 // 1, 1 // 2, 1 // 3]
-    @test fdiff_differentiation_expansion_coeffs(1, 3) == [0 // 1, 1 // 1, -1 // 2, -1 // 6]
-    @test [fdiff_differentiation([16, 9, 4, 1, 0, 1, 4, 9, 16], v) for v = 1:9] == [-8 // 1, -6 // 1, -4 // 1, -2 // 1, 0 // 1, 2 // 1, 4 // 1, 6 // 1, 8 // 1]
-    @test fdiff_differentiation([16, 9, 4, 1, 0, 1, 4, 9, 16], 5.5) == 1.0
-    @test create_lagrange_differentiation_matrix(3) == [-11//6 3//1 -3//2 1//3; -1//3 -1//2 1//1 -1//6; 1//6 -1//1 1//2 1//3; -1//3 3//2 -3//1 11//6]
-    @test trapezoidal_epw(5; rationalize=true) == [95 // 288, 317 // 240, 23 // 30, 793 // 720, 157 // 160]
-    @test trapezoidal_integration([1.0, 4.0, 15.0, 40.0, 85.0, 156.0], 0.0, 5.0, [3 // 8, 7 // 6, 23 // 24]) ≈ 215.4166666
-    @test create_adams_moulton_weights(3; rationalize=true) == [1 // 24, -5 // 24, 19 // 24, 3 // 8]
-#   -------------------------------------------------------------------------------------------------------------------------
-    @test fdiff_adams_moulton_expansion_coeffs(5) == [1 // 1, -1 // 2, -1 // 12, -1 // 24, -19 // 720, -3 // 160]
-    @test fdiff_adams_moulton_expansion_coeff(0) == 1//1
-    @test fdiff_adams_moulton_expansion_coeff(20; msg=false) == -12365722323469980029 // 4817145976189747200000
-    @test create_adams_moulton_weights(5) == [0.01875, -0.12013888888888889, 0.3347222222222222, -0.5541666666666667, 0.9909722222222223, 0.3298611111111111]
-    @test create_adams_moulton_weights(5; rationalize=true) == [3//160, -173//1440, 241//720, -133//240, 1427//1440, 95//288]
-#   -------------------------------------------------------------------------------------------------------------------------
-    @test fdiff_adams_bashford_expansion_coeffs(5) == [1 // 1, 1 // 2, 5 // 12, 3 // 8, 251 // 720, 95 // 288]
-    @test fdiff_adams_bashford_expansion_coeff(0) == 1//1
-    @test fdiff_adams_bashford_expansion_coeff(20; msg=false) == 8136836498467582599787//33720021833328230400000
-    @test create_adams_bashford_weights(5) == [-0.3298611111111111, 1.9979166666666666, -5.0680555555555555, 6.9319444444444445, -5.502083333333333, 2.970138888888889]
-    @test create_adams_bashford_weights(5; rationalize=true) == [-95//288, 959//480, -3649//720, 4991//720, -2641//480, 4277//1440]
-#   -------------------------------------------------------------------------------------------------------------------------
-    @test gridname(2) == "quasi-exponential"
-    @test [gridfunction(2, n - 1, 0.1; p=1) for n = 1:5] == [0.0, 0.10000000000000009, 0.19999999999999996, 0.30000000000000004, 0.3999999999999999]
-    @test [gridfunction(1, n - 1, 0.1) for n = 1:4] == [0.0, 0.10517091807564771, 0.22140275816016985, 0.3498588075760032]
-    @test [gridfunction(2, n - 1, 0.1; p=4) for n = 1:4] == [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
-    @test [gridfunction(4, n - 1, 0.1; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24]) for n = 1:3] == [0.0, 0.10517083333333334, 0.2214]  
-    @test_throws DomainError gridfunction(5, 0, 0.1; p=1)
-    @test castCamiDiff.Grid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10000000000000009, 0.19999999999999996]
-    @test castCamiDiff.Grid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517091807564771, 0.22140275816016985]
-    @test castCamiDiff.Grid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333321, 0.22140000000000004]
-    @test castCamiDiff.Grid(4, 3, Float64; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24], h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333334, 0.2214]
+
     grid = castCamiDiff.Grid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 84.0 #63.0
