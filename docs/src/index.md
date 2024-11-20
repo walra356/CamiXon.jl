@@ -906,15 +906,6 @@ fdiff_adams_moulton_expansion_coeffs(k::Int; T=Int, msg=true)
 create_adams_moulton_weights(k::Int; rationalize=false, devisor=false, T=Int)
 ```
 
-## Strings
-
-```@docs
-sup(i::T) where T<:Real
-sub(i::T) where T<:Real
-frac(i::Rational{Int})
-strRational(n::T) where T<:Union{Rational{}, Int, BigInt}
-```
-
 ## Dicts
 
 ```@docs

@@ -18,17 +18,6 @@ using Dates           # used in fits_private_sector
 #using LaTeXStrings
 using LinearAlgebra
 
-export sup
-export sub
-export frac
-export strRational
-
-#export fwd
-#export bwd
-#export reg
-#export rev
-#export isforward
-#export isregular
 export Object
 export Info
 export Latex
