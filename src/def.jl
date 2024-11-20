@@ -93,7 +93,7 @@ Optional: scr (supply screening array)
 julia> codata = castCodata(2018)
 julia> atom = castAtom(Z=1, A=1, Q=0);
 julia> orbit = castOrbit(n=7, ℓ=2);
-julia> grid = autoCamiDiff.Grid(atom, orbit, Float64);
+julia> grid = autoGrid(atom, orbit, Float64);
 
 julia> castDef(grid, atom, orbit, codata, msg=true);
 Def created for hydrogen 7d on exponential grid of 400 points

@@ -207,10 +207,10 @@ function gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T
 end
 
 @doc raw"""
-    autoCamiDiff.Grid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
-    autoCamiDiff.Grid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
-    autoCamiDiff.Grid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, coords=[])
-    autoCamiDiff.Grid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, coords=[])
+    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
+    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
+    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, coords=[])
+    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, coords=[])
 
 Automatic setting of grid parameters for a given orbit [`Orbit`](@ref) or an
 array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
@@ -226,7 +226,7 @@ array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
 codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
-grid = autoCamiDiff.Grid(atom, orbit, Float64);
+grid = autoGrid(atom, orbit, Float64);
     CamiDiff.Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
 
 plot_gridfunction(grid, 1:grid.N; title="")
@@ -235,11 +235,11 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoCamiDiff.Grid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
 
     Rmax = T(Rmax)
 
-    T ∈ [Float64,BigFloat] || println("autoCamiDiff.Grid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
+    T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
     ID = (p < 1) & (length(coords) < 2) ? 1 :
          (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 3 : 2) :

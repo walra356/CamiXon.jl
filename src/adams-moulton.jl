@@ -269,7 +269,7 @@ wavefunction and `Q = imag(Z)` its derivative.
 ```
 atom = castAtom(Z=1, A=1, Q=0, msg=true)
 orbit = castOrbit(n=1, ℓ=0)
-grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=true)
+grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
 E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def);
@@ -452,7 +452,7 @@ function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
    
     msg && println("Rmax = $(Rmax), init.E = $(init.E)")
 
-    grid = autoCamiDiff.Grid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
+    grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
 
     def = castDef(grid, def.atom, def.orbit, def.codata; def.pos, scr)
     adams = castAdams(init.E, grid, def)

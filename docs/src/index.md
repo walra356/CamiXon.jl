@@ -170,7 +170,7 @@ autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-autoCamiDiff.Grid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
 grid_differentiation(f::Vector{T}, grid::CamiDiff.Grid{T}; k=3) where T<:Real
 grid_integration(f::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
@@ -211,7 +211,7 @@ getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:
 codata = castCodata(2018)
 atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=7, ℓ=2)
-grid = autoCamiDiff.Grid(atom, orbit, Float64)
+grid = autoGrid(atom, orbit, Float64)
 def = castDef(grid, atom, orbit, codata)
 E = convert(grid.T,bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def)

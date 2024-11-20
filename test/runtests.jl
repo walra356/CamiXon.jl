@@ -52,7 +52,7 @@ using Test
     @test_throws DomainError gridname(5)
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
-    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000, msg=true);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
     castCamiDiff.Grid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
     castCamiDiff.Grid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
@@ -67,7 +67,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
-    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2s_example = reduce_wavefunction(RH2s_example, grid);
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -77,7 +77,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=10, ℓ=6; msg=false);
-    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     ZH10i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=0;
     scr = zeros(grid.T, grid.N);
@@ -88,7 +88,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
-    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2p_example = reduce_wavefunction(RH2p_example, grid);
     ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -104,7 +104,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RH1s_example, grid);
     ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
