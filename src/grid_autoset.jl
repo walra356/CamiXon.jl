@@ -202,6 +202,6 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rma
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
     h, r0 = autoSteps(ID, Ntot, T(Rmax); p, coords)
 
-    return castCamiDiff.Grid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
+    return CamiDiff.castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
 
 end

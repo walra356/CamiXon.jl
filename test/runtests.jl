@@ -53,9 +53,9 @@ using Test
     orbit = castOrbit(n=2, ℓ=0);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
-    castCamiDiff.Grid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
-    castCamiDiff.Grid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
-    castCamiDiff.Grid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
+    CamiDiff.castGrid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
+    CamiDiff.castGrid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
+    CamiDiff.castGrid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
@@ -176,7 +176,7 @@ using Test
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
 
-    grid = castCamiDiff.Grid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
+    grid = CamiDiff.castGrid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
@@ -185,9 +185,9 @@ using Test
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2, 5) ≈ [2.0, 4.0, 6.0, 8.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2:5) ≈ [2.0, 4.0, 6.0, 8.0]
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false)) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false), 1, 5) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false), 1:5) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false), 1, 5) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false), 1:5) == 0.008
     @test edges(1:5, 2.5, 2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4, 2, 6]) == [0, 4, 6, 12]
     @test stepcenters([4, 2, 6]) == [2.0, 5.0, 9.0]
@@ -209,7 +209,7 @@ using Test
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6
     @test silvera_goldman_singlet(10) == -8.696045600341206e-6
     @test silvera_goldman_exchange(10) == 9.776091403104656e-7
-    grid = castCamiDiff.Grid(3,2000,Float64; h=0.01, r0=1, msg=false);    
+    grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
     @test silvera_goldman_potential(grid; S=1)[700] == -1.2954953056510744e-6
     @test silvera_goldman_potential(grid; S=0)[700] == -0.00020738292434731114
     @test rotbarrier(grid; ℓ=0)[700] == 0.0
