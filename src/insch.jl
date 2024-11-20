@@ -11,13 +11,13 @@
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    INSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
  
 Ansatz solution for the *inward* integration of the radial wave equation for the first ``k`` points 
-on the [`Grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
+on the [`CamiDiff.Grid`](@ref), where ``k`` is the Adams-Moulton order. The Ansatz is based on the WKB solution 
 for energy `E` at distances *far above* the upper classical turning point - uctp)
 """
-function INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function INSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
     
     Z = INSCH_WKB!(Z, E, grid, def)
 
@@ -30,11 +30,11 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 WKB Ansatz of `k+1` points for [`INSCH!`](@ref)
 """
-function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     N = grid.N
     r = grid.r

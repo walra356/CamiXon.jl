@@ -47,10 +47,10 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-   OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+   OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 Ansatz solution for the *outward* integration of the radial wave equation for the first ``k`` points 
-on the [`Grid`](@ref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
+on the [`CamiDiff.Grid`](@ref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
 Walter Johnson Ansatz is used; for ``ℓ > 5`` the Ansatz is based on the WKB solution for energy `E` 
 at distances *far below* the inner classical turning point - ictp)
 
@@ -63,7 +63,7 @@ println("\nZ: standard Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
         principal quantum number: n = 1
         radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 0
-    Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    CamiDiff.Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 
     Z: standard Ansatz for wavefunction (n < Na=8))
@@ -75,7 +75,7 @@ println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
         principal quantum number: n = 10
         radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 5
-    Grid created: exponential, Float64, Rmax = 360.0 a.u., Ntot = 550, h = 0.0181818, r0 = 0.0163447
+    CamiDiff.Grid created: exponential, Float64, Rmax = 360.0 a.u., Ntot = 550, h = 0.0181818, r0 = 0.0163447
     Def created for hydrogen 10h on exponential grid
 
     Z: WKB Ansatz for wavefunction (n < Na=70))
@@ -86,7 +86,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/OUTSCH_H1_10h.png)
 """
-function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     ℓ = def.orbit.ℓ
     
@@ -97,10 +97,10 @@ function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams:
 end
 
 @doc raw"""
-    OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+    OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
-function OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     r = grid.r
     k = def.k
@@ -137,10 +137,10 @@ matLD = def.matLD
 end
 
 @doc raw"""
-    OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 """
-function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
     
     N = grid.N
     ################ r = grid.r

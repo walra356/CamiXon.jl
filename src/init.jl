@@ -31,7 +31,7 @@ end
 #                               castInit{T}
 # ------------------------------------------------------------------------------
 
-function castInit(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function castInit(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     N = grid.N
     ℓ = def.orbit.ℓ

@@ -118,19 +118,10 @@ export rotbarrier
 export restore_wavefunction
 export reduce_wavefunction
 
-export Grid
-export gridname
-export gridfunction
-export castGrid
-export findIndex
 export autoRmax
 export autoNtot
 export autoPrecision
 export autoSteps
-export autoGrid
-export grid_differentiation
-export grid_integration
-
 
 export getNmin
 export getNmax

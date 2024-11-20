@@ -30,11 +30,11 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-   castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+   castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 Initiates [`Adams`](@ref) object.
 """
-function castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     castPos(E, def.potscr, grid)
 
@@ -51,11 +51,11 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    updateAdams!(adams::Adams{T}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 Update [`Adams`](@ref) object.
 """
-function updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function updateAdams!(adams::Adams{T}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 G = matG(E, grid, def)
 σ = matσ(E, grid, def)

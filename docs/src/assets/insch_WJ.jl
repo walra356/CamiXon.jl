@@ -56,7 +56,7 @@ function _nexto!(o::Vector{Complex{T}}, ρ::T, ρN::T, a::Vector{T}, b::Vector{T
     return o
 
 end
-function INSCH_WJ!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}, a::Vector{BigFloat}, b::Vector{BigFloat}, c::Vector{BigFloat}, o::Vector{Complex{BigFloat}}) where T<:Real
+function INSCH_WJ!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}, a::Vector{BigFloat}, b::Vector{BigFloat}, c::Vector{BigFloat}, o::Vector{Complex{BigFloat}}) where T<:Real
 
     ############ "kept for the record" #####################
     

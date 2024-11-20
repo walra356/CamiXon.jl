@@ -25,7 +25,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
 
 Analytic expression for the hydrogenic wavefunction written in the format
@@ -33,7 +33,7 @@ Analytic expression for the hydrogenic wavefunction written in the format
 the *reduced* radial wavefunction and ``\tilde{χ}^′_{nℓ}(ρ)`` its derivative,
 with ``ρ`` the radial distance to the nucleus in a.u..
 The expression is evaluated for a given [`Atom`](@ref) in a given
-[`Orbit`](@ref) on a given [`Grid`](@ref). The argument [`Def`](@ref)
+[`Orbit`](@ref) on a given [`CamiDiff.Grid`](@ref). The argument [`Def`](@ref)
 completes the definition of the problem.
 ```math
     \tilde{\chi}_{nl}(\rho)
@@ -57,8 +57,8 @@ julia> atom = castAtom(;Z=1, A=1, Q=0, msg=false);
 
 julia> orbit = castOrbit(n=25, ℓ=10);
 
-julia> grid = autoGrid(atom, orbit, Float64; msg=true);
-Grid created: exponential, Float64, Rmax = 3651.58 a.u., Ntot = 1320, h = 0.0075815, r0 = 0.164537
+julia> grid = autoCamiDiff.Grid(atom, orbit, Float64; msg=true);
+CamiDiff.Grid created: exponential, Float64, Rmax = 3651.58 a.u., Ntot = 1320, h = 0.0075815, r0 = 0.164537
 
 julia> Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
  IOP capture at generalized_laguerre_polynom(35, 21): output converted to BigInt
@@ -72,7 +72,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](./assets/H1_25n.svg)
 """
-function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
     n = orbit.n
     ℓ = orbit.ℓ
@@ -116,7 +116,7 @@ bohrformula(Z::Int, n::Int) = -(1//2)*(Z//n)^2
 # =================== reduce_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+    reduce_wavefunction(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}) where T<:Real
 
 Conversion from the *ordinary* radial wavefunction ``\tilde{R}_{nl}(ρ)``
 to the *reduced* radial wavefuntion
@@ -128,7 +128,7 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 ```
 julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
 julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
-julia> grid = autoGrid(atom, orbit, Float64);
+julia> grid = autoCamiDiff.Grid(atom, orbit, Float64);
 julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
 julia> ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -144,7 +144,7 @@ NB.: `compare_functions` is not included in the `CamiXon` package.
 ![Image](./assets/compareXH1s.png)
 ```
 """
-function reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
+function reduce_wavefunction(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}) where T<:Real
 
     R = real(Z)
     R′= imag(Z)
@@ -160,7 +160,7 @@ end
 # =================== restore_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+    restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
 Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
 to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
@@ -172,7 +172,7 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 ```
 julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
 julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
-julia> grid = autoGrid(atom, orbit, Float64);
+julia> grid = autoCamiDiff.Grid(atom, orbit, Float64);
 julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
 julia> RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
@@ -180,7 +180,7 @@ julia> RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);
 julia> @test RH1s_example ≈ RH1s_generic 
 Test Passed
 """
-function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
     χ = real(Z)
     χ′= imag(Z)
@@ -219,7 +219,7 @@ the radial distance to the nucleus in a.u..
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=1, ℓ=0; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
@@ -261,7 +261,7 @@ is the radial wavefunction and
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=2, ℓ=0; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata; msg=false);
 
 RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
@@ -303,7 +303,7 @@ is the radial wavefunction and
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
 orbit = castOrbit(n=2, ℓ=1; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
+grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=false);
 def = castDef(grid, atom, orbit, codata);
 
 RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
@@ -407,9 +407,9 @@ end
 
 
 @doc raw"""
-    silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
+    silvera_goldman_potential(grid::CamiDiff.Grid{T}; S=0) where T<:Real
 
-Grid representation in *Hartree* a.u. of the singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}``,
+CamiDiff.Grid representation in *Hartree* a.u. of the singlet (S=0) and triplet (S=1) potentials of ``\mathrm{H}_{2}``,
 ```math
     \mathcal{V}(r)=V_{D}(r)+J(r)\mathbf{s}_{1}\cdot\mathbf{s}_{2},
 ```
@@ -422,7 +422,7 @@ are known as the direct and exchange contribution, respectively; ``V_{s}:`` see 
     
 see I.F. Silvera, - Rev. Mod. Phys., 52, 393 (1980).
 """
-function silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
+function silvera_goldman_potential(grid::CamiDiff.Grid{T}; S=0) where T<:Real
 
     if iszero(S)
         o = [silvera_goldman_singlet(grid.r[i]) for i=1:grid.N]    # singlet potential
@@ -435,15 +435,15 @@ function silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
 end
 
 @doc raw"""
-    rotbarrier(grid::Grid{T}; ℓ=0) where T<:Real
+    rotbarrier(grid::CamiDiff.Grid{T}; ℓ=0) where T<:Real
 
-Grid representation of rotational barrier potential in wavenumber notation,
+CamiDiff.Grid representation of rotational barrier potential in wavenumber notation,
 ```math
 V_{rot}(r) = \frac{\ell(\ell+1)}{r^{2}},
 ``` 
 where ℓ is the rotational quantum number.
 """
-function rotbarrier(grid::Grid{T}; ℓ=0) where T<:Real
+function rotbarrier(grid::CamiDiff.Grid{T}; ℓ=0) where T<:Real
 
     if ℓ > 0
         num = convert(T, ℓ*(ℓ + 1))

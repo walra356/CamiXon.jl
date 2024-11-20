@@ -48,15 +48,15 @@ using Test
     @test castOrbit(n=2, ℓ=0; msg=true) == Orbit("2s", 2, 1, 0, 0)
     @test castSpinorbit(n=1, ℓ=0, msg=true) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
-    @test_throws DomainError castGrid(5, 1000, Float64)
+    @test_throws DomainError castCamiDiff.Grid(5, 1000, Float64)
     @test_throws DomainError gridname(5)
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
+    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
-    castGrid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
-    castGrid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
-    castGrid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
+    castCamiDiff.Grid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
+    castCamiDiff.Grid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
+    castCamiDiff.Grid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
@@ -67,7 +67,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
     RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2s_example = reduce_wavefunction(RH2s_example, grid);
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -77,7 +77,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=10, ℓ=6; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
     ZH10i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=0;
     scr = zeros(grid.T, grid.N);
@@ -88,7 +88,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
     RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2p_example = reduce_wavefunction(RH2p_example, grid);
     ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -104,7 +104,7 @@ using Test
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoCamiDiff.Grid(atom, orbit, Float64; Ntot=5000);
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RH1s_example, grid);
     ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -227,11 +227,11 @@ using Test
     @test [gridfunction(2, n - 1, 0.1; p=4) for n = 1:4] == [0.0, 0.10517083333333321, 0.22140000000000004, 0.3498375]
     @test [gridfunction(4, n - 1, 0.1; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24]) for n = 1:3] == [0.0, 0.10517083333333334, 0.2214]  
     @test_throws DomainError gridfunction(5, 0, 0.1; p=1)
-    @test castGrid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10000000000000009, 0.19999999999999996]
-    @test castGrid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517091807564771, 0.22140275816016985]
-    @test castGrid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333321, 0.22140000000000004]
-    @test castGrid(4, 3, Float64; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24], h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333334, 0.2214]
-    grid = castGrid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
+    @test castCamiDiff.Grid(2, 3, Float64; p=1, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10000000000000009, 0.19999999999999996]
+    @test castCamiDiff.Grid(1, 3, Float64; h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517091807564771, 0.22140275816016985]
+    @test castCamiDiff.Grid(2, 3, Float64; p=4, h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333321, 0.22140000000000004]
+    @test castCamiDiff.Grid(4, 3, Float64; coords=[0, 1, 1 / 2, 1 / 6, 1 / 24], h=0.1, r0=1.0, msg=false).r == [eps(Float64), 0.10517083333333334, 0.2214]
+    grid = castCamiDiff.Grid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
@@ -240,9 +240,9 @@ using Test
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2, 5) ≈ [2.0, 4.0, 6.0, 8.0]
     @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2:5) ≈ [2.0, 4.0, 6.0, 8.0]
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castGrid(2, 5, Float64; p=1, msg=false), 1, 5) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castGrid(2, 5, Float64; p=1, msg=false), 1:5) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false)) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false), 1, 5) == 0.008
+    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], castCamiDiff.Grid(2, 5, Float64; p=1, msg=false), 1:5) == 0.008
     @test edges(1:5, 2.5, 2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4, 2, 6]) == [0, 4, 6, 12]
     @test stepcenters([4, 2, 6]) == [2.0, 5.0, 9.0]
@@ -264,7 +264,7 @@ using Test
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6
     @test silvera_goldman_singlet(10) == -8.696045600341206e-6
     @test silvera_goldman_exchange(10) == 9.776091403104656e-7
-    grid = castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
+    grid = castCamiDiff.Grid(3,2000,Float64; h=0.01, r0=1, msg=false);    
     @test silvera_goldman_potential(grid; S=1)[700] == -1.2954953056510744e-6
     @test silvera_goldman_potential(grid; S=0)[700] == -0.00020738292434731114
     @test rotbarrier(grid; ℓ=0)[700] == 0.0

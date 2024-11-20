@@ -112,7 +112,7 @@ end
 # ======================== scrUG(k, Z, grid) ===================================
 
 @doc raw"""
-    UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+    UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
 
 Potential for *exchange* screening,
 
@@ -130,7 +130,7 @@ atom = castAtom(Z=2, A=4, Q=0; msg=true)
 orbit1 = castOrbit(n=1, ℓ=0; msg=true)
 orbit2 = castOrbit(n=2, ℓ=0; msg=true)
 scr = nothing
-grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
+grid = autoCamiDiff.Grid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
 def1 = castDef(grid, atom, orbit1, codata; scr)
 E = initE(def1)
 adams = castAdams(E, grid, def1)
@@ -151,7 +151,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UG0.png)
 """
-function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
 
     N = grid.N
     r = grid.r
@@ -171,7 +171,7 @@ end
 
 # ======================== UF(k, Z, grid) ===================================
 @doc raw"""
-    UF(k::Int, P::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+    UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
 
 Potential for *directe* screening,
 
@@ -188,7 +188,7 @@ U_{F}^{k}(\rho)
 atom = castAtom(Z=2, A=4, Q=0; msg=true)
 orbit = castOrbit(n=1, ℓ=0; msg=true)
 scr = nothing
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata; scr)
 E = initE(def1)
 adams = castAdams(E, grid, def)
@@ -202,7 +202,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UF0.png)
 """
-function UF(k::Int, P::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+function UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
 
     return UG(k, P, P, grid)
 

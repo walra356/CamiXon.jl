@@ -127,9 +127,9 @@ castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
 
 ```@docs
 bohrformula(Z::Int, n::Int)
-hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
-reduce_wavefunction(Z::Vector{Complex{T}}, grid::Grid{T}) where T<:Real
-restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::Grid{T}) where T<:Real
+hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+reduce_wavefunction(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}) where T<:Real
+restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 #### Some special cases
 ```@docs
@@ -143,8 +143,8 @@ RH2p(Z::Int, r::T) where T<:Real
 silvera_goldman_triplet(r::T) where T<:Real
 silvera_goldman_singlet(r::T) where T<:Real
 silvera_goldman_exchange(r::T) where T<:Real
-silvera_goldman_potential(grid::Grid{T}; S=0) where T<:Real
-rotbarrier(grid::Grid{T}; ℓ=0) where T<:Real
+silvera_goldman_potential(grid::CamiDiff.Grid{T}; S=0) where T<:Real
+rotbarrier(grid::CamiDiff.Grid{T}; ℓ=0) where T<:Real
 ```
 
 ## Thermodynamic properties
@@ -154,25 +154,25 @@ svp(atomicnumber::Int, temp::Real)
 latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ```
 
-## Grid
+## CamiDiff.Grid
 
-The `Grid` object is the backbone for the numerical procedure on a non-uniform
+The `CamiDiff.Grid` object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
 ```@docs
-Grid{T}
+CamiDiff.Grid{T}
 gridname(ID::Int)
 gridfunction(ID::Int, n::Int, h::T; p=5, coords=[0,1], deriv=0) where T <: Real
-castGrid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=7, msg=true)
-findIndex(rval::T, grid::Grid{T}) where T<:Number
+castCamiDiff.Grid(ID::Int, N::Int, T::Type; h=1, r0=0.001,  p=5, coords=[0,1], epn=5, k=7, msg=true)
+findIndex(rval::T, grid::CamiDiff.Grid{T}) where T<:Number
 autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
-grid_differentiation(f::Vector{T}, grid::Grid{T}; k=3) where T<:Real
-grid_integration(f::Vector{T}, grid::Grid{T}) where T<:Real
+autoCamiDiff.Grid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Nboost=1, epn=5, k=7, msg=true)
+grid_differentiation(f::Vector{T}, grid::CamiDiff.Grid{T}; k=3) where T<:Real
+grid_integration(f::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 
 ## Def
@@ -182,7 +182,7 @@ the field `def.Z` the solution as a discrete function of `N` elements.
 
 ```@docs
 Def{T}
-castDef(grid::Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
 ```
 
 ## Pos
@@ -194,8 +194,8 @@ Adams-Moulton integration. These positions are contained in the fields
 
 ```@docs
 Pos
-castPos(E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
-updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::Grid{T}) where T<:Real
+castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 
 #### Pos-related functions
@@ -211,7 +211,7 @@ getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:
 codata = castCodata(2018)
 atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=7, ℓ=2)
-grid = autoGrid(atom, orbit, Float64)
+grid = autoCamiDiff.Grid(atom, orbit, Float64)
 def = castDef(grid, atom, orbit, codata)
 E = convert(grid.T,bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def)
@@ -223,7 +223,7 @@ adams = castAdams(E, grid, def)
         principal quantum number: n = 7
         radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 2
-    Grid created: exponential, Float64, Rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
+    CamiDiff.Grid created: exponential, Float64, Rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
     Def created for hydrogen 7d on exponential grid of 400 points
     E = -0.0102040816326531 Hartree
 
@@ -238,7 +238,7 @@ NB.: `plot_potentials` is not included in the `CamiXon` package.
 
 The Adams-Moulton method is used for numerical integration of the reduces
 radial wave equation. In the present implementation it is constructed on top
-the objects [`Atom`](@ref), [`Orbit`](@ref), [`Grid`](@ref), [`Def`](@ref)
+the objects [`Atom`](@ref), [`Orbit`](@ref), [`CamiDiff.Grid`](@ref), [`Def`](@ref)
 and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
 `grid`, `def` and `adams`.
 
@@ -250,51 +250,51 @@ the form of a tabulated function of `N` elements.
 
 ```@docs
 Adams
-castAdams(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-updateAdams!(adams::Adams{T}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+updateAdams!(adams::Adams{T}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams related functions
 
 ```@docs
-matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+matG(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+matσ(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+matMinv(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams-Moulton numerical solution of the radial wave equation
 ```@docs
 Init{T} where T<:Real
-adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - outward
 ```@docs
-OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
-OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - inward
 ```@docs
-INSCH!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
-INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+INSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
 
 #### Radial integration - boundary condition applied and convergence test
 ```@docs
-adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 ```
 
 #### Adams-Moulton Master procedures
 ```@docs
-adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
-adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
+adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
 adams_moulton_precise!(Z, init, grid, def; imax=10, ϵ=1e-6, msg=false)
-adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
+adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 ```
 
 ## Coulomb integrals
@@ -304,8 +304,8 @@ adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree",
 ```@docs
 a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
-UF(k::Int, F::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
-UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::Grid{V}) where {T<:Real, V<:Real}
+UF(k::Int, F::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
+UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
 ```
 
 ## Plotting

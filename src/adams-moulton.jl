@@ -11,11 +11,11 @@
 # ------------------------------------------------------------------------------
 
 """
-    matG(E::T, pot::Vector{T}, grid::Grid{T}) where T<:Real
+    matG(E::T, pot::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 coupling matrix - Johnson (2.54)
 """
-function matG(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function matG(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matG - coupling matrix - Johnson (2.54)
 # ==============================================================================
@@ -43,11 +43,11 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    matσ(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 coupling matrix - Johnson (2.54)
 """
-function matσ(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function matσ(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matσ - coupling matrix - Johnson (2.54)
 # ==============================================================================
@@ -85,11 +85,11 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    matMinv(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 Adams-Moulton correction matrix - Johnson (2.56)
 """
-function matMinv(E::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function matMinv(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 # ==============================================================================
 # matMinv - Adams-Moulton correction matrix - Johnson (2.56)
 # ==============================================================================
@@ -183,7 +183,7 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_inward!(E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+    adams_moulton_inward!(E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 """
 function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{T}) where T<:Real
@@ -234,10 +234,10 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+    adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 """
-function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::Grid{T}, def::Def{T}) where T<:Real
+function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     Nuctp = def.pos.Nuctp
     
@@ -259,7 +259,7 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
+    adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams1{T}) where T<:Real
 
 Numerical solution of the 1D Schrödinger equation for the radial motion of a
 *valence* electron of energy `E`. Output: the improved `Adams` object, the
@@ -269,7 +269,7 @@ wavefunction and `Q = imag(Z)` its derivative.
 ```
 atom = castAtom(Z=1, A=1, Q=0, msg=true)
 orbit = castOrbit(n=1, ℓ=0)
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
+grid = autoCamiDiff.Grid(atom, orbit, Float64; Nboost=1, msg=true)
 def = castDef(grid, atom, orbit, codata)
 E = Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
 adams = castAdams(E, grid, def);
@@ -281,7 +281,7 @@ The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
 ![Image](./assets/hydrogen-1s-prepared.png)
 """
-function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     updatePos!(def.pos, E, def.potscr, grid)
     adams = updateAdams!(adams, E, grid, def)
@@ -296,10 +296,10 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::D
 
 end
 @doc raw"""
-    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+    adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     
 """
-function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
+function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     adams = updateAdams!(adams, E, grid, def)
         
@@ -326,10 +326,10 @@ function _strΔt(tstop::T, tstart::T) where T<:Real
 end
 # ..........................................................................................................
 @doc raw"""
-    adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
+    adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
     
 """
-function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
+function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_nodes! =====") 
     t1 = time()
@@ -381,10 +381,10 @@ end
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
 """
-function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_iterate! =====")  
     
@@ -452,7 +452,7 @@ function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
    
     msg && println("Rmax = $(Rmax), init.E = $(init.E)")
 
-    grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
+    grid = autoCamiDiff.Grid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
 
     def = castDef(grid, def.atom, def.orbit, def.codata; def.pos, scr)
     adams = castAdams(init.E, grid, def)
@@ -467,10 +467,10 @@ end
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
+    adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 
 """
-function adams_moulton_report(E::T, ΔE::T, grid::Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
+function adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
 
     Δf = convertUnit(abs(ΔE), def.codata)
     strΔf = " (" * strValue(Δf) * ")"
