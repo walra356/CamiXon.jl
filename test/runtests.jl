@@ -53,9 +53,6 @@ using Test
     orbit = castOrbit(n=2, ℓ=0);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
-    CamiDiff.castGrid(2, 4, Float64; p = 4, h = 0.1, r0 = 1.0, msg=true);
-    CamiDiff.castGrid(3, 4, Float64; h = 0.1, r0 = 1.0, msg=true);
-    CamiDiff.castGrid(4, 4, Float64; coords=[0, 1, 1/2, 1/6, 1/24], h = 0.1, r0 = 1.0, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
@@ -120,8 +117,7 @@ using Test
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 220
     @test def.atom.element.name == "hydrogen"
-    @test grid_integration(real(Z) .^ 2, grid, 1, grid.N) ≈ 1.0
-    @test grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
+    @test CamiDiff.grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
     @test round(Int, UF(0, real(Z), grid)[1]) == 1
     grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=false);
     @test ZH1s_generic ≈ Z
@@ -144,10 +140,10 @@ using Test
     @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
     ΔNlcut = getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)
     ΔNucut = getΔNcut(f0, f, Nucut, bwd; ϵ = 1e-6, k=7)
-    coordsfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
-    coordsbwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
-    @test polynomial(coordsfwd, ΔNlcut) ≈ f0
-    @test polynomial(coordsbwd, ΔNucut) ≈ f0
+    polynomfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
+    polynombwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
+    @test CamiMath.polynomial(polynomfwd, ΔNlcut) ≈ f0
+    @test CamiMath.polynomial(polynombwd, ΔNucut) ≈ f0
     #   ----------------------------------------------------------------------------------------    
   
     @test find_all([:📑, :📌, :📢, :📌, :📞]) == [[1], [2, 4], [3], [5]]
@@ -177,17 +173,10 @@ using Test
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
 
     grid = CamiDiff.castGrid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
-    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid; k=3) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
     @test autoRmax(atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
     @test autoPrecision(100.0, orbit) == Float64
     @test autoSteps(1, 100, 100) ==  (0.10101010101010101, 0.004540199100968777)
-    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid) ≈ [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
-    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2, 5) ≈ [2.0, 4.0, 6.0, 8.0]
-    @test grid_differentiation([0.0, 1, 4, 9, 16, 25], grid, 2:5) ≈ [2.0, 4.0, 6.0, 8.0]
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false)) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false), 1, 5) == 0.008
-    @test grid_integration([0.0, 1.0, 2.0, 3.0, 4.0], CamiDiff.castGrid(2, 5, Float64; p=1, msg=false), 1:5) == 0.008
     @test edges(1:5, 2.5, 2.5) == [-1.25, 1.25, 3.75, 6.25, 8.75]
     @test steps([4, 2, 6]) == [0, 4, 6, 12]
     @test stepcenters([4, 2, 6]) == [2.0, 5.0, 9.0]

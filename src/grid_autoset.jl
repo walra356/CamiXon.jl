@@ -134,7 +134,7 @@ end
 
 @doc raw"""
     autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5) where T<:Real
-    autoSteps(ID::Int, Ntot::Int, Rmax::T; coords=[0,1]) where T<:Real
+    autoSteps(ID::Int, Ntot::Int, Rmax::T; polynom=[0,1]) where T<:Real
 
 Step size parameter (h) and range parameter (r0) (rule of thumb values).
 ### Example:
@@ -143,7 +143,7 @@ Step size parameter (h) and range parameter (r0) (rule of thumb values).
     (0.1, 0.004540199100968777)
 ```
 """
-function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
+function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, polynom=[0,1]) where T<:Real
     # ==============================================================================
     #  Step size parameter (h) and range parameter (r0)
     # ==============================================================================
@@ -151,7 +151,7 @@ function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, coords=[0,1]) where T<:Real
         Ntot = ID < 3 ? Ntot-1 : I > 3 ? Ntot - 1 : Ntot
         
         h = T(10)/Ntot
-        r0 = Rmax / CamiDiff.gridfunction(ID, Ntot, h; p, coords)
+        r0 = Rmax / CamiDiff.gridfunction(ID, Ntot, h; p, polynom)
     
         return h, r0
     
@@ -160,15 +160,15 @@ end
 @doc raw"""
     autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
     autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
-    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, coords=[])
-    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, coords=[])
+    autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, polynom=[])
+    autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, polynom=[])
 
 Automatic setting of grid parameters for a given orbit [`Orbit`](@ref) or an
 array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
 * `p == 0` (exponential radial grid)
 * `p == 1` (linear radial grid)
 * `p > 1` (quasi-exponential radial grid)
-* `coords=[]` (free polynomial grid based on the `coords`)
+* `polynom=[]` (free polynomial grid based on the `polynom`)
 * `Nboost` (multiplier to boost numerical precision)
 * `epn` (endpoint number: odd number to be used for trapezoidal integration with endpoint correction)
 * `k` (Adams-Moulton order to be used for `k+1`-point Adams-Moulton integration)
@@ -186,22 +186,22 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, coords=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, polynom=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
 
     Rmax = T(Rmax)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
-    ID = (p < 1) & (length(coords) < 2) ? 1 :
-         (p ≥ 1) & (length(coords) < 2) ? (p == 1 ? 3 : 2) :
-         (p < 1) & (length(coords) ≥ 2) ? 4 : error("Error: unknown grid")
+    ID = (p < 1) & (length(polynom) < 2) ? 1 :
+         (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
+         (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
     Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
     Rmax = autoRmax!(Rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
-    h, r0 = autoSteps(ID, Ntot, T(Rmax); p, coords)
+    h, r0 = autoSteps(ID, Ntot, T(Rmax); p, polynom)
 
-    return CamiDiff.castGrid(ID, Ntot, T; h, r0, p, coords, epn, k, msg)
+    return CamiDiff.castGrid(ID, Ntot, T; h, r0, p, polynom, epn, k, msg)
 
 end

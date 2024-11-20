@@ -83,10 +83,10 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDif
     a = float(big(2atom.Z)//big(n))
     b = a^(ℓ+1)*sqrt(a/big(norm))
 
-    coords = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
+    polynom = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
 
-    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) for i ∈ eachindex(r)]
-    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(coords, a*r[i]) + a*r[i]*CamiMath.polynomial(coords, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(polynom, a*r[i]) for i ∈ eachindex(r)]
+    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(polynom, a*r[i]) + a*r[i]*CamiMath.polynomial(polynom, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
     P[1] = T(0)
     return T.(P) + im * T.(Q)
