@@ -161,7 +161,7 @@ function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where 
 
     o = (UG_inner .* r[2:N].^-(k+1)) .+ (UG_outer .* r[2:N].^k)
 
-    p = CamiFiff.fdiff_interpolation(o, 0; k=4)
+    p = CamiDiff.fdiff_interpolation(o, 0; k=4)
 
     prepend!(o,p)
 
