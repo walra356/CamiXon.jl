@@ -8,10 +8,10 @@ bwd = CamiMath.bwd
 reg = CamiMath.reg
 rev = CamiMath.rev
 
-#sup(i) = CamiMath.sup(i)
-#sub(i) = CamiMath.sub(i)
-#frac(i) = CamiMath.frac(i)
-#strRational(i) = CamiMath.strRational(i)
+sup(i) = CamiMath.sup(i)
+sub(i) = CamiMath.sub(i)
+frac(i) = CamiMath.frac(i)
+strRational(i) = CamiMath.strRational(i)
 
 using Printf
 using Dates           # used in fits_private_sector
