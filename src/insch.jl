@@ -57,7 +57,7 @@ function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::De
 
     Nb = def.pos.Nb = def.pos.Nb - k
     
-    Q[Nb-k:Nb+k] = grid_differentiation(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
+    Q[Nb-k:Nb+k] = CamiDiff.grid_differentiation(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
     
     for n=Nb-k:Nb+k
         Z[n] = P[n] + im * Q[n]

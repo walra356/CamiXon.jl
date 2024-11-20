@@ -164,7 +164,7 @@ function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::D
 
     Na = def.pos.Na = def.pos.Na + k
     
-    Q[Na-k:Na+k] = grid_differentiation(P, grid, Na-k:Na+k)   # avoid lower end point correction by doubling range
+    Q[Na-k:Na+k] = CamiDiff.grid_differentiation(P, grid, Na-k:Na+k)   # avoid lower end point correction by doubling range
     for n=Na-k:Na+k
         Z[n] = P[n] + im * Q[n]
     end
