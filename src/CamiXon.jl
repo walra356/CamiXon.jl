@@ -105,7 +105,7 @@ export INSCH_WKB!
 export INSCH_WJ!
 export adams_moulton_outward!
 export adams_moulton_inward!
-export adams_moulton_normalized!
+export adams_moulton_normalize!
 export adams_moulton_patch
 export adams_moulton_solve!
 export adams_moulton_solve_refine!

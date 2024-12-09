@@ -123,7 +123,6 @@ using Test
     grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=false);
     @test ZH1s_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
-    
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
