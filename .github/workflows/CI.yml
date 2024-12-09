@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1'       # current stable
+          - '1.11'       # current stable
           - 'pre'
         os:
           - ubuntu-latest
