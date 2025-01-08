@@ -2,6 +2,11 @@ module CamiXon
 
 import CamiMath
 import CamiDiff
+import Printf
+import Dates           
+#using IntervalSets
+#using LaTeXStrings
+import LinearAlgebra
 
 fwd = CamiMath.fwd
 bwd = CamiMath.bwd
@@ -21,12 +26,6 @@ end
 
 struct Latex
 end
-
-using Printf
-using Dates           # used in fits_private_sector
-#using IntervalSets
-#using LaTeXStrings
-using LinearAlgebra
 
 export Object
 export Info

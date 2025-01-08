@@ -157,7 +157,7 @@ function adams_moulton_outward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams
             P[j+1] = G[n+1-k+j][1,2] * imag(Z[n+1-k+j])
             Q[j+1] = G[n+1-k+j][2,1] * real(Z[n+1-k+j])
         end
-        z = Z[n] + (am ⋅ P + im*(am ⋅ Q))
+        z = Z[n] + (LinearAlgebra.dot(am, P) + im*LinearAlgebra.dot(am, Q))
         z1 = m[n+1][1,1] * real(z) + m[n+1][1,2] * imag(z)          
         z2 = m[n+1][2,1] * real(z) + m[n+1][2,2] * imag(z)
         Z[n+1] = z1 + im*z2
@@ -211,7 +211,7 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{
             amP[j+1] = G[n+k-j][1,2] * imag(Z[n+k-j])
             amQ[j+1] = G[n+k-j][2,1] * real(Z[n+k-j])
         end
-        z = Z[n+1] - (am ⋅ amP + im*(am ⋅ amQ))
+        z = Z[n+1] - (LinearAlgebra.dot(am, amP) + im*LinearAlgebra.dot(am, amQ))
         z1 = m[n][1,1] * real(z) - m[n][1,2] * imag(z)          
         z2 = m[n][2,1] * real(z) - m[n][2,2] * imag(z)
         Z[n] = z1 - im*z2
@@ -480,7 +480,7 @@ function adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T};
     str = "\n--- "
     str *= "convergence report for " * _defspecs(grid, def)
     str *= " from " * name * "\n"
-    str *= @sprintf "    binding energy: E = %.17g %s \n" E unitIn
+    str *= Printf.@sprintf "    binding energy: E = %.17g %s \n" E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative precision: ΔE/E = " * strΔErel * ""                   :

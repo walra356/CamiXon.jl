@@ -465,8 +465,8 @@ function calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
     strΔErel = repr(ΔErel, context=:compact => true)
 
     str = "\ncalibration report ($T):\n"
-    str *= @sprintf "Ecal = %.17g %s \n" Ecal unitIn
-    T == B ? (str *= @sprintf "E = %.25g %s \n" E unitIn) : (str *= @sprintf "E = %.17g %s \n" E unitIn)
+    str *= Printf.@sprintf "Ecal = %.17g %s \n" Ecal unitIn
+    T == B ? (str *= Printf.@sprintf "E = %.25g %s \n" E unitIn) : (str *= Printf.@sprintf "E = %.17g %s \n" E unitIn)
     str *= ΔE ≠ 0 ? "absolute accuracy: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute accuracy: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative accuracy: ΔE/E = " * strΔErel * "\n"                   :
