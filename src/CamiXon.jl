@@ -145,14 +145,7 @@ export Def
 export castDef
 export initE
 
-#export plot_matrices
-#export plot!
-export step125
-export select125
-export edges
-export steps
-export stepcenters
-export stepedges
+
 
 include("julia.jl")
 include("codata.jl")
@@ -173,6 +166,5 @@ include("outsch.jl")
 include("insch.jl")
 include("Coulomb_Integrals.jl")
 include("adams-moulton.jl")
-include("plot_public_sector.jl")
 
 end
