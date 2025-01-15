@@ -7,17 +7,15 @@
 # ==============================================================================
 
 # ..............................................................................
-function _hydrogenic_norm(n::U, ℓ::U) where U<:Real
+function _hydrogenic_norm(n::Int, ℓ::Int)
 
-    T = (n + ℓ) > 20 ? BigInt : Int
-
-    o = T(1)
+    o = 1
 
     for i=(n-ℓ):(n+ℓ)
-        o *= T(i)
+        o *= i
     end
 
-    o *= T(2n)
+    o *= 2n
 
     return o
 
@@ -77,16 +75,17 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDif
     n = orbit.n
     ℓ = orbit.ℓ
     r = grid.r
+    Z = atom.Z
 
     norm = _hydrogenic_norm(n, ℓ)
 
-    a = float(big(2atom.Z)//big(n))
-    b = a^(ℓ+1)*sqrt(a/big(norm))
-
     polynom = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
 
-    P = b .* [r[i]^(ℓ+1) * exp(-0.5a*r[i]) * CamiMath.polynomial(polynom, a*r[i]) for i ∈ eachindex(r)]
-    Q = b .* [r[i]^ℓ * exp(-0.5a*r[i]) * (((ℓ+1)-0.5a*r[i]) * CamiMath.polynomial(polynom, a*r[i]) + a*r[i]*CamiMath.polynomial(polynom, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    a = 2Z//n
+    b = eltype(r) == BigFloat ? sqrt(big(a//norm)) : sqrt(a//norm)
+
+    P = b .* [(a*r[i])^(ℓ+1) * exp(-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) for i ∈ eachindex(r)]
+    Q = b .* [(a*r[i])^ℓ * a * exp(-Z//n*r[i]) * (((ℓ+1)-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) + a*r[i]*CamiMath.polynomial(polynom, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
 
     P[1] = T(0)
     return T.(P) + im * T.(Q)
