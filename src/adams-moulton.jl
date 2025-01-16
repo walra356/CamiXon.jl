@@ -399,7 +399,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     Emin = init.Emin
     E = init.E
     Emax = init.Emax
-    ΔE = init.ΔE
+    ΔE = init.ΔE > 1e-3 * E: init.ΔE : 1.1e-3 * E
 
    (Emin ≤ E ≤ Emax) || error("Error: Emin ≤ E ≤ Emax interval violated")     
     
