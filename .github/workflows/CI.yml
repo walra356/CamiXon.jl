@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         julia-version: ['1', 'pre']
-        julia-arch: [x64]
+        julia-arch: [] # not specified = default previously used [x64]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - uses: actions/checkout@v4
