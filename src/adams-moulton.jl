@@ -387,6 +387,7 @@ end
 function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
     msg && println("\n===== enter adams_moulton_iterate! =====")  
+    msg && println("init = ", init)
     
     t1 = time()
 
