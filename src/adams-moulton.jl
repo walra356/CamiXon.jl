@@ -490,4 +490,40 @@ function adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T};
 
 end
 
+function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; test=5, msg=false) where T<:Real
+    
+    msg && println("\n===== enter adams_moulton_nodes! =====") 
+    t1 = time()
 
+    E = T(E)
+
+    n′= def.orbit.n′     # radial quantum number (number of nodes)
+    
+    for n ∈ eachindex(def.pot)
+        def.scr[n] = scr[n]
+        def.potscr[n] = def.pot[n] + scr[n]
+    end
+    
+    init = castInit(E, grid, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    msg && println("after castInit!")  
+
+    adams = castAdams(init.E, grid, def)
+    msg && println("after castAdams")  
+    
+    Z = zeros(Complex{grid.T}, grid.N) 
+
+    updatePos!(def.pos, init.E, def.potscr, grid)
+    adams = updateAdams!(adams, init.E, grid, def)
+    msg && println("after updateAdams")  
+    msg && print("grid special points: Na = $(def.pos.Na), Nlctp = $(def.pos.Nlctp), Nmin = $(def.pos.Nmin)")
+    msg && println(", Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N), nodes = $(def.pos.nodes), Rmax = $(grid.r[grid.N])\n")
+        
+    if test > 0 Z = OUTSCH!(Z, E, grid, def, adams) end
+    if test > 1 Z = adams_moulton_outward!(Z, def, adams) end
+    if test > 2 Z = INSCH_WKB!(Z, E, grid, def) end
+    if test > 3 (ΔQ, Z) = adams_moulton_inward!(Z, def, adams) end
+    if test > 4 (ΔE, Z) = adams_moulton_normalize!(Z, ΔQ, grid, def) end
+
+    return def, Z
+
+end

@@ -112,6 +112,7 @@ export adams_moulton_nodes
 export adams_moulton_iterate!
 export adams_moulton_precise!
 export adams_moulton_report
+export test_adams_moulton
 
 export demo_hydrogen
 export hydrogenic_reduced_wavefunction
