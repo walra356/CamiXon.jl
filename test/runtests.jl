@@ -97,8 +97,8 @@ using Test
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
@@ -113,8 +113,8 @@ using Test
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
@@ -129,16 +129,16 @@ using Test
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
- #   def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH1s_generic ≈ Z
     @test grid.name == "exponential"
     @test findIndex(0.0042, grid) == 220
     @test def.atom.element.name == "hydrogen"
     @test CamiDiff.grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
  #   @test round(Int, UF(0, real(Z), grid)[1]) == 1
-    grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=false);
+    grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=true);
     @test ZH1s_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
