@@ -90,7 +90,7 @@ using Test
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
     @test RH2s_example ≈ RH2s_generic
 #   ---------------------------------------------------------------------------------------- 
-    println("H10i =========================================================")
+    println(repeat('=', 80) * "\n--- H10i ---")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=10, ℓ=6; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -99,10 +99,10 @@ using Test
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
-    println("H2p =========================================================")
+    println(repeat('=', 80) * "\n--- H2p ---")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -116,10 +116,10 @@ using Test
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
-    println("H1s =========================================================")
+    println(repeat('=', 80) * "\n--- H1s ---")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -133,8 +133,8 @@ using Test
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH1s_generic ≈ Z
 
  #   println("nu komt het!")
