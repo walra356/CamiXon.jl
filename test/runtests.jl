@@ -90,9 +90,9 @@ using Test
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
     @test RH2s_example ≈ RH2s_generic
 #   ---------------------------------------------------------------------------------------- 
-    println(repeat('=', 80) * "\n--- H10i ---")
+    println("--- H9i ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
-    orbit = castOrbit(n=10, ℓ=6; msg=false);
+    orbit = castOrbit(n=9, ℓ=6; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     ZH10i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=0;
@@ -102,7 +102,7 @@ using Test
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
-    println(repeat('=', 80) * "\n--- H2p ---")
+println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -119,7 +119,7 @@ using Test
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
-    println(repeat('=', 80) * "\n--- H1s ---")
+    println("--- H1s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
