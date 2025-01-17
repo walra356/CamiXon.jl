@@ -332,8 +332,7 @@ end
     
 """
 function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
-    
-    msg && println("\n===== enter adams_moulton_nodes! =====") 
+
     t1 = time()
 
     E = T(E)
@@ -366,7 +365,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     def.pos.nodes == n′ || error("Error: after $i iterations nodes = $(def.pos.nodes) - should be $(n′) (increase imax?)")
 
     init.ΔE = ΔE         # ΔE from here on in use (nodes == n′)
-    msg && println("     update ΔE:         - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
+    msg && println("   initiate ΔE:         - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
     
     t2 = time()
     adams_moulton_report(init.E, init.ΔE, grid, def; unitIn="Hartree", name="adams_moulton_nodes!: search for $(n′) nodes", msg=true)
