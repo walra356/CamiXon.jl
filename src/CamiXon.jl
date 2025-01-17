@@ -1,7 +1,7 @@
 module CamiXon
 
 import CamiMath
-import CamiDiff
+using CamiDiff
 import Printf
 import Dates           
 #using IntervalSets
@@ -26,6 +26,11 @@ end
 
 struct Latex
 end
+
+export grid_differentiation1 ########################
+
+
+
 
 export Object
 export Info

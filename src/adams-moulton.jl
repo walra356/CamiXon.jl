@@ -302,9 +302,11 @@ end
 function adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
     adams = updateAdams!(adams, E, grid, def)
-        
+    
     Z = adams_moulton_outward!(Z, def, adams)
+    
 ΔQ, Z = adams_moulton_inward!(Z, def, adams)
+
 ΔE, Z = adams_moulton_normalize!(Z, ΔQ, grid, def)
 
     return adams, ΔE, Z
@@ -386,9 +388,6 @@ end
 """
 function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
-    msg && println("\n===== enter adams_moulton_iterate! =====")  
-    msg && println("init = ", init)
-    
     t1 = time()
 
     n′= def.orbit.n′     # radial quantum number (number of nodes)
@@ -402,7 +401,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     ΔE = 1.1e-3 * E
 
    (Emin ≤ E ≤ Emax) || error("Error: Emin ≤ E ≤ Emax interval violated")     
-    
+ 
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)

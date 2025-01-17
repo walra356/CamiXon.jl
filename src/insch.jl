@@ -38,7 +38,7 @@ function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::De
 
     N = grid.N
     r = grid.r
-    k = grid.k
+    k1 = grid.k
     Nuctp = def.pos.Nuctp
     two = T(2)
     pot = def.potscr
@@ -55,11 +55,14 @@ function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::De
         def.pos.Nb = P[n] > 1.0e-30 ? n : break
     end
 
-    Nb = def.pos.Nb = def.pos.Nb - k
+    Nb = def.pos.Nb = def.pos.Nb - k1
     
-    Q[Nb-k:Nb+k] = CamiDiff.grid_differentiation(P, grid, Nb-k:Nb+k)   # avoid lower end point correction by doubling range
+#    Q[Nb-k1:Nb+k1] = CamiDiff.grid_differentiation(P, grid, Nb-k1:Nb+k1)   # avoid lower end point correction by doubling range
     
-    for n=Nb-k:Nb+k
+    
+    Q[Nb-k1:Nb+k1] = grid_differentiation(P, grid, Nb-k1:Nb+k1)   # avoid lower end point correction by doubling range
+
+    for n=Nb-k1:Nb+k1
         Z[n] = P[n] + im * Q[n]
     end 
     
