@@ -14,7 +14,7 @@ using Test
     codata = castCodata(2022)
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=1, ℓ=0)
-    grid = autoGrid(atom, orbit, BigFloat; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
     def = castDef(grid, atom, orbit, codata)
     Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
     E = 0 

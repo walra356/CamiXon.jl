@@ -418,7 +418,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i < imax || break
     end
 
-    msg && println(                        "     update ΔE: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
+    msg && println(                        "     upgrade ΔE: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
 
     str = T == Float64 ? "Float64 " : "Bigfloat "
     
