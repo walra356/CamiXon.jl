@@ -368,8 +368,8 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     msg && println("   initiate ΔE:         - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
     
     t2 = time()
-    adams_moulton_report(init.E, init.ΔE, grid, def; unitIn="Hartree", name="adams_moulton_nodes!: search for $(n′) nodes", msg=true)
     println("correct number of nodes ($(def.pos.nodes)) reached after $i iterations in " * _strΔt(t2,t1))
+    adams_moulton_report(init.E, init.ΔE, grid, def; unitIn="Hartree", name="adams_moulton_nodes!: search for $(n′) nodes", msg=true)
 
     return def, adams, init, Z
 
@@ -415,11 +415,11 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i < imax || break
     end
 
-    str = T == Float64 ? "improvement" : "precision"
+    str = T == Float64 ? "Float64 " : "Bigfloat "
     
     t2 = time()
+    println(str * "result after $i iterations in " * _strΔt(t2,t1))
     adams_moulton_report(init.E, init.ΔE, grid, def; unitIn="Hartree", name="adams_moulton_iterate! with $T precision", msg=true)
-    println(str * " after $i iterations in " * _strΔt(t2,t1))
     if i == imax
         println("Warning: convergence goal not reached (increase imax and/or precision)")
     end
