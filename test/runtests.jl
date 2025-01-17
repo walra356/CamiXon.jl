@@ -80,6 +80,7 @@ using Test
     def, Z = test_adams_moulton(E, scr, grid, def; test=5, msg=false)
     @test real(Z[1:9]) ≈ [0.0, 2.303207641828953e-37, 8.221607105497416e-36, 6.513989509686655e-35, 2.8272345759443254e-34, 8.834834955917978e-34, 2.2432430623252777e-33, 5.567910644661615e-33, 1.434868229698988e-32]
 #   ----------------------------------------------------------------------------------------
+    println("H2s =========================================================")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -90,6 +91,7 @@ using Test
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
     @test RH2s_example ≈ RH2s_generic
 #   ---------------------------------------------------------------------------------------- 
+    println("H10i =========================================================")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=10, ℓ=6; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -101,6 +103,7 @@ using Test
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
     @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
+    println("H2p =========================================================")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
@@ -117,6 +120,7 @@ using Test
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
+    println("H1s =========================================================")
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; Ntot=5000);
