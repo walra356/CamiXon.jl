@@ -345,11 +345,9 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    init = castInit(E, grid, def) # init =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
-    msg && println("after castInit!")  
+    init = castInit(E, grid, def)     # init =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
 
     adams = castAdams(init.E, grid, def)
-    msg && println("after castAdams") 
     
     Z = zeros(Complex{grid.T}, grid.N)  
 
