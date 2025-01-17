@@ -352,7 +352,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
 
     adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams)
     nodes = def.pos.nodes
-    msg && println("\nadams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
+    msg && println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
     
     i = 0
     while def.pos.nodes ≠ n′
@@ -393,7 +393,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     two = T(2)
     pot = def.potscr
     
-    msg && println("\nadams_moulton_iterate!:\nstart solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))") 
+    msg && println("\n--- adams_moulton_iterate!:\nresume solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))") 
     
     Emin = init.Emin
     E = init.E
@@ -479,8 +479,7 @@ function adams_moulton_report(it::Int, init::Init{T}, grid::CamiDiff.Grid{T}, de
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔE/init.E, context=:compact => true)
 
-    str = "\n--- "
-    str *= name * " convergence report for " * _defspecs(grid, def) * "\n"
+    str = "\nconvergence report for " * _defspecs(grid, def) * "\n"
     str *= "$T result with $(def.pos.nodes) nodes obtained after $(it) iterations in " * strΔT * "\n"
     str *= Printf.@sprintf "    binding energy: E = %.17g %s \n" init.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
