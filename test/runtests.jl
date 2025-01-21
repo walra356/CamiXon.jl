@@ -141,7 +141,7 @@ println("--- H2p ---" * repeat('-', 39))
  #   grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=true);
  #   @test ZH1s_generic ≈ Z
  #   @test grid.name == "exponential"
- #   @test findIndex(0.0042, grid) == 220
+ #   @test CamiDiff.gridPos(0.0042, grid) == 220
  #   @test def.atom.element.name == "hydrogen"
  #   @test CamiDiff.grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
  #   @test round(Int, UF(0, real(Z), grid)[1]) == 1
