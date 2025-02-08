@@ -319,7 +319,6 @@ find_last(A::Union{String,AbstractArray{T,1}}, a::T...; dict=false)  where T
 ```@docs
 dictAntoineCoefficients
 dictAtomicNumbers
-dictBigConversion
 dictElements
 dictIsotopes
 dictMeltingPoints

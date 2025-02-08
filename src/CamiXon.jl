@@ -52,7 +52,6 @@ export calibrationReport
 
 export dictAntoineCoefficients
 export dictAtomicNumbers
-export dictBigConversion
 export dictElements
 export dictIsotopes
 export dictMeltingPoints
