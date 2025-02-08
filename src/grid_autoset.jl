@@ -132,33 +132,6 @@ function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
 
 end
 
-# ...................... autoSteps(Ntot, Rmax) .................................
-
-@doc raw"""
-    autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5) where T<:Real
-    autoSteps(ID::Int, Ntot::Int, Rmax::T; polynom=[0,1]) where T<:Real
-
-Step size parameter (h) and range parameter (r0) (rule of thumb values).
-### Example:
-```
-(h, r0) = autoSteps(1, 100, 100)
-    (0.1, 0.004540199100968777)
-```
-"""
-function autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, polynom=[0,1]) where T<:Real
-    # ==============================================================================
-    #  Step size parameter (h) and range parameter (r0)
-    # ==============================================================================
-    
-        Ntot = ID < 3 ? Ntot-1 : I > 3 ? Ntot - 1 : Ntot
-        
-        h = T(10)/Ntot
-        r0 = Rmax / CamiDiff.gridfunction(ID, Ntot, h; p, polynom)
-    
-        return h, r0
-    
-end
-
 @doc raw"""
     autoGrid(atom, orbit,  T; Nboost=1, epn=5, k=7, msg=true, p=0)
     autoGrid(atom, orbits, T; Nboost=1, epn=5, k=7, msg=true, p=0)
@@ -188,9 +161,7 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, polynom=[], Ntot=0, Rmax=0, epn=5, k=5, msg=false)
-
-    Rmax = T(Rmax)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0.001, p=0, polynom=[], Ntot=0, rmax=0, epn=5, k=5, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
@@ -199,11 +170,10 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, polynom=[], Ntot=0, Rm
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
     Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
-    Rmax = autoRmax!(Rmax, atom, orbit)
+    rmax = autoRmax!(rmax, atom, orbit)
 
-    T = T == BigFloat ? T : autoPrecision(Rmax, orbit)
-    h, r0 = autoSteps(ID, Ntot, T(Rmax); p, polynom)
+    T = T == BigFloat ? T : autoPrecision(rmax, orbit)
+    h = T(10//Ntot)
 
-    return CamiDiff.castGrid(ID, Ntot, T; h, r0, p, polynom, epn, k, msg)
-
+    return CamiDiff.castGrid(ID, Ntot, T; h, rmax, p, polynom, epn, k, msg)
 end

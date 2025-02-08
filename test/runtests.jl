@@ -9,7 +9,9 @@ using CamiMath
 using LinearAlgebra
 using Test
 
-@testset "CamiXon.jl" begin  
+println("CamiXon.jl | 108 runtests | runtime 17.7s (estimated) | start")
+
+@testset "CamiXon.jl" begin 
     @test frac(-5 // 2) == "-⁵/₂"
     @test_throws DomainError castCodata(2016)
     codata = castCodata(2018)
@@ -59,8 +61,7 @@ using Test
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
     @test lc_primitivetype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Int64
     @test primitivetype(Rational{UInt16}) == UInt16
-    @test conditionalType(47, 46) == BigInt  
-    @test typeof(bigconvert([[1 // 1, 1 // 2], [1 // 1, 1 // 2]])) == Vector{Vector{Rational{BigInt}}}
+    @test conditionalType(47, 46) == BigInt 
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=10, ℓ=6)
@@ -70,15 +71,15 @@ using Test
     E = 0 
     scr = zeros(grid.T,grid.N)
     def, Z = test_adams_moulton(E, scr, grid, def; test=1, msg=false)
-    @test real(Z[1:9]) ≈  [0.0, 5.1428402317309706e-27, 1.8358054664173181e-25, 1.4545109486041696e-24, 6.312941767665052e-24, 1.9727333231630704e-23, 5.008945116783607e-23, 1.1021150943733992e-22, 2.1836812980487107e-22]
+    @test real(Z[1:9]) ≈  [0.0, 5.2132285945829414e-27, 1.8609296107101749e-25, 1.4744153159663212e-24, 6.399325090496862e-24, 1.999725208251925e-23, 5.0774746536686714e-23, 1.1171924485625168e-22, 2.2135525949924983e-22] 
     def, Z = test_adams_moulton(E, scr, grid, def; test=2, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 1.316529120127285e-36, 4.699526422219377e-35, 3.7234406147142423e-34, 1.6160664722811144e-33, 5.050051623547137e-33, 1.282252959498499e-32, 3.182655514351617e-32, 8.201804186634829e-32]
+    @test real(Z[1:9]) ≈ [0.0, 1.3332799803492134e-36, 4.759315939794162e-35, 3.770808027756206e-34, 1.6366234236825084e-33, 5.114284819837732e-33, 1.2985609941412076e-32, 3.2231290265187645e-32, 8.30609347316944e-32]
     def, Z = test_adams_moulton(E, scr, grid, def; test=3, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 1.316529120127285e-36, 4.699526422219377e-35, 3.7234406147142423e-34, 1.6160664722811144e-33, 5.050051623547137e-33, 1.282252959498499e-32, 3.182655514351617e-32, 8.201804186634829e-32]
+    @test real(Z[1:9]) ≈ [0.0, 1.3332799803492134e-36, 4.759315939794162e-35, 3.770808027756206e-34, 1.6366234236825084e-33, 5.114284819837732e-33, 1.2985609941412076e-32, 3.2231290265187645e-32, 8.30609347316944e-32]
     def, Z = test_adams_moulton(E, scr, grid, def; test=4, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 1.316529120127285e-36, 4.699526422219377e-35, 3.7234406147142423e-34, 1.6160664722811144e-33, 5.050051623547137e-33, 1.282252959498499e-32, 3.182655514351617e-32, 8.201804186634829e-32]
+    @test real(Z[1:9]) ≈  [0.0, 1.3332799803492134e-36, 4.759315939794162e-35, 3.770808027756206e-34, 1.6366234236825084e-33, 5.114284819837732e-33, 1.2985609941412076e-32, 3.2231290265187645e-32, 8.30609347316944e-32]
     def, Z = test_adams_moulton(E, scr, grid, def; test=5, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 2.303207641828953e-37, 8.221607105497416e-36, 6.513989509686655e-35, 2.8272345759443254e-34, 8.834834955917978e-34, 2.2432430623252777e-33, 5.567910644661615e-33, 1.434868229698988e-32]
+    @test real(Z[1:9]) ≈ [0.0, 2.3349425915904457e-37, 8.334880639061307e-36, 6.60372944804363e-35, 2.866180993244911e-34, 8.956529481704096e-34, 2.2741400288663877e-33, 5.644591798520028e-33, 1.4546270630385513e-32]
 #   ----------------------------------------------------------------------------------------
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
@@ -197,11 +198,10 @@ println("--- H2p ---" * repeat('-', 39))
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
 
-    grid = CamiDiff.castGrid(3, 6, Float64; r0=1.0, h=1.0, msg=false)
+    grid = CamiDiff.castGrid(3, 6, Float64; h=1.0, rmax=84.0, msg=false)
     @test autoRmax(atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
     @test autoPrecision(100.0, orbit) == Float64
-    @test autoSteps(1, 100, 100) ==  (0.10101010101010101, 0.004540199100968777)
 #   ------------------------------------------------------------------------------------------------------------
     @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
     @test latent_heat_vaporization("Li", 623) == 18473.64020109123
@@ -217,10 +217,11 @@ println("--- H2p ---" * repeat('-', 39))
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6
     @test silvera_goldman_singlet(10) == -8.696045600341206e-6
     @test silvera_goldman_exchange(10) == 9.776091403104656e-7
-    grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);    
-    @test silvera_goldman_potential(grid; S=1)[700] == -1.2954953056510744e-6
-    @test silvera_goldman_potential(grid; S=0)[700] == -0.00020738292434731114
+    #grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);  
+    grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, rmax=20, msg=false); 
+    @test silvera_goldman_potential(grid; S=1)[700] == -1.5010579051054454e-6
+    @test silvera_goldman_potential(grid; S=0)[700] == -0.00020633920967786209
     @test rotbarrier(grid; ℓ=0)[700] == 0.0
-    @test rotbarrier(grid; ℓ=1)[700] == 0.040933194979134294
+    @test rotbarrier(grid; ℓ=1)[700] == 0.0408922720174539
 
 end

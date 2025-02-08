@@ -164,7 +164,6 @@ functions of `N` elements representing the grid function and its derivative.
 autoRmax(atom::Atom, orbit::Orbit)
 autoNtot(orbit::Orbit)
 autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
-autoSteps(ID::Int, Ntot::Int, Rmax::T; p=5, polynom=[0,1]) where T<:Real
 autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, polynom=[], Nboost=1, epn=5, k=7, msg=true)
 ```
 

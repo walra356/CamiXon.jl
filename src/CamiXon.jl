@@ -27,11 +27,6 @@ end
 struct Latex
 end
 
-export grid_differentiation1 ########################
-
-
-
-
 export Object
 export Info
 export Latex
@@ -135,7 +130,6 @@ export reduce_wavefunction
 export autoRmax
 export autoNtot
 export autoPrecision
-export autoSteps
 export autoGrid
 
 export getNmin
