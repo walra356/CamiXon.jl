@@ -117,7 +117,7 @@ println("--- H2p ---" * repeat('-', 39))
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-15, msg=true);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     println("--- H1s ---" * repeat('-', 39))
