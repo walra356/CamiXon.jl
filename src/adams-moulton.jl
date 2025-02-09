@@ -357,7 +357,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     i = 0
     while def.pos.nodes ≠ n′
         adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams) # ΔE not used for nodes ≠ n′
-        init!(init, T(0), def)
+        init = init!(init, T(0), def)
         i += 1
         i < imax || break
     end
@@ -404,7 +404,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
  
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
-        println("inita = ", init)
+        #println("inita = ", init)
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
@@ -412,7 +412,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i < imax || break
     end
     while abs(ΔE/E) > ϵ # convergence goal
-        println("initb = ", init)
+        #println("initb = ", init)
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
