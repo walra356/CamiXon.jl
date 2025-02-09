@@ -106,7 +106,7 @@ println("CamiXon.jl | 108 runtests | runtime 17.7s (estimated) | start")
 println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; p=5, rmax=60.0, Ntot=5000);
     RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2p_example = reduce_wavefunction(RH2p_example, grid);
     ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
