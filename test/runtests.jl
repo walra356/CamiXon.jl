@@ -123,7 +123,7 @@ println("--- H2p ---" * repeat('-', 39))
     println("--- H1s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; p=5, rmax=20.0, Ntot=5000);
     RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RH1s_example, grid);
     ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
