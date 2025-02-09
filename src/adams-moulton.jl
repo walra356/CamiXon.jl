@@ -404,6 +404,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
  
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
+        println("inita = ", init)
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
@@ -411,6 +412,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i < imax || break
     end
     while abs(ΔE/E) > ϵ # convergence goal
+        println("initb = ", init)
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
