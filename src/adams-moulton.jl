@@ -384,7 +384,7 @@ end
     adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
 """
-function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1.0e-6, msg=true) where T<:Real
     
     t1 = time()
 
@@ -405,14 +405,14 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
-        init!(init, ΔE, def)
+        init = init!(init, ΔE, def)
         E = init.E
         i += 1
         i < imax || break
     end
     while abs(ΔE/E) > ϵ # convergence goal
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
-        init!(init, ΔE, def)
+        init = init!(init, ΔE, def)
         E = init.E
         i += 1
         i < imax || break
