@@ -9,7 +9,9 @@
 # ..............................................................................
 function _hydrogenic_norm(n::Int, ℓ::Int)
 
-    o = 1
+    o = big(1)
+    n = big(n)
+    ℓ = big(ℓ)
 
     for i=(n-ℓ):(n+ℓ)
         o *= i
@@ -82,7 +84,9 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDif
     polynom = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
 
     a = 2Z//n
-    b = eltype(r) == BigFloat ? sqrt(big(a//norm)) : sqrt(a//norm)
+    b = T(a//norm)
+    b = sqrt(b)
+    a = T(a) 
 
     P = b .* [(a*r[i])^(ℓ+1) * exp(-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) for i ∈ eachindex(r)]
     Q = b .* [(a*r[i])^ℓ * a * exp(-Z//n*r[i]) * (((ℓ+1)-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) + a*r[i]*CamiMath.polynomial(polynom, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
