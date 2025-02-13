@@ -32,22 +32,7 @@ rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
     rmax = 63.0 a.u.
 ```
 """
-function autoRmax(atom::Atom, orbit::Orbit) # kanweg
-# ==============================================================================
-#  Discretization range in atomic units
-# ==============================================================================
-     n = orbit.n
-     ℓ = orbit.ℓ
-    Zc = atom.Zc
-
-    #Rmax = 4(n^2+20)/Zc
-    Rmax = (2n^2 + 20n + 62)/Zc
-    #Rmax = (3n^2 -ℓ*(ℓ+1))/Zc
-
-    return Rmax
-
-end
-function autoRmax!(Rmax::T, atom::Atom, orbit::Orbit) where T<:Real
+function autoRmax(rmax::T, atom::Atom, orbit::Orbit) where T<:Real
     # ==============================================================================
     #  Discretization range in atomic units
     # ==============================================================================
@@ -56,10 +41,10 @@ function autoRmax!(Rmax::T, atom::Atom, orbit::Orbit) where T<:Real
         Zc = atom.Zc
     
         #Rmax = 4(n^2+20)/Zc
-        Rmax = Rmax > 0 ? Rmax : 2(2n^2 + 20n + 62)/Zc
+        rmax = Rmax > 0 ? rmax : 2(2n^2 + 20n + 62)/Zc
         #Rmax = (3.0* n^2 -ℓ*(ℓ+1))/Zc
     
-        return Rmax
+        return rmax
     
 end
 
@@ -117,14 +102,14 @@ o = autoPrecision(Rmax, orbit); println("precision = $o")
     precision = Float64
 ```
 """
-function autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+function autoPrecision(rmax::T, orbit::Orbit) where T<:Real
 # ==============================================================================
 #  Floating point precision (rule of thumb value)
 # ==============================================================================
 
     ℓ = orbit.ℓ
 
-    mytype = Rmax^(ℓ+1) == Inf ? BigFloat : T
+    mytype = rmax^(ℓ+1) == Inf ? BigFloat : Float64
 
     mytype ≠ T && println("\nautoPrecision: Rmax^(ℓ+1) => Inf - overflow protection: type promoted to BigFloat\n")
 
@@ -170,10 +155,11 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0.001, p=0, polynom=[], N
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
     Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
-    rmax = autoRmax!(rmax, atom, orbit)
+    rmax = autoRmax(rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(rmax, orbit)
     h = T(10//Ntot)
 
     return CamiDiff.castGrid(ID, Ntot, T; h, rmax, p, polynom, epn, k, msg)
+
 end
