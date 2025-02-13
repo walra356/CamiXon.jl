@@ -197,9 +197,9 @@ println("--- H2p ---" * repeat('-', 39))
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
-
-    grid = CamiDiff.castGrid(3, 6, Float64; h=1.0, rmax=84.0, msg=false)
-    @test autoRmax(atom, orbit) == 84.0 #63.0
+    rmax=84.0
+    grid = CamiDiff.castGrid(3, 6, Float64; h=1.0, rmax, msg=false)
+    @test autoRmax(rmax, atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
     @test autoPrecision(100.0, orbit) == Float64
 #   ------------------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
 # ....................... autoRmax(atom, orbit) ................................
 
 @doc raw"""
-    autoRmax(atom::Atom, orbit::Orbit)
+    autoRmax(rmax::T, atom::Atom, orbit::Orbit) where T<:Real
 
 Largest relevant radial distance in a.u. (rule of thumb value)
 ```math
@@ -21,7 +21,7 @@ where ``n`` is the principal quantum number and ``Z_c`` the Rydberg charge
 codata = castCodata(2018)
 atom = castAtom(Z=1, A=1, Q=0)
 orbit = castOrbit(n=1, ℓ=0)
-rmax = autoRmax(atom::Atom, orbit::Orbit); println("rmax = $(rmax) a.u.")
+rmax = autoRmax(rmax, atom, orbit); println("rmax = $(rmax) a.u.")
     Element created: H, hydrogen, Z=1, weight=1.008
     Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
     Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
@@ -90,7 +90,7 @@ Floating point precision (rule of thumb value)
 ```
 atom = castAtom(Z=1)
 orbit = castOrbit(n=1,ℓ=0)
-rmax = autoRmax(atom, orbit)
+rmax = autoRmax(rmax, atom, orbit)
 o = autoPrecision(rmax, orbit); println("precision = $o")
     Element created: H, hydrogen, Z=1, weight=1.008
     Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
