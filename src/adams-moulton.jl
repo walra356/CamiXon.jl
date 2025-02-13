@@ -453,7 +453,7 @@ function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
     Rmax = convert(B, grid.r[grid.N])
     init = Init(B(init.Emin), B(init.E), B(init.Emax), B(init.ΔE))
    
-    msg && println("Rmax = $(Rmax), init.E = $(init.E)")
+    msg && println("rmax = $(rmax), init.E = $(init.E)")
 
     grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
 

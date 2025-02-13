@@ -80,10 +80,10 @@ function autoNtot(orbit::Orbit, Nboost=1)
 
 end
 
-# .................... autoPrecision(Rmax, orbit) ..............................
+# .................... autoPrecision(rmax, orbit) ..............................
 
 @doc raw"""
-    autoPrecision(Rmax::T, orbit::Orbit) where T<:Real
+    autoPrecision(rmax::T, orbit::Orbit) where T<:Real
 
 Floating point precision (rule of thumb value)
 ### Example:
@@ -91,7 +91,7 @@ Floating point precision (rule of thumb value)
 atom = castAtom(Z=1)
 orbit = castOrbit(n=1,ℓ=0)
 Rmax = autoRmax(atom, orbit)
-o = autoPrecision(Rmax, orbit); println("precision = $o")
+o = autoPrecision(rmax, orbit); println("precision = $o")
     Element created: H, hydrogen, Z=1, weight=1.008
     Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
     Atom created: hydrogen, neutral atom, ¹H, Z=1, A=1, Q=0, Zc=1
