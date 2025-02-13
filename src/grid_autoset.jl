@@ -40,9 +40,9 @@ function autoRmax(rmax::T, atom::Atom, orbit::Orbit) where T<:Real
          ℓ = orbit.ℓ
         Zc = atom.Zc
     
-        #Rmax = 4(n^2+20)/Zc
-        rmax = Rmax > 0 ? rmax : 2(2n^2 + 20n + 62)/Zc
-        #Rmax = (3.0* n^2 -ℓ*(ℓ+1))/Zc
+        #rmax = 4(n^2+20)/Zc
+        rmax = rmax > 0 ? rmax : 2(2n^2 + 20n + 62)/Zc
+        #rmax = (3.0* n^2 -ℓ*(ℓ+1))/Zc
     
         return rmax
     
@@ -90,7 +90,7 @@ Floating point precision (rule of thumb value)
 ```
 atom = castAtom(Z=1)
 orbit = castOrbit(n=1,ℓ=0)
-Rmax = autoRmax(atom, orbit)
+rmax = autoRmax(atom, orbit)
 o = autoPrecision(rmax, orbit); println("precision = $o")
     Element created: H, hydrogen, Z=1, weight=1.008
     Isotope created: ¹H, hydrogen, Z=1, A=1, N=0, R=0.8783, M=1.007825032, I=1/2⁺, μI=2.792847351, Q=0.0, RA=99.9855%, (stable)
@@ -111,7 +111,7 @@ function autoPrecision(rmax::T, orbit::Orbit) where T<:Real
 
     mytype = rmax^(ℓ+1) == Inf ? BigFloat : Float64
 
-    mytype ≠ T && println("\nautoPrecision: Rmax^(ℓ+1) => Inf - overflow protection: type promoted to BigFloat\n")
+    mytype ≠ T && println("\nautoPrecision: rmax^(ℓ+1) => Inf - overflow protection: type promoted to BigFloat\n")
 
     return mytype
 
@@ -138,7 +138,7 @@ codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
 grid = autoGrid(atom, orbit, Float64);
-    CamiDiff.Grid created: exponential, Float64, Rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
+    CamiDiff.Grid created: exponential, Float64, rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
 
 plot_gridfunction(grid, 1:grid.N; title="")
 ```

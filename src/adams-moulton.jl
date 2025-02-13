@@ -450,12 +450,12 @@ function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
     Z = convert.(Complex{B}, Z)
     k = grid.k
     scr = convert.(B, def.scr)
-    Rmax = convert(B, grid.r[grid.N])
+    rmax = convert(B, grid.r[grid.N])
     init = Init(B(init.Emin), B(init.E), B(init.Emax), B(init.ΔE))
    
     msg && println("rmax = $(rmax), init.E = $(init.E)")
 
-    grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , Rmax, k, msg)
+    grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , rmax, k, msg)
 
     def = castDef(grid, def.atom, def.orbit, def.codata; def.pos, scr)
     adams = castAdams(init.E, grid, def)
@@ -519,7 +519,7 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
     adams = updateAdams!(adams, init.E, grid, def)
     msg && println("after updateAdams")  
     msg && print("grid special points: Na = $(def.pos.Na), Nlctp = $(def.pos.Nlctp), Nmin = $(def.pos.Nmin)")
-    msg && println(", Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N), nodes = $(def.pos.nodes), Rmax = $(grid.r[grid.N])\n")
+    msg && println(", Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N), nodes = $(def.pos.nodes), rmax = $(grid.r[grid.N])\n")
         
     if test > 0 Z = OUTSCH!(Z, E, grid, def, adams) end
     if test > 1 Z = adams_moulton_outward!(Z, def, adams) end
