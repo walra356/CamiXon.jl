@@ -146,7 +146,7 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0.001, p=0, polynom=[], Ntot=0, rmax=0, epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], Ntot=0, rmax=0, epn=5, k=5, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
@@ -158,6 +158,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0.001, p=0, polynom=[], N
     rmax = autoRmax(rmax, atom, orbit)
 
     T = T == BigFloat ? T : autoPrecision(rmax, orbit)
+    h = h ≠ 0 ? h : Ntot < 100 ? T(1//Ntot) : T(1//100)
     h = T(10//Ntot)
 
     return CamiDiff.castGrid(ID, Ntot, T; h, rmax, p, polynom, epn, k, msg)

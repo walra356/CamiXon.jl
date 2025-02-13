@@ -65,7 +65,7 @@ println("CamiXon.jl | 108 runtests | runtime 17.7s (estimated) | start")
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=10, ℓ=6)
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; h=1//500, Ntot=5000);
     def = castDef(grid, atom, orbit, codata)
     Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
     E = 0 
@@ -191,15 +191,11 @@ println("--- H2p ---" * repeat('-', 39))
     @test find_last([:📑, :📌, :📢, :📌, :📞], :📌; dict=true) == [:📌 => 4]
     @test find_last([:📑, :📌, :📢, :📌, :📞]) == find_last([1, 2, 3, 2, 5]) == find_last("aβcβd")
     @test [fdiff_weight(5, j) for j = 0:5] == [1, -5, 10, -10, 5, -1]
-    #@test isforward(fwd) == true
-    #@test isregular(reg) == true
     @test a_direct(2, 1, 1, 2, 2) == 2 // 35
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
-    rmax=84.0
-    grid = CamiDiff.castGrid(3, 6, Float64; h=1.0, rmax, msg=false)
-    @test autoRmax(rmax, atom, orbit) == 84.0 #63.0
+    @test autoRmax(84.0, atom, orbit) == 84.0 #63.0
     @test autoNtot(orbit, 2) == 240
     @test autoPrecision(100.0, orbit) == Float64
 #   ------------------------------------------------------------------------------------------------------------
