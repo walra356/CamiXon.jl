@@ -35,7 +35,6 @@ export primitivetype
 export lc_primitivetype
 export lc_eltype
 export conditionalType
-export bigconvert
 export find_all
 export find_first
 export find_last
