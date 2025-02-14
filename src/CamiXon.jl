@@ -139,9 +139,9 @@ export getΔNcut
 export Pos
 export castPos
 export updatePos!
+export listPos
 export Def
 export castDef
-export initE
 
 
 

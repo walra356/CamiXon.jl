@@ -91,6 +91,24 @@ function castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
 end
 
+@doc raw"""
+    listPos(pos::Pos [; msg=true])
+
+"""
+function listPos(pos::Pos)
+
+    str  = "Na = $(pos.Na), "
+    str *= "Nlctp = $(pos.Nlctp), "
+    str *= "Nmin = $(pos.Nmin), "
+    str *= "Nuctp = $(pos.Nuctp), "
+    str *= "Nb = $(pos.Nb), "
+    str *= "N = $(pos.N), "
+    str *= "nodes = $(pos.nodes)"
+
+    return str
+
+end
+
 # ------------------------------------------------------------------------------
 #             updatePos!(pos, E, Veff, grid) 
 # ------------------------------------------------------------------------------

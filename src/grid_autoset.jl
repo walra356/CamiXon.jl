@@ -32,32 +32,30 @@ rmax = autoRmax(rmax, atom, orbit); println("rmax = $(rmax) a.u.")
     rmax = 63.0 a.u.
 ```
 """
-function autoRmax(rmax::T, atom::Atom, orbit::Orbit) where T<:Real
+function autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
     # ==============================================================================
-    #  Discretization range in atomic units
+    #   Discretization range in atomic units
     # ==============================================================================
-         n = orbit.n
-         ℓ = orbit.ℓ
+        n = orbit.n
+        ℓ = orbit.ℓ
         Zc = atom.Zc
-    
-        #rmax = 4(n^2+20)/Zc
-        rmax = rmax > 0 ? rmax : 2(2n^2 + 20n + 62)/Zc
-        #rmax = (3.0* n^2 -ℓ*(ℓ+1))/Zc
+        
+        rmax = rmax > 0 ? rmax : (3n^2 + 40n + 62)/Zc
     
         return rmax
-    
-end
+        
+    end
 
 # .......................... autoNtot(orbit) ...................................
 
 @doc raw"""
-    autoNtot(orbit::Orbit, Nboost=1)
+    autoNtot(orbit::Orbit)
 
 Total number of gridpoints (rule of thumb value)
 ```math
-    N_{tot} = (70 + 50 * n) * N_{boost},
+    N_{tot} = 100 n,
 ```
-where ``n`` is the principal quantum number and `Nboost` a multiplier to boost numerical precision
+where ``n`` is the principal quantum number
 ### Example:
 ```
 orbit = castOrbit(n=1, ℓ=0)
@@ -67,18 +65,16 @@ autoNtot(orbit)
  100
 ```
 """
-function autoNtot(orbit::Orbit, Nboost=1)
+function autoNtot(orbit::Orbit)
 # ==============================================================================
-#  Total number of grid points
+#   Total number of grid points
 # ==============================================================================
-
-    n = orbit.n
-
-    Ntot = (70 + 50 * n) * Nboost
-
+    Ntot = 100 * orbit.n
+        
     return Ntot
-
+    
 end
+    
 
 # .................... autoPrecision(rmax, orbit) ..............................
 
@@ -155,7 +151,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], Ntot=
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
     Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
-    rmax = autoRmax(rmax, atom, orbit)
+    rmax = autoRmax(atom, orbit; rmax)
 
     T = T == BigFloat ? T : autoPrecision(rmax, orbit)
     h = h ≠ 0 ? h : Ntot < 100 ? T(1//Ntot) : T(1//100)

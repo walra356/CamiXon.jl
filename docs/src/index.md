@@ -188,6 +188,7 @@ Adams-Moulton integration. These positions are contained in the fields
 Pos
 castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+listPos(pos::Pos; msg=true)
 ```
 
 #### Pos-related functions

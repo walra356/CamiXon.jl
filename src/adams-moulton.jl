@@ -352,7 +352,13 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
 
     adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams)
     nodes = def.pos.nodes
-    msg && println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
+    if msg
+        str =  Printf.@sprintf "%.20g, " init.Emin 
+        str *= Printf.@sprintf "%.20g, " init.E
+        str *= Printf.@sprintf "%.20g, " init.Emax
+        str *= Printf.@sprintf "%.4g" init.ΔE
+        println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
+    end
     
     i = 0
     while def.pos.nodes ≠ n′
@@ -365,7 +371,14 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     nodes = def.pos.nodes
 
     init.ΔE = ΔE         # ΔE from here on in use (nodes == n′)
-    msg && println("   initiate ΔE: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
+    
+    if msg
+        str =  Printf.@sprintf "%.20g, " init.Emin 
+        str *= Printf.@sprintf "%.20g, " init.E
+        str *= Printf.@sprintf "%.20g, " init.Emax
+        str *= Printf.@sprintf "%.4g" init.ΔE
+        println("   initiate ΔE: $(nodes) nodes - init = (" * str * ")")
+    end
     
     t2 = time()
     adams_moulton_report(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", name="adams_moulton_nodes!", msg=true)
@@ -392,8 +405,14 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     nodes = def.pos.nodes
     two = T(2)
     pot = def.potscr
-    
-    msg && println("\n--- adams_moulton_iterate!:\nresume solution: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))") 
+
+    if msg
+        str =  Printf.@sprintf "%.20g, " init.Emin 
+        str *= Printf.@sprintf "%.20g, " init.E
+        str *= Printf.@sprintf "%.20g, " init.Emax
+        str *= Printf.@sprintf "%.4g" init.ΔE
+        println("\n--- adams_moulton_iterate!:\nresume solution: $(nodes) nodes - init = (" * str * ")")
+    end
     
     Emin = init.Emin
     E = init.E
@@ -420,15 +439,20 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i < imax || break
     end
 
-    msg && println(                        "     upgrade ΔE: $(nodes) nodes - init = ($(init.Emin), $(init.E), $(init.Emax), $(init.ΔE))")
-
-    str = T == Float64 ? "Float64 " : "Bigfloat "
+    if msg
+        str =  Printf.@sprintf "%.20g, " init.Emin 
+        str *= Printf.@sprintf "%.20g, " init.E
+        str *= Printf.@sprintf "%.20g, " init.Emax
+        str *= Printf.@sprintf "%.4g" init.ΔE
+        println(                        "     upgrade ΔE: $(nodes) nodes - init = (" * str * ")")
+    end
     
     t2 = time()
     adams_moulton_report(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", name="adams_moulton_iterate!", msg=true)
     if i == imax
         println("Warning: convergence goal not reached (increase imax and/or precision)")
     end
+    println("grid range and special points: rmax = $(Float64(grid.r[grid.N])) a.u.:  " * listPos(def.pos) )
     
     return def, adams, init, Z
 
@@ -481,9 +505,9 @@ function adams_moulton_report(it::Int, init::Init{T}, grid::CamiDiff.Grid{T}, de
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔE/init.E, context=:compact => true)
 
-    str = "\nconvergence report for " * _defspecs(grid, def) * "\n"
-    str *= "$T result with $(def.pos.nodes) nodes obtained after $(it) iterations in " * strΔT * "\n"
-    str *= Printf.@sprintf "    binding energy: E = %.17g %s \n" init.E unitIn
+    str = "\nconvergence report for " * _defspecs(grid, def) * " (using $T)\n"
+    str *= name * " reports $(def.pos.nodes) nodes obtained after $(it) iterations in " * strΔT * "\n"
+    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative precision: ΔE/E = " * strΔErel * ""                   :
