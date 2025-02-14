@@ -103,7 +103,7 @@ println("CamiXon.jl | 108 runtests | runtime 38.2s (estimated) | start")
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH10i_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
-println("--- H2p ---" * repeat('-', 39))
+    println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; p=5, rmax=60.0, Ntot=5000);
