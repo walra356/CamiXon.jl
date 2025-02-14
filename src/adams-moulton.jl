@@ -459,37 +459,6 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#                 adams_moulton_precise!(Z, init, grid, def; imax=10, ϵ=1e-6, msg=false)
-# --------------------------------------------------------------------------------------------------------------
-
-@doc raw"""
-    adams_moulton_precise!(Z, init, grid, def; imax=10, ϵ=1e-6, msg=false)
-    
-"""
-function adams_moulton_precise!(Z, init, grid, def; imax=25, ϵ=1e-6, msg=false)
-
-    println("\nReset parameters to BigFloat precision:")
-
-    B = BigFloat
-    Z = convert.(Complex{B}, Z)
-    k = grid.k
-    scr = convert.(B, def.scr)
-    rmax = convert(B, grid.r[grid.N])
-    init = Init(B(init.Emin), B(init.E), B(init.Emax), B(init.ΔE))
-   
-    msg && println("rmax = $(rmax), init.E = $(init.E)")
-
-    grid = autoGrid(def.atom, def.orbit, B; Ntot=grid.N , rmax, k, msg)
-
-    def = castDef(grid, def.atom, def.orbit, def.codata; def.pos, scr)
-    adams = castAdams(init.E, grid, def)
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax, ϵ, msg)
-
-    return grid, def, adams, init, Z
-    
-end
-
-# --------------------------------------------------------------------------------------------------------------
 #          adams_moulton_report(E, ΔE, grid, def; unitIn="Hartree", name="name" , msg=true)
 # --------------------------------------------------------------------------------------------------------------
 

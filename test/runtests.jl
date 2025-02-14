@@ -151,17 +151,6 @@ println("--- H2p ---" * repeat('-', 39))
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
-
- #   println("nu komt het!")
- #   grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=true);
- #   @test ZH1s_generic ≈ Z
- #   @test grid.name == "exponential"
- #   @test CamiDiff.gridPos(0.0042, grid) == 220
- #   @test def.atom.element.name == "hydrogen"
- #   @test CamiDiff.grid_integration(real(ZH1s_generic) .^ 2, grid, 1, grid.N) ≈ 1.0
- #   @test round(Int, UF(0, real(Z), grid)[1]) == 1
- #   grid, def, adams, init, Z = adams_moulton_precise!(Z, init, grid, def; imax=5, ϵ=1e-20, msg=true);
- #   @test ZH1s_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
