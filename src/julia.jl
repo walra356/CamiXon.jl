@@ -149,33 +149,6 @@ function conditionalType(n::T, nc::Int; msg=true) where {T<:Integer}
 
 end
 
-@doc raw"""
-    bigconvert(o)
-
-Convert IntBased types to `BigIntBased` types for `n > nc` in accordance with `dictBigConversion`.
-#### Example:
-```
-julia> o = [[1//1, 1//2, 1//3],[1//1, 1//2, 1//3]]
-2-element Vector{Vector{Rational{Int64}}}:
- [1//1, 1//2, 1//3]
- [1//1, 1//2, 1//3]
-
-julia> bigconvert(o)
-2-element Vector{Vector{Rational{Int64}}}:
- [1//1, 1//2, 1//3]
- [1//1, 1//2, 1//3]
-```
-"""
-function bigconvert(o)
-
-    T = typeof(o)
-    W = get(dictBigConversion, T, "Type not implemented")
-    o = convert(W, o)
-
-    return o
-
-end
-
 # ========================= find_all(A [,a...]; count=false) ===========
 
 """
