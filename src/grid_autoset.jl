@@ -79,7 +79,7 @@ end
 # .................... autoPrecision(rmax, orbit) ..............................
 
 @doc raw"""
-    autoPrecision(rmax::T, orbit::Orbit) where T<:Real
+    autoPrecision(rmax::T, orbit::Orbit) where T<:Real 
 
 Floating point precision (rule of thumb value)
 ### Example:
