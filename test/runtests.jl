@@ -99,8 +99,8 @@ println("CamiXon.jl | 109 runtests | runtime 1min (estimated) | start")
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH9i_generic ≈ Z 
 
 #   ---------------------------------------------------------------------------------------- 
@@ -146,7 +146,7 @@ println("CamiXon.jl | 109 runtests | runtime 1min (estimated) | start")
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-30, msg=false);
     @test ZH1s_generic ≈ Z
