@@ -488,7 +488,6 @@ end
 
 function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; test=5, msg=false) where T<:Real
     
-    msg && println("\n===== enter adams_moulton_nodes! =====") 
     t1 = time()
 
     E = T(E)
@@ -501,16 +500,13 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
     end
     
     init = castInit(E, grid, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
-    msg && println("after castInit!")  
 
     adams = castAdams(init.E, grid, def)
-    msg && println("after castAdams")  
     
     Z = zeros(Complex{grid.T}, grid.N) 
 
     updatePos!(def.pos, init.E, def.potscr, grid)
     adams = updateAdams!(adams, init.E, grid, def)
-    msg && println("after updateAdams")  
     msg && print("grid special points: Na = $(def.pos.Na), Nlctp = $(def.pos.Nlctp), Nmin = $(def.pos.Nmin)")
     msg && println(", Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N), nodes = $(def.pos.nodes), rmax = $(grid.r[grid.N])\n")
         
