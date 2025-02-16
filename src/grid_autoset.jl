@@ -153,7 +153,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], Ntot=
     Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
     rmax = autoRmax(atom, orbit; rmax)
 
-    T = T == BigFloat ? T : autoPrecision(rmax, orbit)
+    #T = T == BigFloat ? T : autoPrecision(rmax, orbit)
     h = h ≠ 0 ? h : Ntot < 100 ? T(1//Ntot) : T(1//100)
     h = T(10//Ntot)
 

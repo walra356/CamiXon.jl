@@ -74,6 +74,7 @@ NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 """
 function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
+    N = grid.N
     n = orbit.n
     ℓ = orbit.ℓ
     r = grid.r
@@ -83,13 +84,17 @@ function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDif
 
     polynom = float(CamiMath.generalized_laguerre_polynom(n-ℓ-1, 2ℓ+1))
 
+    mytype = r[N]^(ℓ+1) == Inf ? BigFloat : Float64
     a = 2Z//n
-    b = T(a//norm)
+    b = mytype(a//norm)
     b = sqrt(b)
-    a = T(a) 
+    a = mytype(a) 
 
-    P = b .* [(a*r[i])^(ℓ+1) * exp(-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) for i ∈ eachindex(r)]
-    Q = b .* [(a*r[i])^ℓ * a * exp(-Z//n*r[i]) * (((ℓ+1)-Z//n*r[i]) * CamiMath.polynomial(polynom, a*r[i]) + a*r[i]*CamiMath.polynomial(polynom, a*r[i]; deriv=1)) for i ∈ eachindex(r)]
+    ar = a .* r
+    arl = [ar[i]^ℓ for i=1:N]
+
+    P = b .* [arl[i] * a*r[i] * exp(-Z//n*r[i]) * CamiMath.polynomial(polynom, ar[i]) for i=1:N]
+    Q = b .* [arl[i] * a * exp(-Z//n*r[i]) * (((ℓ+1)-Z//n*r[i]) * CamiMath.polynomial(polynom, ar[i]) + a*r[i]*CamiMath.polynomial(polynom, ar[i]; deriv=1)) for i=1:N]
 
     P[1] = T(0)
     return T.(P) + im * T.(Q)

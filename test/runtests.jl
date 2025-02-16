@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test
 
-println("CamiXon.jl | 109 runtests | runtime 40s (estimated) | start")
+println("CamiXon.jl | 109 runtests | runtime 20s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -107,14 +107,14 @@ println("CamiXon.jl | 109 runtests | runtime 40s (estimated) | start")
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=30, ℓ=29; msg=false);
-    grid = autoGrid(atom, orbit, BigFloat; Ntot=10000);
+    grid = autoGrid(atom, orbit, Float64; Ntot=10000);
     ZH3029_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=-0.000555555555555555;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-16, msg=false);
-    @test ZH3029_generic ≈ ComplexF64.(Z) 
+    @test ComplexF64.(ZH3029_generic) ≈ ComplexF64.(Z) 
 #   ---------------------------------------------------------------------------------------- 
     println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
