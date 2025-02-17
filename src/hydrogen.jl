@@ -58,7 +58,7 @@ julia> atom = castAtom(;Z=1, A=1, Q=0, msg=false);
 julia> orbit = castOrbit(n=25, ℓ=10);
 
 julia> grid = autoGrid(atom, orbit, Float64; msg=true);
-CamiDiff.Grid created: exponential, Float64, rmax = 3651.58 a.u., Ntot = 1320, h = 0.0075815, r0 = 0.164537
+CamiDiff.Grid created: exponential, Float64, rmax = 3651.58 a.u., N = 1320, h = 0.0075815, r0 = 0.164537
 
 julia> Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
  IOP capture at generalized_laguerre_polynom(35, 21): output converted to BigInt

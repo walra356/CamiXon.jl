@@ -69,9 +69,9 @@ function autoNtot(orbit::Orbit)
 # ==============================================================================
 #   Total number of grid points
 # ==============================================================================
-    Ntot = 100 * orbit.n
+    N = 100 * (orbit.n-orbit.ℓ)
         
-    return Ntot
+    return N
     
 end
     
@@ -134,7 +134,7 @@ codata = castCodata(2018)
 atom = castAtom(;Z=1, A=1, Q=0, msg=false)
 orbit = castOrbit(n=75, ℓ=0, msg=false)
 grid = autoGrid(atom, orbit, Float64);
-    CamiDiff.Grid created: exponential, Float64, rmax = 16935.0 a.u., Ntot = 3800, h = 0.00263158, r0 = 0.768883
+    CamiDiff.Grid created: exponential, Float64, rmax = 16935.0 a.u., N = 3800, h = 0.00263158, r0 = 0.768883
 
 plot_gridfunction(grid, 1:grid.N; title="")
 ```
@@ -142,7 +142,7 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](./assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], Ntot=0, rmax=0, epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], N=0, rmax=0, epn=5, k=5, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
@@ -150,13 +150,13 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], Ntot=
          (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
-    Ntot = Ntot == 0 ? autoNtot(orbit) : Ntot
+    N = N == 0 ? autoNtot(orbit) : N
     rmax = autoRmax(atom, orbit; rmax)
 
     #T = T == BigFloat ? T : autoPrecision(rmax, orbit)
-    h = h ≠ 0 ? h : Ntot < 100 ? T(1//Ntot) : T(1//100)
-    h = T(10//Ntot)
+    h = h ≠ 0 ? h : N < 100 ? T(1//N) : T(1//100)
+    h = T(10//N)
 
-    return CamiDiff.castGrid(ID, Ntot, T; h, rmax, p, polynom, epn, k, msg)
+    return CamiDiff.castGrid(ID, N, T; h, rmax, p, polynom, epn, k, msg)
 
 end

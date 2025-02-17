@@ -216,7 +216,7 @@ adams = castAdams(E, grid, def)
         principal quantum number: n = 7
         radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 2
-    CamiDiff.Grid created: exponential, Float64, rmax = 207.0 a.u., Ntot = 400, h = 0.025, r0 = 0.00939821
+    CamiDiff.Grid created: exponential, Float64, rmax = 207.0 a.u., N = 400, h = 0.025, r0 = 0.00939821
     Def created for hydrogen 7d on exponential grid of 400 points
     E = -0.0102040816326531 Hartree
 

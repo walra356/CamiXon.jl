@@ -204,7 +204,7 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{
     P0 = real(Z[Nuctp])
     Q0 = imag(Z[Nuctp])
     
-    Nb+k ≤ N || error("Error: grid boost required (increase Ntot)")
+    Nb+k ≤ N || error("Error: grid boost required (increase N)")
 
     for n=Nb:-1:Nuctp
         for j=0:(k-1)
@@ -480,7 +480,7 @@ function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T
 
     str = "\nadams_moulton_nodes: report for " * _defspecs(grid, def) * " (using $T)\n"
     str *= n == n′ ? "goal of $n nodes achieved after $(i) iterations in " * strΔT * "\n" :
-                     "found $n nodes in $(i) iterations - Error: $(n′) nodes expected - increase imax and/or Ntot\n" 
+                     "found $n nodes in $(i) iterations - Error: $(n′) nodes expected - increase imax and/or N\n" 
     str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"
@@ -516,7 +516,7 @@ function adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid
     if ϵv < ϵ 
         str *= "reached covergence goal ($(Float64(ϵv)) < ϵ = $(Float64(ϵ))) after $(i) iterations in " * strΔT * "\n" 
     else
-        str *= i == imax ? ("Warning: stopped at i=imax=$(i) after " * strΔT * " - failed to reach covergence goal ($(Float64(ϵv)) > ϵ = $(Float64(ϵ))) - increase imax and/or Ntot (or increase ϵ)\n") : 
+        str *= i == imax ? ("Warning: stopped at i=imax=$(i) after " * strΔT * " - failed to reach covergence goal ($(Float64(ϵv)) > ϵ = $(Float64(ϵ))) - increase imax and/or N (or increase ϵ)\n") : 
                            ("Warning: reached numerical resolution limit ($(Float64(ϵv))) after $(i) iterations in " * strΔT * " - consider BigFloat resolution\n")
     end
     str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn

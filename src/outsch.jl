@@ -63,7 +63,7 @@ println("\nZ: standard Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
         principal quantum number: n = 1
         radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 0
-    CamiDiff.Grid created: exponential, Float64, Rmax = 63.0 a.u., Ntot = 100, h = 0.1, r0 = 0.00286033
+    CamiDiff.Grid created: exponential, Float64, Rmax = 63.0 a.u., N = 100, h = 0.1, r0 = 0.00286033
     Def created for hydrogen 1s on exponential grid
 
     Z: standard Ansatz for wavefunction (n < Na=8))
@@ -75,7 +75,7 @@ println("\nZ: WKB Ansatz for wavefunction (n < Na=$(def.pos.Na)))")
         principal quantum number: n = 10
         radial quantum number: n′ = 4 (number of nodes in radial wavefunction)
         orbital angular momentum of valence electron: ℓ = 5
-    CamiDiff.Grid created: exponential, Float64, Rmax = 360.0 a.u., Ntot = 550, h = 0.0181818, r0 = 0.0163447
+    CamiDiff.Grid created: exponential, Float64, Rmax = 360.0 a.u., N = 550, h = 0.0181818, r0 = 0.0163447
     Def created for hydrogen 10h on exponential grid
 
     Z: WKB Ansatz for wavefunction (n < Na=70))

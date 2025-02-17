@@ -54,7 +54,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
 
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000, msg=true);
+    grid = autoGrid(atom, orbit, Float64; N=5000, msg=true);
     castDef(grid, atom, orbit, codata, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
@@ -65,7 +65,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=10, ℓ=6)
-    grid = autoGrid(atom, orbit, Float64; h=1//500, Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; h=1//500, N=5000);
     def = castDef(grid, atom, orbit, codata)
     Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
     E = 0 
@@ -83,7 +83,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
 #   ----------------------------------------------------------------------------------------
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; N=5000);
     RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2s_example = reduce_wavefunction(RH2s_example, grid);
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -94,7 +94,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     println("--- H9i ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=9, ℓ=6; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; N=5000);
     ZH9i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=0;
     scr = zeros(grid.T, grid.N);
@@ -106,7 +106,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=30, ℓ=29; msg=false);
-    grid = autoGrid(atom, orbit, Float64; Ntot=10000);
+    grid = autoGrid(atom, orbit, Float64; N=10000);
     ZH3029_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=-0.000555555555555555;
     scr = zeros(grid.T, grid.N);
@@ -118,7 +118,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
-    grid = autoGrid(atom, orbit, Float64; p=5, rmax=60.0, Ntot=5000);
+    grid = autoGrid(atom, orbit, Float64; p=5, rmax=60.0, N=5000);
     RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2p_example = reduce_wavefunction(RH2p_example, grid);
     ZH2p_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -135,7 +135,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     println("--- H2s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; rmax=60.0, Ntot=10000);
+    grid = autoGrid(atom, orbit, Float64; rmax=60.0, N=10000);
     RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2s_example = reduce_wavefunction(RH2s_example, grid);
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
@@ -152,7 +152,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     println("--- H1s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, BigFloat; rmax=25.0, Ntot=7500);
+    grid = autoGrid(atom, orbit, BigFloat; rmax=25.0, N=7500);
     RZH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RZH1s_example, grid);
     ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
