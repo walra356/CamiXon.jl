@@ -37,10 +37,8 @@ WKB Ansatz of `k+1` points for [`INSCH!`](@ref)
 function INSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     N = grid.N
-    r = grid.r
     k = grid.k
     Nuctp = def.pos.Nuctp
-    two = T(2)
     pot = def.potscr
 
     p = Array{T,1}(undef,N)

@@ -136,11 +136,46 @@ matLD = def.matLD
 
 end
 
+
+
 @doc raw"""
     OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 """
 function OUTSCH_WKB!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+    
+    N = grid.N
+    k = grid.k
+    Nlctp = def.pos.Nlctp
+    pot = def.potscr
+
+    p = Array{T,1}(undef,N)
+    I = Array{T,1}(undef,N)
+    P = Array{T,1}(undef,N)
+    Q = Array{T,1}(undef,2k+1)
+
+    for n=Nlctp:-1:1
+        p[n] = sqrt(abs(pot[n]-E))                             # quasi-classical momentum
+        I[n] = CamiDiff.grid_integration(p, grid, n:Nlctp)
+        P[n] = exp(-I[n])/sqrt(p[n])                           # WKB solution
+    end
+
+    for n=1:Nlctp
+        def.pos.Na = P[n] < 1.0e-30 ? n : break
+    end
+
+    Na = def.pos.Na = def.pos.Na + k
+    
+    Q = grid_differentiation(P, grid, Na-k:Na+k)   # avoid lower end point correction by doubling range
+    
+    for n=Na-k:Na+k
+        Z[n] = P[n] + im * Q[n-Na+k+1] 
+    end
+    
+    return Z
+
+end
+function OUTSCH_WKB!1(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
     
     N = grid.N
     ################ r = grid.r
