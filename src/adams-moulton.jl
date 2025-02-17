@@ -222,8 +222,10 @@ function adams_moulton_inward!(Z::Vector{Complex{T}}, def::Def{T}, adams::Adams{
     for n=Nuctp:N
         Z[n] *= norm
     end
+
+    Q1 = imag(Z[Nuctp])
     
-    ΔQ = imag(Z[Nuctp]) - Q0
+    ΔQ = Q1 - Q0
 
     return ΔQ, Z
 
@@ -242,12 +244,14 @@ function adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.
     Nuctp = def.pos.Nuctp
     
     N = grid.N
+    two = T(2)
 
     norm = CamiDiff.grid_integration(real(Z) .^2, grid, 1, N)
 
-    ΔE = ΔQ * abs(real(Z[Nuctp])) / T(2)
+    ΔE = ΔQ * abs(real(Z[Nuctp]))
 
-    ΔE = ΔE/norm
+    ΔE = ΔE/norm/two
+
     Z = Z/sqrt(norm)
 
     return ΔE, Z
@@ -381,7 +385,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     end
     
     t2 = time()
-    adams_moulton_report(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", name="adams_moulton_nodes!", msg=true)
+    adams_moulton_report_nodes(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg=true)
     
     nodes == n′ || error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
 
@@ -430,15 +434,16 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i += 1
         i < imax || break
     end
-    while abs(ΔE/E) > ϵ # convergence goal
-        #println("initb = ", init)
+    while abs(big(ΔE)/big(E)) > ϵ # convergence goal
+        ref = abs(ΔE)
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
         i += 1
         i < imax || break
+        abs(ΔE) < ref || break
     end
-
+    
     if msg
         str =  Printf.@sprintf "%.20g, " init.Emin 
         str *= Printf.@sprintf "%.20g, " init.E
@@ -448,34 +453,72 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     end
     
     t2 = time()
-    adams_moulton_report(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", name="adams_moulton_iterate!", msg=true)
-    if i == imax
-        println("Warning: convergence goal not reached (increase imax and/or precision)")
-    end
-    println("grid range and special points: rmax = $(Float64(grid.r[grid.N])) a.u.:  " * listPos(def.pos) )
+    adams_moulton_report_iterate(i, imax, init, ϵ, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg=true)
+    println("grid range and special points: rmax = $(round(Float64(grid.r[grid.N]))) a.u.:  " * listPos(def.pos) )
     
     return def, adams, init, Z
 
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#          adams_moulton_report(E, ΔE, grid, def; unitIn="Hartree", name="name" , msg=true)
+#          adams_moulton_report_nodes(it::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report(E::T, ΔE::T, grid::CamiDiff.Grid{T}, def::Def{T}; unitIn="Hartree", name="name" , msg=true) where T<:Real
+    adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
 """
-function adams_moulton_report(it::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", name="name" , msg=true) where T<:Real
+function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
     ΔE = init.ΔE
     Δf = convertUnit(abs(ΔE), def.codata)
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔE/init.E, context=:compact => true)
+    n′= def.orbit.n′
+    n = def.pos.nodes
 
-    str = "\nconvergence report for " * _defspecs(grid, def) * " (using $T)\n"
-    str *= name * " reports $(def.pos.nodes) nodes obtained after $(it) iterations in " * strΔT * "\n"
+    str = "\nadams_moulton_nodes: report for " * _defspecs(grid, def) * " (using $T)\n"
+    str *= n == n′ ? "goal of $n nodes achieved after $(i) iterations in " * strΔT * "\n" :
+                     "found $n nodes in $(i) iterations - Error: $(n′) nodes expected - increase imax and/or Ntot\n" 
+    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
+    str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
+                    "absolute precision: ΔE = 0 (exact under $T precision)\n"
+    str *= ΔE ≠ 0 ? "relative precision: ΔE/E = " * strΔErel * ""                   :
+                    "relative precision: ΔE/E = 0 (exact under $T precision)"
+
+    return msg ? println(str) : str
+
+end
+
+# --------------------------------------------------------------------------------------------------------------
+#          adams_moulton_report_iterate(i, init, ϵ, grid, def::Def{T}, strΔT::String; unitIn="Hartree", ϵ, msg=true)
+# --------------------------------------------------------------------------------------------------------------
+
+@doc raw"""
+    adams_moulton_report_iterate(i::Int, imax:Int, init::Init{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true)  where T<:Real
+
+"""
+function adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+
+    ϵ = T(ϵ)
+    ΔE = init.ΔE
+    ϵv = abs(ΔE/init.E)
+    Δf = convertUnit(abs(ΔE), def.codata)
+    strΔf = " (" * strValue(Δf) * ")"
+    strΔE = repr(ΔE, context=:compact => true)
+    strΔErel = repr(ΔE/init.E, context=:compact => true)
+    n′= def.orbit.n′
+    n = def.pos.nodes
+    strNodes = n′ == n ? "Passed node test ($n nodes); " : "Failed nodes test ($(n′) ≠ $n); "
+
+    str = "\nadams_moulton_iterate!: report for " * _defspecs(grid, def) * " (using $T)\n"
+    if ϵv < ϵ 
+        str *= "reached covergence goal ($(Float64(ϵv)) < ϵ = $(Float64(ϵ))) after $(i) iterations in " * strΔT * "\n" 
+    else
+        str *= i == imax ? ("Warning: stopped at i=imax=$(i) after " * strΔT * " - failed to reach covergence goal ($(Float64(ϵv)) > ϵ = $(Float64(ϵ))) - increase imax and/or Ntot (or increase ϵ)\n") : 
+                           ("Warning: reached numerical resolution limit ($(Float64(ϵv))) after $(i) iterations in " * strΔT * " - consider BigFloat resolution\n")
+    end
     str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"

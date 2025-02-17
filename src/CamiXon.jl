@@ -108,7 +108,8 @@ export adams_moulton_solve!
 export adams_moulton_solve_refine!
 export adams_moulton_nodes
 export adams_moulton_iterate!
-export adams_moulton_report
+export adams_moulton_report_nodes
+export adams_moulton_report_iterate
 export test_adams_moulton
 
 export demo_hydrogen

@@ -102,7 +102,6 @@ println("CamiXon.jl | 109 runtests | runtime 20s (estimated) | start")
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test ZH9i_generic ≈ Z 
-
 #   ---------------------------------------------------------------------------------------- 
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
@@ -133,23 +132,40 @@ println("CamiXon.jl | 109 runtests | runtime 20s (estimated) | start")
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-15, msg=false);
     @test ZH2p_generic ≈ Z
 #   ---------------------------------------------------------------------------------------- 
-    println("--- H1s ---" * repeat('-', 39))
+    println("--- H2s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
-    orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; rmax=20.0, Ntot=2500);
-    RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
-    ZH1s_example = reduce_wavefunction(RH1s_example, grid);
-    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-    @test ZH1s_example ≈ ZH1s_generic 
-    RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
-    @test RH1s_example ≈ RH1s_generic 
+    orbit = castOrbit(n=2, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit, Float64; rmax=60.0, Ntot=10000);
+    RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
+    ZH2s_example = reduce_wavefunction(RH2s_example, grid);
+    ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    @test ZH2s_example ≈ ZH2s_generic 
+    RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
+    @test RH2s_example ≈ RH2s_generic 
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-30, msg=false);
-    @test ZH1s_generic ≈ Z
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-20, msg=false);
+    @test ZH2s_generic ≈ Z
+#   ---------------------------------------------------------------------------------------- 
+    println("--- H1s ---" * repeat('-', 39))
+    atom = castAtom(Z=1, A=1, Q=0; msg=false);
+    orbit = castOrbit(n=1, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit, BigFloat; rmax=25.0, Ntot=7500);
+    RZH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
+    ZH1s_example = reduce_wavefunction(RZH1s_example, grid);
+    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    @test ZH1s_example ≈ ZH1s_generic 
+    RZH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
+    @test ComplexF64.(RZH1s_example) ≈ ComplexF64.(RZH1s_generic) 
+    E=0;
+    scr = zeros(grid.T, grid.N);
+    def = castDef(grid, atom, orbit, codata);
+    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=false);
+    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
+    @test ComplexF64.(ZH1s_generic) ≈ ComplexF64.(Z)
 #   ---------------------------------------------------------------------------------------- 
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
