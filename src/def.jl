@@ -100,37 +100,36 @@ Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
 function castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing, msg=false) where T <: Real
-# ================================================================================
-# castDef(grid, atom, orbit, codata) # reference arrays
-# ================================================================================
-    N = grid.N
-    r = grid.r
-    k = grid.k
-    epn = grid.epn
-    ℓ = orbit.ℓ
-
-    r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (r[N]^(ℓ+1) -> Inf)")
-
-    Z = convert(T, atom.Z)
-    num = convert(T, ℓ*(ℓ + 1)//2)
-
-    r1 = T(eps(Float64))  # quasi zero
-    pot = ℓ > 0 ? [(-Z + num/r[n])/r[n] for n=1:N] : [-Z/r[n] for n=1:N]
-    pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
-    pot = convert.(T,pot)
-    scr = isnothing(scr) ? zeros(T,N) : convert.(T,scr)
-    potscr = pot .+ scr
-    G = [fill(convert(T,0), (2,2)) for n=1:N]
-    σ = [fill(convert(T,0), (2,2)) for n=1:N]
-    Minv = [fill(convert(T,1), (2,2)) for n=1:N]
-    pos = isnothing(pos) ? Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  : pos # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
-    am = convert.(T, CamiDiff.create_adams_moulton_weights(k; rationalize=true))
-    matLD = convert.(T, CamiDiff.create_lagrange_differentiation_matrix(k))
-
-    msg && println(_defspecs(grid, atom, orbit))
-
-    return Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
-
-end
-# ..............................................................................
+    # ================================================================================
+    # castDef(grid, atom, orbit, codata) # reference arrays
+    # ================================================================================
+        N = grid.N
+        r = grid.r
+        k = grid.k
+        epn = grid.epn
+        ℓ = orbit.ℓ
+    
+        #r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (r[N]^(ℓ+1) -> Inf)")
+    
+        Z = convert(T, atom.Z)
+        num = convert(T, ℓ*(ℓ + 1)//2)
+    
+        r1 = T(eps(Float64))  # quasi zero
+        pot = ℓ > 0 ? [(-Z + num/r[n]) for n=1:N]./r : [-Z/r[n] for n=1:N]
+        pot[1] = ℓ > 0 ? (-Z + num/r1)/r1 : -Z/r1
+        pot = convert.(T,pot)
+        scr = isnothing(scr) ? zeros(T,N) : convert.(T,scr)
+        potscr = pot .+ scr
+        G = [fill(convert(T,0), (2,2)) for n=1:N]
+        σ = [fill(convert(T,0), (2,2)) for n=1:N]
+        Minv = [fill(convert(T,1), (2,2)) for n=1:N]
+        pos = isnothing(pos) ? Pos(k+1, 0, 1, 0, N-k, N, 0, 0.0, 0.0, 1e-7)  : pos # Pos(Na, Nlctp, Nmin, Nuctp, Nb, N, nodes, ΔNlctp, ΔNuctp, cWKB)
+        am = convert.(T, CamiDiff.create_adams_moulton_weights(k; rationalize=true))
+        matLD = convert.(T, CamiDiff.create_lagrange_differentiation_matrix(k))
+    
+        msg && println(_defspecs(grid, atom, orbit))
+    
+        return Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
+    
+    end
 
