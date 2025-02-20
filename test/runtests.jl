@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test
 
-println("CamiXon.jl | 111 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -214,7 +214,7 @@ println("CamiXon.jl | 111 runtests | runtime 35s (estimated) | start")
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
     @test autoRmax(atom, orbit; rmax=84.0) == 84.0 #63.0
     @test autoNtot(orbit) == 500
-    #@test autoPrecision(100.0, orbit) == Float64
+    @test autoPrecision(100.0, orbit) == Float64
 #   ------------------------------------------------------------------------------------------------------------
     @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
     @test latent_heat_vaporization("Li", 623) == 18473.64020109123
