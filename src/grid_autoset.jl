@@ -33,18 +33,18 @@ rmax = autoRmax(rmax, atom, orbit); println("rmax = $(rmax) a.u.")
 ```
 """
 function autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
-    # ==============================================================================
-    #   Discretization range in atomic units
-    # ==============================================================================
-        n = orbit.n
-        ℓ = orbit.ℓ
-        Zc = atom.Zc
+# ==============================================================================
+#   Discretization range in atomic units
+# ==============================================================================
+    n = orbit.n
+    ℓ = orbit.ℓ
+    Zc = atom.Zc
         
-        rmax = rmax > 0 ? rmax : (3n^2 + 40n + 62)/Zc
+    rmax = rmax > 0 ? rmax : (2.5n^2 + 20n + 50.0)/Zc
     
-        return rmax
+    return rmax
         
-    end
+end
 
 # .......................... autoNtot(orbit) ...................................
 
@@ -53,7 +53,7 @@ function autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
 
 Total number of gridpoints (rule of thumb value)
 ```math
-    N_{tot} = 100 n,
+    N_{tot} = 400 + 100 n,
 ```
 where ``n`` is the principal quantum number
 ### Example:
@@ -62,20 +62,19 @@ orbit = castOrbit(n=1, ℓ=0)
 autoNtot(orbit)
  Orbit created: 1s - (n = 1, n′ = 0, ℓ = 0)
 
- 100
+ 500
 ```
 """
 function autoNtot(orbit::Orbit)
 # ==============================================================================
 #   Total number of grid points
 # ==============================================================================
-    N = 100 * (orbit.n-orbit.ℓ)
+    N = 400 + 100 * (orbit.n)
         
     return N
     
 end
     
-
 # .................... autoPrecision(rmax, orbit) ..............................
 
 @doc raw"""

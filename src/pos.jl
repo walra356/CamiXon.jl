@@ -307,42 +307,39 @@ Backward sense (`bwd`): value in the interval {-1.0, 0.0}
 """
 function getΔNcut(f0::T, f::Vector{T}, Ncut::Int, sense=fwd; ϵ = 1e-8, k = 7) where T<:Real
 
+    two = T(2)
     if CamiMath.isforward(sense)
+        (imin, imax) = (T(0), T(1) ) 
         polynom = CamiMath.lagrange_polynom(f, Ncut, Ncut+k, fwd)
-        imin = 0.0   
-        imax = 1.0   
         f1 = CamiMath.polynomial(polynom, imax)
         f2 = CamiMath.polynomial(polynom, imin) 
         f1 ≤ f0 ≤ f2 || error("Error: intersection condition 'f[Ncut] ≤ f0 ≤ f[Ncut+1]' violated")
-    
-        o = (imax+imin)/2.0   # forward offset w.r.t. Ncut
-        while imax-imin > ϵ
-            if CamiMath.polynomial(polynom, o) ≤ f0
-                imax = o
+        Δn = (imax+imin)/two   # forward offset w.r.t. Ncut
+        while imax-imin > T(ϵ)
+            if CamiMath.polynomial(polynom, Δn) ≤ f0
+                imax = Δn
             else
-                imin = o
+                imin = Δn
             end
-            o = (imax+imin)/2.0
+            Δn = (imax+imin)/two
         end
     else    
+        (imin, imax) = (-T(1), T(0) )
         polynom = CamiMath.lagrange_polynom(f, Ncut-k, Ncut, bwd)
-        imin = -1.0
-        imax = 0.0
         f1 = CamiMath.polynomial(polynom, imin)
         f2 = CamiMath.polynomial(polynom, imax)  
         f1 ≤ f0 ≤ f2 || error("Error: intersection condition 'f[Ncut-1] ≤ f0 ≤ f[Ncut]' violated")
-    
-        o = (imax+imin)/2.0   # backward offset w.r.t. Ncut
-        while imax-imin > ϵ
-            if CamiMath.polynomial(polynom, o) ≥ f0
-                imax = o
+        Δn = (imax+imin)/two  # backward offset w.r.t. Ncut
+        while imax-imin > T(ϵ)
+            if CamiMath.polynomial(polynom, Δn) ≥ f0
+                imax = Δn
             else
-                imin = o
+                imin = Δn
             end
-            o = (imax+imin)/2.0
+            Δn = (imax+imin)/two
         end
     end
 
-    return o
+    return Δn
     
 end

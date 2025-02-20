@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test
 
-println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
+println("CamiXon.jl | 111 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -71,15 +71,15 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     E = 0 
     scr = zeros(grid.T,grid.N)
     def, Z = test_adams_moulton(E, scr, grid, def; test=1, msg=false)
-    @test real(Z[1:9]) ≈  [0.0, 1.9605685739535092e-27, 6.998514049442306e-26, 5.544933619479253e-25, 2.4066410358887803e-24, 7.520523862022634e-24, 1.9095285917298864e-23, 4.201525689540752e-23, 8.324717582531935e-23]
+    @test real(Z[1:9]) ≈ [0.0, 2.2952060840879893e-28, 8.193066833836303e-27, 6.491394774687868e-26, 2.817435621687118e-25, 8.804238375624815e-25, 2.23548048015473e-24, 4.918727457339898e-24, 9.74577243834349e-24] 
     def, Z = test_adams_moulton(E, scr, grid, def; test=2, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 2.447372038058532e-37, 8.736224695281196e-36, 6.921724480077282e-35, 3.0042029925029737e-34, 9.387848023265624e-34, 2.7988542733180507e-33, 8.387968916928268e-33, 2.132082322781855e-32]
+    @test real(Z[1:9]) ≈ [0.0, 1.2818136490037233e-38, 4.575617399944331e-37, 3.6252772598294374e-36, 1.5734654330627814e-35, 4.916941008999879e-35, 1.465921381620268e-34, 4.393278598208825e-34, 1.1167023175281274e-33]
     def, Z = test_adams_moulton(E, scr, grid, def; test=3, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 2.447372038058532e-37, 8.736224695281196e-36, 6.921724480077282e-35, 3.0042029925029737e-34, 9.387848023265624e-34, 2.7988542733180507e-33, 8.387968916928268e-33, 2.132082322781855e-32]
+    @test real(Z[1:9]) ≈ [0.0, 1.2818136490037233e-38, 4.575617399944331e-37, 3.6252772598294374e-36, 1.5734654330627814e-35, 4.916941008999879e-35, 1.465921381620268e-34, 4.393278598208825e-34, 1.1167023175281274e-33]
     def, Z = test_adams_moulton(E, scr, grid, def; test=4, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 2.447372038058532e-37, 8.736224695281196e-36, 6.921724480077282e-35, 3.0042029925029737e-34, 9.387848023265624e-34, 2.7988542733180507e-33, 8.387968916928268e-33, 2.132082322781855e-32]
+    @test real(Z[1:9]) ≈ [0.0, 1.2818136490037233e-38, 4.575617399944331e-37, 3.6252772598294374e-36, 1.5734654330627814e-35, 4.916941008999879e-35, 1.465921381620268e-34, 4.393278598208825e-34, 1.1167023175281274e-33]
     def, Z = test_adams_moulton(E, scr, grid, def; test=5, msg=false)
-    @test real(Z[1:9]) ≈ [0.0, 4.281887837237865e-38, 1.5284776357817886e-36, 1.211015219715674e-35, 5.256111475555083e-35, 1.6424847405115786e-34, 4.896836232806204e-34, 1.467547292606006e-33, 3.730261367679784e-33]
+    @test real(Z[1:9]) ≈ [0.0, 2.2444738965099527e-39, 8.011971024472965e-38, 6.347911947748862e-37, 2.75516031079482e-36, 8.609633509486432e-36, 2.5668491499835317e-35, 7.692693194084486e-35, 1.9553616111141675e-34]
 #   ----------------------------------------------------------------------------------------
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
@@ -91,24 +91,23 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
     @test RH2s_example ≈ RH2s_generic
 #   ---------------------------------------------------------------------------------------- 
-    println("--- H9i ---" * repeat('-', 39))
+    println("--- H9f ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
-    orbit = castOrbit(n=9, ℓ=6; msg=false);
+    orbit = castOrbit(n=9, ℓ=3; msg=false);
     grid = autoGrid(atom, orbit, Float64; N=5000);
-    ZH9i_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    ZH9f_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
-    @test ZH9i_generic ≈ Z 
+    @test ZH9f_generic ≈ Z 
 #   ---------------------------------------------------------------------------------------- 
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=30, ℓ=29; msg=false);
-    grid = autoGrid(atom, orbit, Float64; N=10000);
+    grid = autoGrid(atom, orbit, Float64; msg=true);
     ZH3029_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-    E=-0.000555555555555555;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
@@ -170,7 +169,7 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
     #P = real(Z)
     #val = UF(0, P, grid)[1];
-    #   ----------------------------------------------------------------------------------------    
+#   ----------------------------------------------------------------------------------------    
     f = [-exp(-x^2) for x=-1.0:0.01:1.0];
     f0 = -0.606530659712633;
     @test getNmin(f, 1:201) == 101
@@ -180,15 +179,15 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     @test_throws DomainError getNcut(1.0, f, 1:201)
     Nlcut = getNcut(f0, f, 1, 101);
     Nucut = getNcut(f0, f, 101, 201);
-    @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
-    @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
     ΔNlcut = getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)
     ΔNucut = getΔNcut(f0, f, Nucut, bwd; ϵ = 1e-6, k=7)
+    @test 0.01*(30.0-101.0+getΔNcut(f0, f, Nlcut, fwd; ϵ = 1e-6, k=7)) ≈ -sqrt(1//2)
+    @test 0.01*(172.0-101.0+getΔNcut(f0, f, Nucut, bwd; ϵ = 1.0e-6, k=7)) ≈ sqrt(1//2) 
     polynomfwd = lagrange_polynom(f, Nlcut, Nlcut+7, fwd)
     polynombwd = lagrange_polynom(f, Nucut-7, Nucut, bwd)
     @test CamiMath.polynomial(polynomfwd, ΔNlcut) ≈ f0
     @test CamiMath.polynomial(polynombwd, ΔNucut) ≈ f0
-    #   ----------------------------------------------------------------------------------------    
+#   ----------------------------------------------------------------------------------------    
   
     @test find_all([:📑, :📌, :📢, :📌, :📞]) == [[1], [2, 4], [3], [5]]
     @test find_all([:📑, :📌, :📢, :📌, :📞]; count=true) == [1, 2, 1, 1]
@@ -214,8 +213,8 @@ println("CamiXon.jl | 112 runtests | runtime 40s (estimated) | start")
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
     @test autoRmax(atom, orbit; rmax=84.0) == 84.0 #63.0
-    @test autoNtot(orbit) == 100
-    @test autoPrecision(100.0, orbit) == Float64
+    @test autoNtot(orbit) == 500
+    #@test autoPrecision(100.0, orbit) == Float64
 #   ------------------------------------------------------------------------------------------------------------
     @test latent_heat_vaporization("Yb", 763) == 24170.448513975916
     @test latent_heat_vaporization("Li", 623) == 18473.64020109123

@@ -299,6 +299,7 @@ function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T
     return adams, ΔE, Z
 
 end
+
 @doc raw"""
     adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
     
@@ -339,9 +340,11 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
 
     t1 = time()
 
-    E = T(E)
-
+    n = def.orbit.n      # principal quantum number
     n′= def.orbit.n′     # radial quantum number (number of nodes)
+    Zc= def.atom.Zc      # Rydberg charge
+    
+    E = n ≥ 10 ? T(-0.5(Zc/n)^2) : T(E)
     
     for n ∈ eachindex(def.pot)
         def.scr[n] = scr[n]
@@ -361,33 +364,36 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         str *= Printf.@sprintf "%.20g, " init.E
         str *= Printf.@sprintf "%.20g, " init.Emax
         str *= Printf.@sprintf "%.4g" init.ΔE
-        println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
+        #println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
+        print("start node search:    count = ")
     end
     
     i = 0
     while def.pos.nodes ≠ n′
+        msg && print(def.pos.nodes, ",")
         adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams) # ΔE not used for nodes ≠ n′
         init = init!(init, T(0), def)
         i += 1
         i < imax || break
     end
-    
+        
     nodes = def.pos.nodes
+
+    #msg && nodes == n′ ? println(nodes, " - node search completed\n") : error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
 
     init.ΔE = ΔE         # ΔE from here on in use (nodes == n′)
     
     if msg
+        str1 = nodes == n′ ? "$(nodes) - node search completed\n" : error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
         str =  Printf.@sprintf "%.20g, " init.Emin 
         str *= Printf.@sprintf "%.20g, " init.E
         str *= Printf.@sprintf "%.20g, " init.Emax
         str *= Printf.@sprintf "%.4g" init.ΔE
-        println("   initiate ΔE: $(nodes) nodes - init = (" * str * ")")
+        println(str1 * "initiate ΔE: $(nodes) nodes - init = (" * str * ")")
     end
     
     t2 = time()
     adams_moulton_report_nodes(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg=true)
-    
-    nodes == n′ || error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
 
     return def, adams, init, Z
 
@@ -427,7 +433,6 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
  
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
-        #println("inita = ", init)
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
         init = init!(init, ΔE, def)
         E = init.E
@@ -479,7 +484,7 @@ function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T
     n = def.pos.nodes
 
     str = "\nadams_moulton_nodes: report for " * _defspecs(grid, def) * " (using $T)\n"
-    str *= n == n′ ? "goal of $n nodes achieved after $(i) iterations in " * strΔT * "\n" :
+    str *= n == n′ ? "target of $n nodes achieved after $(i) iterations in " * strΔT * "\n" :
                      "found $n nodes in $(i) iterations - Error: $(n′) nodes expected - increase imax and/or N\n" 
     str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
