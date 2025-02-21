@@ -96,10 +96,9 @@ println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
     orbit = castOrbit(n=9, ℓ=3; msg=false);
     grid = autoGrid(atom, orbit, Float64; msg=true);
     ZH9f_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-    E = 0.9*bohrformula(atom.Z,9)
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=true);
+    def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test isapprox(ZH9f_generic, Z; rtol=1e-4)
 #   ---------------------------------------------------------------------------------------- 
