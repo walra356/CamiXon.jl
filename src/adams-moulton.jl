@@ -344,7 +344,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     n′= def.orbit.n′     # radial quantum number (number of nodes)
     Zc= def.atom.Zc      # Rydberg charge
     
-    E = n ≥ 10 ? T(-0.5(Zc/n)^2) : T(E)
+    E = E ≠ 0 ? T(E) : n ≥ 10 ? T(-0.45(Zc/n)^2) : T(E)
     
     for n ∈ eachindex(def.pot)
         def.scr[n] = scr[n]

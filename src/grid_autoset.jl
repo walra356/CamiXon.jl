@@ -40,7 +40,7 @@ function autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
     ℓ = orbit.ℓ
     Zc = atom.Zc
         
-    rmax = rmax > 0 ? rmax : (2.5n^2 + 20n + 50.0)/Zc
+    rmax = rmax > 0 ? rmax : (2.5n^2 + 75.0)/Zc
     
     return rmax
         
