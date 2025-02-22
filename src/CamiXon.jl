@@ -1,7 +1,7 @@
 module CamiXon
 
 import CamiMath
-using CamiDiff
+import CamiDiff
 import Printf
 import Dates           
 #using IntervalSets
