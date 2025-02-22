@@ -50,7 +50,7 @@ end
    OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
 Ansatz solution for the *outward* integration of the radial wave equation for the first ``k`` points 
-on the [`CamiDiff.Grid`](@ref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
+on the [`CamiDiff.Grid`](@extref), where ``k`` is the Adams-Moulton order. For angular momentum `0 ≤ ℓ ≤ 5` the 
 Walter Johnson Ansatz is used; for ``ℓ > 5`` the Ansatz is based on the WKB solution for energy `E` 
 at distances *far below* the inner classical turning point - ictp)
 

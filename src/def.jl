@@ -85,7 +85,7 @@ end
 @doc raw"""
     castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=false]]) where T <: Real
 
-Create the [`Def`](@ref) object starting from the [`CamiDiff.Grid`](@ref) object and the
+Create the [`Def`](@ref) object starting from the [`CamiDiff.Grid`](@extref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).
 Optional: scr (supply screening array)
 #### Example:

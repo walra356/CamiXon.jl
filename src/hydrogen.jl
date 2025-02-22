@@ -33,7 +33,7 @@ Analytic expression for the hydrogenic wavefunction written in the format
 the *reduced* radial wavefunction and ``\tilde{χ}^′_{nℓ}(ρ)`` its derivative,
 with ``ρ`` the radial distance to the nucleus in a.u..
 The expression is evaluated for a given [`Atom`](@ref) in a given
-[`Orbit`](@ref) on a given [`CamiDiff.Grid`](@ref). The argument [`Def`](@ref)
+[`Orbit`](@ref) on a given [`CamiDiff.Grid`](@extref). The argument [`Def`](@ref)
 completes the definition of the problem.
 ```math
     \tilde{\chi}_{nl}(\rho)

@@ -156,7 +156,7 @@ latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
 ## autoGrid
 
-The [`CamiDiff.Grid`](@ref) object is the backbone for the numerical procedure on a non-uniform
+The [`CamiDiff.Grid`](@extref) object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
@@ -231,7 +231,7 @@ NB.: `plot_potentials` is not included in the `CamiXon` package.
 
 The Adams-Moulton method is used for numerical integration of the reduces
 radial wave equation. In the present implementation it is constructed on top
-the objects [`Atom`](@ref), [`Orbit`](@ref), [`CamiDiff.Grid`](@ref), [`Def`](@ref)
+the objects [`Atom`](@ref), [`Orbit`](@ref), [`CamiDiff.Grid`](@extref), [`Def`](@ref)
 and [`Adams`](@ref) using 5 globally defined instances called `atom`, `orbit`,
 `grid`, `def` and `adams`.
 
