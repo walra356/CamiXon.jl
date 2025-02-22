@@ -1,12 +1,13 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 authors = ["Jook Walraven <69215586+walra356@users.noreply.github.com> and contributors"]
-version = "1.8.59" 
+version = "1.8.59"
 
 [deps]
 CamiDiff = "2453a446-82e3-4664-a8e3-5851c117fba8"
 CamiMath = "d302b3f7-c8ae-418d-9fc2-2c0a42bddda0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DocumenterInterLinks = "d12716ef-a0f6-4df4-a9f1-a5a34e75c656"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
@@ -14,6 +15,7 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 CamiDiff = "0.0.20"
 CamiMath = "0.1.15"
 Dates = "1.11.0"
+DocumenterInterLinks = "1.0.0"
 LinearAlgebra = "1.11.0"
 Printf = "1.11.0"
 julia = "1"
