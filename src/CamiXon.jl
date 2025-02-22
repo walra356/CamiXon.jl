@@ -1,5 +1,7 @@
 module CamiXon
 
+import Documenter
+import DocumenterInterLinks
 import CamiMath
 import CamiDiff
 import Printf
