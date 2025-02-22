@@ -1,8 +1,14 @@
 using Documenter
 using CamiXon
 
+links = InterLinks(
+    "CamiMath" => "https://walra356.github.io/CamiMath.jl/stable/",
+    "CamiDiff" => "https://walra356.github.io/CamiDiff.jl/stable/"
+)
+
 makedocs(;
     modules=[CamiXon],
+    plugins=[links],
     authors="= <walra356@planet.nl> and contributors",
     sitename="CamiXon.jl",
     format=Documenter.HTML(;
