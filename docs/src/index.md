@@ -154,9 +154,9 @@ svp(atomicnumber::Int, temp::Real)
 latent_heat_vaporization(atomicnumber::Int, temp::Real)
 ```
 
-## CamiDiff.Grid
+## autoGrid
 
-The `CamiDiff.Grid` object is the backbone for the numerical procedure on a non-uniform
+The [`CamiDiff.Grid`](@ref) object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
@@ -164,7 +164,7 @@ functions of `N` elements representing the grid function and its derivative.
 autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
 autoNtot(orbit::Orbit)
 autoPrecision(rmax::T, orbit::Orbit) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, polynom=[], Nboost=1, epn=5, k=7, msg=true)
+autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], N=0, rmax=0, epn=5, k=5, msg=false)
 ```
 
 ## Def

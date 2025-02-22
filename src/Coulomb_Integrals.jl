@@ -151,21 +151,28 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UG0.png)
 """
-function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
+function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
     N = grid.N
     r = grid.r
+    one = T(1)
 
-    UG_inner = [CamiDiff.grid_integration(r.^k .* P1 .* P2, grid, 1:n) for n=2:N]
-    UG_outer = [CamiDiff.grid_integration((1.0 ./ r).^(k+1) .* P1 .* P2, grid, n:N) for n=2:N]
+    P1xP2 = P1 .* P2
+    
+    inner = r.^k .* P1xP2  
+    outer = (one ./ r).^(k+1) .* P1xP2
+    outer = CamiDiff.regularize!(outer; k=5)
 
-    o = (UG_inner .* r[2:N].^-(k+1)) .+ (UG_outer .* r[2:N].^k)
+    inner = [CamiDiff.grid_integration(inner, grid, 1:n) for n=1:N]
+    outer = [CamiDiff.grid_integration(outer, grid, n:N) for n=1:N]
 
-    p = CamiDiff.fdiff_interpolation(o, 0; k=4)
+    UG_inner = inner .* r[1:N].^-(k+1)
+    UG_outer = outer .* r[1:N].^k  
+    UG_inner = CamiDiff.regularize!(UG_inner; k=5)
+    
+    f = UG_inner .+ UG_outer
 
-    prepend!(o,p)
-
-    return o
+    return f
 
 end
 
@@ -185,16 +192,16 @@ U_{F}^{k}(\rho)
 ```
 #### Example:
 ```
-atom = castAtom(Z=2, A=4, Q=0; msg=true)
-orbit = castOrbit(n=1, ℓ=0; msg=true)
-scr = nothing
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=true)
-def = castDef(grid, atom, orbit, codata; scr)
-E = initE(def1)
-adams = castAdams(E, grid, def)
-E, def, adams, Z = adams_moulton_master(E, grid, def, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-P1 = real(Z)
+codata = castCodata(2022)
+atom = castAtom(Z=2, A=4, Q=0; msg=false);
+orbit = castOrbit(n=1, ℓ=0; msg=false);
+grid = autoGrid(atom, orbit, Float64; msg=true);
+def = castDef(grid, atom, orbit, codata);
+E = 0;
+scr = zeros(grid.T,grid.N);       
+def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=100, msg=false);
+def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-10, msg=false);
+P1 = real(Z);
 UF0P1 = UF(0, P1, grid);
 plot_function(scrUF0P1, 1:grid.N, grid; title="He4(1s,1s):  direct screening potential")
 ```
@@ -202,7 +209,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UF0.png)
 """
-function UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
+function UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
     return UG(k, P, P, grid)
 

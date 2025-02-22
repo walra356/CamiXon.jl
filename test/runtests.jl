@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test
 
-println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 113 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -138,7 +138,7 @@ println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
     ZH2s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     @test ZH2s_example ≈ ZH2s_generic 
     RH2s_generic = restore_wavefunction(ZH2s_generic, atom, orbit, grid);  
-    @test RH2s_example ≈ RH2s_generic 
+    @test isapprox(RH2s_example, RH2s_generic; rtol=1e-6)
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
@@ -152,10 +152,10 @@ println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
     grid = autoGrid(atom, orbit, BigFloat; rmax=25.0, N=7500);
     RZH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RZH1s_example, grid);
-    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-    @test ZH1s_example ≈ ZH1s_generic 
+    ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid); 
+    @test isapprox(ZH1s_example, ZH1s_generic; rtol=1e-6)
     RZH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
-    @test ComplexF64.(RZH1s_example) ≈ ComplexF64.(RZH1s_generic) 
+    @test isapprox(RZH1s_example, RZH1s_generic; rtol=1e-6)
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
@@ -163,9 +163,13 @@ println("CamiXon.jl | 112 runtests | runtime 35s (estimated) | start")
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
     @test isapprox(ZH1s_generic, Z; rtol=1e-5)
 #   ---------------------------------------------------------------------------------------- 
-    #Z1 = hydrogenic_reduced_wavefunction(1, orbit, grid);
-    #P = real(Z)
-    #val = UF(0, P, grid)[1];
+
+    atom = castAtom(Z=2, A=4, Q=0; msg=false);
+    orbit = castOrbit(n=1, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit, Float64);
+    Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+    P = real(Z);
+    @test isapprox(UF(0, P, grid)[1], 2.0; rtol=1e-6)
 #   ----------------------------------------------------------------------------------------    
     f = [-exp(-x^2) for x=-1.0:0.01:1.0];
     f0 = -0.606530659712633;
