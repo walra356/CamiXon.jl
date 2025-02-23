@@ -157,18 +157,17 @@ function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where 
     r = grid.r
     one = T(1)
 
-    P1xP2 = P1 .* P2
-    
+    P1xP2 = P1 .* P2 
+       
     inner = r.^k .* P1xP2  
+    inner = [CamiDiff.grid_integration(inner, grid, 1:n) for n=1:N]
+    UG_inner = inner .* r[1:N].^-(k+1)
+    UG_inner = CamiDiff.regularize!(UG_inner; k=5)
+
     outer = (one ./ r).^(k+1) .* P1xP2
     outer = CamiDiff.regularize!(outer; k=5)
-
-    inner = [CamiDiff.grid_integration(inner, grid, 1:n) for n=1:N]
     outer = [CamiDiff.grid_integration(outer, grid, n:N) for n=1:N]
-
-    UG_inner = inner .* r[1:N].^-(k+1)
-    UG_outer = outer .* r[1:N].^k  
-    UG_inner = CamiDiff.regularize!(UG_inner; k=5)
+    UG_outer = outer .* r[1:N].^k 
     
     f = UG_inner .+ UG_outer
 
