@@ -109,12 +109,12 @@ function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
-# ======================== scrUG(k, Z, grid) ===================================
+# ======================== UGk(k, Z, grid) ===================================
 
 @doc raw"""
-    UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
+    UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential for *exchange* screening,
+k^{th}-order contribution to the *exchange* screening potential,
 
 ```math
 U_{G}^{k}(\rho)
@@ -151,7 +151,7 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UG0.png)
 """
-function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
     N = grid.N
     r = grid.r
@@ -161,25 +161,26 @@ function UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where 
        
     inner = r.^k .* P1xP2  
     inner = [CamiDiff.grid_integration(inner, grid, 1:n) for n=1:N]
-    UG_inner = inner .* r[1:N].^-(k+1)
-    UG_inner = CamiDiff.regularize!(UG_inner; k=5)
+    UGk_inner = inner .* r[1:N].^-(k+1)
+    UGk_inner = CamiDiff.regularize!(UGk_inner; k=3)
 
     outer = (one ./ r).^(k+1) .* P1xP2
-    outer = CamiDiff.regularize!(outer; k=5)
+    outer = CamiDiff.regularize!(outer; k=3)
     outer = [CamiDiff.grid_integration(outer, grid, n:N) for n=1:N]
-    UG_outer = outer .* r[1:N].^k 
+    UGk_outer = outer .* r[1:N].^k 
     
-    f = UG_inner .+ UG_outer
+    UGk = UGk_inner .+ UGk_outer
 
-    return f
+    return UGk
 
 end
 
-# ======================== UF(k, Z, grid) ===================================
-@doc raw"""
-    UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{V}) where {T<:Real, V<:Real}
+# ======================== UFk(k, Z, grid) ===================================
 
-Potential for *directe* screening,
+@doc raw"""
+    UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+
+k^{th}-order contribution to the *direct* screening potential,
 
 ```math
 U_{F}^{k}(\rho)
@@ -208,8 +209,170 @@ The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
 ![Image](./assets/He41s-UF0.png)
 """
-function UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-    return UG(k, P, P, grid)
+    return UGk(k, P, P, grid)
 
+end
+
+# ========================  UF(orbit1, orbit2, P, grid) ===================================
+
+@doc raw"""
+    UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+
+Potential for *exchange* screening,
+
+```math
+U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
+={\textstyle \sum\limits_{k=0}^{\infty}}a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{F}^{k}(nl;\rho).
+```
+#### Example:
+```
+atom = castAtom(Z=2, A=4, Q=0; msg=true)
+orbit1 = castOrbit(n=1, ℓ=0; msg=true)
+orbit2 = castOrbit(n=2, ℓ=0; msg=true)
+scr = nothing
+grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
+def1 = castDef(grid, atom, orbit1, codata; scr)
+E = initE(def1)
+adams = castAdams(E, grid, def1)
+E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+def2 = castDef(grid, atom, orbit2, codata; scr)
+E = initE(def2)
+adams = castAdams(E, grid, def2)
+E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+P1 = real(Z1);
+P2 = real(Z2);
+
+UG0 = UG(0, P1, P2, grid);
+plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
+```
+"""
+function UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    
+    l = orbit1.ℓ
+    ml= orbit1.mℓ    
+    l′ = orbit2.ℓ
+    ml′= orbit2.mℓ
+    kmax = 2 * min(l,l′)
+    
+    a = [a_direct(k, l, ml, l′, ml′) for k=0:2:kmax]
+    UFa = [UFk(k, P, grid) for k=0:2:kmax]
+    
+    UF = sum([a[k+1] .* UFa[k+1] for k=0:2:kmax])
+    
+    return UF
+    
+end
+
+# ========================  UG(orbit1, orbit2, P, grid) ===================================
+
+@doc raw"""
+    UG(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+
+Potential for *exchange* screening,
+
+```math
+U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
+={\textstyle \sum\limits_{k=0}^{\infty}}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{G}^{k}(nl,n^{\prime}l^{\prime};\rho).
+```
+#### Example:
+```
+atom = castAtom(Z=2, A=4, Q=0; msg=true)
+orbit1 = castOrbit(n=1, ℓ=0; msg=true)
+orbit2 = castOrbit(n=2, ℓ=0; msg=true)
+scr = nothing
+grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
+def1 = castDef(grid, atom, orbit1, codata; scr)
+E = initE(def1)
+adams = castAdams(E, grid, def1)
+E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+def2 = castDef(grid, atom, orbit2, codata; scr)
+E = initE(def2)
+adams = castAdams(E, grid, def2)
+E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
+
+P1 = real(Z1);
+P2 = real(Z2);
+
+UG0 = UG(0, P1, P2, grid);
+plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
+```
+"""
+function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    
+    l = orbit1.ℓ
+    ml= orbit1.mℓ    
+    l′ = orbit2.ℓ
+    ml′= orbit2.mℓ
+    #kmax = 2 * min(l,l′)
+    kmin = abs(l-l′)
+    kmax = l+l′
+    
+    b = [b_exchange(k, l, ml, l′, ml′) for k=kmin:2:kmax]
+    UGb = [UGk(k, P1, P2, grid) for k=0:2:kmax]
+    
+    UG = sum([b[k+1] .* UGb[k+1] for k=0:2:kmax])
+    
+    return UG
+    
+end
+
+@doc raw"""
+    𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+
+The *direct* integral
+
+```math
+\mathcal{J}(u_{\kappa},u_{\kappa^{\prime}})=(u_{\kappa},u_{\kappa^{\prime}}|\frac{1}{\rho_{12}}|u_{\kappa},u_{\kappa^{\prime}})
+=\int_{0}^{\infty}U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\!\rho^{2}d\rho.
+```
+"""
+function 𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    
+    l = orbit1.ℓ
+    ml= orbit1.mℓ    
+    l′ = orbit2.ℓ
+    ml′= orbit2.mℓ
+    kmax = 2 * min(l,l′)
+    
+    potUF = UF(orbit1, orbit2, P2, grid)
+    P2xP2 = P2 .* P2
+
+    𝒥 = CamiDiff.grid_integration(potUF .* P2xP2, grid)
+    
+    return 𝒥
+    
+end
+
+@doc raw"""
+    𝒦(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+
+The *exchange* integral
+
+```math
+\mathcal{K}(u_{\kappa},u_{\kappa^{\prime}})=(u_{\kappa},u_{\kappa^{\prime}}|\frac{1}{\rho_{12}}|u_{\kappa^{\prime}},u_{\kappa})
+=\int_{0}^{\infty}U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)\tilde{R}_{nl}(\rho)\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\rho^{2}d\rho.
+```
+"""
+function 𝒦(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    
+    l = orbit1.ℓ
+    ml= orbit1.mℓ    
+    l′ = orbit2.ℓ
+    ml′= orbit2.mℓ
+    
+    kmin = abs(l-l′)
+    kmax = l+l′
+    
+    potUG = UG(orbit1, orbit2, P1, P2, grid)
+    P1xP2 = P1 .* P2
+
+    𝒦 = CamiDiff.grid_integration(potUG .* P1xP2, grid)
+    
+    return 𝒦
+    
 end

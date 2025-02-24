@@ -297,8 +297,10 @@ adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid::CamiDif
 ```@docs
 a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
-UF(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
-UG(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+𝒦(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 
 ## Julia tools

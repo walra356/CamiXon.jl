@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 113 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 121 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -163,13 +163,27 @@ println("CamiXon.jl | 113 runtests | runtime 35s (estimated) | start")
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
     @test isapprox(ZH1s_generic, Z; rtol=1e-5)
 #   ---------------------------------------------------------------------------------------- 
-
     atom = castAtom(Z=2, A=4, Q=0; msg=false);
-    orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64);
-    Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
-    P = real(Z);
-    @test isapprox(UF(0, P, grid)[1], 2.0; rtol=1e-6)
+    orbit1 = castOrbit(n=1, ℓ=0; msg=false);
+    orbit2 = castOrbit(n=2, ℓ=0; msg=false);
+    grid = autoGrid(atom, orbit2, Float64);
+    Z1 = hydrogenic_reduced_wavefunction(atom, orbit1, grid);
+    Z2 = hydrogenic_reduced_wavefunction(atom, orbit2, grid);
+    P1 = real(Z1);
+    P2 = real(Z2);
+    r = grid.r
+    U1s = [(1-exp(-2*atom.Z*r[n])*(1+atom.Z*r[n]))/r[n] for n=1:grid.N];
+    U1s = CamiDiff.regularize!(U1s);
+    @test isapprox(UFk(0, P1, grid), U1s; rtol=1e-6)
+    @test isapprox(UF(orbit1, orbit1, P1, grid), U1s; rtol=1e-6)
+    X1s2s = [(2/27)*sqrt(2)*atom.Z*exp(-1.5*atom.Z*r[n])*(2+3atom.Z*r[n]) for n=1:grid.N];
+    @test isapprox(UGk(0, P1, P2, grid), X1s2s; rtol=1e-6)
+    @test isapprox(𝒥(orbit1, orbit2, P1, P2, grid), 34/91; rtol=1e6)
+    @test isapprox(𝒥(orbit1, orbit2, P2, P1, grid), 34/91; rtol=1e6)
+    @test isapprox(𝒥(orbit2, orbit1, P1, P2, grid), 34/91; rtol=1e6)
+    @test isapprox(𝒦(orbit1, orbit2, P1, P2, grid), 32/729; rtol=1e6)
+    @test isapprox(𝒦(orbit1, orbit2, P2, P1, grid), 32/729; rtol=1e6)
+    @test isapprox(𝒦(orbit2, orbit1, P1, P2, grid), 32/729; rtol=1e6)
 #   ----------------------------------------------------------------------------------------    
     f = [-exp(-x^2) for x=-1.0:0.01:1.0];
     f0 = -0.606530659712633;

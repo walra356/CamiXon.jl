@@ -79,8 +79,13 @@ export Term
 export castTerm
 export a_direct
 export b_exchange
+
+export UFk
 export UF
+export UGk
 export UG
+export 𝒥
+export 𝒦
 
 export svp
 export latent_heat_vaporization
