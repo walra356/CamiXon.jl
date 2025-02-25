@@ -1,6 +1,7 @@
 using Documenter
 using DocumenterInterLinks
 using CamiXon
+using CamiDiff
 
 links = InterLinks(
     "CamiMath" => "https://walra356.github.io/CamiMath.jl/stable/",
