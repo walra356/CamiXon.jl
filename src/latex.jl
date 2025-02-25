@@ -112,7 +112,7 @@ println(o)
 ```
 The typeset result is shown in the figule below.
 
-![Image](../assets/latexIsotopeTable.png)
+![Image](../../assets/latexIsotopeTable.png)
 """
 function latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 
