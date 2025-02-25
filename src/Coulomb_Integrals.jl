@@ -149,7 +149,7 @@ plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potent
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
-![Image](./assets/He41s-UG0.png)
+![Image](../assets/He41s-UG0.png)
 """
 function UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
@@ -208,7 +208,7 @@ plot_function(scrUF0P1, 1:grid.N, grid; title="He4(1s,1s):  direct screening pot
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
-![Image](./assets/He41s-UF0.png)
+![Image](../assets/He41s-UF0.png)
 """
 function UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
@@ -232,26 +232,6 @@ U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ```
 #### Example:
 ```
-atom = castAtom(Z=2, A=4, Q=0; msg=true)
-orbit1 = castOrbit(n=1, ℓ=0; msg=true)
-orbit2 = castOrbit(n=2, ℓ=0; msg=true)
-scr = nothing
-grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
-def1 = castDef(grid, atom, orbit1, codata; scr)
-E = initE(def1)
-adams = castAdams(E, grid, def1)
-E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-def2 = castDef(grid, atom, orbit2, codata; scr)
-E = initE(def2)
-adams = castAdams(E, grid, def2)
-E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-P1 = real(Z1);
-P2 = real(Z2);
-
-UG0 = UG(0, P1, P2, grid);
-plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
 ```
 """
 function UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
@@ -286,26 +266,6 @@ U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ```
 #### Example:
 ```
-atom = castAtom(Z=2, A=4, Q=0; msg=true)
-orbit1 = castOrbit(n=1, ℓ=0; msg=true)
-orbit2 = castOrbit(n=2, ℓ=0; msg=true)
-scr = nothing
-grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
-def1 = castDef(grid, atom, orbit1, codata; scr)
-E = initE(def1)
-adams = castAdams(E, grid, def1)
-E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-def2 = castDef(grid, atom, orbit2, codata; scr)
-E = initE(def2)
-adams = castAdams(E, grid, def2)
-E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
-
-P1 = real(Z1);
-P2 = real(Z2);
-
-UG0 = UG(0, P1, P2, grid);
-plot_function(UG0, 1:grid.N, grid; title="He4(1s,2s):  exchange screening potential")
 ```
 """
 function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
