@@ -11,7 +11,7 @@ b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 ```@docs
 UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
-Fk(k::Int, orbit1::Orbit, orbit2::Orbit, P::Vector{T}) where T<:Real
+Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```

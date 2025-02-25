@@ -332,17 +332,17 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    Fk(k::Int, orbit1::Orbit, orbit2::Orbit, P::Vector{T}) where T<:Real
+    Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
-``k^{th}``-order contribution to the *radial* integral over the electrostatic repulsion between two electrons in the orbitals  `orbit1` and `orbit2`,
-where `P` is the (reduced) wavefunction of one of these electroms.
+``k^{th}``-order contribution to the *radial* integral over the mean charge districution
+of electron with (reduced) wavefunction `P`of one of these electroms.
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
 =\int_{0}^{\infty}U_{F}^{k}(nl;\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\rho^{2}d\rho.
 ```
 """
-function Fk(k::Int, orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+function Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
     UFa = UFk(k, P, grid)
     PxP = P .* P

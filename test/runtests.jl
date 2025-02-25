@@ -193,33 +193,33 @@ println("CamiXon.jl | 131 runtests | runtime 35s (estimated) | start")
     @test isapprox(𝒦(orbit1, orbit2, P2, P1, grid), 32/729; rtol=1e6)
     @test isapprox(𝒦(orbit2, orbit1, P1, P2, grid), 32/729; rtol=1e6)
 #   ----------------------------------------------------------------------------------------    
-    atom = castAtom(Z=2, A=4, Q=0; msg=false);
-    orbit = castOrbit(n=1, ℓ=0; msg=false);
-    grid = autoGrid(atom, orbit, Float64; msg=false);
+    atom = castAtom(Z=2, A=4, Q=0; msg=false)
+    orbit = castOrbit(n=1, ℓ=0; msg=false)
+    grid = autoGrid(atom, orbit, Float64; msg=false)
     Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     P = real(Z);
-    @test isapprox(Fk(0, orbit, orbit, P, grid)/atom.Z, 5/8; rtol=1e-10)
-    orbit = castOrbit(n=2, ℓ=1; msg=false);
-    grid = autoGrid(atom, orbit, Float64; msg=false);
+    @test isapprox(Fk(0, P, grid)/atom.Z, 5/8; rtol=1e-10)
+    orbit = castOrbit(n=2, ℓ=1; msg=false)
+    grid = autoGrid(atom, orbit, Float64; msg=false)
     Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     P = real(Z);
-    @test isapprox(Fk(0, orbit, orbit, P, grid)/atom.Z, 93/512; rtol=1e-10)
-    @test isapprox(Fk(2, orbit, orbit, P, grid)/atom.Z, 45/512; rtol=1e-10)
-    orbit = castOrbit(n=3, ℓ=2; msg=false);
-    grid = autoGrid(atom, orbit, Float64; msg=false);
+    @test isapprox(Fk(0, P, grid)/atom.Z, 93/512; rtol=1e-10)
+    @test isapprox(Fk(2, P, grid)/atom.Z, 45/512; rtol=1e-10)
+    orbit = castOrbit(n=3, ℓ=2; msg=false)
+    grid = autoGrid(atom, orbit, Float64; msg=false)
     Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     P = real(Z);
-    @test isapprox(Fk(0, orbit, orbit, P, grid)/atom.Z, 3965/46080; rtol=1e-10)
-    @test isapprox(Fk(2, orbit, orbit, P, grid)/atom.Z, 2093/46080; rtol=1e-10)
-    @test isapprox(Fk(4, orbit, orbit, P, grid)/atom.Z, 1365/46080; rtol=1e-9)
-    orbit = castOrbit(n=4, ℓ=3; msg=false);
-    grid = autoGrid(atom, orbit, Float64; msg=false);
+    @test isapprox(Fk(0, P, grid)/atom.Z, 3965/46080; rtol=1e-10)
+    @test isapprox(Fk(2, P, grid)/atom.Z, 2093/46080; rtol=1e-10)
+    @test isapprox(Fk(4, P, grid)/atom.Z, 1365/46080; rtol=1e-9)
+    orbit = castOrbit(n=4, ℓ=3; msg=false)
+    grid = autoGrid(atom, orbit, Float64; msg=false)
     Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     P = real(Z);
-    @test isapprox(Fk(0, orbit, orbit, P, grid)/atom.Z, 184331/3670016; rtol=1e-10)
-    @test isapprox(Fk(2, orbit, orbit, P, grid)/atom.Z, 103275/3670016; rtol=1e-10)
-    @test isapprox(Fk(4, orbit, orbit, P, grid)/atom.Z, 69003/3670016; rtol=1e-9)
-    @test isapprox(Fk(6, orbit, orbit, P, grid)/atom.Z, 51051/3670016; rtol=1e-9)
+    @test isapprox(Fk(0, P, grid)/atom.Z, 184331/3670016; rtol=1e-10)
+    @test isapprox(Fk(2, P, grid)/atom.Z, 103275/3670016; rtol=1e-10)
+    @test isapprox(Fk(4, P, grid)/atom.Z, 69003/3670016; rtol=1e-9)
+    @test isapprox(Fk(6, P, grid)/atom.Z, 51051/3670016; rtol=1e-9)
 #   ----------------------------------------------------------------------------------------    
     f = [-exp(-x^2) for x=-1.0:0.01:1.0];
     f0 = -0.606530659712633;
