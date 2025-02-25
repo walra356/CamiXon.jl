@@ -110,7 +110,7 @@ println(o)
     \end{tabular}
   \end{table}
 ```
-The typeset result is shown in the figule below.
+The typeset result is shown in the figure below.
 
 ![Image](../../assets/latexIsotopeTable.png)
 """
