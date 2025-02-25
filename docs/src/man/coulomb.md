@@ -1,4 +1,4 @@
-## Coulomb integrals
+# Coulomb integrals
 
 ### Angular integrals
 
