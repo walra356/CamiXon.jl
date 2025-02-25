@@ -1,5 +1,6 @@
 [deps]
 CamiXon = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
+CamiDiff = "2453a446-82e3-4664-a8e3-5851c117fba8"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 DocumenterInterLinks = "d12716ef-a0f6-4df4-a9f1-a5a34e75c656"
 #LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
