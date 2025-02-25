@@ -295,7 +295,7 @@ end
     Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
 ``k^{th}``-order contribution to the *radial* integral over the mean charge districution
-of electron with (reduced) wavefunction `P`of one of these electroms.
+corresponding to the (reduced) radial wavefunction `P` of one of the electrons of an atom.
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
@@ -312,16 +312,6 @@ function Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
     return Fk
     
 end
-
-
-
-
-
-
-
-
-
-
 
 @doc raw"""
     𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real

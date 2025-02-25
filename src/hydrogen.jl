@@ -70,7 +70,7 @@ plot_wavefunction(Z, 1:grid.N, grid, def)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/H1_25n.svg)
+![Image](../assets/H1_25n.svg)
 """
 function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
 
@@ -149,7 +149,7 @@ julia> compare_functions(f1, f2, 1:grid.N, grid)
 ```
 The plot is made using `CairomMakie`.
 NB.: `compare_functions` is not included in the `CamiXon` package.
-![Image](./assets/compareXH1s.png)
+![Image](../assets/compareXH1s.png)
 ```
 """
 function reduce_wavefunction(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}) where T<:Real
@@ -242,7 +242,7 @@ plot_wavefunction(RH1s_example, 1:grid.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_function` is not included in the `CamiXon` package.
-![Image](./assets/RH1s.png)
+![Image](../assets/RH1s.png)
 """
 function RH1s(Z::Int, r::T) where T <:Real
 
@@ -284,7 +284,7 @@ plot_wavefunction(RH2s_example, 1:grid.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/RH2s.png)
+![Image](../assets/RH2s.png)
 """
 function RH2s(Z::Int, r::T) where T <:Real
 
@@ -326,7 +326,7 @@ plot_wavefunction(RH2p_example, 1:grid.N, grid, def; reduced=false)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](./assets/RH2p.png)
+![Image](../assets/RH2p.png)
 """
 function RH2p(Z::Int, r::T) where T <:Real
 
