@@ -20,6 +20,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Coulomb integrals" => "man/coulomb.md",
     ],
 )
 

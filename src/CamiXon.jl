@@ -82,6 +82,7 @@ export b_exchange
 
 export UFk
 export UF
+export Fk
 export UGk
 export UG
 export 𝒥

@@ -114,8 +114,8 @@ end
 @doc raw"""
     UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-k^{th}-order contribution to the *exchange* screening potential,
-
+``k^{th}``-order contribution to the *exchange* screening potential of the (reduced)
+eigenstates `P1` and `P2` of the same atom.
 ```math
 U_{G}^{k}(\rho)
 =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
@@ -180,7 +180,8 @@ end
 @doc raw"""
     UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-k^{th}-order contribution to the *direct* screening potential,
+``k^{th}``-order contribution to the *direct* screening potential by an electron
+in the (reduced) eigenstate `P` of an atom.
 
 ```math
 U_{F}^{k}(\rho)
@@ -220,7 +221,10 @@ end
 @doc raw"""
     UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential for *exchange* screening,
+Potential of *direct* screening of an electron in one orbital of an atom, corresponding 
+to the (reduced) eigenstate `P`, the 'other' electron (electrons are indistiguishable).
+
+NB.  UF(orbit1, orbit2, P, grid) = UF(orbit2, orbit1, P, grid)
 
 ```math
 U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
@@ -270,10 +274,12 @@ end
 # ========================  UG(orbit1, orbit2, P, grid) ===================================
 
 @doc raw"""
-    UG(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential for *exchange* screening,
+Potential of *exchange* screening of two electrons in the (reduced) eigenstates `P1` and `P2` of an atom,
+where `orbit1` and `orbit2` are the orbitals of the two elextrons (electrons are indistiguishable).
 
+NB.  UF(orbit1, orbit2, P1, P2, grid) = UF(orbit2, orbit1, P1, P2, grid)
 ```math
 U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ={\textstyle \sum\limits_{k=0}^{\infty}}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{G}^{k}(nl,n^{\prime}l^{\prime};\rho).
@@ -321,10 +327,47 @@ function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::Ca
     
 end
 
+# ------------------------------------------------------------------------------
+#                       Fk(k, orbit1, orbit2, P)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    Fk(k::Int, orbit1::Orbit, orbit2::Orbit, P::Vector{T}) where T<:Real
+
+``k^{th}``-order contribution to the *radial* integral over the electrostatic repulsion between two electrons in the orbitals  `orbit1` and `orbit2`,
+where `P` is the (reduced) wavefunction of one of these electroms.
+
+```math
+F^{k}(nl;n^{\prime}l^{\prime})
+=\int_{0}^{\infty}U_{F}^{k}(nl;\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\rho^{2}d\rho.
+```
+"""
+function Fk(k::Int, orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+
+    UFa = UFk(k, P, grid)
+    PxP = P .* P
+
+    Fk = CamiDiff.grid_integration(UFa .* PxP, grid)
+
+    return Fk
+    
+end
+
+
+
+
+
+
+
+
+
+
+
 @doc raw"""
     𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-The *direct* integral
+The *direct* integral of the electrostatic repulsion energy between two electrons in the (reduced) eigenstates `P1` and `P2` of an atom, 
+which correspond to the orbitals `orbit1` and `orbit2`.
 
 ```math
 \mathcal{J}(u_{\kappa},u_{\kappa^{\prime}})=(u_{\kappa},u_{\kappa^{\prime}}|\frac{1}{\rho_{12}}|u_{\kappa},u_{\kappa^{\prime}})
