@@ -1,4 +1,4 @@
-# Orbital
+# Orbital properties
 
 ## Orbital
 ```@docs
