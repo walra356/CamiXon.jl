@@ -77,50 +77,7 @@ convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
 ```
 
-## Atomic properties
 
-### Element
-```@docs
-Element
-castElement(;Z=1, msg=true)
-listElement(Z::Int; fmt=Object)
-listElements(Z1::Int, Z2::Int; fmt=Object)
-```
-
-### Isotope
-```@docs
-Isotope
-castIsotope(;Z=1, A=1, msg=true)
-listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
-listIsotopes(Z1::Int, Z2::Int; fmt=Object)
-latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
-```
-
-### Atom
-```@docs
-Atom
-castAtom(;Z=1, A=1, Q=0, msg=true)
-listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
-listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
-```
-
-### Orbital
-```@docs
-Orbit
-castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
-```
-
-### Spinorbital
-```@docs
-Spinorbit
-castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
-```
-
-### Term
-```@docs
-Term
-castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=true)
-```
 ## Hydrogen
 
 ### Atomic properties

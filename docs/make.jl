@@ -21,6 +21,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Atom" => "man/properties/atom.md",
         "Coulomb integrals" => "man/coulomb.md",
         "Index" => "man/index.md"
     ],
