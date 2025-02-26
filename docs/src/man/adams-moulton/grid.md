@@ -1,7 +1,5 @@
 # Grid
 
-## autoGrid
-
 The [`CamiDiff.Grid`](@extref) object is the backbone for the numerical procedure on a non-uniform
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
@@ -30,6 +28,9 @@ the field `def.Z` the solution as a discrete function of `N` elements.
 
 ```@docs
 Def{T}
+```
+#### castDef
+```@docs
 castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
 ```
 
@@ -42,6 +43,9 @@ Adams-Moulton integration. These positions are contained in the fields
 
 ```@docs
 Pos
+```
+#### castPos
+```@docs
 castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 #### updatePos!
