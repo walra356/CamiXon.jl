@@ -21,11 +21,11 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Atomic properties" => ["man/properties/atom.md", "man/properties/orbit.md", "man/properties/hydrogen.md"],
+        "Codata" => "man/codata.md",  
+        "Atomic properties" => ["man/properties/atom.md", "man/properties/orbit.md", "man/properties/hydrogen.md", "man/properties/thermal.md"],
         "Adams-Moulton integration" => ["man/adams-moulton/grid.md", "man/adams-moulton/adams-moulton.md"],
         "Coulomb integrals" => "man/coulomb.md",
-        "Tools" => "man/tools.md",
-        "Codata" => "man/codata.md",    
+        "Tools" => "man/tools.md",  
         "Index" => "man/index.md"
     ],
 )

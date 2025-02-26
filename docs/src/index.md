@@ -85,14 +85,3 @@ plot_potentials(E, grid, def)
 The plot is made using `CairomMakie`.
 NB.: `plot_potentials` is not included in the `CamiXon` package.
 ![Image](./assets/potential.png)
-
-
-## Dicts
-
-```@docs
-dictAntoineCoefficients
-dictAtomicNumbers
-dictElements
-dictIsotopes
-dictMeltingPoints
-```
