@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 131 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -186,6 +186,7 @@ println("CamiXon.jl | 131 runtests | runtime 35s (estimated) | start")
     @test isapprox(UF(orbit1, orbit1, P1, grid), U1s; rtol=1e-6)
     X1s2s = [(2/27)*sqrt(2)*atom.Z*exp(-1.5*atom.Z*r[n])*(2+3atom.Z*r[n]) for n=1:grid.N];
     @test isapprox(UGk(0, P1, P2, grid), X1s2s; rtol=1e-6)
+    @test isapprox(UG(orbit1, orbit1, P1, P2, grid), X1s2s; rtol=1e-6)
     @test isapprox(𝒥(orbit1, orbit2, P1, P2, grid), 34/91; rtol=1e6)
     @test isapprox(𝒥(orbit1, orbit2, P2, P1, grid), 34/91; rtol=1e6)
     @test isapprox(𝒥(orbit2, orbit1, P1, P2, grid), 34/91; rtol=1e6)
