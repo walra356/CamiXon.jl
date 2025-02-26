@@ -21,8 +21,8 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Codata" => ["man/codata.md"],  
-        "Atomic properties" => [["man/properties/atom.md"], "man/properties/orbit.md", "man/properties/hydrogen.md", "man/properties/thermal.md"],
+        "Codata" => "man/codata.md",  
+        "Atomic properties" => ["man/properties/atom.md", "man/properties/orbit.md", "man/properties/hydrogen.md", "man/properties/thermal.md"],
         "Numerical integration" => ["man/adams-moulton/grid.md", "man/adams-moulton/adams-moulton.md"],
         "Coulomb integrals" => "man/coulomb.md",
         "Tools" => "man/tools.md",  
