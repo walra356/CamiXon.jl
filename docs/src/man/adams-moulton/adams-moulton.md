@@ -26,7 +26,7 @@ matσ(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 matMinv(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 ```
 
-## Adams-Moulton numerical solution of the radial wave equation
+## Adams-Moulton integration
 ```@docs
 Init{T} where T<:Real
 adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
