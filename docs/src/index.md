@@ -7,11 +7,6 @@ CurrentModule = CamiXon
 A package for image analysis of backscattered light
 
 ---
-## Table of contents
-
-```@contents
-```
-
 ## Introduction
 
 CamiXon is a package for the numerical solution of the radial Schrödinger

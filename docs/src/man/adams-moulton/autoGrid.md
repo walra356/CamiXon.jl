@@ -1,4 +1,4 @@
-# autoGrid
+# Grid
 
 ## autoGrid
 
@@ -6,11 +6,21 @@ The [`CamiDiff.Grid`](@extref) object is the backbone for the numerical procedur
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
+#### autoNtot
+```@docs
+autoNtot(orbit::Orbit)
+```
+#### autoRmax
 ```@docs
 autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
-autoNtot(orbit::Orbit)
+```
+#### autoPrecision
+```@docs
 autoPrecision(rmax::T, orbit::Orbit) where T<:Real
-autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], N=0, rmax=0, epn=5, k=5, msg=false)
+```
+#### autoGrid
+```@docs
+autoGrid(atom::Atom, orbit::Orbit, T::Type; rmax=0, N=0, p=0, polynom=[], epn=5, k=5, msg=false)
 ```
 
 ## Def
@@ -33,10 +43,15 @@ Adams-Moulton integration. These positions are contained in the fields
 ```@docs
 Pos
 castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+```
+#### updatePos!
+```@docs
 updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+```
+#### listPos
+```@docs
 listPos(pos::Pos; msg=true)
 ```
-
 #### Pos-related functions
 ```@docs
 getNmin(f::Vector{T}, start::Int, stop::Int) where T<:Real

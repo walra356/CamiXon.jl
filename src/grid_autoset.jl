@@ -103,7 +103,7 @@ function autoPrecision(rmax::T, orbit::Orbit) where T<:Real
 end
 
 @doc raw"""
-    autoGrid(atom, orbit, T [; h=0 [, p=0 [, polynom=[] [, N=0 [, rmax=0 [, epn=5 [, k=5 [, msg=false]]]]]]]])
+    autoGrid(atom, orbit, T[; rmax=0[, N=0[, p=0[, polynom=[][, epn=5[, k=5 [, msg=false]]]]]]])
 
 Automatic setting of grid parameters for a given orbit [`Orbit`](@ref) or an
 array of orbits - `orbits = [orbit1, orbit2, ⋯]`. Important cases:
@@ -129,7 +129,7 @@ The plot is made using CairomMakie.
 NB.: `plot_gridfunction` is not part of the `CamiXon` package.
 ![Image](../../assets/exponential_grid.png)
 """
-function autoGrid(atom::Atom, orbit::Orbit, T::Type; h=0, p=0, polynom=[], N=0, rmax=0, epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, orbit::Orbit, T::Type; rmax=0, N=0, p=0, polynom=[], epn=5, k=5, msg=false)
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
