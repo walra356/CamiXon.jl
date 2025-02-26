@@ -1,4 +1,4 @@
-# Adams-Moulton integration
+# Numerical integration
 
 The Adams-Moulton method is used for numerical integration of the reduces
 radial wave equation. In the present implementation it is constructed on top
@@ -28,7 +28,6 @@ matMinv(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
 ## Adams-Moulton integration
 ```@docs
-Init{T} where T<:Real
 adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 adams_moulton_solve_refine!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 ```
@@ -54,9 +53,23 @@ adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.Grid{T}, 
 ```
 
 ## Adams-Moulton Master procedures
+
+#### Init - the energy object
+
+```@docs
+Init{T} where T<:Real
+```
+
+#### Adams-Moulton node search
+
 ```@docs
 adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def::Def{T}; imax=25, msg=true) where T<:Real
-adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
 adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+```
+
+#### Adams-Moulton iteration
+
+```@docs
+adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
 adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 ```
