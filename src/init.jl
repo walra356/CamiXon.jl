@@ -13,17 +13,17 @@
 @doc raw"""
     Init{T} where T<:Real
 
-* Emin::T     # lowest allowed energy
-* E::T        # trial energy
-* Eman::T     # practical highest energy* G: (`:Vector{Matrix{T}}`)
-* ΔE::T       # ΔE with respect to previous E to calculate E trial un use
+* ` .Emin` : lower energy limit (`::T`)
+* ` .E` : trial energy (`::T`)
+* ` .Emax` : upper energy limit (`::T`)
+* ` .ΔE` : difference with respect to previous E used to calculate current E  (`::T`)
 """
 mutable struct Init{T}
 
     Emin::T     # lowest allowed energy
     E::T        # trial energy
     Emax::T     # practical highest energy
-    ΔE::T       # ΔE with respect to previous E to calculate E trial un use
+    ΔE::T       # ΔE with respect to previous E to calculate E trial in use
     
 end
 
