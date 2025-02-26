@@ -288,14 +288,14 @@ function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::Ca
 end
 
 # ------------------------------------------------------------------------------
-#                       Fk(k, orbit1, orbit2, P)
+#                       Fk(k, P, grid)
 # ------------------------------------------------------------------------------
 
 @doc raw"""
     Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
-``k^{th}``-order contribution to the *radial* integral over the mean charge districution
-corresponding to the (reduced) radial wavefunction `P` of one of the electrons of an atom.
+``k^{th}``-order contribution to the *direct* radial integral over the (reduced) 
+radial wavefunction `P` of one of the electrons of an atom.
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
@@ -304,12 +304,38 @@ F^{k}(nl;n^{\prime}l^{\prime})
 """
 function Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
-    UFa = UFk(k, P, grid)
+    potUF = UFk(k, P, grid)
     PxP = P .* P
 
-    Fk = CamiDiff.grid_integration(UFa .* PxP, grid)
+    Fk = CamiDiff.grid_integration(potUF .* PxP, grid)
 
     return Fk
+    
+end
+
+# ------------------------------------------------------------------------------
+#                       Gk(k, P1, P2, grid)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    Gk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+
+``k^{th}``-order contribution to the *exchange* radial integral over the (reduced) 
+radial wavefunctions `P1` and 'P2' of two electrons in a central potential.
+
+```math
+F^{k}(nl;n^{\prime}l^{\prime})
+=\int_{0}^{\infty}U_{F}^{k}(nl;\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\rho^{2}d\rho.
+```
+"""
+function Gk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+
+    potUG = UGk(k, P1, P2, grid)
+    P1xP2 = P1 .* P2
+
+    Gk = CamiDiff.grid_integration(potUG .* P1xP2, grid)
+
+    return Gk
     
 end
 

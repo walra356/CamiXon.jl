@@ -81,10 +81,11 @@ export a_direct
 export b_exchange
 
 export UFk
-export UF
-export Fk
 export UGk
+export UF
 export UG
+export Fk
+export Gk
 export 𝒥
 export 𝒦
 
