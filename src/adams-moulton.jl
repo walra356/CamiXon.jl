@@ -283,7 +283,7 @@ plot_wavefunction(Z, 1:grid.N, grid, def; reduced=true)
 ```
 The plot is made using CairomMakie.
 NB.: `plot_wavefunction` is not part of the `CamiXon` package.
-![Image](../assets/hydrogen-1s-prepared.png)
+![Image](../../assets/hydrogen-1s-prepared.png)
 """
 function adams_moulton_solve!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 

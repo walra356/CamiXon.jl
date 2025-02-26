@@ -84,7 +84,7 @@ plot_wavefunction(Z, 1:def.pos.Na, grid, def; reduced=true)
 ```
 The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
-![Image](../assets/OUTSCH_H1_10h.png)
+![Image](../../assets/OUTSCH_H1_10h.png)
 """
 function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
