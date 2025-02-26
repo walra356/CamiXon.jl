@@ -25,6 +25,7 @@ makedocs(;
         "Adams-Moulton integration" => ["man/adams-moulton/grid.md", "man/adams-moulton/adams-moulton.md"],
         "Coulomb integrals" => "man/coulomb.md",
         "Tools" => "man/tools.md",
+        "Codata" => "man/codata.md",    
         "Index" => "man/index.md"
     ],
 )

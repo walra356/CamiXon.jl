@@ -58,20 +58,6 @@ near the classical turning point (center).
 
 ![Image](./assets/H1_3d.png)
 
-## Codata
-
-```@docs
-Codata
-Value
-strValue(f::Value)
-NamedValue
-castNamedValue(val::Value; name=" ", comment=" ")
-castCodata(year::Int)
-listCodata(codata::Codata; msg=true)
-convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
-calibrationReport(E, Ecal, codata::Codata; unitIn="Hartree", msg=true)
-```
-
 #### Illustration: central field potential ``U_{\mathrm{CF}}`` versus grid index
 ```
 codata = castCodata(2018)
