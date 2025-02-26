@@ -1,20 +1,27 @@
 ```@meta
 CurrentModule = CamiXon
 ```
+# Home
 
-# CamiXon.jl
+`CamiXon.jl` is a [Julia](http://julialang.org) package for the numerical 
+solution of the radial Schrödinger equation allowing for screening.
 
-A package for image analysis of backscattered light
+### Install
 
+The package is installed using the Julia package manager
+
+```
+julia> using Pkg; Pkg.add("CamiDiff")
+
+julia> using CamiDiff
+```
 ---
-## Introduction
 
-CamiXon is a package for the numerical solution of the radial Schrödinger
-equation allowing for screening.
+### Introduction
 
-In this package the solution is obtained for a single electron, acting as a
-*spectator* in the central field of the atomic nucleus screened by 'the other'
-electrons (the *screening* electrons).
+In `CamiXon` the solution of the radial Schrödinger equation is obtained 
+for a single electron, acting as a *spectator* in the central field of 
+the atomic nucleus screened by 'the other' electrons (the *screening* electrons).
 
 The starting point is the 1D Schrödinger equation,
 

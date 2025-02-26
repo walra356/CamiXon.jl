@@ -1,6 +1,6 @@
 # CamiXon
 
-*A package for image analysis of backscattered light*
+*A package for the numerical solution of the radial Schrödinger equation allowing for screening*
 
 | **Documentation**                  | **Build status**                     | **Code coverage**                               | **Tag status**                                | **Compatibility status**                                    
 |:----------------------------------:|:------------------------------------:|:-----------------------------------------------:|:-----------------------------------------:|:----------------------------------------:|
