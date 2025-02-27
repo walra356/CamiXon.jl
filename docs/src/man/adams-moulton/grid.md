@@ -4,6 +4,11 @@ The [`CamiDiff.Grid`](@extref) object is the backbone for the numerical procedur
 grid. Its principal fields are `grid.r` and `grid.r′`, which are discrete
 functions of `N` elements representing the grid function and its derivative.
 
+#### autoGrid
+```@docs
+autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
+```
+
 #### autoNtot
 ```@docs
 autoNtot(orbit::Orbit)
@@ -15,10 +20,6 @@ autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
 #### autoPrecision
 ```@docs
 autoPrecision(rmax::T, orbit::Orbit) where T<:Real
-```
-#### autoGrid
-```@docs
-autoGrid(atom::Atom, orbit::Orbit, T::Type; rmax=0, N=0, p=0, polynom=[], epn=5, k=5, msg=false)
 ```
 
 ## Def

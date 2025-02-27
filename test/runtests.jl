@@ -65,7 +65,7 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=10, ℓ=6)
-    grid = autoGrid(atom, orbit, Float64; h=1//500, N=5000);
+    grid = autoGrid(atom, orbit, Float64; N=5000);
     def = castDef(grid, atom, orbit, codata)
     Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
     E = 0 
@@ -275,11 +275,10 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
     @test silvera_goldman_triplet(10) == -7.71843646003074e-6
     @test silvera_goldman_singlet(10) == -8.696045600341206e-6
     @test silvera_goldman_exchange(10) == 9.776091403104656e-7
-    #grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, r0=1, msg=false);  
-    grid = CamiDiff.castGrid(3,2000,Float64; h=0.01, rmax=20, msg=false); 
-    @test silvera_goldman_potential(grid; S=1)[700] == -1.5010579051054454e-6
-    @test silvera_goldman_potential(grid; S=0)[700] == -0.00020633920967786209
-    @test rotbarrier(grid; ℓ=0)[700] == 0.0
-    @test rotbarrier(grid; ℓ=1)[700] == 0.0408922720174539
+    grid = CamiDiff.castGrid(3,2000,Float64; rmax=20, msg=false); 
+    @test silvera_goldman_potential(grid; S=1)[700] ≈ -1.501057905105486e-6
+    @test silvera_goldman_potential(grid; S=0)[700] ≈ -0.00020633920967786176
+    @test rotbarrier(grid; ℓ=0)[700] ≈ 0.0
+    @test rotbarrier(grid; ℓ=1)[700] ≈ 0.040892272017453914
 
 end

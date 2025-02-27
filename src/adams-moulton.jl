@@ -379,8 +379,6 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         
     nodes = def.pos.nodes
 
-    #msg && nodes == n′ ? println(nodes, " - node search completed\n") : error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
-
     init.ΔE = ΔE         # ΔE from here on in use (nodes == n′)
     
     if msg
@@ -393,7 +391,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     end
     
     t2 = time()
-    adams_moulton_report_nodes(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg=true)
+    adams_moulton_report_nodes(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
 
     return def, adams, init, Z
 
@@ -458,8 +456,8 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     end
     
     t2 = time()
-    adams_moulton_report_iterate(i, imax, init, ϵ, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg=true)
-    println("grid range and special points: rmax = $(round(Float64(grid.r[grid.N]))) a.u.:  " * listPos(def.pos) )
+    adams_moulton_report_iterate(i, imax, init, ϵ, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
+    msg && println("grid range and special points: rmax = $(round(Float64(grid.r[grid.N]))) a.u.:  " * listPos(def.pos) )
     
     return def, adams, init, Z
 
