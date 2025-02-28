@@ -219,12 +219,10 @@ end
 # ========================  UF(orbit1, orbit2, P, grid) ===================================
 
 @doc raw"""
-    UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential of *direct* screening of an electron in one orbital of an atom, corresponding 
-to the (reduced) eigenstate `P`, the 'other' electron (electrons are indistiguishable).
-
-NB.  UF(orbit1, orbit2, P, grid) = UF(orbit2, orbit1, P, grid)
+Potential of *direct* screening for the spectator electron (orbital 1) by the screening 
+electron in orbital 2 in the (reduced) eigenstate `P2`.
 
 ```math
 U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
@@ -234,7 +232,7 @@ U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ```
 ```
 """
-function UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
     l = orbit1.ℓ
     ml= orbit1.mℓ    
@@ -243,11 +241,11 @@ function UF(orbit1::Orbit, orbit2::Orbit, P::Vector{T}, grid::CamiDiff.Grid{T}) 
     kmax = 2 * min(l,l′)
     
     a = [a_direct(k, l, ml, l′, ml′) for k=0:2:kmax]
-    UFa = [UFk(k, P, grid) for k=0:2:kmax]
+    potUF = [UFk(k, P2, grid) for k=0:2:kmax]
     
-    UF = sum([a[k+1] .* UFa[k+1] for k=0:2:kmax])
+    UF1 = sum([a[k+1] .* potUF[k+1] for k=0:2:kmax])
     
-    return UF
+    return UF1
     
 end
 
@@ -257,9 +255,9 @@ end
     UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 Potential of *exchange* screening of two electrons in the (reduced) eigenstates `P1` and `P2` of an atom,
-where `orbit1` and `orbit2` are the orbitals of the two elextrons (electrons are indistiguishable).
+where `orbit1` and `orbit2` are the orbitals of the two elextrons.
 
-NB.  UF(orbit1, orbit2, P1, P2, grid) = UF(orbit2, orbit1, P1, P2, grid)
+NB.  `UF(orbit1, orbit2, P1, P2, grid)` = `UF(orbit2, orbit1, P1, P2, grid)`
 ```math
 U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ={\textstyle \sum\limits_{k=0}^{\infty}}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{G}^{k}(nl,n^{\prime}l^{\prime};\rho).
@@ -279,9 +277,9 @@ function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::Ca
     kmax = l+l′
     
     b = [b_exchange(k, l, ml, l′, ml′) for k=kmin:2:kmax]
-    UGb = [UGk(k, P1, P2, grid) for k=0:2:kmax]
+    potUG = [UGk(k, P1, P2, grid) for k=0:2:kmax]
     
-    UG = sum([b[k+1] .* UGb[k+1] for k=0:2:kmax])
+    UG = sum([b[k+1] .* potUG[k+1] for k=0:2:kmax])
     
     return UG
     
@@ -291,11 +289,16 @@ end
 #                       Fk(k, P, grid)
 # ------------------------------------------------------------------------------
 
-@doc raw"""
+@doc raw"""   
+   Fk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+
+``k^{th}``-order contribution to the *direct* radial integral over the (reduced) 
+radial wavefunctions `P1` and `P2` of two electrons in a central potential.
+
     Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
 ``k^{th}``-order contribution to the *direct* radial integral over the (reduced) 
-radial wavefunction `P` of one of the electrons of an atom.
+radial wavefunction `P` of two *equivalent* electrons in a central potential.
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
@@ -308,6 +311,16 @@ function Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
     PxP = P .* P
 
     Fk = CamiDiff.grid_integration(potUF .* PxP, grid)
+
+    return Fk
+    
+end
+function Fk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
+
+    UF1 = UFk(k, P1, grid)
+    P2xP2 = P2 .* P2
+
+    Fk = CamiDiff.grid_integration(UF1 .* P2xP2, grid)
 
     return Fk
     
