@@ -298,7 +298,8 @@ radial wavefunctions `P1` and `P2` of two electrons (in the orbitals
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
-=\int_{0}^{\infty}U_{F}^{k}(nl;\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\rho^{2}d\rho.
+=\int_{0}^{\infty}U_{F}^{k}(nl;\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\rho^{2}d\rho
+=\int_{0}^{\infty}U_{F}^{k}(n^{\prime}l^{\prime};\rho)\left[\tilde{R}_{nl}(\rho)\right]^{2}\rho^{2}d\rho.
 ```
 
     Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
