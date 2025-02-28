@@ -187,6 +187,8 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
     X1s2s = [(2/27)*sqrt(2)*atom.Z*exp(-1.5*atom.Z*r[n])*(2+3atom.Z*r[n]) for n=1:grid.N];
     @test isapprox(UGk(0, P1, P2, grid), X1s2s; rtol=1e-6)
     @test isapprox(UG(orbit1, orbit1, P1, P2, grid), X1s2s; rtol=1e-6)
+    @test isapprox(Fk(0, P1, P2, grid), 34/81; rtol=1e-6)
+    @test isapprox(Gk(0, P1, P2, grid), 32/729; rtol=1e-6)
     @test isapprox(𝒥(orbit1, orbit2, P1, P2, grid), 34/91; rtol=1e6)
     @test isapprox(𝒥(orbit1, orbit2, P2, P1, grid), 34/91; rtol=1e6)
     @test isapprox(𝒥(orbit2, orbit1, P1, P2, grid), 34/91; rtol=1e6)
