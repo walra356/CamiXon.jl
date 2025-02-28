@@ -9,13 +9,13 @@ b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 ## Radial integrals
 
-#### Direct integral
+#### Coulomb repulsion - direct integral
 
 ```@docs
 Fk(k::Int, P::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 ```
 
-#### Exchange integral
+#### Coulomb repulsion - exchange integral
 
 ```@docs
 Gk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
