@@ -343,6 +343,8 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     n = def.orbit.n      # principal quantum number
     n′= def.orbit.n′     # radial quantum number (number of nodes)
     Zc= def.atom.Zc      # Rydberg charge
+
+
     
     E = E ≠ 0 ? T(E) : n ≥ 10 ? T(-0.45(Zc/n)^2) : T(E)
     
@@ -351,7 +353,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    init = castInit(E, grid, def)     # init =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    init = castInit(E, def)     # init =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
 
     adams = castAdams(init.E, grid, def)
     
@@ -437,6 +439,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
         i += 1
         i < imax || break
     end
+    abs(ΔE/E) ≤ 1e-3 || error("Error: after $i iterations ΔE/E = $(ΔE/E) - should be < 1e-3?)")
     while abs(big(ΔE)/big(E)) > ϵ # convergence goal
         ref = abs(ΔE)
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
@@ -545,7 +548,7 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    init = castInit(E, grid, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    init = castInit(E, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
 
     adams = castAdams(init.E, grid, def)
     

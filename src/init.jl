@@ -13,6 +13,8 @@
 @doc raw"""
     Init{T} where T<:Real
 
+Energy object with fields:
+
 * ` .Emin` : lower energy limit (`::T`)
 * ` .E` : trial energy (`::T`)
 * ` .Emax` : upper energy limit (`::T`)
@@ -31,9 +33,20 @@ end
 #                               castInit{T}
 # ------------------------------------------------------------------------------
 
-function castInit(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+@doc raw"""
+    castInit(E::T, def::Def{T}) where T<:Real
 
-    N = grid.N
+Create and initialize the energy object [`Init`](@ref) according to the 
+specifications given in the [`Def`](@ref) object.
+
+* ` .Emin` : lower energy limit (`::T`)
+* ` .E` : trial energy (`::T`)
+* ` .Emax` : upper energy limit (`::T`)
+* ` .ΔE` : difference with respect to previous E used to calculate current E  (`::T`)
+"""
+function castInit(E::T, def::Def{T}) where T<:Real
+
+    N = def.pos.N
     ℓ = def.orbit.ℓ
     
     pot = def.potscr

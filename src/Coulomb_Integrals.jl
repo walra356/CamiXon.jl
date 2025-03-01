@@ -221,8 +221,8 @@ end
 @doc raw"""
     UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential of *direct* screening for the spectator electron (orbital 1) by the screening 
-electron in orbital 2 in the (reduced) eigenstate `P2`.
+Potential of *direct* screening for the spectator electron (`orbit 1`) by the screening 
+electron `orbit2` with (reduced) wavefunction `P2`.
 
 ```math
 U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
@@ -254,8 +254,8 @@ end
 @doc raw"""
     UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential of *exchange* screening of two electrons in the (reduced) eigenstates `P1` and `P2` of an atom,
-where `orbit1` and `orbit2` are the orbitals of the two elextrons.
+Potential of *exchange* screening of two electrons with (reduced) wavefunctions `P1` and `P2`,
+corresponding to the electronic orbitals `orbit1` and `orbit2`.
 
 NB.  `UF(orbit1, orbit2, P1, P2, grid)` = `UF(orbit2, orbit1, P1, P2, grid)`
 ```math

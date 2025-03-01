@@ -58,6 +58,7 @@ adams_moulton_normalize!(Z::Vector{Complex{T}}, ΔQ::T, grid::CamiDiff.Grid{T}, 
 
 ```@docs
 Init{T} where T<:Real
+castInit(E::T, def::Def{T}) where T<:Real
 ```
 
 #### Adams-Moulton node search
