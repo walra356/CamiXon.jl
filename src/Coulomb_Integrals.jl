@@ -114,8 +114,9 @@ end
 @doc raw"""
     UGk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-``k^{th}``-order contribution to the *exchange* screening potential of the (reduced)
-eigenstates `P1` and `P2` of the same atom.
+``k^{th}``-order-multipole contribution to the *exchange* screening potential 
+of the (reduced) electronic wavefunctions `P1` and `P2` of the same atom.
+
 ```math
 U_{G}^{k}(\rho)
 =\frac{1}{\rho^{k+1}}\int_{0}^{\rho}\varrho^{k}\tilde{R}_{nl}(\varrho)
@@ -180,8 +181,8 @@ end
 @doc raw"""
     UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-``k^{th}``-order contribution to the *direct* screening potential by an electron
-in the (reduced) eigenstate `P` of an atom.
+``k^{th}``-order-multipole contribution to the *direct* screening potential 
+by an electron in the (reduced) radial wavefunction `P` of an atom.
 
 ```math
 U_{F}^{k}(\rho)
@@ -221,8 +222,8 @@ end
 @doc raw"""
     UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
-Potential of *direct* screening for the spectator electron (`orbit 1`) by the screening 
-electron `orbit2` with (reduced) wavefunction `P2`.
+Potential of *direct* screening for the spectator electron in `orbit 1` by the screening 
+electron in `orbit2` with (reduced) radial wavefunction `P2`.
 
 ```math
 U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
@@ -292,8 +293,8 @@ end
 @doc raw"""   
     Fk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
-``k^{th}``-order contribution to the *direct* radial integral over the (reduced) 
-radial wavefunctions `P1` and `P2` of two electrons (in the orbitals 
+``k^{th}``-order-multipole contribution to the *direct* radial integral over 
+the (reduced) radial wavefunctions `P1` and `P2` of two electrons (in the orbitals 
 ``nl`` and ``n^{\prime}l^{\prime}``) in a central potential field.
 
 ```math
@@ -340,8 +341,8 @@ end
 @doc raw"""
     Gk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:Real
 
-``k^{th}``-order contribution to the *exchange* radial integral over the (reduced) 
-radial wavefunctions `P1` and 'P2' of two electrons in a central potential.
+``k^{th}``-order-multipole contribution to the *exchange* radial integral over 
+the (reduced) radial wavefunctions `P1` and 'P2' of two electrons in a central potential.
 
 ```math
 F^{k}(nl;n^{\prime}l^{\prime})
