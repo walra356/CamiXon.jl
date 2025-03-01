@@ -30,9 +30,9 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-   castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
+    castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
-Initiates [`Adams`](@ref) object.
+Initiates the [`Adams`](@ref) object.
 """
 function castAdams(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
