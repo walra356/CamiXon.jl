@@ -373,7 +373,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
     i = 0
     while def.pos.nodes ≠ n′
         msg && print(def.pos.nodes, ",")
-        adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams) # ΔE not used for nodes ≠ n′
+        adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams) # init.ΔE not used for nodes ≠ n′
         init = init!(init, T(0), def)
         i += 1
         i < imax || break
@@ -413,8 +413,8 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
 
     n′= def.orbit.n′     # radial quantum number (number of nodes)
     nodes = def.pos.nodes
-    two = T(2)
-    pot = def.potscr
+    #two = T(2)
+    #pot = def.potscr
 
     if msg
         str =  Printf.@sprintf "%.20g, " init.Emin 
