@@ -69,7 +69,7 @@ function castPos(E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     firstabove = Veff[1] > E ? true : false
      lastabove = Veff[N] > E ? true : false
 
-    lastabove || error("Error: Nuctp outside range (Veff[N] = $(Veff[N]) < $E - increase Rmax?")
+    lastabove || error("Error: Nuctp outside range - E = $E (< $(Veff[N]) required) - increase Rmax?")
 
     Nmin = firstabove & lastabove ? getNmin(Veff, 1, N) : 1  
     # has minimum if (firstabove & lastabove == true)
@@ -126,10 +126,9 @@ function updatePos!(pos::Pos, E::T, Veff::Vector{T}, grid::CamiDiff.Grid{T}) whe
     firstabove = Veff[1] > E ? true : false
      lastabove = Veff[N] > E ? true : false
 
-    lastabove || error("Error: Nuctp outside range (Veff[N] = $(Veff[N]) < $E - increase Rmax?")
+    lastabove || error("Error: Nuctp outside range - E = $E (< $(Veff[N]) required) - increase Rmax?")
 
-    Nmin = (firstabove & lastabove) ? getNmin(Veff, 1, N) : 1  
-    # Veff has minimum if (firstabove & lastabove) == true
+    Nmin = (firstabove & lastabove) ? getNmin(Veff, 1, N) : 1  # Veff has minimum if (firstabove & lastabove) == true
 
     if firstabove & lastabove
         Nlctp = getNcut(E, Veff, 1, Nmin)

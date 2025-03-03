@@ -244,9 +244,10 @@ function UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T})
     a = [a_direct(k, l, ml, l′, ml′) for k=0:2:kmax]
     potUF = [UFk(k, P2, grid) for k=0:2:kmax]
     
-    UF1 = sum([a[k+1] .* potUF[k+1] for k=0:2:kmax])
+    UF = sum([a[i] .* potUF[i] for i ∈ eachindex(a)])
+    UF = convert(Vector{T}, UF)
     
-    return UF1
+    return UF
     
 end
 
@@ -280,7 +281,8 @@ function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::Ca
     b = [b_exchange(k, l, ml, l′, ml′) for k=kmin:2:kmax]
     potUG = [UGk(k, P1, P2, grid) for k=0:2:kmax]
     
-    UG = sum([b[k+1] .* potUG[k+1] for k=0:2:kmax])
+    UG = sum([b[i] .* potUG[i] for i ∈ eachindex(b)])
+    UG = convert(Vector{T}, UG)
     
     return UG
     
