@@ -17,7 +17,7 @@ rev = CamiMath.rev
 
 sup(i) = CamiMath.sup(i)
 sub(i) = CamiMath.sub(i)
-frac(i) = CamiMath.frac(i)
+#frac(i) = CamiMath.frac(i)
 strRational(i) = CamiMath.strRational(i)
 
 struct Object

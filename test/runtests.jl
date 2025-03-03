@@ -97,6 +97,7 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
     grid = autoGrid(atom, orbit, Float64; msg=true);
     ZH9f_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     scr = zeros(grid.T, grid.N);
+    scr[1] = 0.1;
     def = castDef(grid, atom, orbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
