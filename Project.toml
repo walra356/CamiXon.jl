@@ -1,7 +1,7 @@
 name = "CamiXon"
 uuid = "e90a53f3-3599-4ebe-999f-6f75af03d43f"
 authors = ["Jook Walraven <69215586+walra356@users.noreply.github.com> and contributors"]
-version = "1.8.68"
+version = "1.8.69"
 
 [deps]
 CamiDiff = "2453a446-82e3-4664-a8e3-5851c117fba8"
