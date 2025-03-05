@@ -364,7 +364,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         str *= Printf.@sprintf "%.20g, " init.E
         str *= Printf.@sprintf "%.20g, " init.Emax
         str *= Printf.@sprintf "%.4g" init.ΔE
-        #println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
+        println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
         print("start node search:    count = ")
     end
     
@@ -376,10 +376,26 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         i += 1
         i < imax || break
     end
-        
-    nodes = def.pos.nodes
 
-    init.ΔE = ΔE         # ΔE from here on in use (nodes == n′)
+    Q = imag(Z)
+    E = init.E
+
+    while sign(Q[def.pos.Nuctp-2]) ≠ sign(Q[def.pos.Nuctp+2])
+        E *= T(0.9)
+        adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
+        Q = imag(Z)
+        init.E = def.pos.nodes == n′ ? E : init.E/T(0.9)
+        i += 1
+        i < imax || break
+    end
+
+    adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams)
+
+    nodes = def.pos.nodes
+    
+    nodes == n′ || println("nodes failed")   
+
+    init.ΔE = ΔE  # ΔE from here on in use for reporting only (nodes == n′)
     
     if msg
         str1 = nodes == n′ ? "$(nodes) - node search completed\n" : error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
@@ -547,13 +563,15 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
     end
     
     init = castInit(E, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    
+    E = init.E
 
-    adams = castAdams(init.E, grid, def)
+    adams = castAdams(E, grid, def)
     
     Z = zeros(Complex{grid.T}, grid.N) 
 
-    updatePos!(def.pos, init.E, def.potscr, grid)
-    adams = updateAdams!(adams, init.E, grid, def)
+    updatePos!(def.pos, E, def.potscr, grid)
+    adams = updateAdams!(adams, E, grid, def)
     msg && print("grid special points: Na = $(def.pos.Na), Nlctp = $(def.pos.Nlctp), Nmin = $(def.pos.Nmin)")
     msg && println(", Nuctp = $(def.pos.Nuctp), Nb = $(def.pos.Nb), N = $(def.pos.N), nodes = $(def.pos.nodes), rmax = $(grid.r[grid.N])\n")
         

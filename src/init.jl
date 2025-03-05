@@ -48,16 +48,21 @@ function castInit(E::T, def::Def{T}) where T<:Real
 
     N = def.pos.N
     ℓ = def.orbit.ℓ
-    
+
+    nul = T(0)
+    two = T(2)
     pot = def.potscr
   
     Nmin = getNmin(pot, 1:N)
     Emax = pot[N]
     Emin = pot[Nmin]
-    E = !iszero(E) ? E : iszero(ℓ) ? 10.0Emax : 0.9Emin 
-    ΔE = T(0)
+    if iszero(E)
+        E = iszero(ℓ) ? 10Emax : 0.9Emin 
+    else
+        E = (Emin < E < Emax) ? E : iszero(ℓ) ? 10Emax : (Emin+Emax)/two
+    end
 
-    return Init(Emin, E, Emax, ΔE)
+    return Init(Emin, E, Emax, nul)
         
 end
 
