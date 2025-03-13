@@ -28,7 +28,8 @@
 
 @doc raw"""
     dictAtomicOrbitals 
-
+    
+#### Example:
 ```
 julia> dictAtomicOrbitals
 Dict{String, Tuple{Int64, Int64}} with 15 entries:
@@ -38,9 +39,7 @@ Dict{String, Tuple{Int64, Int64}} with 15 entries:
   "4p" => (4, 1)
   "5d" => (5, 2)
     ⋮  =>  ⋮
-```
-#### Example:
-```
+
 julia> n, l = get(dictAtomicOrbitals, "3d", nothing)
 (3, 2)
 ```

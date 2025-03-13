@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 137 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -26,6 +26,7 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
     @test bohrformula(2, 4) == -1 // 8
     @test get(dictAtomicNumbers, "Rb", nothing) == 37
     @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
+    @test get(dictAtomicOrbitals, "3s", nothing) == (3, 0)
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
     @test listElement("H") == listElement(1)
@@ -51,6 +52,10 @@ println("CamiXon.jl | 132 runtests | runtime 35s (estimated) | start")
     @test castOrbit(n=2, ℓ=0; msg=true) == Orbit("2s", 2, 1, 0, 0)
     @test castSpinorbit(n=1, ℓ=0, msg=true) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
+    shell = castShell("3s"; msg=false)
+    @test shell.spinorbit[1] == Spinorbit("3s↓", Orbit("3s", 3, 2, 0, 0), -1//2)
+    shells = castShells("1s2s",msg=true) 
+    @test shells.shell[1].spinorbit[1] == Spinorbit("1s↓", Orbit("1s", 1, 0, 0, 0), -1//2)
 
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);

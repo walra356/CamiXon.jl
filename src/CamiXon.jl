@@ -76,6 +76,10 @@ export Orbit
 export castOrbit
 export Spinorbit
 export castSpinorbit
+export Shell
+export castShell
+export Shells
+export castShells
 export Term
 export castTerm
 export a_direct
