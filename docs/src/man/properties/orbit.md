@@ -16,7 +16,7 @@ castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
 ## Shells
 ```@docs
 Shell
-castShell("3s"; msg=false) 
+castShell(;n=1, ℓ=0, msg=false)
 Shells
 castShells(strShells::String; msg=false)
 ```
