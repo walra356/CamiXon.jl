@@ -103,14 +103,14 @@ end
 
 # ============= castSpinorbit(;n::Int, ℓ::Int, mℓ::Int, up::Bool, msg:Bool) ===========
 
-function _strSpinorbit(name, n, n′, ℓ, mℓ, up)
+function _strSpinorbit(name, n, n′, ℓ, mℓ, ms)
 
     str = "Spinorbital: $(name)
     principal quantum number: n = $n
     radial quantum number: n′ = $(n′) (number of nodes in radial wavefunction)
     orbital angular momentum of valence electron: ℓ = $ℓ
     orbital angular momentum projection of valence electron: mℓ = $(mℓ)
-    spin magnetic quantum number: ms = " * (up ? "1/2" : "-1/2")
+    spin magnetic quantum number: ms = " * strRational(ms)
 
     return str
 
@@ -135,18 +135,21 @@ Spinorbital: 1s↑
 Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
 ```
 """
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=false)
+function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, msg=false)
+
+    ms = rationalize(ms)
+
+    (ms == 1//2) ⊻ (ms == -1//2) || error("Error: unphysical spin (must be 1/2 or -1/2")
     
     o = castOrbit(;n, ℓ, mℓ)
     
-    name = o.name * string(up ? :↑ : :↓)
+    name = o.name * string(ms==1/2 ? :↑ : :↓)
 
-    msg && println(_strSpinorbit(name, o.n, o.n′, o.ℓ, o.mℓ, up) )
+    msg && println(_strSpinorbit(name, o.n, o.n′, o.ℓ, o.mℓ, ms) )
 
-    return Spinorbit(name, o, (up ? 1//2 : -1//2))
+    return Spinorbit(name, o, ms)
 
 end
-
 
 # ======================== Term(name, n, ℓ, S, L, J) ===========
 
