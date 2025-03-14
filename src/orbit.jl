@@ -69,7 +69,7 @@ Orbit("1s", 1, 0, 0, 0)
 
 #### Example:
 ```
-julia> castOrbit1("2p"; mℓ=-1, msg=true)
+julia> castOrbit("2p"; mℓ=-1, msg=true)
 Orbital: 2p
     principal quantum number: n = 2
     radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
@@ -159,7 +159,7 @@ Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
 
 #### Example:
 ```
-julia> castSpinorbit1("2p"; mℓ = 1, ms=-1/2, msg=true)
+julia> castSpinorbit("2p"; mℓ = 1, ms=-1/2, msg=true)
 Spinorbital: 2p↓
     principal quantum number: n = 2
     radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
