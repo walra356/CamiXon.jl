@@ -285,8 +285,11 @@ end
 @doc raw"""
     Shells(name, shells)
 
-Type for specification of *closed electron shells* with fields:
+Type for specification of closed electron [`Shells`](@ref) with fields:
 * `.name`: shell configuration (`::String`)
+* `.count`: number of shells (`::Int`)
+* `.n`: array of shell principal quantum numers (`Vector{Int}`)
+* `.ℓ`: array of shell angular monenta (`::Vector{Int}`)
 * `.shell`: Array of Shells
 
 The type `Shells` is best created with the function `castShells`.
@@ -294,6 +297,9 @@ The type `Shells` is best created with the function `castShells`.
 struct Shells
     
     name::String
+    count::Int
+    n::Vector{Int}
+    ℓ::Vector{Int}
     shell::Vector{Shell}
     
 end
@@ -303,7 +309,11 @@ end
 
 Create configuration of closed electron [`Shells`](@ref) with fields:
 * `.name`: shell configuration (`::String`)
-* `.shell`: Array of closed electron shells (`::Vector{Shell}`)
+* `.count`: number of shells (`::Int`)
+* `.n`: array of shell principal quantum numers (`Vector{Int}`)
+* `.ℓ`: array of shell angular monenta (`::Vector{Int}`)
+* `.shell`: Array of Shells
+
 #### Example:
 ```
 julia> castShells("1s2s",msg=true);
@@ -322,17 +332,23 @@ function castShells(strShells::String; msg=false)
     nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g"]   
 
     name = ""
-    o = Shell[]
+    os = Shell[]
+    on = Int[]
+    ol = Int[]
+    k = 0
     for i ∈ eachindex(nl)
         if occursin(nl[i], lowercase(strShells))
             n, ℓ = get(dictAtomicOrbitals, nl[i], nothing)
             shell = castShell(;n, ℓ, msg)
-            push!(o, shell)
+            push!(os, shell)
+            push!(on, ℓ)
+            push!(ol, ℓ)
             name *= shell.name
+            k +=1
         end
     end
 
-    return Shells(name, o)
+    return Shells(name, k, on, ol, os)
         
 end
 
