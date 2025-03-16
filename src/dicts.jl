@@ -28,7 +28,7 @@
 
 @doc raw"""
     dictAtomicOrbitals 
-    
+
 #### Example:
 ```
 julia> dictAtomicOrbitals
@@ -632,6 +632,103 @@ dictIsotopes = Dict(
     (95, 243) => ("²⁴³Am", "americium",  95, 243, 148, 5.9048, 243.0613799, 5//2, -1, 7364.0, 1.52, 4.32, nothing)
 
     )
+
+@doc raw"""
+    dictClosedShells
+
+Closed-shell configuration for the elements in the periodic table.
+```
+julia> dictClosedShells
+Dict{String, String} with 15 entries:
+  "[Ne]" => "1s²2s²2p⁶"
+  "[Cd]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰"
+  "[Sr]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²"
+  "[Yb]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+  "[Mg]" => "1s²2s²2p⁶3s²"
+  "[Ba]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²"
+  "[Xe]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶"
+  ⋮  => ⋮
+```
+#### Examples:
+```
+julia> dict = dictClosedShells;
+
+julia> get(dict, "[Yb]", nothing)
+"1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+```
+"""
+dictClosedShells = Dict(
+
+  "[He]" => "1s²", 
+  "[Be]" => "1s²2s²", 
+  "[Ne]" => "1s²2s²2p⁶", 
+  "[Mg]" => "1s²2s²2p⁶3s²", 
+  "[Ar]" => "1s²2s²2p⁶3s²3p⁶",
+  "[Ca]" => "1s²2s²2p⁶3s²3p⁶4s²", 
+  "[Zn]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²", 
+  "[Kr]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶",
+  "[Sr]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²", 
+  "[Cd]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰", 
+  "[Xe]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶",
+  "[Ba]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²", 
+  "[Yb]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴",
+  "[Hg]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴5d¹⁰", 
+  "[Rn]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴5d¹⁰6p⁶"
+
+  )
+
+@doc raw"""
+    dictConfigurations
+
+Electronic ground state configurations for the elements in the periodic table.
+```
+julia> dictConfigurations
+Dict{Int64, String} with 102 entries:
+  5  => "[Be]2p¹"
+  56 => "[Ba]"
+  35 => "[Zn]4p⁵"
+  55 => "[Na]6s¹"
+  60 => "[Ba]4f⁴"
+  30 => "[Zn]"
+  32 => "[Zn]4p²"
+  ⋮  => ⋮
+```
+#### Examples:
+```
+julia> A = get(dictAtomicNumbers, "Ta", nothing)
+73
+
+julia> dict = dictConfigurations;
+
+julia> get(dict, A, nothing)
+"[Yb]5d³"
+```
+"""
+dictConfigurations = Dict(
+
+  1 => "1s¹", 2 => "[He]", 3 => "[He]2s¹", 4 => "[Be]", 
+  5 => "[Be]2p¹", 6 =>"[Be]2p²", 7 =>"[Be]2p³", 8 =>"[Be]2p⁴", 9 =>"[Be]2p⁵", 10 =>"[Ne]",  
+  11 => "[Ne]3s¹", 12 => "[Mg]", 
+  13 => "[Mg]3p¹", 14 => "[Mg]3p²", 15 => "[Mg]3p³", 16 => "[Mg]3p⁴", 17 => "[Mg]⁵", 18 => "[Ar]",  
+  19 => "[Na]4s¹", 20 => "[Ca]", 
+  21 => "[Ar]4s²3d¹", 22 => "[Ar]4s²3d²", 23 => "[Ar]4s²3d³", 24 => "[Ar]4s¹3d⁵", 25 => "[Ar]4s²3d⁵", 
+                      26 => "[Ar]4s²3d⁶", 27 => "[Ar]4s²3d⁷", 28 => "[Ar]4s²3d⁸", 29 => "[Ar]4s¹3d⁹", 30 => "[Zn]",
+  31 => "[Zn]4p¹", 32 => "[Zn]4p²", 33 => "[Zn]4p³", 34 => "[Zn]4p⁴", 35 => "[Zn]4p⁵", 36 => "[Kr]",  
+  37 => "[Na]5s¹", 38 => "[Sr]",  
+  39 => "[Ar]5s²4d¹", 40 => "[Ar]5s²4d²", 41 => "[Kr]5s¹4d⁴", 42 => "[Kr]5s¹4d⁵", 43 => "[Kr]5s²4d⁵", 
+                      44 => "[Kr]5s¹4d⁷", 45 => "[Kr]5s¹4d⁸", 46 => "[Kr]4d¹⁰", 47 => "[Kr]5s¹4d¹⁰", 48 => "[Cd]",
+  49 => "[Cd]5p¹", 50 => "[Cd]5p²", 51 => "[Cd]5p³", 52 => "[Cd]5p⁴", 53 => "[Cd]5p⁵", 54 => "[Xe]",
+  55 => "[Na]6s¹", 56 => "[Ba]",  
+  57 => "[Ba]5d¹", 58 => "[Ba]4f¹5d¹", 59 => "[Ba]4f³", 60 => "[Ba]4f⁴",  61 => "[Ba]4f⁵",  62 => "[Ba]4f⁶",  63 => "[Ba]4d⁸", 
+                   64 => "[Ba]4f⁷5d¹", 65 => "[Ba]4f⁹", 66 => "[Ba]4f¹⁰", 67 => "[Ba]4f¹¹", 68 => "[Ba]4f¹²", 69 => "[Ba]4f¹³", 70 => "[Yb]", 
+  71 => "[Yb]5d¹", 72 => "[Yb]5d²", 73 => "[Yb]5d³", 74 => "[Yb]5d⁵", 75 => "[Yb]5d⁵", 
+                   76 => "[Yb]5d⁶", 77 => "[Yb]5d⁷", 78 => "[Xe]4f¹⁴5d⁹6s¹", 79 => "[Xe]4f¹⁴5d¹⁰6s¹", 80 => "[Hg]",
+  81 => "[Hg]5p¹", 82 => "[Hg]5p²", 83 => "[Hg]5p³", 84 => "[Hg]5p⁴", 85 => "[Hg]5p⁵", 86 => "[Rn]",
+  87 => "[Rn]7s¹", 88 => "[Ra]",   
+  89 => "[Ra]6d¹", 90 => "[Ra]6d²", 91 => "[Ra]5f²6d¹", 92 => "[Ra]5f³6d¹",  93 => "[Ra]5f⁵",   94 => "[Ra]5f⁶",  95 => "[Ra]5d⁸", 
+                   96 => "[Ra]5f⁷6d¹", 97 => "[Ra]5f⁹", 98 => "[Ra]5f¹⁰", 99 => "[Ra]5f¹¹", 100 => "[Ra]5f¹²", 101 => "[Ra]5f¹³", 102 => "[No]" 
+
+  )
 
 @doc raw"""
     dictMeltingPoints

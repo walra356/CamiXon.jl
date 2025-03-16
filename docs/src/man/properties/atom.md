@@ -34,7 +34,9 @@ castAtom(;Z=1, A=1, Q=0, msg=true)
 listAtom(Z::Int, A::Int, Q::Int; fmt=Object)
 listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 ```
-#### Dictionary
+#### Dictionaries
 ```@docs
 dictAtomicNumbers
+dictClosedShells
+dictConfigurations
 ```

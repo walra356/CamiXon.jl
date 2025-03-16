@@ -57,6 +57,8 @@ export dictAtomicOrbitals
 export dictElements
 export dictIsotopes
 export dictMeltingPoints
+export dictClosedShells
+export dictConfigurations
 
 export bohrformula
 export Element
