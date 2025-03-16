@@ -48,8 +48,8 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     @test listIsotopes(1,3) == listIsotopes(1:3)
     @test_throws DomainError listAtom(1,3,0; fmt=Latex)
     @test listAtom("H", 3, 0) == listAtom(1, 3, 0)
-    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2, config=bare nucleus"
-    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2\n  electron configuration: bare nucleus"
+    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2, config=[bare nucleus]"
+    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2\n  electron configuration: [bare nucleus]"
     @test listAtoms(2:2, 0; fmt=String) == Any["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1, config=[He]", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1, config=[He]"]
     @test castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
 #   ---------------------------------------------------------------------------------
