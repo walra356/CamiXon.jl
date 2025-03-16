@@ -869,7 +869,7 @@ dictMeltingPoint = Dict(
     dictAntoineCoefficient
 
 Antoine coefficients [A,B,C,D] for temperature ranges below and above the
-melting points from [`dictMeltingPoints`](@ref). These coefficients are used 
+melting points from [`dictMeltingPoint`](@ref). These coefficients are used 
 in the Antoine equation to calculate the saturated vapor pressure *p* (in Pa) 
 at temperature `*T* (in K),
 
