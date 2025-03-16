@@ -30,7 +30,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     @test get(dictAtomicOrbital, "3s", nothing) == (3, 0)
     Z = get(dictAtomicNumber, "Ta", nothing);
     @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
-    @test get(dictClosedShell, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+    @test get(dictCoreConfiguration, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
 
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
@@ -48,9 +48,9 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     @test listIsotopes(1,3) == listIsotopes(1:3)
     @test_throws DomainError listAtom(1,3,0; fmt=Latex)
     @test listAtom("H", 3, 0) == listAtom(1, 3, 0)
-    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2"
-    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2"
-    @test listAtoms(2:2, 0; fmt=String) == ["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1"]
+    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2, config=bare nucleus"
+    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2\n  electron configuration: bare nucleus"
+    @test listAtoms(2:2, 0; fmt=String) == Any["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1, config=[He]", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1, config=[He]"]
     @test castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
 #   ---------------------------------------------------------------------------------
     @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855), "1s¹")

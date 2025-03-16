@@ -634,11 +634,11 @@ dictIsotope = Dict(
     )
 
 @doc raw"""
-    dictClosedShell
+    dictCoreConfiguration
 
 Closed-shell configuration for the elements in the periodic table.
 ```
-julia> dictClosedShell
+julia> dictCoreConfiguration
 Dict{String, String} with 15 entries:
   "[Ne]" => "1s²2s²2p⁶"
   "[Cd]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰"
@@ -651,13 +651,13 @@ Dict{String, String} with 15 entries:
 ```
 #### Examples:
 ```
-julia> dict = dictClosedShell;
+julia> dict = dictCoreConfiguration;
 
 julia> get(dict, "[Yb]", nothing)
 "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
 ```
 """
-dictClosedShell = Dict(
+dictCoreConfiguration = Dict(
 
   "[He]" => "1s²", 
   "[Be]" => "1s²2s²", 
@@ -726,7 +726,8 @@ dictConfiguration = Dict(
   (81,0) => "[Hg]5p¹", (82,0) => "[Hg]5p²", (83,0) => "[Hg]5p³", (84,0) => "[Hg]5p⁴", (85,0) => "[Hg]5p⁵", (86,0) => "[Rn]",
   (87,0) => "[Rn]7s¹", (88,0) => "[Ra]",   
   (89,0) => "[Ra]6d¹", (90,0) => "[Ra]6d²", (91,0) => "[Ra]5f²6d¹", (92,0) => "[Ra]5f³6d¹",  (93,0) => "[Ra]5f⁵",   (94,0) => "[Ra]5f⁶",  (95,0) => "[Ra]5d⁸", 
-                   (96,0) => "[Ra]5f⁷6d¹", (97,0) => "[Ra]5f⁹", (98,0) => "[Ra]5f¹⁰", (99,0) => "[Ra]5f¹¹", (100,0) => "[Ra]5f¹²", (101,0) => "[Ra]5f¹³", (102,0) => "[No]" 
+                   (96,0) => "[Ra]5f⁷6d¹", (97,0) => "[Ra]5f⁹", (98,0) => "[Ra]5f¹⁰", (99,0) => "[Ra]5f¹¹", (100,0) => "[Ra]5f¹²", (101,0) => "[Ra]5f¹³", (102,0) => "[No]",
+  (1,1) => "bare nucleus", (2,2) => "bare nucleus"
 
   )
 

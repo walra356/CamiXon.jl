@@ -57,7 +57,7 @@ export dictAtomicOrbital
 export dictElement
 export dictIsotope
 export dictMeltingPoint
-export dictClosedShell
+export dictCoreConfiguration
 export dictConfiguration
 
 export bohrformula

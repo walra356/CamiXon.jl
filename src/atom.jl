@@ -53,6 +53,9 @@ function _strAtom(Z::Int, A::Int, Q::Int)
     dict = dictIsotope
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
+    config = get(dictConfiguration, (Z, Q), nothing)
+    config = isnothing(config) ? "not provided" : config
+
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
     strN = Q ≠ 0 ? " ion" : ", neutral atom"
@@ -63,6 +66,7 @@ function _strAtom(Z::Int, A::Int, Q::Int)
     str *= ", A=$A"
     str *= ", Q=$Q"
     str *= ", Zc=$(Q+1)"
+    str *= ", config=$(config)"
 
     return str
 
@@ -72,6 +76,9 @@ function _infoAtom(Z::Int, A::Int, Q::Int; msg=true)
 
     dict = dictIsotope
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
+  
+    config = get(dictConfiguration, (Z, Q), nothing)
+    config = isnothing(config) ? "not provided" : config
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
     strQ = Q > 0 ? (strQ * 'ᐩ') : Q < 0 ? (strQ * 'ᐨ') : ""
@@ -81,6 +88,7 @@ function _infoAtom(Z::Int, A::Int, Q::Int; msg=true)
     str *= "\n  symbol: " * atom.isotope.symbol * strQ
     str *= "\n  atomic charge: Z = $Z"
     str *= "\n  Rydberg charge: Zc = $(Q+1)"
+    str *= "\n  electron configuration: " * config
 
     msg && println(str)
 

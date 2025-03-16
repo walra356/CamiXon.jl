@@ -37,6 +37,6 @@ listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 #### Dictionaries
 ```@docs
 dictAtomicNumber
-dictClosedShell
+dictCoreConfiguration
 dictConfiguration
 ```
