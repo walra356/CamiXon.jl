@@ -30,7 +30,7 @@ end
 #...............................................................................
 function _stdElement(Z::Int)
 
-    dict = dictElements
+    dict = dictElement
     element = (Z) ∈ keys(dict) ? castElement(;Z, msg=false) : return nothing
 
     return element
@@ -39,7 +39,7 @@ end
 #...............................................................................
 function _strElement(Z::Int)
 
-    dict = dictElements
+    dict = dictElement
     element = (Z) ∈ keys(dict) ? castElement(;Z, msg=false) : return nothing
 
     str = element.symbol
@@ -53,7 +53,7 @@ end
 #...............................................................................
 function _infoElement(Z::Int; msg=true)
 
-    dict = dictElements
+    dict = dictElement
     element = (Z) ∈ keys(dict) ? castElement(; Z, msg=false) : return nothing
 
     str = "Element: " * element.name
@@ -94,7 +94,7 @@ function listElement(Z::Int; fmt=Object, msg=true)
 end
 function listElement(elt::String; fmt=Object, msg=true)
 
-    dict = dictAtomicNumbers
+    dict = dictAtomicNumber
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
     return listElement(Z; fmt,msg)
@@ -178,8 +178,8 @@ Element("hydrogen", "H", 1.008)
 """
 function castElement(;Z=1, msg=true)
 
-    element = Z ∈ keys(dictElements) ? get(dictElements, Z, nothing) :
-              error("Error: element Z = $Z not present in `dictElements`")
+    element = Z ∈ keys(dictElement) ? get(dictElement, Z, nothing) :
+              error("Error: element Z = $Z not present in `dictElement`")
 
     (name, symbol, weight) = element
 
@@ -190,13 +190,13 @@ function castElement(;Z=1, msg=true)
 end
 function castElement(elt::String; msg=true)
 
-    dict = dictAtomicNumbers
+    dict = dictAtomicNumber
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
-                return error("Error: element $(elt) - not found in `dictAtomNumbers`")
+                return error("Error: element $(elt) - not found in `dictAtomicNumber`")
 
-    dict = dictElements
+    dict = dictElement
     element = Z ∈ keys(dict) ? get(dict, Z, nothing) :
-              return error("Error: element Z = $Z - not found in `dictElements`")
+              return error("Error: element Z = $Z - not found in `dictElement`")
 
     (name, symbol, weight) = element
 

@@ -51,14 +51,14 @@ export castCodata
 export listCodata
 export calibrationReport
 
-export dictAntoineCoefficients
-export dictAtomicNumbers
-export dictAtomicOrbitals
-export dictElements
+export dictAntoineCoefficient
+export dictAtomicNumber
+export dictAtomicOrbital
+export dictElement
 export dictIsotopes
-export dictMeltingPoints
-export dictClosedShells
-export dictConfigurations
+export dictMeltingPoint
+export dictClosedShell
+export dictConfiguration
 
 export bohrformula
 export Element

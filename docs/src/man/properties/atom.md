@@ -10,7 +10,7 @@ listElements(Z1::Int, Z2::Int; fmt=Object)
 ```
 #### Dictionary
 ```@docs
-dictElements
+dictElement
 ```
 
 ## Isotope
@@ -23,7 +23,7 @@ latexIsotopeTable(Z1::Int, Z2::Int; continuation=false)
 ```
 #### Dictionary
 ```@docs
-dictIsotopes
+dictIsotope
 ```
 
 ## Atom
@@ -36,7 +36,7 @@ listAtoms(Z1::Int, Z2::Int, Q::Int; fmt=Object)
 ```
 #### Dictionaries
 ```@docs
-dictAtomicNumbers
-dictClosedShells
-dictConfigurations
+dictAtomicNumber
+dictClosedShell
+dictConfiguration
 ```

@@ -24,14 +24,14 @@
 #                               dicts.jl
 # ==============================================================================
 
-# ================================ dictAtomicOrbitals ==========================
+# ================================ dictAtomicOrbital ==========================
 
 @doc raw"""
-    dictAtomicOrbitals 
+    dictAtomicOrbital 
 
 #### Example:
 ```
-julia> dictAtomicOrbitals
+julia> dictAtomicOrbital
 Dict{String, Tuple{Int64, Int64}} with 15 entries:
   "4d" => (4, 2)
   "5f" => (5, 3)
@@ -40,11 +40,11 @@ Dict{String, Tuple{Int64, Int64}} with 15 entries:
   "5d" => (5, 2)
     ⋮  =>  ⋮
 
-julia> n, l = get(dictAtomicOrbitals, "3d", nothing)
+julia> n, l = get(dictAtomicOrbital, "3d", nothing)
 (3, 2)
 ```
 """
-dictAtomicOrbitals = Dict(
+dictAtomicOrbital = Dict(
 
         "1s" => (1, 0),
         "2s" => (2, 0),
@@ -63,12 +63,12 @@ dictAtomicOrbitals = Dict(
         "5g" => (5, 4)
     )
 
-# ================================ dictAtomicNumbers ================================
+# ================================ dictAtomicNumber ================================
 
 @doc raw"""
-    dictAtomicNumbers
+    dictAtomicNumber
 ```
-julia> dictAtomicNumbers
+julia> dictAtomicNumber
 Dict{String, Int64} with 102 entries: 
   "Pd" => 46
   "Si" => 14
@@ -79,7 +79,7 @@ Dict{String, Int64} with 102 entries:
 ```
 #### Examples:
 ```
-julia> Z = get(dictAtomicNumbers, "Rb", nothing)
+julia> Z = get(dictAtomicNumber, "Rb", nothing)
 37
 
 julia> listElement(Z; fmt=Info)
@@ -89,7 +89,7 @@ atomic number: Z = 37
 atomic weight (relative atomic mass): 85.468
 ```
 """
-dictAtomicNumbers = Dict(
+dictAtomicNumber = Dict(
 
   "H"  =>   1, "D"  =>   1, "T"  =>  1, "He" =>  2, "Li" =>  3, "Be" =>   4,
   "B"  =>   5, "C"  =>   6, "N"  =>  7, "O"  =>  8, "F"  =>  9, "Ne" =>  10,
@@ -110,14 +110,14 @@ dictAtomicNumbers = Dict(
   "Am" =>  95, "Cm" =>  96, "Bk" => 97, "Cf" => 98, "Es" => 99, "Fm" => 100, 
   "Md" => 101, "No" => 102
 )
-# ================================ dictElements ================================
+# ================================ dictElement ================================
 
 @doc raw"""
-    dictElements
+    dictElement
 
 Standard atomic weights of the elements 2021 - see IUPAC Technical Report
 ```
-julia> dictElements
+julia> dictElement
 Dict{Int64, Tuple{String, String, Any}} with 102 entries:
   5  => ("boron", "B", 10.81)
   56 => ("barium", "Ba", 137.33)
@@ -129,7 +129,7 @@ Dict{Int64, Tuple{String, String, Any}} with 102 entries:
 ```
 #### Examples:
 ```
-julia> get(dictElements, 37, nothing)
+julia> get(dictElement, 37, nothing)
 ("rubidium", "Rb", 85.468)
 
 julia> listElement("Rb", fmt=Info)
@@ -139,7 +139,7 @@ Element: rubidium
   atomic weight (relative atomic mass): 85.468
 ```
 """
-dictElements = Dict(
+dictElement = Dict(
 
          1 => ("hydrogen", "H", 1.008),
          2 => ("helium", "He", 4.0026),
@@ -247,14 +247,14 @@ dictElements = Dict(
        )
 
 
-# ======================== dictIsotopes ========================================
+# ======================== dictIsotope ========================================
 
 @doc raw"""
-    dictIsotopes
+    dictIsotope
 
 Sources: AME2020, LINDC(NDS)-0794 and INDC(NDS)-0833
 ```
-julia> dictIsotopes
+julia> dictIsotope
 Dict{Tuple{Int64, Int64}, Tuple{String, String, Int64, Int64, Int64, Float64, Float64, Real, Int64, Float64, Float64, Any, Any}} with 341 entries:
   (71, 175) => ("¹⁷⁵Lu", "lutetium", 71, 175, 104, 5.37, 174.941, 7//2, 1, 1.0e…
   (40, 92)  => ("⁹²Zr", "zirconium", 40, 92, 52, 4.3057, 91.905, 0, 1, 1.0e100,…
@@ -267,7 +267,7 @@ Dict{Tuple{Int64, Int64}, Tuple{String, String, Int64, Int64, Int64, Float64, Fl
 ```
 #### Example:
 ```
-julia> get(dictIsotopes, (37,87), nothing)
+julia> get(dictIsotope, (37,87), nothing)
 ("⁸⁷Rb", "rubidium", 37, 87, 50, 4.1989, 86.90918053, 3//2, -1, 4.97e10, 2.75129, 0.1335, 27.83)
 
 julia> listIsotope(37, 87, fmt=Info)
@@ -287,7 +287,7 @@ Isotope: rubidium-87
   lifetime: 4.97e10 years
 ```
 """
-dictIsotopes = Dict(
+dictIsotope = Dict(
 
        (0, 1) => ("n"    , "neutron"  ,   0,   1,   1,    0.0,   1.008664916, 1//2, 1, 0.0000194, -1.9130427, 0.0, nothing),
        (1, 1) => ("¹H"   , "hydrogen" ,   1,   1,   0, 0.8783,   1.007825032, 1//2, 1, 1.0e100, 2.792847351, 0.0, 99.9855),
@@ -634,11 +634,11 @@ dictIsotopes = Dict(
     )
 
 @doc raw"""
-    dictClosedShells
+    dictClosedShell
 
 Closed-shell configuration for the elements in the periodic table.
 ```
-julia> dictClosedShells
+julia> dictClosedShell
 Dict{String, String} with 15 entries:
   "[Ne]" => "1s²2s²2p⁶"
   "[Cd]" => "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰"
@@ -651,13 +651,13 @@ Dict{String, String} with 15 entries:
 ```
 #### Examples:
 ```
-julia> dict = dictClosedShells;
+julia> dict = dictClosedShell;
 
 julia> get(dict, "[Yb]", nothing)
 "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
 ```
 """
-dictClosedShells = Dict(
+dictClosedShell = Dict(
 
   "[He]" => "1s²", 
   "[Be]" => "1s²2s²", 
@@ -678,11 +678,11 @@ dictClosedShells = Dict(
   )
 
 @doc raw"""
-    dictConfigurations
+    dictConfiguration
 
 Electronic ground state configurations for the elements in the periodic table.
 ```
-julia> dictConfigurations
+julia> dictConfiguration
 Dict{Int64, String} with 102 entries:
   5  => "[Be]2p¹"
   56 => "[Ba]"
@@ -695,48 +695,48 @@ Dict{Int64, String} with 102 entries:
 ```
 #### Examples:
 ```
-julia> A = get(dictAtomicNumbers, "Ta", nothing)
+julia> Z = get(dictAtomicNumber, "Ta", nothing)
 73
 
-julia> dict = dictConfigurations;
+julia> dict = dictConfiguration;
 
-julia> get(dict, A, nothing)
+julia> get(dict, Z, nothing)
 "[Yb]5d³"
 ```
 """
-dictConfigurations = Dict(
+dictConfiguration = Dict(
 
-  1 => "1s¹", 2 => "[He]", 3 => "[He]2s¹", 4 => "[Be]", 
-  5 => "[Be]2p¹", 6 =>"[Be]2p²", 7 =>"[Be]2p³", 8 =>"[Be]2p⁴", 9 =>"[Be]2p⁵", 10 =>"[Ne]",  
-  11 => "[Ne]3s¹", 12 => "[Mg]", 
-  13 => "[Mg]3p¹", 14 => "[Mg]3p²", 15 => "[Mg]3p³", 16 => "[Mg]3p⁴", 17 => "[Mg]⁵", 18 => "[Ar]",  
-  19 => "[Na]4s¹", 20 => "[Ca]", 
-  21 => "[Ar]4s²3d¹", 22 => "[Ar]4s²3d²", 23 => "[Ar]4s²3d³", 24 => "[Ar]4s¹3d⁵", 25 => "[Ar]4s²3d⁵", 
-                      26 => "[Ar]4s²3d⁶", 27 => "[Ar]4s²3d⁷", 28 => "[Ar]4s²3d⁸", 29 => "[Ar]4s¹3d⁹", 30 => "[Zn]",
-  31 => "[Zn]4p¹", 32 => "[Zn]4p²", 33 => "[Zn]4p³", 34 => "[Zn]4p⁴", 35 => "[Zn]4p⁵", 36 => "[Kr]",  
-  37 => "[Na]5s¹", 38 => "[Sr]",  
-  39 => "[Ar]5s²4d¹", 40 => "[Ar]5s²4d²", 41 => "[Kr]5s¹4d⁴", 42 => "[Kr]5s¹4d⁵", 43 => "[Kr]5s²4d⁵", 
-                      44 => "[Kr]5s¹4d⁷", 45 => "[Kr]5s¹4d⁸", 46 => "[Kr]4d¹⁰", 47 => "[Kr]5s¹4d¹⁰", 48 => "[Cd]",
-  49 => "[Cd]5p¹", 50 => "[Cd]5p²", 51 => "[Cd]5p³", 52 => "[Cd]5p⁴", 53 => "[Cd]5p⁵", 54 => "[Xe]",
-  55 => "[Na]6s¹", 56 => "[Ba]",  
-  57 => "[Ba]5d¹", 58 => "[Ba]4f¹5d¹", 59 => "[Ba]4f³", 60 => "[Ba]4f⁴",  61 => "[Ba]4f⁵",  62 => "[Ba]4f⁶",  63 => "[Ba]4d⁸", 
-                   64 => "[Ba]4f⁷5d¹", 65 => "[Ba]4f⁹", 66 => "[Ba]4f¹⁰", 67 => "[Ba]4f¹¹", 68 => "[Ba]4f¹²", 69 => "[Ba]4f¹³", 70 => "[Yb]", 
-  71 => "[Yb]5d¹", 72 => "[Yb]5d²", 73 => "[Yb]5d³", 74 => "[Yb]5d⁵", 75 => "[Yb]5d⁵", 
-                   76 => "[Yb]5d⁶", 77 => "[Yb]5d⁷", 78 => "[Xe]4f¹⁴5d⁹6s¹", 79 => "[Xe]4f¹⁴5d¹⁰6s¹", 80 => "[Hg]",
-  81 => "[Hg]5p¹", 82 => "[Hg]5p²", 83 => "[Hg]5p³", 84 => "[Hg]5p⁴", 85 => "[Hg]5p⁵", 86 => "[Rn]",
-  87 => "[Rn]7s¹", 88 => "[Ra]",   
-  89 => "[Ra]6d¹", 90 => "[Ra]6d²", 91 => "[Ra]5f²6d¹", 92 => "[Ra]5f³6d¹",  93 => "[Ra]5f⁵",   94 => "[Ra]5f⁶",  95 => "[Ra]5d⁸", 
-                   96 => "[Ra]5f⁷6d¹", 97 => "[Ra]5f⁹", 98 => "[Ra]5f¹⁰", 99 => "[Ra]5f¹¹", 100 => "[Ra]5f¹²", 101 => "[Ra]5f¹³", 102 => "[No]" 
+  (1,0) => "1s¹", (2,0) => "[He]", (3,0) => "[He]2s¹", (4,0) => "[Be]", 
+  (5,0) => "[Be]2p¹", (6,0) =>"[Be]2p²", (7,0) =>"[Be]2p³", (8,0) =>"[Be]2p⁴", (9,0) =>"[Be]2p⁵", (10,0) =>"[Ne]",  
+  (11,0) => "[Ne]3s¹", (12,0) => "[Mg]", 
+  (13,0) => "[Mg]3p¹", (14,0) => "[Mg]3p²", (15,0) => "[Mg]3p³", (16,0) => "[Mg]3p⁴", (17,0) => "[Mg]⁵", (18,0) => "[Ar]",  
+  (19,0) => "[Na]4s¹", (20,0) => "[Ca]", 
+  (21,0) => "[Ar]4s²3d¹", (22,0) => "[Ar]4s²3d²", (23,0) => "[Ar]4s²3d³", (24,0) => "[Ar]4s¹3d⁵", (25,0) => "[Ar]4s²3d⁵", 
+                      (26,0) => "[Ar]4s²3d⁶", (27,0) => "[Ar]4s²3d⁷", (28,0) => "[Ar]4s²3d⁸", (29,0) => "[Ar]4s¹3d⁹", (30,0) => "[Zn]",
+  (31,0) => "[Zn]4p¹", (32,0) => "[Zn]4p²", (33,0) => "[Zn]4p³", (34,0) => "[Zn]4p⁴", (35,0) => "[Zn]4p⁵", (36,0) => "[Kr]",  
+  (37,0) => "[Na]5s¹", (38,0) => "[Sr]",  
+  (39,0) => "[Ar]5s²4d¹", (40,0) => "[Ar]5s²4d²", (41,0) => "[Kr]5s¹4d⁴", (42,0) => "[Kr]5s¹4d⁵", (43,0) => "[Kr]5s²4d⁵", 
+                      (44,0) => "[Kr]5s¹4d⁷", (45,0) => "[Kr]5s¹4d⁸", (46,0) => "[Kr]4d¹⁰", (47,0) => "[Kr]5s¹4d¹⁰", (48,0) => "[Cd]",
+  (49,0) => "[Cd]5p¹", (50,0) => "[Cd]5p²", (51,0) => "[Cd]5p³", (52,0) => "[Cd]5p⁴", (53,0) => "[Cd]5p⁵", (54,0) => "[Xe]",
+  (55,0) => "[Na]6s¹", (56,0) => "[Ba]",  
+  (57,0) => "[Ba]5d¹", (58,0) => "[Ba]4f¹5d¹", (59,0) => "[Ba]4f³", (60,0) => "[Ba]4f⁴",  (61,0) => "[Ba]4f⁵",  (62,0) => "[Ba]4f⁶",  (63,0) => "[Ba]4d⁸", 
+                   (64,0) => "[Ba]4f⁷5d¹", (65,0) => "[Ba]4f⁹", (66,0) => "[Ba]4f¹⁰", (67,0) => "[Ba]4f¹¹", (68,0) => "[Ba]4f¹²", (69,0) => "[Ba]4f¹³", (70,0) => "[Yb]", 
+  (71,0) => "[Yb]5d¹", (72,0) => "[Yb]5d²", (73,0) => "[Yb]5d³", (74,0) => "[Yb]5d⁵", (75,0) => "[Yb]5d⁵", 
+                   (76,0) => "[Yb]5d⁶", (77,0) => "[Yb]5d⁷", (78,0) => "[Xe]4f¹⁴5d⁹6s¹", (79,0) => "[Xe]4f¹⁴5d¹⁰6s¹", (80,0) => "[Hg]",
+  (81,0) => "[Hg]5p¹", (82,0) => "[Hg]5p²", (83,0) => "[Hg]5p³", (84,0) => "[Hg]5p⁴", (85,0) => "[Hg]5p⁵", (86,0) => "[Rn]",
+  (87,0) => "[Rn]7s¹", (88,0) => "[Ra]",   
+  (89,0) => "[Ra]6d¹", (90,0) => "[Ra]6d²", (91,0) => "[Ra]5f²6d¹", (92,0) => "[Ra]5f³6d¹",  (93,0) => "[Ra]5f⁵",   (94,0) => "[Ra]5f⁶",  (95,0) => "[Ra]5d⁸", 
+                   (96,0) => "[Ra]5f⁷6d¹", (97,0) => "[Ra]5f⁹", (98,0) => "[Ra]5f¹⁰", (99,0) => "[Ra]5f¹¹", (100,0) => "[Ra]5f¹²", (101,0) => "[Ra]5f¹³", (102,0) => "[No]" 
 
   )
 
 @doc raw"""
-    dictMeltingPoints
+    dictMeltingPoint
 
 Melting points of the elements at standard pressure (1atm) - see Wikipedia
 
 ```
-julia> dictMeltingPoints
+julia> dictMeltingPoint
 Dict{Int64, Union{Nothing, Real}} with 102 entries:
   5  => 2349   
   56 => 1000   
@@ -751,14 +751,14 @@ Dict{Int64, Union{Nothing, Real}} with 102 entries:
 ```
 #### Examples:
 ```
-julia> get(dictMeltingPoints, 3, nothing)
+julia> get(dictMeltingPoint, 3, nothing)
 453.65
 
 julia> melting_point("Li")
 453.65
 ```
 """
-dictMeltingPoints = Dict(
+dictMeltingPoint = Dict(
 
     1 => 13.99,
     2 => 0.95,
@@ -866,7 +866,7 @@ dictMeltingPoints = Dict(
     )
 
 @doc raw"""
-    dictAntoineCoefficients
+    dictAntoineCoefficient
 
 Antoine coefficients [A,B,C,D] for temperature ranges below and above the
 melting points from [`dictMeltingPoints`](@ref). These coefficients are used 
@@ -884,7 +884,7 @@ Quarterly, 23, 309 (1984).
 Note that the melting point is taken to be pressure independent.
 
 ```
-julia> dictAntoineCoefficients
+julia> dictAntoineCoefficient
 Dict{Int64, Tuple{Any, Any, Tuple{Any, Any, Any}}} with 102 entries:
   5  => (nothing, nothing, (empty, 2349.0, empty))
   56 => ([40.0897, -22312.0, -5.27062, 0.0], [20.7526, -18796.0, 0.0, 0.0], (298.0, 1000.0, 1200.0))
@@ -906,7 +906,7 @@ julia> svp("Cs", 400)
 0.39420306801845933
 ```
 """
-dictAntoineCoefficients = Dict(
+dictAntoineCoefficient = Dict(
     
     1 => (nothing, nothing, (empty, 13.99, empty)),
     2 => (nothing, nothing, (empty, 0.95, empty)),

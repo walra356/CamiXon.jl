@@ -98,7 +98,7 @@ function castOrbit(strOrbit::String; mℓ=0, msg=false)
 
     nl = strip(lowercase(strOrbit))
 
-    n, ℓ = get(dictAtomicOrbitals, nl, nothing)
+    n, ℓ = get(dictAtomicOrbital, nl, nothing)
 
     return castOrbit(;n, ℓ, mℓ, msg)
         
@@ -188,7 +188,7 @@ function castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, msg=false)
 
     nl = strip(lowercase(strOrbit))
 
-    n, ℓ = get(dictAtomicOrbitals, nl, nothing)
+    n, ℓ = get(dictAtomicOrbital, nl, nothing)
 
     return castSpinorbit(;n, ℓ, mℓ, ms, msg)
         
@@ -271,7 +271,7 @@ function castShell(strShell::String; msg=false)
 
     nl = strip(lowercase(strShell))
 
-    n, ℓ = get(dictAtomicOrbitals, nl, nothing)
+    n, ℓ = get(dictAtomicOrbital, nl, nothing)
 
     return castShell(;n, ℓ, msg)
         
@@ -290,8 +290,8 @@ Type for specification of closed electron [`Shells`](@ref) with fields:
 * `.name`: shell configuration (`::String`)
 * `.count`: number of shells (`::Int`)
 * `.n`: array of shell principal quantum numers (`Vector{Int}`)
-* `.ℓ`: array of shell angular monenta (`::Vector{Int}`)
-* `.shell`: Array of Shells
+* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
+* `.shell`: Array of Shells (`::Vector{Shell}`)
 
 The type `Shells` is best created with the function `castShells`.
 """
@@ -312,8 +312,8 @@ Create configuration of closed electron [`Shells`](@ref) with fields:
 * `.name`: shell configuration (`::String`)
 * `.count`: number of shells (`::Int`)
 * `.n`: array of shell principal quantum numers (`Vector{Int}`)
-* `.ℓ`: array of shell angular monenta (`::Vector{Int}`)
-* `.shell`: Array of Shells
+* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
+* `.shell`: Array of Shells (`::Vector{Shell}`)
 
 #### Example:
 ```
@@ -330,8 +330,9 @@ Shell: 2s²
 """
 function castShells(strShells::String; msg=false)
 
-    nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g"]   
-
+    nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]   
+    sh = ["[He]", "[Be]", "[Ne]", "[Mg]", "[Ar]", "[Ca]", "[Zn]", "[Kr]", "[Sr]", "[Cd]", "[Xe]", "[Ba]", "[Yb]", "[Hg]", "[Rn]"]
+    
     name = ""
     os = Shell[]
     on = Int[]
@@ -339,7 +340,7 @@ function castShells(strShells::String; msg=false)
     k = 0
     for i ∈ eachindex(nl)
         if occursin(nl[i], lowercase(strShells))
-            n, ℓ = get(dictAtomicOrbitals, nl[i], nothing)
+            n, ℓ = get(dictAtomicOrbital, nl[i], nothing)
             shell = castShell(;n, ℓ, msg)
             push!(os, shell)
             push!(on, ℓ)

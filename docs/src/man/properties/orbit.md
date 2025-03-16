@@ -2,7 +2,7 @@
 
 ## Orbital
 ```@docs
-dictAtomicOrbitals
+dictAtomicOrbital
 Orbit
 castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 ```

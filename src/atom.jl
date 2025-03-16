@@ -11,7 +11,7 @@
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    Atom(Z, A, Q, Zc, element, isotope)
+    Atom(Z, A, Q, Zc, element, isotope, config)
 
 Type with fields:
 * `      .Z`:  atomic number (`::Int`)
@@ -20,6 +20,7 @@ Type with fields:
 * `     .Zc`:  Rydberg charge in a.u. (`::Int`)
 * `.element`:  (`::Element`)
 * `.isotope`:  (`::Isotope`)
+* ` .config`:  electron configuration (`::String`)
 
 The type `Atom` is best created with the function [`castAtom`](@ref).
 """
@@ -30,6 +31,7 @@ struct Atom                           # Isotopic properties
     Zc::Int            # Rydberg charge in a.u.
     element::Element
     isotope::Isotope
+    config::String     # electron configuration
 end
 # ================================ End =========================================
 
@@ -39,7 +41,7 @@ end
 
 function _stdAtom(Z::Int, A::Int, Q::Int)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
     return atom
@@ -48,7 +50,7 @@ end
 #...............................................................................
 function _strAtom(Z::Int, A::Int, Q::Int)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
@@ -68,7 +70,7 @@ end
 #...............................................................................
 function _infoAtom(Z::Int, A::Int, Q::Int; msg=true)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     atom = (Z,A) ∈ keys(dict) ? castAtom(;Z, A, Q, msg=false) : return nothing
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
@@ -114,7 +116,7 @@ function listAtom(Z::Int, A::Int, Q::Int; fmt=Object, msg=true)
 end
 function listAtom(elt::String, A::Int, Q::Int; fmt=Object, msg=true)
 
-    dict = dictAtomicNumbers
+    dict = dictAtomicNumber
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) : return nothing
 
     return listAtom(Z, A, Q; fmt, msg)
@@ -212,23 +214,20 @@ function castAtom(;Z=1, A=1, Q=0, msg=false)
 
     element = castElement(;Z, msg)
     isotope = castIsotope(;Z, A, msg)
+     config = get(dictConfiguration, (Z, Q), nothing)
+     config = isnothing(config) ? "not provided" : config
 
     msg && println("Atom created: " * listAtom(Z, A, Q; fmt=Info) )
 
-    return Atom(Z, A, Q, 1+Q, element, isotope)
+    return Atom(Z, A, Q, 1+Q, element, isotope, config)
 
 end
 function castAtom(elt::String; A=1, Q=0, msg=false)
 
-    dict = dictAtomicNumbers
+    dict = dictAtomicNumber
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
                 return error("Error: element $(elt) - not found in `dictAtomNumbers`")
 
-    element = castElement(;Z, msg)
-    isotope = castIsotope(elt; A, msg)
-
-    msg && println("Atom created: " * listAtom(Z, A, Q; fmt=String) )
-
-    return Atom(Z, A, Q, 1+Q, element, isotope)
+    return castAtom(;Z, A, Q, msg)
 
 end

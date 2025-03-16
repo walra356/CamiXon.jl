@@ -47,7 +47,7 @@ end
 # ..............................................................................
 function _stdIsotope(Z::Int, A::Int)
 
-    dict = dictIsotopes
+    dict = dictIsotope
 
     o = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
@@ -57,7 +57,7 @@ end
 # ..............................................................................
 function _strIsotope(Z::Int, A::Int)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "⁺" : "⁻"
@@ -83,9 +83,9 @@ end
 # ..............................................................................
 function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope properties
 
-    dict = dictIsotopes
+    dict = dictIsotope
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
-    (name, symbol, weight) = get(dictElements, Z, nothing)
+    (name, symbol, weight) = get(dictElement, Z, nothing)
 
     strπ = isotope.π == 1 ? "\$^+\$" : "\$^-\$"
     name = isotope.name
@@ -112,7 +112,7 @@ end
 # ..............................................................................
 function _infoIsotope(Z::Int, A::Int, msg=true)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "even" : "odd"
@@ -265,9 +265,9 @@ Isotope created: ³T, tritium, Z=1, A=3, N=2, R=1.7591, M=3.016049281, I=1/2⁺,
 """
 function castIsotope(;Z=1, A=1, msg=false)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
-    error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
+    error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotope`")
 
     (symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra) = isotope
 
@@ -280,15 +280,15 @@ function castIsotope(;Z=1, A=1, msg=false)
 end
 function castIsotope(elt::String; A=1, msg=false)
 
-    dict = dictAtomicNumbers
+    dict = dictAtomicNumber
     Z = (elt) ∈ keys(dict) ? get(dict, elt, nothing) :
-        return error("Error: element $(elt) - not found in `dictAtomNumbers`")
+        return error("Error: element $(elt) - not found in `dictAtomicNumber`")
 
     A = _filter_isotopes(elt, A)
 
-    dict = dictIsotopes
+    dict = dictIsotope
     isotope = (Z, A) ∈ keys(dict) ? get(dict, (Z, A), nothing) :
-    error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotopes`")
+    error("Error: isotope (Z = $Z, A = $A) not present in `dictIsotope`")
 
     (symbol, name, Z, A, N, R, M, I, π, T½, mdm, eqm, ra) = isotope
 

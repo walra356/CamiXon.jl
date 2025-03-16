@@ -24,12 +24,12 @@ println("CamiXon.jl | 139 runtests | runtime 35s (estimated) | start")
     @test castNamedValue(Value(1.602176634e-19, "C"); name="e") == NamedValue(Value(1.602176634e-19, "C"), "e", " ")
     @test calibrationReport(1.1, 1.0, codata; unitIn="Hartree", msg=false) == "\ncalibration report (Float64):\nEcal = 1 Hartree \nE = 1.1000000000000001 Hartree \nabsolute accuracy: ΔE = 0.1 Hartree (657.968 THz)\nrelative accuracy: ΔE/E = 0.0909091\n"
     @test bohrformula(2, 4) == -1 // 8
-    @test get(dictAtomicNumbers, "Rb", nothing) == 37
-    @test get(dictElements, 37, nothing) == ("rubidium", "Rb", 85.468)
-    @test get(dictAtomicOrbitals, "3s", nothing) == (3, 0)
-    A = get(dictAtomicNumbers, "Ta", nothing);
-    @test get(dictConfigurations, A, nothing) == "[Yb]5d³"
-    @test get(dictClosedShells, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+    @test get(dictAtomicNumber, "Rb", nothing) == 37
+    @test get(dictElement, 37, nothing) == ("rubidium", "Rb", 85.468)
+    @test get(dictAtomicOrbital, "3s", nothing) == (3, 0)
+    Z = get(dictAtomicNumber, "Ta", nothing);
+    @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
+    @test get(dictClosedShell, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
 
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
@@ -52,7 +52,7 @@ println("CamiXon.jl | 139 runtests | runtime 35s (estimated) | start")
     @test listAtoms(2:2, 0; fmt=String) == ["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1"]
     @test castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
 #   ---------------------------------------------------------------------------------
-    @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855))
+    @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855), "1s¹")
     @test castOrbit("2s"; msg=true) == Orbit("2s", 2, 1, 0, 0)
     @test castSpinorbit("1s", msg=true) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)

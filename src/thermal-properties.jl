@@ -20,12 +20,12 @@ julia> melting_point("Li")
 """
 function melting_point(atomicnumber::Int)
 
-    return dictMeltingPoints[atomicnumber]
+    return dictMeltingPoint[atomicnumber]
 
 end
 function melting_point(element::String)
 
-    A = dictAtomicNumbers[element]
+    A = dictAtomicNumber[element]
 
     return melting_point(A)
 
@@ -42,7 +42,7 @@ temperature *T* (in K),
 \mathrm{log_{e}}p=A+B/T+C\mathrm{log_{10}}T+D\cdot T/1000,
 ```
 where A,B,C,D, are the Antoine coefficients collected in 
-[`CamiXon.dictAntoineCoefficients`](@ref).
+[`CamiXon.dictAntoineCoefficient`](@ref).
 
 #### Examples:
 ```
@@ -54,7 +54,7 @@ function svp(atomicnumber::Int, temp::Real)
 
     T = float(temp)
     Z = atomicnumber
-    d = CamiXon.dictAntoineCoefficients
+    d = CamiXon.dictAntoineCoefficient
 
     groupA = [3, 4, 11, 13, 19, 21, 22, 23, 26, 27, 28, 29, 30, 31, 37, 39, 40, 45, 46, 47, 48, 49, 50, 55, 56, 57, 58, 59, 60, 64, 65, 68, 71, 78, 79, 80, 81, 82, 90, 91, 92, 93, 94, 96]
     groupB = [12, 20, 24, 25, 38, 41, 42, 44, 62, 63, 66, 67, 69, 70, 72, 73, 74, 75, 76, 77, 95]
@@ -80,7 +80,7 @@ function svp(atomicnumber::Int, temp::Real)
 end
 function svp(element::String, temp::Real)
 
-    A = dictAtomicNumbers[element]
+    A = dictAtomicNumber[element]
     p = svp(A, temp)
 
     return p
@@ -99,7 +99,7 @@ L(T) = -(B +C\cdot T \mathrm{log_{10}}T+D\cdot T^2/1000),
 ```
 
 where A,B,C,D, are the Antoine coefficients collected in 
-[`CamiXon.dictAntoineCoefficients`](@ref).
+[`CamiXon.dictAntoineCoefficient`](@ref).
 
 #### Example:
 ```
@@ -111,7 +111,7 @@ function latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
     T = float(temp)
     Z = atomicnumber
-    d = CamiXon.dictAntoineCoefficients
+    d = CamiXon.dictAntoineCoefficient
 
     groupA = [3, 4, 11, 13, 19, 21, 22, 23, 26, 27, 28, 29, 30, 31, 37, 39, 40, 45, 46, 47, 48, 49, 50, 55, 56, 57, 58, 59, 60, 64, 65, 68, 71, 78, 79, 80, 81, 82, 90, 91, 92, 93, 94, 96]
     groupB = [12, 20, 24, 25, 38, 41, 42, 44, 62, 63, 66, 67, 69, 70, 72, 73, 74, 75, 76, 77, 95]
@@ -135,7 +135,7 @@ function latent_heat_vaporization(atomicnumber::Int, temp::Real)
 end
 function latent_heat_vaporization(element::String, temp::Real)
 
-    atomicnumber = dictAtomicNumbers[element]
+    atomicnumber = dictAtomicNumber[element]
 
     return latent_heat_vaporization(atomicnumber, temp)
 
