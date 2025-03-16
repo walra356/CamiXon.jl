@@ -55,7 +55,7 @@ export dictAntoineCoefficient
 export dictAtomicNumber
 export dictAtomicOrbital
 export dictElement
-export dictIsotopes
+export dictIsotope
 export dictMeltingPoint
 export dictClosedShell
 export dictConfiguration

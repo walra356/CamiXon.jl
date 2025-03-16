@@ -19,9 +19,9 @@ latent_heat_vaporization(atomicnumber::Int, temp::Real)
 
 #### Antoine coefficients
 ```@docs
-dictAntoineCoefficients
+dictAntoineCoefficient
 ```
 #### Melting points
 ```@docs
-dictMeltingPoints
+dictMeltingPoint
 ```

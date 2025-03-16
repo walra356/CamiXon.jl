@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 139 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -26,6 +26,7 @@ println("CamiXon.jl | 139 runtests | runtime 35s (estimated) | start")
     @test bohrformula(2, 4) == -1 // 8
     @test get(dictAtomicNumber, "Rb", nothing) == 37
     @test get(dictElement, 37, nothing) == ("rubidium", "Rb", 85.468)
+    @test get(dictIsotope, (10, 21), nothing) ==  ("²¹Ne" , "neon"     ,  10,  21,  11, 2.9695,  20.99384669, 3//2, 1, 1.0e100, -0.6617, 0.1016, 0.27)
     @test get(dictAtomicOrbital, "3s", nothing) == (3, 0)
     Z = get(dictAtomicNumber, "Ta", nothing);
     @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
