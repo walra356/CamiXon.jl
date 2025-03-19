@@ -331,13 +331,13 @@ Shell: 2s²
 function castShells(strShells::String; msg=false)
 
     nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]   
-    sh = ["[He]", "[Be]", "[Ne]", "[Mg]", "[Ar]", "[Ca]", "[Zn]", "[Kr]", "[Sr]", "[Cd]", "[Xe]", "[Ba]", "[Yb]", "[Hg]", "[Rn]"]
+    #sh = ["[He]", "[Be]", "[Ne]", "[Mg]", "[Ar]", "[Ca]", "[Zn]", "[Kr]", "[Sr]", "[Cd]", "[Xe]", "[Ba]", "[Yb]", "[Hg]", "[Rn]"]
     
-    for i ∈ eachindex(sh)
-        if occursin(sh, strShells)
-            os = Shell[sh[i]]
-        end
-    end
+ #   for i ∈ eachindex(sh)
+ #       if occursin(sh, strShells)
+ #           os = Shell[sh[i]]
+ #       end
+ #   end
     
     name = ""
     os = Shell[]
