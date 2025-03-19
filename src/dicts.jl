@@ -680,27 +680,27 @@ dictCoreConfiguration = Dict(
 @doc raw"""
     dictConfiguration
 
-Electronic ground state configurations for the elements in the periodic table.
+Electronic ground state configurations for an atom of given (Z, Q).
 ```
 julia> dictConfiguration
 Dict{Int64, String} with 102 entries:
-  5  => "[Be]2p¹"
-  56 => "[Ba]"
-  35 => "[Zn]4p⁵"
-  55 => "[Na]6s¹"
-  60 => "[Ba]4f⁴"
-  30 => "[Zn]"
-  32 => "[Zn]4p²"
+  (5, 0)  => "[Be]2p¹"
+  (56, 0) => "[Ba]"
+  (35, 0) => "[Zn]4p⁵"
+  (55, 0) => "[Na]6s¹"
+  (60, 0) => "[Ba]4f⁴"
+  (30, 0) => "[Zn]"
+  (32, 0) => "[Zn]4p²"
   ⋮  => ⋮
 ```
 #### Examples:
 ```
-julia> Z = get(dictAtomicNumber, "Ta", nothing)
-73
+julia> Z, Q = (get(dictAtomicNumber, "Ta", nothing), 0)
+(73, 0)
 
 julia> dict = dictConfiguration;
 
-julia> get(dict, Z, nothing)
+julia> get(dict, (Z, Q), nothing)
 "[Yb]5d³"
 ```
 """
