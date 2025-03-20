@@ -4,9 +4,9 @@
 
 ```@docs
 bohrformula(Z::Int, n::Int)
-hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+hydrogenic_reduced_wavefunction(atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 reduce_wavefunction(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}) where T<:Real
-restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 ```
 ## Some special cases
 ```@docs
