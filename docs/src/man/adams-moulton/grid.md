@@ -6,20 +6,20 @@ functions of `N` elements representing the grid function and its derivative.
 
 #### autoGrid
 ```@docs
-autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
+autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)x
 ```
 
 #### autoNtot
 ```@docs
-autoNtot(orbit::Orbit)
+autoNtot(n::Int)
 ```
 #### autoRmax
 ```@docs
-autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
+autoRmax(atom::Atom, n::Int; rmax=0.0)
 ```
 #### autoPrecision
 ```@docs
-autoPrecision(rmax::T, orbit::Orbit) where T<:Real
+autoPrecision(rmax::T, ℓ = 0) where T<:Real
 ```
 
 ## Def

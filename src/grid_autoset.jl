@@ -9,7 +9,7 @@
 # ....................... autoRmax(atom, orbit) ................................
 
 @doc raw"""
-    autoRmax(rmax::T, atom::Atom, orbit::Orbit) where T<:Real
+    autoRmax(atom::Atom, n::Int; rmax=0.0)
 
 Largest relevant radial distance in a.u. (rule of thumb value)
 ```math
@@ -20,18 +20,14 @@ where ``n`` is the principal quantum number and ``Z_c`` the Rydberg charge
 ```
 julia> atom = castAtom(Z=1, A=1, Q=0);
 
-julia> orbit = castOrbit(n=1, ℓ=0);
-
-julia> rmax = autoRmax(atom, orbit; rmax=0.0); println("rmax = $(rmax) a.u.")
+julia> rmax = autoRmax(atom, n; rmax=0.0); println("rmax = $(rmax) a.u.")
 rmax = 77.5 a.u.
 ```
 """
-function autoRmax(atom::Atom, orbit::Orbit; rmax=0.0)
+function autoRmax(atom::Atom, n::Int; rmax=0.0)
 # ==============================================================================
 #   Discretization range in atomic units
 # ==============================================================================
-    n = orbit.n
-    ℓ = orbit.ℓ
     Zc = atom.Zc
         
     rmax = rmax > 0 ? rmax : (2.5n^2 + 75.0)/Zc
@@ -43,7 +39,7 @@ end
 # .......................... autoNtot(orbit) ...................................
 
 @doc raw"""
-    autoNtot(orbit::Orbit)
+    autoNtot(n::Int)
 
 Total number of gridpoints (rule of thumb value)
 ```math
@@ -52,17 +48,15 @@ Total number of gridpoints (rule of thumb value)
 where ``n`` is the principal quantum number
 ### Example:
 ```
-julia> orbit = castOrbit(n=1, ℓ=0);
-
-julia> autoNtot(orbit)
+julia> autoNtot(1)
 500
 ```
 """
-function autoNtot(orbit::Orbit)
+function autoNtot(n::Int)
 # ==============================================================================
 #   Total number of grid points
 # ==============================================================================
-    N = 400 + 100 * (orbit.n)
+    N = 400 + 100 * n
         
     return N
     
@@ -71,7 +65,7 @@ end
 # .................... autoPrecision(rmax, orbit) ..............................
 
 @doc raw"""
-    autoPrecision(rmax::T, orbit::Orbit) where T<:Real 
+    autoPrecision(rmax::T, ℓ = 0) where T<:Real
 
 Floating point precision (rule of thumb value)
 ### Example:
@@ -80,19 +74,17 @@ julia> atom = castAtom(Z=1);
 
 julia> orbit = castOrbit(n=1,ℓ=0);
 
-julia> rmax = autoRmax(atom, orbit; rmax=0.0); println("rmax = $(rmax) a.u.")
+julia> rmax = autoRmax(atom, 0; rmax=0.0); println("rmax = $(rmax) a.u.")
 rmax = 77.5 a.u.
 
-julia> o = autoPrecision(rmax, orbit); println("precision = $o")
+julia> o = autoPrecision(rmax, 0); println("precision = $o")
 precision = Float64
 ```
 """
-function autoPrecision(rmax::T, orbit::Orbit) where T<:Real
+function autoPrecision(rmax::T, ℓ = 0) where T<:Real
 # ==============================================================================
 #  Floating point precision (rule of thumb value)
 # ==============================================================================
-
-    ℓ = orbit.ℓ
 
     mytype = rmax^(ℓ+1) == Inf ? BigFloat : Float64
 
@@ -122,7 +114,18 @@ julia> orbit = castOrbit(n=75, ℓ=0, msg=false);
 
 julia> grid = autoGrid(atom, orbit, Float64; msg=true);
 Grid: exponential, Float64, rmax = 14137.5, N = 7900, h = 0.00126582, r0 = 0.642684
+```
+    autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
 
+```
+atom = castAtom(;Z=1, A=1, Q=0, msg=false);
+
+julia> spinorbit = castSpinorbit(n=75, ℓ=0, msg=false);
+
+julia> grid = autoGrid(atom, spinorbit, Float64; msg=true);
+Grid: exponential, Float64, rmax = 14137.5, N = 7900, h = 0.00126582, r0 = 0.642684
+```
+```
 plot_gridfunction(grid, 1:grid.N; title="")
 ```
 The plot is made using CairomMakie.
@@ -137,8 +140,28 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[
          (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
 
-    N = N == 0 ? autoNtot(orbit) : N
-    rmax = autoRmax(atom, orbit; rmax)
+
+    N = N == 0 ? autoNtot(orbit.n) : N
+    rmax = autoRmax(atom, orbit.n; rmax)
+
+    #T = T == BigFloat ? T : autoPrecision(rmax, orbit)
+    
+    h = ID == 3 ? T(rmax//N) : T(10//N)
+
+    return CamiDiff.castGrid(ID, N, T; h, rmax, p, polynom, epn, k, msg)
+
+end
+function autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
+
+    T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
+
+    ID = (p < 1) & (length(polynom) < 2) ? 1 :
+         (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
+         (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
+
+
+    N = N == 0 ? autoNtot(spinorbit.n) : N
+    rmax = autoRmax(atom, spinorbit.n; rmax)
 
     #T = T == BigFloat ? T : autoPrecision(rmax, orbit)
     

@@ -185,9 +185,9 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
-    @test autoRmax(atom, orbit; rmax=84.0) == 84.0 #63.0
-    @test autoNtot(orbit) == 500
-    @test autoPrecision(100.0, orbit) == Float64
+    @test autoRmax(atom, 1; rmax=84.0) == 84.0 #63.0
+    @test autoNtot(1) == 500
+    @test autoPrecision(100.0, 0) == Float64
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=2, A=4, Q=0; msg=false);
     orbit1 = castOrbit(n=1, ℓ=0; msg=false);
