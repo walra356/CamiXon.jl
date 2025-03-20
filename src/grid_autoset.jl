@@ -151,7 +151,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[
     return CamiDiff.castGrid(ID, N, T; h, rmax, p, polynom, epn, k, msg)
 
 end
-function autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
+function autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false) 
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
 
