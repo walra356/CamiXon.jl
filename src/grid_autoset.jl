@@ -117,6 +117,7 @@ Grid: exponential, Float64, rmax = 14137.5, N = 7900, h = 0.00126582, r0 = 0.642
 ```
     autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
 
+#### Example:
 ```
 atom = castAtom(;Z=1, A=1, Q=0, msg=false);
 
@@ -124,8 +125,7 @@ julia> spinorbit = castSpinorbit(n=75, ℓ=0, msg=false);
 
 julia> grid = autoGrid(atom, spinorbit, Float64; msg=true);
 Grid: exponential, Float64, rmax = 14137.5, N = 7900, h = 0.00126582, r0 = 0.642684
-```
-```
+
 plot_gridfunction(grid, 1:grid.N; title="")
 ```
 The plot is made using CairomMakie.
