@@ -57,7 +57,7 @@ function matσ(E::T, grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
     r = grid.r
     r′= grid.r′
     Zval = def.atom.Z
-    ℓ = def.orbit.ℓ
+    ℓ = def.spinorbit.orbit.ℓ
     s = def.scr
 
     nul = T(0)
@@ -340,8 +340,8 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
 
     t1 = time()
 
-    n = def.orbit.n      # principal quantum number
-    n′= def.orbit.n′     # radial quantum number (number of nodes)
+    n = def.spinorbit.orbit.n      # principal quantum number
+    n′= def.spinorbit.orbit.n′     # radial quantum number (number of nodes)
     Zc= def.atom.Zc      # Rydberg charge
 
     E = iszero(scr[1]) ? T(-(Zc//n)^2//2) : T(E)
@@ -425,7 +425,7 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     
     t1 = time()
 
-    n′= def.orbit.n′     # radial quantum number (number of nodes)
+    n′= def.spinorbit.orbit.n′     # radial quantum number (number of nodes)
     nodes = def.pos.nodes
     #two = T(2)
     #pot = def.potscr
@@ -495,7 +495,7 @@ function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔE/init.E, context=:compact => true)
-    n′= def.orbit.n′
+    n′= def.spinorbit.orbit.n′
     n = def.pos.nodes
 
     str = "\nadams_moulton_nodes: report for " * _defspecs(grid, def) * " (using $T)\n"
@@ -528,7 +528,7 @@ function adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
     strΔErel = repr(ΔE/init.E, context=:compact => true)
-    n′= def.orbit.n′
+    n′= def.spinorbit.orbit.n′
     n = def.pos.nodes
     strNodes = n′ == n ? "Passed node test ($n nodes); " : "Failed nodes test ($(n′) ≠ $n); "
 
@@ -555,7 +555,7 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
 
     E = T(E)
 
-    n′= def.orbit.n′     # radial quantum number (number of nodes)
+    n′= def.spinorbit.orbit.n′     # radial quantum number (number of nodes)
     
     for n ∈ eachindex(def.pot)
         def.scr[n] = scr[n]

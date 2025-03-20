@@ -1,6 +1,24 @@
 # SPDX-License-Identifier: MIT
 
-# author: Jook Walraven - 14-2-2023
+# Copyright (c) 2025 Jook Walraven <69215586+walra356@users.noreply.github.com> and contributors
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 # ==============================================================================
 #                               def.jl
@@ -13,7 +31,7 @@
 
 Type with fields:
 * `  .atom::Atom`             : atom object
-* ` .orbit::Orbit`            : orbit object
+* ` .spinorbit::Spinorbit`    : spinorbit object
 * `.codata::Codata`           : codata object
 * `   .pot::Vector{T}`        : tabulated potential function
 * `   .scr::Vector{T}`        : tabulated screening function
@@ -31,7 +49,7 @@ The object `Def` is best created with the function [`castDef`](@ref).
 """
 struct Def{T}
     atom::Atom
-    orbit::Orbit
+    spinorbit::Spinorbit
     codata::Codata
     pot::Vector{T}          # tabulated potential function
     scr::Vector{T}          # tabulated screening function
@@ -51,10 +69,10 @@ end
 
 # ========= castDef(grid, atom::Atom, orbit::Orbit, codata::Codata) ============
 
-function _defspecs(grid, atom, orbit)
+function _defspecs(grid, atom, spinorbit)
 
     g = grid.name
-    o = orbit.name
+    o = spinorbit.name
     Q = atom.Q
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
@@ -69,7 +87,7 @@ end
 function _defspecs(grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 
     g = grid.name
-    o = def.orbit.name
+    o = def.spinorbit.name
     Q = def.atom.Q
 
     strQ = abs(Q) > 1 ? sup(abs(Q)) : ""
@@ -99,7 +117,7 @@ julia> castDef(grid, atom, orbit, codata, msg=true);
 Def created for hydrogen 7d on exponential grid of 400 points
 ```
 """
-function castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; pos=nothing, scr=nothing, msg=false) where T <: Real
+function castDef(grid::CamiDiff.Grid{T}, atom::Atom, spinorbit::Spinorbit, codata::Codata; pos=nothing, scr=nothing, msg=false) where T <: Real
     # ================================================================================
     # castDef(grid, atom, orbit, codata) # reference arrays
     # ================================================================================
@@ -107,7 +125,7 @@ function castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codat
         r = grid.r
         k = grid.k
         epn = grid.epn
-        ℓ = orbit.ℓ
+        ℓ = spinorbit.orbit.ℓ
     
         #r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (r[N]^(ℓ+1) -> Inf)")
     
@@ -127,9 +145,9 @@ function castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codat
         am = convert.(T, CamiDiff.create_adams_moulton_weights(k; rationalize=true))
         matLD = convert.(T, CamiDiff.create_lagrange_differentiation_matrix(k))
     
-        msg && println(_defspecs(grid, atom, orbit))
+        msg && println(_defspecs(grid, atom, spinorbit))
     
-        return Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
+        return Def(atom, spinorbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD)
     
     end
 

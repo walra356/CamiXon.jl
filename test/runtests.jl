@@ -64,8 +64,9 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
 
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
+    spinorbit = castSpinorbit(n=2, ℓ=0);
     grid = autoGrid(atom, orbit, Float64; N=5000, msg=true);
-    castDef(grid, atom, orbit, codata, msg=true);
+    castDef(grid, atom, spinorbit, codata, msg=true);
 #   ---------------------------------------------------------------------------------
     @test lc_eltype(([1 // 2, 1 // 3]; (1 // 4, 1 // 1, 1 // 6))) == Rational{Int}
     @test lc_eltype(([1//2, 1//3]; (1//4, big(1)//big(5), 1//6))) == Rational
@@ -75,8 +76,9 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
 #   ---------------------------------------------------------------------------------------- 
     atom = castAtom(Z=1, A=1, Q=0)
     orbit = castOrbit(n=10, ℓ=6)
+    spinorbit = castSpinorbit(n=10, ℓ=6)
     grid = autoGrid(atom, orbit, Float64; N=5000);
-    def = castDef(grid, atom, orbit, codata)
+    def = castDef(grid, atom, spinorbit, codata)
     Ecal = convert(grid.T, bohrformula(atom.Z, orbit.n))
     E = 0 
     scr = zeros(grid.T,grid.N)
@@ -104,11 +106,12 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     println("--- H9f ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=9, ℓ=3; msg=false);
+    spinorbit = castSpinorbit(n=9, ℓ=3; msg=false);
     grid = autoGrid(atom, orbit, Float64; msg=true);
     ZH9f_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     scr = zeros(grid.T, grid.N);
     scr[1] = 0.1;
-    def = castDef(grid, atom, orbit, codata);
+    def = castDef(grid, atom, spinorbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=true);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test isapprox(ZH9f_generic, Z; rtol=1e-4)
@@ -116,10 +119,11 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=30, ℓ=29; msg=false);
+    spinorbit = castSpinorbit(n=30, ℓ=29; msg=false);
     grid = autoGrid(atom, orbit, Float64; msg=true);
     ZH3029_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
     scr = zeros(grid.T, grid.N);
-    def = castDef(grid, atom, orbit, codata);
+    def = castDef(grid, atom, spinorbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-16, msg=false);
     @test isapprox(ZH3029_generic, Z; rtol=1e-6)
@@ -127,6 +131,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     println("--- H2p ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=1; msg=false);
+    spinorbit = castSpinorbit(n=2, ℓ=1; msg=false);
     grid = autoGrid(atom, orbit, Float64; p=5, rmax=60.0, N=5000);
     RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2p_example = reduce_wavefunction(RH2p_example, grid);
@@ -135,7 +140,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     RH2p_generic = restore_wavefunction(ZH2p_generic, atom, orbit, grid);  
     @test RH2p_example ≈ RH2p_generic 
     scr = zeros(grid.T, grid.N);
-    def = castDef(grid, atom, orbit, codata);
+    def = castDef(grid, atom, spinorbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-15, msg=false);
     @test isapprox(ZH2p_generic, Z; rtol=1e-5)
@@ -143,6 +148,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     println("--- H2s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=2, ℓ=0; msg=false);
+    spinorbit = castSpinorbit(n=2, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, Float64; rmax=60.0, N=10000);
     RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH2s_example = reduce_wavefunction(RH2s_example, grid);
@@ -152,7 +158,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     @test isapprox(RH2s_example, RH2s_generic; rtol=1e-6)
     E=0;
     scr = zeros(grid.T, grid.N);
-    def = castDef(grid, atom, orbit, codata);
+    def = castDef(grid, atom, spinorbit, codata);
     def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-20, msg=false);
     @test isapprox(ZH2s_generic, Z; rtol=1e-5)
@@ -160,6 +166,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     println("--- H1s ---" * repeat('-', 39))
     atom = castAtom(Z=1, A=1, Q=0; msg=false);
     orbit = castOrbit(n=1, ℓ=0; msg=false);
+    spinorbit = castSpinorbit(n=1, ℓ=0; msg=false);
     grid = autoGrid(atom, orbit, BigFloat; rmax=25.0, N=7500);
     RZH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
     ZH1s_example = reduce_wavefunction(RZH1s_example, grid);
@@ -168,7 +175,7 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     RZH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
     @test isapprox(RZH1s_example, RZH1s_generic; rtol=1e-6)
     scr = zeros(grid.T, grid.N);
-    def = castDef(grid, atom, orbit, codata);
+    def = castDef(grid, atom, spinorbit, codata);
     def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=false);
     def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
