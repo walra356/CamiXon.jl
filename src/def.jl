@@ -27,7 +27,7 @@
 # =========== Def(atom, orbit, codata, pot, scr, potscr, G, σ, Minv, pos, epn, k, am, matLD) ============
 
 @doc raw"""
-    Def(T, atom, orbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
+    Def(T, atom, spinorbit, pot, scr, o1, o2, o3, pos, epn, k, am, matLD)
 
 Type with fields:
 * `  .atom::Atom`             : atom object
@@ -101,7 +101,7 @@ function _defspecs(grid::CamiDiff.Grid{T}, def::Def{T}) where T<:Real
 end
 # ..............................................................................
 @doc raw"""
-    castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=false]]) where T <: Real
+    castDef(grid::CamiDiff.Grid{T}, atom::Atom, spinorbit::Spinorbit, codata::Codata [; pos=nothing, [scr=nothing[, msg=false]]) where T <: Real
 
 Create the [`Def`](@ref) object starting from the [`CamiDiff.Grid`](@extref) object and the
 atomic properties of the objects [`Atom`](@ref) and [`Orbit`](@ref).

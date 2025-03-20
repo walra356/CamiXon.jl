@@ -32,7 +32,7 @@ Def{T}
 ```
 #### castDef
 ```@docs
-castDef(grid::CamiDiff.Grid{T}, atom::Atom, orbit::Orbit, codata::Codata; scr=nothing, msg=true) where T <: Real
+castDef(grid::CamiDiff.Grid{T}, atom::Atom, spinorbit::Spinorbit, codata::Codata; pos=nothing, scr=nothing, msg=false) where T <: Real
 ```
 
 ## Pos
