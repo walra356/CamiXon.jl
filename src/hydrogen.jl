@@ -25,7 +25,7 @@ end
 # ..............................................................................
 
 @doc raw"""
-    hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+    hydrogenic_reduced_wavefunction(atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 
 
 Analytic expression for the hydrogenic wavefunction written in the format
@@ -55,15 +55,15 @@ julia> codata = castCodata(2022);
 
 julia> atom = castAtom(;Z=1, A=1, Q=0, msg=false);
 
-julia> orbit = castOrbit(n=25, ℓ=10);
+julia> spinorbit = castSpinorbit(n=25, ℓ=10);
 
-julia> grid = autoGrid(atom, orbit, Float64; msg=true);
+julia> grid = autoGrid(atom, spinorbit, Float64; msg=true);
 CamiDiff.Grid created: exponential, Float64, rmax = 3651.58 a.u., N = 1320, h = 0.0075815, r0 = 0.164537
 
-julia> Z = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+julia> Z = hydrogenic_reduced_wavefunction(atom, spinorbit, grid);
  IOP capture at generalized_laguerre_polynom(35, 21): output converted to BigInt
 
-julia> def = castDef(grid, atom, orbit, codata; msg=true);
+julia> def = castDef(grid, atom, spinorbit, codata; msg=true);
 Def created for ¹H:25n on exponential grid of 1320 points
 
 plot_wavefunction(Z, 1:grid.N, grid, def)
@@ -72,11 +72,11 @@ The plot is made using `CairomMakie`.
 NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 ![Image](../../assets/H1_25n.svg)
 """
-function hydrogenic_reduced_wavefunction(atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+function hydrogenic_reduced_wavefunction(atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 
     N = grid.N
-    n = orbit.n
-    ℓ = orbit.ℓ
+    n = spinorbit.n
+    ℓ = spinorbit.ℓ
     r = grid.r
     Z = atom.Z
 
@@ -135,11 +135,11 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 #### Example:
 ```
 julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
-julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
-julia> grid = autoGrid(atom, orbit, Float64);
+julia> spinorbit = castSpinorbit(n=1, ℓ=0; msg=false);
+julia> grid = autoGrid(atom, spinorbit, Float64);
 julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
-julia> ZH1s_generic = hydrogenic_reduced_wavefunction(atom, orbit, grid);
+julia> ZH1s_generic = hydrogenic_reduced_wavefunction(atom, spinorbit, grid);
 julia> @test ZH1s_example ≈ ZH1s_generic
 Test Passed
 
@@ -168,7 +168,7 @@ end
 # =================== restore_wavefunction(Z, grid) ============================
 
 @doc raw"""
-    restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+    restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 
 Conversion from the *reduced* radial wavefunction ``\tilde{\chi}_{nl}(ρ)``
 to the *ordinary* radial wavefuntion ``\tilde{R}_{nl}(ρ)``,
@@ -179,22 +179,22 @@ where ``ρ`` is the radial distance to the nucleus in a.u..
 #### Example:
 ```
 julia> atom = castAtom(Z=1, A=1, Q=0; msg=false);
-julia> orbit = castOrbit(n=1, ℓ=0; msg=false);
-julia> grid = autoGrid(atom, orbit, Float64);
+julia> spinorbit = castSpinorbit(n=1, ℓ=0; msg=false);
+julia> grid = autoGrid(atom, spinorbit, Float64);
 julia> RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 julia> ZH1s_example = reduce_wavefunction(RH1s_example, grid);
-julia> RH1s_generic = restore_wavefunction(ZH1s_generic, atom, orbit, grid);  
+julia> RH1s_generic = restore_wavefunction(ZH1s_generic, atom, spinorbit, grid);  
 
 julia> @test RH1s_example ≈ RH1s_generic 
 Test Passed
 """
-function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, orbit::Orbit, grid::CamiDiff.Grid{T}) where T<:Real
+function restore_wavefunction(Z::Vector{Complex{T}}, atom::Atom, spinorbit::Spinorbit, grid::CamiDiff.Grid{T}) where T<:Real
 
     χ = real(Z)
     χ′= imag(Z)
     r = grid.r
     k = grid.k
-    ℓ = orbit.ℓ
+    ℓ = spinorbit.ℓ
     Zval = atom.Z          # do not confuse the nuclear charge number Z with with the reduced wavefuntion Z
 
     R = χ ./ r
@@ -232,9 +232,9 @@ the radial distance to the nucleus in a.u..
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
-orbit = castOrbit(n=1, ℓ=0; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata);
+orbit = castSpinorbit(n=1, ℓ=0; msg=false);
+grid = autoGrid(atom, spinorbit, Float64; Nboost=1, msg=false);
+def = castDef(grid, atom, spinorbit, codata);
 
 RH1s_example = [RH1s(atom.Z, grid.r[n]) for n=1:grid.N];
 
@@ -274,9 +274,9 @@ is the radial wavefunction and
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
-orbit = castOrbit(n=2, ℓ=0; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata; msg=false);
+orbit = castSpinorbit(n=2, ℓ=0; msg=false);
+grid = autoGrid(atom, spinorbit, Float64; Nboost=1, msg=false);
+def = castDef(grid, atom, spinorbit, codata; msg=false);
 
 RH2s_example = [RH2s(atom.Z, grid.r[n]) for n=1:grid.N];
 
@@ -316,9 +316,9 @@ is the radial wavefunction and
 #### Example:
 ```
 atom = castAtom(Z=1, A=1, Q=0; msg=false);
-orbit = castOrbit(n=2, ℓ=1; msg=false);
-grid = autoGrid(atom, orbit, Float64; Nboost=1, msg=false);
-def = castDef(grid, atom, orbit, codata);
+orbit = castSpinorbit(n=2, ℓ=1; msg=false);
+grid = autoGrid(atom, spinorbit, Float64; Nboost=1, msg=false);
+def = castDef(grid, atom, spinorbit, codata);
 
 RH2p_example = [RH2p(atom.Z, grid.r[n]) for n=1:grid.N];
 

@@ -36,7 +36,7 @@ function autoRmax(atom::Atom, n::Int; rmax=0.0)
         
 end
 
-# .......................... autoNtot(orbit) ...................................
+# .......................... autoNtot(n) ...................................
 
 @doc raw"""
     autoNtot(n::Int)

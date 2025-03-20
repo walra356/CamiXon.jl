@@ -132,12 +132,12 @@ orbit1 = castOrbit(n=1, ℓ=0; msg=true)
 orbit2 = castOrbit(n=2, ℓ=0; msg=true)
 scr = nothing
 grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
-def1 = castDef(grid, atom, orbit1, codata; scr)
+def1 = castDef(grid, atom, spinorbit1, codata; scr)
 E = initE(def1)
 adams = castAdams(E, grid, def1)
 E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
-def2 = castDef(grid, atom, orbit2, codata; scr)
+def2 = castDef(grid, atom, spinorbit2, codata; scr)
 E = initE(def2)
 adams = castAdams(E, grid, def2)
 E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
@@ -217,10 +217,10 @@ function UFk(k::Int, P::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 end
 
-# ========================  UF(orbit1, orbit2, P, grid) ===================================
+# ========================  UF(spinorbit1, spinorbit2, P, grid) ===================================
 
 @doc raw"""
-    UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    UF(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 Potential of *direct* screening for the spectator electron in `orbit 1` by the screening 
 electron in `orbit2` with (reduced) radial wavefunction `P2`.
@@ -233,12 +233,12 @@ U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ```
 ```
 """
-function UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function UF(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
-    l = orbit1.ℓ
-    ml= orbit1.mℓ    
-    l′ = orbit2.ℓ
-    ml′= orbit2.mℓ
+    l = spinorbit1.ℓ
+    ml= spinorbit1.mℓ    
+    l′ = spinorbit2.ℓ
+    ml′= spinorbit2.mℓ
     kmax = 2 * min(l,l′)
     
     a = [a_direct(k, l, ml, l′, ml′) for k=0:2:kmax]
@@ -251,15 +251,15 @@ function UF(orbit1::Orbit, orbit2::Orbit, P2::Vector{T}, grid::CamiDiff.Grid{T})
     
 end
 
-# ========================  UG(orbit1, orbit2, P, grid) ===================================
+# ========================  UG(spinorbit1, spinorbit2, P, grid) ===================================
 
 @doc raw"""
-    UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    UG(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 Potential of *exchange* screening of two electrons with (reduced) wavefunctions `P1` and `P2`,
 corresponding to the electronic orbitals `orbit1` and `orbit2`.
 
-NB.  `UF(orbit1, orbit2, P1, P2, grid)` = `UF(orbit2, orbit1, P1, P2, grid)`
+NB.  `UF(spinorbit1, spinorbit2, P1, P2, grid)` = `UF(spinorbit2, spinorbit1, P1, P2, grid)`
 ```math
 U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ={\textstyle \sum\limits_{k=0}^{\infty}}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{G}^{k}(nl,n^{\prime}l^{\prime};\rho).
@@ -268,12 +268,12 @@ U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ```
 ```
 """
-function UG(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function UG(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
-    l = orbit1.ℓ
-    ml= orbit1.mℓ    
-    l′ = orbit2.ℓ
-    ml′= orbit2.mℓ
+    l = spinorbit1.ℓ
+    ml= spinorbit1.mℓ    
+    l′ = spinorbit2.ℓ
+    ml′= spinorbit2.mℓ
     #kmax = 2 * min(l,l′)
     kmin = abs(l-l′)
     kmax = l+l′
@@ -363,7 +363,7 @@ function Gk(k::Int, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid) where T<:
 end
 
 @doc raw"""
-    𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    𝒥(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 The *direct* integral of the electrostatic repulsion energy between two electrons in the (reduced) eigenstates `P1` and `P2` of an atom, 
 which correspond to the orbitals `orbit1` and `orbit2`.
@@ -373,15 +373,15 @@ which correspond to the orbitals `orbit1` and `orbit2`.
 =\int_{0}^{\infty}U_{F}(u_{\kappa},u_{\kappa^{\prime}};\rho)\left[\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\right]^{2}\!\rho^{2}d\rho.
 ```
 """
-function 𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function 𝒥(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
-    l = orbit1.ℓ
-    ml= orbit1.mℓ    
-    l′ = orbit2.ℓ
-    ml′= orbit2.mℓ
+    l = spinorbit1.ℓ
+    ml= spinorbit1.mℓ    
+    l′ = spinorbit2.ℓ
+    ml′= spinorbit2.mℓ
     kmax = 2 * min(l,l′)
     
-    potUF = UF(orbit1, orbit2, P2, grid)
+    potUF = UF(spinorbit1, spinorbit2, P2, grid)
     P2xP2 = P2 .* P2
 
     𝒥 = CamiDiff.grid_integration(potUF .* P2xP2, grid)
@@ -391,7 +391,7 @@ function 𝒥(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::
 end
 
 @doc raw"""
-    𝒦(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+    𝒦(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
 
 The *exchange* integral
 
@@ -400,17 +400,17 @@ The *exchange* integral
 =\int_{0}^{\infty}U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)\tilde{R}_{nl}(\rho)\tilde{R}_{n^{\prime}l^{\prime}}(\rho)\rho^{2}d\rho.
 ```
 """
-function 𝒦(orbit1::Orbit, orbit2::Orbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
+function 𝒦(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
     
-    l = orbit1.ℓ
-    ml= orbit1.mℓ    
-    l′ = orbit2.ℓ
-    ml′= orbit2.mℓ
+    l = spinorbit1.ℓ
+    ml= spinorbit1.mℓ    
+    l′ = spinorbit2.ℓ
+    ml′= spinorbit2.mℓ
     
     kmin = abs(l-l′)
     kmax = l+l′
     
-    potUG = UG(orbit1, orbit2, P1, P2, grid)
+    potUG = UG(spinorbit1, spinorbit2, P1, P2, grid)
     P1xP2 = P1 .* P2
 
     𝒦 = CamiDiff.grid_integration(potUG .* P1xP2, grid)
