@@ -138,7 +138,7 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[
 
     ID = (p < 1) & (length(polynom) < 2) ? 1 :
          (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
-         (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
+         (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid") 
 
 
     N = N == 0 ? autoNtot(orbit.n) : N
