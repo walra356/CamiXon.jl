@@ -88,7 +88,7 @@ NB.: `plot_wavefunction` is not included in the `CamiXon` package.
 """
 function OUTSCH!(Z::Vector{Complex{T}}, E::T, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}) where T<:Real
 
-    ℓ = def.spinorbit.orbit.ℓ
+    ℓ = def.spinorbit.ℓ
     
     Z = ℓ < 6 ? OUTSCH_WJ!(Z, grid, def, adams) : OUTSCH_WKB!(Z, E, grid, def)
 
@@ -105,7 +105,7 @@ function OUTSCH_WJ!(Z::Vector{Complex{T}}, grid::CamiDiff.Grid{T}, def::Def{T}, 
     r = grid.r
     k = def.k
     N = def.pos.N
-    ℓ = def.spinorbit.orbit.ℓ
+    ℓ = def.spinorbit.ℓ
  Zval = def.atom.Z
 matLD = def.matLD
     σ = adams.σ

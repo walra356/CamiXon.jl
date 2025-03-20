@@ -47,7 +47,7 @@ specifications given in the [`Def`](@ref) object.
 function castInit(E::T, def::Def{T}) where T<:Real
 
     N = def.pos.N
-    ℓ = def.spinorbit.orbit.ℓ
+    ℓ = def.spinorbit.ℓ
 
     nul = T(0)
     two = T(2)
@@ -72,8 +72,8 @@ end
 
 function init!(init::Init{T}, ΔE::T, def::Def{T}) where T<:Real
     
-    n′= def.spinorbit.orbit.n′     # radial quantum number (number of nodes)
-    ℓ = def.spinorbit.orbit.ℓ
+    n′= def.spinorbit.n′     # radial quantum number (number of nodes)
+    ℓ = def.spinorbit.ℓ
     nodes = def.pos.nodes
     
     two = T(2)

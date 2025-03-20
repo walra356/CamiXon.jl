@@ -111,14 +111,20 @@ end
 
 Type for specification of *atomic Spinorbitals* with fields:
 * ` .name`: spinorbital name (string)
-* `.orbit`: orbital object (Orbit)
-* `   .ms`: spin magnetic quantum number (Rational{Int})
+* ` .n`:  principal quantum number
+* `.n′`:  radial quantum number (number of nodes in radial wavefunction)
+* ` .ℓ`:  orbital angular momentum valence electron
+* `.mℓ`:  orbital angular momentum projection valence electron
+* `.ms`: spin magnetic quantum number (Rational{Int})
 
 The type `Spinorbit` is best created with the function `castSpinorbit`.
 """
 struct Spinorbit
     name::String         # spinorbital name
-    orbit::Orbit         # electronic orbital
+    n::Int               # principal quantum number
+    n′::Int               # radial quantum number (number of nodes)
+     ℓ::Int               # orbital angular momentum valence electron
+    mℓ::Int               # orbital angular momentum projection valence electron
     ms::Rational{Int}    # spin magnetic quantum number
 end
 
@@ -141,9 +147,12 @@ end
     castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=false)
 
 Create `Spinorbit` with fields:
-* ` .name`: spinorbital name (string)
-* `.orbit`: orbital object (Orbit)
-* `   .ms`: spin magnetic quantum number (Rational{Int})
+* `.name`: spinorbital name (string)
+* `   .n`:  principal quantum number
+* `  .n′`:  radial quantum number (number of nodes in radial wavefunction)
+* `   .ℓ`:  orbital angular momentum valence electron
+* `  .mℓ`:  orbital angular momentum projection valence electron
+* `  .ms`: spin magnetic quantum number (Rational{Int})
 #### Example:
 ```
 julia> castSpinorbit(n=1, ℓ=0, msg=true)
@@ -153,7 +162,7 @@ Spinorbital: 1s↑
     orbital angular momentum of valence electron: ℓ = 0
     orbital angular momentum projection of valence electron: mℓ = 0
     spin magnetic quantum number: ms = 1/2
-Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
+Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
 ```
     castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, msg=false)
 
@@ -166,22 +175,31 @@ Spinorbital: 2p↓
     orbital angular momentum of valence electron: ℓ = 1
     orbital angular momentum projection of valence electron: mℓ = 1
     spin magnetic quantum number: ms = -1/2
-Spinorbit("2p↓", Orbit("2p", 2, 0, 1, 1), -1//2)
+Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
 ```
 """
 function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, msg=false)
+
+    ℓ < n || return error("Error: ℓ < n rule not satisfied")
+    (-ℓ ≤ mℓ ≤ ℓ) || return error("Error: -ℓ ≤ mℓ ≤ ℓ rule not satisfied")
+
+    strL = ['s','p','d','f','g','h','i','k','l','m','n','o','q','r','t','u']
+
+    name = ℓ > 15 ? "[n=$(n), ℓ=$(ℓ)]" : string(n) * strL[ℓ + 1]
+
+    n′ = n - ℓ - 1
 
     ms = rationalize(ms)
 
     (ms == 1//2) ⊻ (ms == -1//2) || error("Error: unphysical spin (must be 1/2 or -1/2")
     
-    o = castOrbit(;n, ℓ, mℓ)
+    #o = castOrbit(;n, ℓ, mℓ)
     
-    name = o.name * string(ms==1/2 ? :↑ : :↓)
+    name = name * string(ms==1/2 ? :↑ : :↓)
 
-    msg && println(_strSpinorbit(name, o.n, o.n′, o.ℓ, o.mℓ, ms) )
+    msg && println(_strSpinorbit(name, n, n′, ℓ, mℓ, ms) )
 
-    return Spinorbit(name, o, ms)
+    return Spinorbit(name, n, n′, ℓ, mℓ, ms)
 
 end
 function castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, msg=false)

@@ -125,7 +125,7 @@ function castDef(grid::CamiDiff.Grid{T}, atom::Atom, spinorbit::Spinorbit, codat
         r = grid.r
         k = grid.k
         epn = grid.epn
-        ℓ = spinorbit.orbit.ℓ
+        ℓ = spinorbit.ℓ
     
         #r[N]^(ℓ+1) < Inf || error("Error: numerical overflow (r[N]^(ℓ+1) -> Inf)")
     

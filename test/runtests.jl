@@ -55,12 +55,12 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
 #   ---------------------------------------------------------------------------------
     @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855), "1s¹")
     @test castOrbit("2s"; msg=true) == Orbit("2s", 2, 1, 0, 0)
-    @test castSpinorbit("1s", msg=true) == Spinorbit("1s↑", Orbit("1s", 1, 0, 0, 0), 1//2)
+    @test castSpinorbit("1s", msg=true) == Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     shell = castShell("3s"; msg=false)
-    @test shell.spinorbit[1] == Spinorbit("3s↓", Orbit("3s", 3, 2, 0, 0), -1//2)
+    @test shell.spinorbit[1] == Spinorbit("3s↓", 3, 2, 0, 0, -1//2)
     shells = castShells("1s2s",msg=true) 
-    @test shells.shell[1].spinorbit[1] == Spinorbit("1s↓", Orbit("1s", 1, 0, 0, 0), -1//2)
+    @test shells.shell[1].spinorbit[1] == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
 
     atom = castAtom(Z=1, A=1, Q=0);
     orbit = castOrbit(n=2, ℓ=0);
