@@ -178,7 +178,7 @@ Spinorbital: 2p↓
 Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
 ```
 """
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, restricted=true, msg=false)
+function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, restricted=false, msg=false)
 
     ℓ < n || return error("Error: ℓ < n rule not satisfied")
     (-ℓ ≤ mℓ ≤ ℓ) || return error("Error: -ℓ ≤ mℓ ≤ ℓ rule not satisfied")
@@ -195,14 +195,14 @@ function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, restricted=true, msg=false)
     
     #o = castOrbit(;n, ℓ, mℓ)
     
-    name = restricted ? name * string(ms==1/2 ? :↑ : :↓) : name
+    name = restricted ? name : name * string(ms==1/2 ? :↑ : :↓)
 
     msg && println(_strSpinorbit(name, n, n′, ℓ, mℓ, ms) )
 
     return Spinorbit(name, n, n′, ℓ, mℓ, ms)
 
 end
-function castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, restricted=true, msg=false)
+function castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, restricted=false, msg=false)
 
     nl = strip(lowercase(strOrbit))
 

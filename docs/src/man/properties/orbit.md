@@ -10,7 +10,7 @@ castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 ## Spinorbital
 ```@docs
 Spinorbit
-castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, msg=true)
+castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, restricted=false, msg=true)
 ```
 
 ## Shells
