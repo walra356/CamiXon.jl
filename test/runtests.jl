@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 144 runtests | runtime 35s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -31,6 +31,10 @@ println("CamiXon.jl | 140 runtests | runtime 35s (estimated) | start")
     Z = get(dictAtomicNumber, "Ta", nothing);
     @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
     @test get(dictCoreConfiguration, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+    @test extractCore("[Ar]4s¹") == "1s²2s²2p⁶3s²3p⁶"
+    @test extractValence("[Ar]4s¹") == "4s¹"
+    @test collectSpinorbit(extractCore("[Be]"); restricted=true) == [Spinorbit("1s", 1, 0, 0, 0, 1//2), Spinorbit("2s", 2, 1, 0, 0, 1//2)]
+    @test collectSpinorbit(extractCore("[Be]"); restricted=false) == [Spinorbit("1s↓", 1, 0, 0, 0, -1//2), Spinorbit("1s↑", 1, 0, 0, 0, 1//2), Spinorbit("2s↓", 2, 1, 0, 0, -1//2), Spinorbit("2s↑", 2, 1, 0, 0, 1//2)] 
 
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)

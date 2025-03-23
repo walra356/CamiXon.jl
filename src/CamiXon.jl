@@ -96,6 +96,10 @@ export Gk
 export 𝒥
 export 𝒦
 
+export extractCore
+export extractValence
+export collectSpinorbit
+
 export svp
 export latent_heat_vaporization
 export melting_point

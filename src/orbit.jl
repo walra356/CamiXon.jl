@@ -442,3 +442,111 @@ function castTerm(n::Int; ℓ=0, S=1//2, L=0, J=1//2, msg=false)
     return Term(name, n, n′, ℓ, S, L, J)
 
 end
+
+# ------------------------------------------------------------------------------
+#                       extractCore(config::String)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    extractCore(config::String)
+
+Extract *core configuration* from `config` given in *compact configuration notation*
+#### Example
+```
+julia> extractCore("[Ar]4s¹")
+"1s²2s²2p⁶3s²3p⁶"
+```
+"""
+function extractCore(config::String)
+
+    n = findfirst("[", config).start
+
+    str = config[n:n+3]
+
+    strCore = get(dictCoreConfiguration, str, "unknown")
+
+    strCore == "unknown" && error("Error: $(str) (unknown 'core bracket')")
+
+    return strCore    
+        
+end
+
+# ------------------------------------------------------------------------------
+#                       extractValence(config::String)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    extractValence(config::String)
+
+Extract *valence configuration* from `config` given in *compact configuration notation*
+#### Example
+```
+julia> extractValence("[Ar]4s¹")
+"4s¹"
+```
+"""
+function extractValence(config::String)
+
+    s = findfirst("]", config)
+    n1 = isnothing(s) ? 1 : s.start + 1
+    n2 = length(config)
+    
+    strValence = config[n1:n2] == "" ? nothing : config[n1:n2]
+
+    return strValence   
+        
+end
+
+# ------------------------------------------------------------------------------
+#               collectSpinorbit(strCore::String; restricted=true)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    collectSpinorbit(strCore::String; restricted=true)
+
+Collect the spinobitals specified by `strCore` (in standard configuration notation)
+into an array of spinorbitals.
+By default (`restricted=true`), the spin information is neglected.
+#### Example
+```
+julia> strCore = "1s²2s²2p⁶";
+
+julia> collectSpinorbit(strCore; restricted=true)
+3-element Vector{Spinorbit}:
+ Spinorbit("1s", 1, 0, 0, 0, 1//2)
+ Spinorbit("2s", 2, 1, 0, 0, 1//2)
+ Spinorbit("2p", 2, 0, 1, 0, 1//2)
+
+julia> collectSpinorbit(strCore; restricted=false)
+10-element Vector{Spinorbit}:
+ Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+ Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
+ Spinorbit("2s↓", 2, 1, 0, 0, -1//2)
+ Spinorbit("2s↑", 2, 1, 0, 0, 1//2)
+ Spinorbit("2p↓", 2, 0, 1, -1, -1//2)
+ Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
+ Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
+ Spinorbit("2p↑", 2, 0, 1, -1, 1//2)
+ Spinorbit("2p↑", 2, 0, 1, 0, 1//2)
+ Spinorbit("2p↑", 2, 0, 1, 1, 1//2)
+```
+"""
+function collectSpinorbit(strCore::String; restricted=true)
+
+    strShell = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]
+
+    spinorbit = Spinorbit[]
+    
+    for i ∈ eachindex(strShell)
+        if occursin(strShell[i], strCore)
+            if restricted
+                push!(spinorbit, castSpinorbit(strShell[i]; restricted))
+            else
+                append!(spinorbit, castShell(strShell[i]).spinorbit)
+            end
+        end
+    end
+
+    return spinorbit
+
+end

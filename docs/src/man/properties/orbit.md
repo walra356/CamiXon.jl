@@ -1,5 +1,11 @@
 # Orbital properties
 
+## Configuration tools
+```@docs
+extractCore(config::String)
+extractValence(config::String)
+```
+
 ## Orbital
 ```@docs
 dictAtomicOrbital
@@ -11,6 +17,7 @@ castOrbit(;n=1, ℓ=0, mℓ=0, msg=true)
 ```@docs
 Spinorbit
 castSpinorbit(;n=1, ℓ=0, mℓ=0, up=true, restricted=false, msg=true)
+collectSpinorbit(strCore::String; restricted=true)
 ```
 
 ## Shells
