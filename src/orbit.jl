@@ -164,11 +164,11 @@ Spinorbital: 1s↑
     spin magnetic quantum number: ms = 1/2
 Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
 ```
-    castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, msg=false)
+    castSpinorbit(config::String; msg=false)
 
 #### Example:
 ```
-julia> castSpinorbit("2p"; mℓ = 1, ms=-1/2, msg=true)
+julia> castSpinorbit1("2p"; msg=true)
 Spinorbital: 2p↓
     principal quantum number: n = 2
     radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
@@ -176,9 +176,18 @@ Spinorbital: 2p↓
     orbital angular momentum projection of valence electron: mℓ = 1
     spin magnetic quantum number: ms = -1/2
 Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
+
+julia> castSpinorbit1("2p↑-1"; msg=true)
+Spinorbital: 2p↑
+    principal quantum number: n = 2
+    radial quantum number: n′ = 0 (number of nodes in radial wavefunction)
+    orbital angular momentum of valence electron: ℓ = 1
+    orbital angular momentum projection of valence electron: mℓ = -1
+    spin magnetic quantum number: ms = 1/2
+Spinorbit("2p↑", 2, 0, 1, -1, 1//2)
 ```
 """
-function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, restricted=false, msg=false)
+function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, msg=false)
 
     ℓ < n || return error("Error: ℓ < n rule not satisfied")
     (-ℓ ≤ mℓ ≤ ℓ) || return error("Error: -ℓ ≤ mℓ ≤ ℓ rule not satisfied")
@@ -193,22 +202,36 @@ function castSpinorbit(;n=1, ℓ=0, mℓ=0, ms=1/2, restricted=false, msg=false)
 
     (ms == 1//2) ⊻ (ms == -1//2) || error("Error: unphysical spin (must be 1/2 or -1/2")
     
-    #o = castOrbit(;n, ℓ, mℓ)
-    
-    name = restricted ? name : name * string(ms==1/2 ? :↑ : :↓)
+    name *= string(ms==1/2 ? :↑ : :↓)
 
     msg && println(_strSpinorbit(name, n, n′, ℓ, mℓ, ms) )
 
     return Spinorbit(name, n, n′, ℓ, mℓ, ms)
 
 end
-function castSpinorbit(strOrbit::String; mℓ=0, ms=1/2, restricted=false, msg=false)
+function castSpinorbit(config::String; msg=false)
 
-    nl = strip(lowercase(strOrbit))
+    c = collect(strip(lowercase(config)))
+    l = length(c) 
+    l < 6 || error("Error: $c not recognized as a spinorbital configuration")
+    
+    if l == 2
+        mℓ = 0
+        ms = -1//2
+    elseif l == 3
+        mℓ = 0
+        ms = c[3] == '↑' ? 1//2 : -1//2
+    elseif l == 4
+        mℓ = parse(Int, c[4]) 
+        ms = c[3] == '↑' ? 1//2 : -1//2
+    else
+        mℓ = -parse(Int, c[5]) 
+        ms = c[3] == '↑' ? 1//2 : -1//2
+    end
 
-    n, ℓ = get(dictAtomicOrbital, nl, nothing)
+    n, ℓ = get(dictAtomicOrbital, join(c[1:2]), join(c[1:2])*": not recognized ")
 
-    return castSpinorbit(;n, ℓ, mℓ, ms, restricted, msg)
+    return castSpinorbit(;n, ℓ, mℓ, ms, msg)
         
 end
 
@@ -459,9 +482,7 @@ julia> extractCore("[Ar]4s¹")
 """
 function extractCore(config::String)
 
-    n = findfirst("[", config).start
-
-    str = config[n:n+3]
+    str = config[1] === '[' ? config[1:4] : return ""
 
     strCore = get(dictCoreConfiguration, str, "unknown")
 
@@ -488,65 +509,63 @@ julia> extractValence("[Ar]4s¹")
 function extractValence(config::String)
 
     s = findfirst("]", config)
-    n1 = isnothing(s) ? 1 : s.start + 1
+    n1 = isnothing(s) ? 1 : 5
     n2 = length(config)
     
-    strValence = config[n1:n2] == "" ? nothing : config[n1:n2]
+    strValence = n1 == n2 ? "" : config[n1:n2]
 
-    return strValence   
+    return strValence 
         
 end
 
 # ------------------------------------------------------------------------------
-#               collectSpinorbit(strCore::String; restricted=true)
+#                collectconfig(config::String)
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    collectSpinorbit(strCore::String; restricted=true)
+    collectConfig(config::String)
 
-Collect the spinobitals specified by `strCore` (in standard configuration notation)
-into an array of spinorbitals.
-By default (`restricted=true`), the spin information is neglected.
-#### Example
+#### Example:
 ```
-julia> strCore = "1s²2s²2p⁶";
+julia> collectConfig("[Be]2p¹") == ["1s↓0", "1s↑0", "2s↓0", "2s↑0", "2p↓-1"]
+true
 
-julia> collectSpinorbit(strCore; restricted=true)
-3-element Vector{Spinorbit}:
- Spinorbit("1s", 1, 0, 0, 0, 1//2)
- Spinorbit("2s", 2, 1, 0, 0, 1//2)
- Spinorbit("2p", 2, 0, 1, 0, 1//2)
-
-julia> collectSpinorbit(strCore; restricted=false)
-10-element Vector{Spinorbit}:
- Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
- Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
- Spinorbit("2s↓", 2, 1, 0, 0, -1//2)
- Spinorbit("2s↑", 2, 1, 0, 0, 1//2)
- Spinorbit("2p↓", 2, 0, 1, -1, -1//2)
- Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
- Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
- Spinorbit("2p↑", 2, 0, 1, -1, 1//2)
- Spinorbit("2p↑", 2, 0, 1, 0, 1//2)
- Spinorbit("2p↑", 2, 0, 1, 1, 1//2)
+julia> julia> collectConfig("1s↑1s↓02p↑-1") == ["1s↑", "1s↓0", "2p↑-1"]
+true
 ```
 """
-function collectSpinorbit(strCore::String; restricted=true)
+function collectConfig(config::String)
 
-    strShell = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]
+    o = String[]
 
-    spinorbit = Spinorbit[]
-    
-    for i ∈ eachindex(strShell)
-        if occursin(strShell[i], strCore)
-            if restricted
-                push!(spinorbit, castSpinorbit(strShell[i]; restricted))
-            else
-                append!(spinorbit, castShell(strShell[i]).spinorbit)
+    if occursin('↓', config) | occursin('↑', config)
+        c = collect(config)
+        i = length(c)
+        while i > 0
+            j = ((c[i-2] == '↓') ⊻  (c[i-2] == '↑')) ? 3 : 
+                ((c[i-1] == '↓') ⊻  (c[i-1] == '↑')) ? 2 : 1
+            a = join(c[i-j-1:i])
+            i -= j+2
+            push!(o, a)
+        end
+    else
+        config = extractCore(config) * extractValence(config)
+        c = collect(config)
+        i = length(c)
+        while i > 0
+            N = isascii(c[i-1]) ? undosup(c[i]) : undosup(join(c[i-1:i]))
+            i -= isascii(c[i-1]) ? 1 : 2
+            nl = join(c[i-1:i])
+            n, ℓ = get(dictAtomicOrbital, nl, "unknown")
+            i -= 2
+            for k = N:-1:1
+                ms = k ≤ 2ℓ+1 ? '↓' : '↑'
+                ml = k ≤ 2ℓ+1 ? (-ℓ + k - 1) : (-3ℓ + k - 2)
+                push!(o, nl*ms*string(ml))
             end
         end
     end
 
-    return spinorbit
+    return reverse(o)
 
 end

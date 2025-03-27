@@ -17,6 +17,8 @@ rev = CamiMath.rev
 
 sup(i) = CamiMath.sup(i)
 sub(i) = CamiMath.sub(i)
+undosup(i) = CamiMath.undosup(i)
+undosub(i) = CamiMath.undosub(i)
 #frac(i) = CamiMath.frac(i)
 strRational(i) = CamiMath.strRational(i)
 
@@ -60,6 +62,10 @@ export dictMeltingPoint
 export dictCoreConfiguration
 export dictConfiguration
 
+export extractCore
+export extractValence
+export collectConfig
+
 export bohrformula
 export Element
 export listElement
@@ -95,10 +101,6 @@ export Fk
 export Gk
 export 𝒥
 export 𝒦
-
-export extractCore
-export extractValence
-export collectSpinorbit
 
 export svp
 export latent_heat_vaporization

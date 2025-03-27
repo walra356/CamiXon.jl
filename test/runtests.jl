@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 144 runtests | runtime 35s (estimated) | start")
+println("CamiXon.jl | 152 runtests | runtime 40s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -31,11 +31,23 @@ println("CamiXon.jl | 144 runtests | runtime 35s (estimated) | start")
     Z = get(dictAtomicNumber, "Ta", nothing);
     @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
     @test get(dictCoreConfiguration, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+    
     @test extractCore("[Ar]4s¹") == "1s²2s²2p⁶3s²3p⁶"
     @test extractValence("[Ar]4s¹") == "4s¹"
-    @test collectSpinorbit(extractCore("[Be]"); restricted=true) == [Spinorbit("1s", 1, 0, 0, 0, 1//2), Spinorbit("2s", 2, 1, 0, 0, 1//2)]
-    @test collectSpinorbit(extractCore("[Be]"); restricted=false) == [Spinorbit("1s↓", 1, 0, 0, 0, -1//2), Spinorbit("1s↑", 1, 0, 0, 0, 1//2), Spinorbit("2s↓", 2, 1, 0, 0, -1//2), Spinorbit("2s↑", 2, 1, 0, 0, 1//2)] 
 
+    @test collectConfig("[Be]2p⁵") == ["1s↓0", "1s↑0", "2s↓0", "2s↑0", "2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
+    @test collectConfig("2p⁵") ==  ["2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
+    @test collectConfig("[Be]") ==  ["1s↓0", "1s↑0", "2s↓0", "2s↑0"]
+    @test collectConfig("1s↑1s↓02p↑-1") == ["1s↑", "1s↓0", "2p↑-1"]
+
+    @test castSpinorbit("1s"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+    @test castSpinorbit("1s↓"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+    @test castSpinorbit("1s↓0"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+    @test castSpinorbit("2p"; msg=false) == Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
+    @test castSpinorbit("2p↓"; msg=false) == Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
+    @test castSpinorbit("2p↓0"; msg=false) == Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
+    @test castSpinorbit("2p↑-1"; msg=false) == Spinorbit("2p↑", 2, 0, 1, -1, 1//2)
+    
     @test castElement(Z=1, msg=false) == Element("hydrogen", "H", 1.008)
     @test castElement("Rb"; msg=false) == castElement(Z=37, msg=false)
     @test listElement("H") == listElement(1)
@@ -59,7 +71,7 @@ println("CamiXon.jl | 144 runtests | runtime 35s (estimated) | start")
 #   ---------------------------------------------------------------------------------
     @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855), "1s¹")
     @test castOrbit("2s"; msg=true) == Orbit("2s", 2, 1, 0, 0)
-    @test castSpinorbit("1s", msg=true) == Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
+
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)
     shell = castShell("3s"; msg=false)
     @test shell.spinorbit[1] == Spinorbit("3s↓", 3, 2, 0, 0, -1//2)

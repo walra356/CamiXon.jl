@@ -4,6 +4,7 @@
 ```@docs
 extractCore(config::String)
 extractValence(config::String)
+collectConfig(config::String)
 ```
 
 ## Orbital
