@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 153 runtests | runtime 40s (estimated) | start")
+println("CamiXon.jl | 154 runtests | runtime 40s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -41,7 +41,9 @@ println("CamiXon.jl | 153 runtests | runtime 40s (estimated) | start")
     @test collectConfig("[Be]") ==  ["1s↓0", "1s↑0", "2s↓0", "2s↑0"]
     @test collectConfig("1s↑1s↓02p↑-1") == ["1s↑", "1s↓0", "2p↑-1"]
 
-    @test castSpinorbit("1s"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+    @test collectSpinorbit("[Be]2p⁵") == collectSpinorbit("1s²2s²2p⁵")
+
+    @test castSpinorbit("1s"; msg=true) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
     @test castSpinorbit("1s↓"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
     @test castSpinorbit("1s↓0"; msg=false) == Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
     @test castSpinorbit("2p"; msg=false) == Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
