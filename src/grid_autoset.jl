@@ -169,22 +169,24 @@ function autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[
     return CamiDiff.castGrid(ID, N, T; h, rmax, p, polynom, epn, k, msg)
 
 end
-function autoGrid(atom::Atom, spinorbit::Spinorbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false) 
+function autoGrid(atom::Atom, T::Type; p=0, rmax=0, nmax=0, N=0, polynom=[], epn=5, k=5, msg=false) 
 
     T ∈ [Float64,BigFloat] || println("autoGrid: grid.T = $T => Float64 (was enforced by automatic type promotion)")
-
+    
+    config = collectConfig(atom.config)
+    nmax = iszero(nmax) ? maximum([parse(Int, config[i][1]) for i ∈ eachindex(config)]) : nmax
+    
     ID = (p < 1) & (length(polynom) < 2) ? 1 :
          (p ≥ 1) & (length(polynom) < 2) ? (p == 1 ? 3 : 2) :
          (p < 1) & (length(polynom) ≥ 2) ? 4 : error("Error: unknown grid")
-
-
-    N = N == 0 ? autoNtot(spinorbit.n) : N
-    rmax = autoRmax(atom, spinorbit.n; rmax)
-
+    
+    N = N == 0 ? autoNtot(nmax) : N
+    rmax = autoRmax(atom, nmax; rmax)
+    
     #T = T == BigFloat ? T : autoPrecision(rmax, orbit)
     
     h = ID == 3 ? T(rmax//N) : T(10//N)
-
+    
     return CamiDiff.castGrid(ID, N, T; h, rmax, p, polynom, epn, k, msg)
-
+    
 end

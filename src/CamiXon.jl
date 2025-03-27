@@ -65,6 +65,7 @@ export dictConfiguration
 export extractCore
 export extractValence
 export collectConfig
+export collectSpinorbit
 
 export bohrformula
 export Element

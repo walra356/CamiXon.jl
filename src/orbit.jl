@@ -507,14 +507,10 @@ julia> extractValence("[Ar]4s¹")
 ```
 """
 function extractValence(config::String)
-
-    s = findfirst("]", config)
-    n1 = isnothing(s) ? 1 : 5
-    n2 = length(config)
     
-    strValence = n1 == n2 ? "" : config[n1:n2]
+    strValence = occursin("[", config) ? config[5:end] : config
 
-    return strValence 
+    return strValence
         
 end
 
@@ -567,5 +563,42 @@ function collectConfig(config::String)
     end
 
     return reverse(o)
+
+end
+
+# ------------------------------------------------------------------------------
+#               collectSpinorbit(strCore::String; restricted=true)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    collectSpinorbit(config::String; msg=false)
+
+Collect the spinobitals specified by `config` (in standard configuration notation)
+into an array of spinorbitals.
+#### Example:
+```
+julia> config = "1s²2s²2p⁶";
+
+julia> collectSpinorbit(config; msg=true)
+10-element Vector{Spinorbit}:
+ Spinorbit("1s↓", 1, 0, 0, 0, -1//2)
+ Spinorbit("1s↑", 1, 0, 0, 0, 1//2)
+ Spinorbit("2s↓", 2, 1, 0, 0, -1//2)
+ Spinorbit("2s↑", 2, 1, 0, 0, 1//2)
+ Spinorbit("2p↓", 2, 0, 1, -1, -1//2)
+ Spinorbit("2p↓", 2, 0, 1, 0, -1//2)
+ Spinorbit("2p↓", 2, 0, 1, 1, -1//2)
+ Spinorbit("2p↑", 2, 0, 1, -1, 1//2)
+ Spinorbit("2p↑", 2, 0, 1, 0, 1//2)
+ Spinorbit("2p↑", 2, 0, 1, 1, 1//2)
+```
+"""
+function collectSpinorbit(config::String; msg=false)
+
+    c = collectConfig(config);
+
+    spinorbit = [castSpinorbit(c[i]; msg) for i ∈ eachindex(c)]
+
+    return spinorbit
 
 end
