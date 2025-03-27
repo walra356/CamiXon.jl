@@ -6,7 +6,7 @@ functions of `N` elements representing the grid function and its derivative.
 
 #### autoGrid
 ```@docs
-autoGrid(atom::Atom, orbit::Orbit, T::Type; p=0, rmax=0, N=0, polynom=[], epn=5, k=5, msg=false)
+autoGrid(atom::Atom, T::Type; p=0, rmax=0, nmax=0, N=0, polynom=[], epn=5, k=5, msg=false) 
 ```
 
 #### autoNtot
