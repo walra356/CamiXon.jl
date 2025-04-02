@@ -278,7 +278,7 @@ function castCodata(year::Int)
     hc = h.val * c.val
     
 
-    M = [
+    M = Float64[
 #   μHz mHz Hz  kHz MHz  GHz  THz  PHz  EHz  Eh     Ry     J      eV      cm-1      m-1     K          mK        μK
     1   1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e24*H 2e23*H 1e24/J 1e24/V  1e8cv     1e10cv  1e-6/K     1e-9/K    1e-12/K;       # 1 - μHz
     1   1   1e3 1e6 1e9  1e12 1e15 1e18 1e21 1e21*H 2e20*H 1e21/J 1e21/V  1e5cv     1e7cv   1e-3/K     1e-6/K    1e-9/K;        # 2 - mHz
