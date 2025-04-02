@@ -277,25 +277,30 @@ function castCodata(year::Int)
     cv = c.val
     hc = h.val * c.val
     
-#      μHz mHz Hz kHz MHz  GHz  THz  PHz  EHz  Eh     Ry     J       eV     cm-1      m-1        K        mK        μK
-    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e24*H 2e23*H 1e24/J 1e24/V  1e8cv     1e10cv  1e-6/K     1e-9/K    1e-12/K;       # 1 - μHz
-        1 1   1e3 1e6 1e9  1e12 1e15 1e18 1e21 1e21*H 2e20*H 1e21/J 1e21/V  1e5cv     1e7cv   1e-3/K     1e-6/K    1e-9/K;        # 2 - mHz
-        1 1   1   1e3 1e6  1e9  1e12 1e15 1e18 1e18*H 2e17*H 1e18/J 1e18/V  1e2cv     1e5cv   1/K        1e-3/K    1e-6/K;        # 3 - Hz
-        1 1   1   1   1e3  1e6  1e9  1e12 1e15 1e15*H 2e14*H 1e15/J 1e15/V  1e-1cv    1e1cv   1e3/K      1/K       1e-3/K;        # 4 - kHz
-        1 1   1   1   1    1e3  1e6  1e9  1e12 1e12*H 2e11*H 1e12/J 1e12/V  1e-4cv    1e-2cv  1e6/K      1e3/K     1/K;           # 5 - MHz
-        1 1   1   1   1    1    1e3  1e6  1e9  1e9*H  2e8*H  1e9/J  1e9/V   1e-7cv    1e-5cv  1e9/K      1e6/K     1e3/K;         # 6 - GHz
-        1 1   1   1   1    1    1    1e3  1e6  1e6*H  2e5*H  1e6/J  1e6/V   1e-10cv   1e-8cv  1e12/K     1e9/K     1e6/K;         # 7 - THz
-        1 1   1   1   1    1    1    1    1e3  1e3*H  2e2*H  1e3/J  1e3/V   1.e-13cv  1e-11cv 1e15/K     1e12/K    1e9/K;         # 8 - PHz
-        1 1   1   1   1    1    1    1    1    H      0.5*H  1/J    1/V     1.e-16cv  1e-14cv 1e18/K     1e15/K    1e12/K;        # 9 - EHz
-        1 1   1   1   1    1    1    1    1    1      0.5    1/Ehv  ev/Ehv  100hc/Ehv hc/Ehv  kBv/Ehv    1e-3kBv/Ehv 1e-6kBv/Ehv; # 10 - Hartree
-        1 1   1   1   1    1    1    1    1    1      1      2/Ehv  2ev/Ehv 200hc/Ehv 2hc/Ehv 2kBv/Ehv   2e-3kBv/Ehv 2e-6kBv/Ehv; # 11 - Rydberg
-        1 1   1   1   1    1    1    1    1    1      1      1      e.val   100hc     hc      kBv        1e-3kBv     1e-6kBv;     # 12 - Joule
-        1 1   1   1   1    1    1    1    1    1      1      1      1       100hc/ev  hc/ev   kBv/ev     1e-3kBv/ev  1e-6kBv/ev;  # 13 - eV
-        1 1   1   1   1    1    1    1    1    1      1      1      1       1         0.01    0.01kBv/hc 1e-5kBv/hc  1e-8kBv/hc ; # 14 cm-1
-        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1       kBv/hc     1e-3kBv/hc  1e-6kBv/hc;  # 15 m-1
-        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1e-3        1e-6;        # 16 K
-        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1e-3;        # 17 mK
-        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1]           # 18 μK
+
+    M = [
+#   μHz mHz Hz  kHz MHz  GHz  THz  PHz  EHz  Eh     Ry     J      eV      cm-1      m-1     K          mK        μK
+    1   1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e24*H 2e23*H 1e24/J 1e24/V  1e8cv     1e10cv  1e-6/K     1e-9/K    1e-12/K;       # 1 - μHz
+    1   1   1e3 1e6 1e9  1e12 1e15 1e18 1e21 1e21*H 2e20*H 1e21/J 1e21/V  1e5cv     1e7cv   1e-3/K     1e-6/K    1e-9/K;        # 2 - mHz
+    1   1   1   1e3 1e6  1e9  1e12 1e15 1e18 1e18*H 2e17*H 1e18/J 1e18/V  1e2cv     1e5cv   1/K        1e-3/K    1e-6/K;        # 3 - Hz
+    1   1   1   1   1e3  1e6  1e9  1e12 1e15 1e15*H 2e14*H 1e15/J 1e15/V  1e-1cv    1e1cv   1e3/K      1/K       1e-3/K;        # 4 - kHz
+    1   1   1   1   1    1e3  1e6  1e9  1e12 1e12*H 2e11*H 1e12/J 1e12/V  1e-4cv    1e-2cv  1e6/K      1e3/K     1/K;           # 5 - MHz
+    1   1   1   1   1    1    1e3  1e6  1e9  1e9*H  2e8*H  1e9/J  1e9/V   1e-7cv    1e-5cv  1e9/K      1e6/K     1e3/K;         # 6 - GHz
+    1   1   1   1   1    1    1    1e3  1e6  1e6*H  2e5*H  1e6/J  1e6/V   1e-10cv   1e-8cv  1e12/K     1e9/K     1e6/K;         # 7 - THz
+    1   1   1   1   1    1    1    1    1e3  1e3*H  2e2*H  1e3/J  1e3/V   1.e-13cv  1e-11cv 1e15/K     1e12/K    1e9/K;         # 8 - PHz
+    1   1   1   1   1    1    1    1    1    H      0.5*H  1/J    1/V     1.e-16cv  1e-14cv 1e18/K     1e15/K    1e12/K;        # 9 - EHz
+    1   1   1   1   1    1    1    1    1    1      0.5    1/Ehv  ev/Ehv  100hc/Ehv hc/Ehv  kBv/Ehv    1e-3kBv/Ehv 1e-6kBv/Ehv; # 10 - Hartree
+    1   1   1   1   1    1    1    1    1    1      1      2/Ehv  2ev/Ehv 200hc/Ehv 2hc/Ehv 2kBv/Ehv   2e-3kBv/Ehv 2e-6kBv/Ehv; # 11 - Rydberg
+    1   1   1   1   1    1    1    1    1    1      1      1      e.val   100hc     hc      kBv        1e-3kBv     1e-6kBv;     # 12 - Joule
+    1   1   1   1   1    1    1    1    1    1      1      1      1       100hc/ev  hc/ev   kBv/ev     1e-3kBv/ev  1e-6kBv/ev;  # 13 - eV
+    1   1   1   1   1    1    1    1    1    1      1      1      1       1         0.01    0.01kBv/hc 1e-5kBv/hc  1e-8kBv/hc ; # 14 cm-1
+    1   1   1   1   1    1    1    1    1    1      1      1      1       1         1       kBv/hc     1e-3kBv/hc  1e-6kBv/hc;  # 15 m-1
+    1   1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1e-3        1e-6;        # 16 K
+    1   1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1e-3;        # 17 mK
+    1   1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1            # 18 μK
+ 
+    ]
+
 
     N = Int(sqrt(length(M)))
 
