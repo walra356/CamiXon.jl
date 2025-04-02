@@ -267,28 +267,35 @@ function castCodata(year::Int)
     μB = Value(e.val * ħ.val / 2.0 / me.val, "J T" * sup(-1))
     μN = Value(e.val * ħ.val / 2.0 / mp.val, "J T" * sup(-1))
 
-    H = 2e-15 * c.val * R∞.val
-    J = 1e+15 * h.val
-    V = 1e+15 * h.val / e.val
+    H = 1e-18 * c.val * 2R∞.val
+    J = 1e+18 * h.val
+    V = 1e+18 * h.val / e.val
     K = h.val/kB.val
-
-    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e+21*H 0.5e+21*H 1e21/J 1e21/V 1e-4c.val 1e-6/K 1e-9/K 1e-12/K;        # 1 - μHz
-        1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e+18*H 0.5e+18*H 1e18/J 1e18/V 1e-1c.val 1e-3/K 1e-6/K 1e-9/K;            # 2 - mHz
-        1 1 1 1e3 1e6 1e9 1e12 1e15 1e18 1e+15*H 0.5e+15*H 1e15/J 1e15/V 100c.val 1/K 1e-3/K 1e-6/K;                   # 3 - Hz
-        1 1 1 1 1e3 1e6 1e9 1e12 1e15 1e+12*H 0.5e+12*H 1e12/J 1e12/V 1e5c.val 1e3/K 1/K 1e-3/K;                       # 4 - kHz
-        1 1 1 1 1 1e3 1e6 1e9 1e12 1e+9*H 0.5e+9*H 1e9/J 1e9/V 1e8c.val 1e6/K 1e3/K 1/K;                               # 5 - MHz
-        1 1 1 1 1 1 1e3 1e6 1e9 1e+6*H 0.5e+6*H 1e6/J 1e6/V 1e11c.val 1e9/K 1e6/K 1e3/K;                               # 6 - GHz
-        1 1 1 1 1 1 1 1e3 1e6 1e3*H 0.5e+3*H 1e3/J 1e3/V 1e14c.val 1e12/K 1e9/K 1e6/K;                                 # 7 - THz
-        1 1 1 1 1 1 1 1 1e3 1*H 0.5*H 1/J 1/V 1.e17c.val 1e15/K 1e12/K 1e9/K;                                          # 8 - PHz
-        1 1 1 1 1 1 1 1 1 1e-3*H 0.5e-3*H 1e-3/J 1e-3/V 1.e20c.val 1e18/K 1e15/K 1e12/K;                               # 9 - EHz
-        1 1 1 1 1 1 1 1 1 1 0.5 1/Eh.val e.val/Eh.val 50/R∞.val kB.val/Eh.val 1e-3kB.val/Eh.val 1e-6kB.val/Eh.val;     # 10 - Hartree
-        1 1 1 1 1 1 1 1 1 1 1 2/Eh.val 2e.val/Eh.val 100/R∞.val 2kB.val/Eh.val 2e-3kB.val/Eh.val 2e-6kB.val/Eh.val;    # 11 - Rydberg
-        1 1 1 1 1 1 1 1 1 1 1 1 e.val 100h.val*c.val kB.val 1e-3kB.val 1e-6kB.val;                                     # 12 - Joule
-        1 1 1 1 1 1 1 1 1 1 1 1 1 1e-2h.val*c.val/e.val kB.val/e.val 1e-3kB.val/e.val 1e-6kB.val/e.val;                # 13 - eV
-        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-2Eh.val*c.val/kB.val 1e-5Eh.val*c.val/kB.val 1e-8Eh.val*c.val/kB.val;           # 14 - cm-1
-        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-3 1e-6;                                                                       # 15 K
-        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1e-3;                                                                          # 17 mK
-        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]                                                                             # 18 μK
+    Ehv = Eh.val
+    kBv = kB.val
+    ev = e.val
+    cv = c.val
+    hc = h.val * c.val
+    
+#      μHz mHz Hz kHz MHz  GHz  THz  PHz  EHz  Eh     Ry     J       eV     cm-1      m-1        K        mK        μK
+    M =[1 1e3 1e6 1e9 1e12 1e15 1e18 1e21 1e24 1e24*H 2e23*H 1e24/J 1e24/V  1e8cv     1e10cv  1e-6/K     1e-9/K    1e-12/K;       # 1 - μHz
+        1 1   1e3 1e6 1e9  1e12 1e15 1e18 1e21 1e21*H 2e20*H 1e21/J 1e21/V  1e5cv     1e7cv   1e-3/K     1e-6/K    1e-9/K;        # 2 - mHz
+        1 1   1   1e3 1e6  1e9  1e12 1e15 1e18 1e18*H 2e17*H 1e18/J 1e18/V  1e2cv     1e5cv   1/K        1e-3/K    1e-6/K;        # 3 - Hz
+        1 1   1   1   1e3  1e6  1e9  1e12 1e15 1e15*H 2e14*H 1e15/J 1e15/V  1e-1cv    1e1cv   1e3/K      1/K       1e-3/K;        # 4 - kHz
+        1 1   1   1   1    1e3  1e6  1e9  1e12 1e12*H 2e11*H 1e12/J 1e12/V  1e-4cv    1e-2cv  1e6/K      1e3/K     1/K;           # 5 - MHz
+        1 1   1   1   1    1    1e3  1e6  1e9  1e9*H  2e8*H  1e9/J  1e9/V   1e-7cv    1e-5cv  1e9/K      1e6/K     1e3/K;         # 6 - GHz
+        1 1   1   1   1    1    1    1e3  1e6  1e6*H  2e5*H  1e6/J  1e6/V   1e-10cv   1e-8cv  1e12/K     1e9/K     1e6/K;         # 7 - THz
+        1 1   1   1   1    1    1    1    1e3  1e3*H  2e2*H  1e3/J  1e3/V   1.e-13cv  1e-11cv 1e15/K     1e12/K    1e9/K;         # 8 - PHz
+        1 1   1   1   1    1    1    1    1    H      0.5*H  1/J    1/V     1.e-16cv  1e-14cv 1e18/K     1e15/K    1e12/K;        # 9 - EHz
+        1 1   1   1   1    1    1    1    1    1      0.5    1/Ehv  ev/Ehv  100hc/Ehv hc/Ehv  kBv/Ehv    1e-3kBv/Ehv 1e-6kBv/Ehv; # 10 - Hartree
+        1 1   1   1   1    1    1    1    1    1      1      2/Ehv  2ev/Ehv 200hc/Ehv 2hc/Ehv 2kBv/Ehv   2e-3kBv/Ehv 2e-6kBv/Ehv; # 11 - Rydberg
+        1 1   1   1   1    1    1    1    1    1      1      1      e.val   100hc     hc      kBv        1e-3kBv     1e-6kBv;     # 12 - Joule
+        1 1   1   1   1    1    1    1    1    1      1      1      1       100hc/ev  hc/ev   kBv/ev     1e-3kBv/ev  1e-6kBv/ev;  # 13 - eV
+        1 1   1   1   1    1    1    1    1    1      1      1      1       1         0.01    0.01kBv/hc 1e-5kBv/hc  1e-8kBv/hc ; # 14 cm-1
+        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1       kBv/hc     1e-3kBv/hc  1e-6kBv/hc;  # 15 m-1
+        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1e-3        1e-6;        # 16 K
+        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1e-3;        # 17 mK
+        1 1   1   1   1    1    1    1    1    1      1      1      1       1         1          1       1           1]           # 18 μK
 
     N = Int(sqrt(length(M)))
 
@@ -383,7 +390,7 @@ end
 @doc raw"""
     convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
 
-Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, J eV, cm-1, K, mK μK
+Unit conversion between μHz,⋯ EHz, Hartree, Rydberg, J eV, cm-1, m-1, K, mK μK
 
 default input: Hartree
 
@@ -412,6 +419,7 @@ function convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
             Base.push!(U,"J")
             Base.push!(U,"eV")
             Base.push!(U,"cm-1")
+            Base.push!(U,"m-1")
             Base.push!(U,"K")
             Base.push!(U,"mK")
             Base.push!(U,"μK")
@@ -443,7 +451,7 @@ function convertUnit(val, codata; unitIn="Hartree", unitOut="xHz")
     
         return Value(w[i],unitOut)
     
-    end
+end
 
 # ============ calibrationReport(E, Ecal; unitIn="Hartree") ====================
 
