@@ -142,7 +142,7 @@ l & k & l\\
 0 & 0 & 0
 \end{array}\right)^{2}=\delta_{k,0},
 ```
-where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the average ``A^{k}(l)`` turns out to be *independent of* ``l``.
+where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the shell average ``A^{k}(l)`` is *independent of* ``l``.
 #### Example:
 ```
 julia> l=2; wl=2(2l+1);
@@ -177,12 +177,12 @@ l & k & l^{\prime}\\
 0 & 0 & 0
 \end{array}\right)^{2}
 ```
-where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the average ``B^{k}(l,l^{\prime})`` turns out to be *independent of* ``m_{l^{\prime}}``.
+where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the shell average ``B^{k}(l,l^{\prime})`` is *independent of* ``m_{l^{\prime}}``.
 #### Example:
 ```
 julia> l = 2; l′=3; wl=2(2l+1);
 
-julia> [B_exchange(k, l, l′) for k=0:5] == [0, 3//70, 0, 2//105, 0, 5//231]
+julia> [B_exchange(k, l, l′) for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
 true
 
 julia> [sum([b_exchange(k, l, ml, l′, 0) for ml=-l:l])//wl for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]

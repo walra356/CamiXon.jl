@@ -209,7 +209,7 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     l = 2; l′=3; wl=2(2l+1);
     @test [A_direct(k,l) for k=0:2l] == [1,0,0,0,0]
     @test [sum([2a_direct(k, l, ml, l, 0) for ml=-l:l])//wl for k=0:2l] == [1,0,0,0,0]
-    @test [B_exchange(k, l, l′) for k=0:5] == [0, 3//70, 0, 2//105, 0, 5//231]
+    @test [B_exchange(k, l, l′) for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
     @test [sum([b_exchange(k, l, ml, l′, 0) for ml=-l:l])//wl for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
     @test autoRmax(atom, 1; rmax=84.0) == 84.0 #63.0
     @test autoNtot(1) == 500
