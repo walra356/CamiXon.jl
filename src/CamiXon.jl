@@ -92,7 +92,9 @@ export castShells
 export Term
 export castTerm
 export a_direct
+export A_direct
 export b_exchange
+export B_exchange
 
 export UFk
 export UGk

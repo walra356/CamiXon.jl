@@ -206,6 +206,9 @@ println("CamiXon.jl | 163 runtests | runtime 40s (estimated) | start")
     @test b_exchange(1, 1, 1, 2, 2) == 2 // 5
     @test a_direct(6, 3, 2, 3, -1) == -250 // 20449
     @test b_exchange(6, 3, 2, 3, -1) == 1050 // 20449
+    l = 2; l′=3; wl=2(2l+1);
+    @test [sum([2*a_direct(k, l, ml, l, 0) for ml=-l:l])//wl for k=0:2l] == [1,0,0,0,0]
+    @test [sum([b_exchange(k, l, ml, l′, 0) for ml=-l:l])//wl for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
     @test autoRmax(atom, 1; rmax=84.0) == 84.0 #63.0
     @test autoNtot(1) == 500
     @test autoPrecision(100.0, 0) == Float64

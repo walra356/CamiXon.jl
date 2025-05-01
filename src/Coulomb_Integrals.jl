@@ -127,6 +127,77 @@ function b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 
 end
 
+# ------------------------------------------------------------------------------
+#           A_direct(k::Int, l::Int)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    A_direct(k::Int, l::Int)
+
+Shell-averaged Coulomb angular integral - direct part:
+
+```math
+A^{k}(l)=\frac{1}{w_{l}}\sum_{m_{l}=-l}^{l}2a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=\frac{2l+1}{4l+1}\left(\begin{array}{ccc}
+l & k & l\\
+0 & 0 & 0
+\end{array}\right)^{2}=\delta_{k,0},
+```
+where  ``w_{l}=2(2l+1)`` the number of electrons in the closed shell ``nl^[w_l]``.
+#### Example:
+```
+julia> l=2; wl=2(2l+1);
+
+julia> [A_direct(k,l) for k=0:2l] == [1,0,0,0,0]
+true
+
+julia> [sum([2a_direct(k, l, ml, l, 0) for ml=-l:l])//wl for k=0:4] == [1,0,0,0,0]
+true
+```
+"""
+function A_direct(k::Int, l::Int)
+
+    o = iszero(k) ? 1 : 0
+
+    return o
+
+end
+
+# ------------------------------------------------------------------------------
+#           B_exchange(k::Int, l::Int, l′::Int)
+# ------------------------------------------------------------------------------
+
+@doc raw"""
+    B_exchange(k::Int, l::Int, l′::Int)
+
+Shell-averaged Coulomb angular integral - exchange part:
+
+```math
+\tfrac{1}{2}\left(\begin{array}{ccc}
+l & k & l^{\prime}\\
+0 & 0 & 0
+\end{array}\right)^{2}
+```
+#### Example:
+```
+julia> l = 2; l′=3; wl=2(2l+1);
+
+julia> [B_exchange(k, l, l′) for k=0:5] == [0, 3//70, 0, 2//105, 0, 5//231]
+true
+
+julia> [sum([b_exchange(k, l, ml, l1, 0) for ml=-l:l])//wl for k=0:(l+l1)] == [0, 3//70, 0, 2//105, 0, 5//231]
+true
+```
+"""
+function B_exchange(k::Int, l::Int, l′::Int)
+
+    o = rationalize(CamiMath.threeJsymbol(l,0, k, 0, l′, 0; msg=false)^2)//2
+
+    return o
+
+end
+
+
+
 # ======================== UGk(k, Z, grid) ===================================
 
 @doc raw"""
@@ -269,7 +340,7 @@ function UF(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P2::Vector{T}, grid::C
     
 end
 
-# ========================  UG(spinorbit1, spinorbit2, P, grid) ===================================
+# ========================  UG(spinorbit1, spinorbit2, P1, P2, grid) ===================================
 
 @doc raw"""
     UG(spinorbit1::Spinorbit, spinorbit2::Spinorbit, P1::Vector{T}, P2::Vector{T}, grid::CamiDiff.Grid{T}) where T<:Real
@@ -277,7 +348,7 @@ end
 Potential of *exchange* screening of two electrons with (reduced) wavefunctions `P1` and `P2`,
 corresponding to the electronic orbitals `orbit1` and `orbit2`.
 
-NB.  `UF(spinorbit1, spinorbit2, P1, P2, grid)` = `UF(spinorbit2, spinorbit1, P1, P2, grid)`
+NB.  `UG(spinorbit1, spinorbit2, P1, P2, grid)` = `UG(spinorbit2, spinorbit1, P1, P2, grid)`
 ```math
 U_{G}(u_{\kappa},u_{\kappa^{\prime}};\rho)
 ={\textstyle \sum\limits_{k=0}^{\infty}}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})U_{G}^{k}(nl,n^{\prime}l^{\prime};\rho).

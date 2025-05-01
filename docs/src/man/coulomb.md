@@ -5,6 +5,8 @@
 ```@docs
 a_direct(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
 b_exchange(k::Int, l::Int, ml::Int, l′::Int, ml′::Int)
+A_direct(k::Int, l::Int)
+B_exchange(k::Int, l::Int, l′::Int)
 ```
 
 ## Radial integrals
