@@ -142,7 +142,7 @@ l & k & l\\
 0 & 0 & 0
 \end{array}\right)^{2}=\delta_{k,0},
 ```
-where  ``w_{l}=2(2l+1)`` the number of electrons in the closed shell ``nl^[w_l]``.
+where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the average ``A^{k}(l)`` turns out to be *independent of* ``l``.
 #### Example:
 ```
 julia> l=2; wl=2(2l+1);
@@ -172,11 +172,12 @@ end
 Shell-averaged Coulomb angular integral - exchange part:
 
 ```math
-\tfrac{1}{2}\left(\begin{array}{ccc}
+B^{k}(l,l^{\prime})=\frac{1}{w_{l}}\sum_{m_{l}=-l}^{l}b^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=\tfrac{1}{2}\left(\begin{array}{ccc}
 l & k & l^{\prime}\\
 0 & 0 & 0
 \end{array}\right)^{2}
 ```
+where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the average ``B^{k}(l,l^{\prime})`` turns out to be *independent of* ``m_{l^{\prime}}``.
 #### Example:
 ```
 julia> l = 2; l′=3; wl=2(2l+1);
@@ -184,7 +185,7 @@ julia> l = 2; l′=3; wl=2(2l+1);
 julia> [B_exchange(k, l, l′) for k=0:5] == [0, 3//70, 0, 2//105, 0, 5//231]
 true
 
-julia> [sum([b_exchange(k, l, ml, l1, 0) for ml=-l:l])//wl for k=0:(l+l1)] == [0, 3//70, 0, 2//105, 0, 5//231]
+julia> [sum([b_exchange(k, l, ml, l′, 0) for ml=-l:l])//wl for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
 true
 ```
 """
