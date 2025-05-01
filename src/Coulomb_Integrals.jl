@@ -140,7 +140,7 @@ Shell-averaged Coulomb angular integral - direct part:
 A^{k}(l)=\frac{1}{w_{l}}\sum_{m_{l}=-l}^{l}2a^{k}(lm_{l};l^{\prime}m_{l^{\prime}})=\frac{2l+1}{4l+1}\left(\begin{array}{ccc}
 l & k & l\\
 0 & 0 & 0
-\end{array}\right)^{2}=\delta_{k,0},
+\end{array}\right)^{2}\!\!=\delta_{k,0},
 ```
 where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the shell average ``A^{k}(l)`` is *independent of* ``l``.
 #### Example:
@@ -180,7 +180,7 @@ l & k & l^{\prime}\\
 where  ``w_{l}=2(2l+1)`` is the number of electrons in the closed shell ``(nl)^{w_l}``. Note that the shell average ``B^{k}(l,l^{\prime})`` is *independent of* ``m_{l^{\prime}}``.
 #### Example:
 ```
-julia> l = 2; l′=3; wl=2(2l+1);
+julia> l = 2; l′= 3; wl = 2(2l+1);
 
 julia> [B_exchange(k, l, l′) for k=0:(l+l′)] == [0, 3//70, 0, 2//105, 0, 5//231]
 true
