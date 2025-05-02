@@ -137,8 +137,8 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     scr = zeros(grid.T, grid.N);
     scr[1] = 0.1;
     def = castDef(grid, atom, spinorbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=true);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
+    def, adams, inE, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=true);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1e-15, msg=true);
     @test isapprox(ZH9f_generic, Z; rtol=1e-4)
 #   ---------------------------------------------------------------------------------------- 
     println("--- ¹H:[n=30, ℓ=29] ---" * repeat('-', 39))
@@ -148,8 +148,8 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     ZH3029_generic = hydrogenic_reduced_wavefunction(atom, spinorbit, grid);
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, spinorbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-16, msg=false);
+    def, adams, inE, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1e-16, msg=false);
     @test isapprox(ZH3029_generic, Z; rtol=1e-6)
 #   ---------------------------------------------------------------------------------------- 
     println("--- H2p ---" * repeat('-', 39))
@@ -164,8 +164,8 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     @test RH2p_example ≈ RH2p_generic 
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, spinorbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-15, msg=false);
+    def, adams, inE, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1.0e-15, msg=false);
     @test isapprox(ZH2p_generic, Z; rtol=1e-5)
 #   ---------------------------------------------------------------------------------------- 
     println("--- H2s ---" * repeat('-', 39))
@@ -181,8 +181,8 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     E=0;
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, spinorbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1.0e-20, msg=false);
+    def, adams, inE, Z = adams_moulton_nodes(E, scr, grid, def; imax=25, msg=false);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1.0e-20, msg=false);
     @test isapprox(ZH2s_generic, Z; rtol=1e-5)
 #   ---------------------------------------------------------------------------------------- 
     println("--- H1s ---" * repeat('-', 39))
@@ -197,9 +197,9 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     @test isapprox(RZH1s_example, RZH1s_generic; rtol=1e-6)
     scr = zeros(grid.T, grid.N);
     def = castDef(grid, atom, spinorbit, codata);
-    def, adams, init, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=5, ϵ=1e-15, msg=false);
-    def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
+    def, adams, inE, Z = adams_moulton_nodes(0, scr, grid, def; imax=25, msg=false);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=5, ϵ=1e-15, msg=false);
+    def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=50, ϵ=1e-25, msg=false);
     @test isapprox(ZH1s_generic, Z; rtol=1e-5)
 #   ---------------------------------------------------------------------------------------- 
     @test a_direct(2, 1, 1, 2, 2) == 2 // 35

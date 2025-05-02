@@ -369,77 +369,77 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    init = castInit(E, def)     # init =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    inE = castEin(E, def)     # inE =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
 
-    adams = castAdams(init.E, grid, def)
+    adams = castAdams(inE.E, grid, def)
     
     Z = zeros(Complex{grid.T}, grid.N)  
 
-    adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams)
+    adams, ΔE, Z = adams_moulton_solve!(Z, inE.E, grid, def, adams)
     nodes = def.pos.nodes
     if msg
-        str =  Printf.@sprintf "%.20g, " init.Emin 
-        str *= Printf.@sprintf "%.20g, " init.E
-        str *= Printf.@sprintf "%.20g, " init.Emax
-        str *= Printf.@sprintf "%.4g" init.ΔE
-        println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - init = (" * str * ")")
+        str =  Printf.@sprintf "%.20g, " inE.Emin 
+        str *= Printf.@sprintf "%.20g, " inE.E
+        str *= Printf.@sprintf "%.20g, " inE.Emax
+        str *= Printf.@sprintf "%.4g" inE.ΔE
+        println("\n--- adams_moulton_nodes!:\nstart solution: $(nodes) nodes - inE = (" * str * ")")
         print("start node search:    count = ")
     end
     
     i = 0
     while def.pos.nodes ≠ n′
         msg && print(def.pos.nodes, ",")
-        adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams) # init.ΔE not used for nodes ≠ n′
-        init = init!(init, T(0), def)
+        adams, ΔE, Z = adams_moulton_solve!(Z, inE.E, grid, def, adams) # inE.ΔE not used for nodes ≠ n′
+        inE = inE!(inE, T(0), def)
         i += 1
         i < imax || break
     end
 
     Q = imag(Z)
-    E = init.E
+    E = inE.E
 
     while sign(Q[def.pos.Nuctp-2]) ≠ sign(Q[def.pos.Nuctp+2])
         E *= T(0.9)
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
         Q = imag(Z)
-        init.E = def.pos.nodes == n′ ? E : init.E/T(0.9)
+        inE.E = def.pos.nodes == n′ ? E : inE.E/T(0.9)
         i += 1
         i < imax || break
     end
 
-    adams, ΔE, Z = adams_moulton_solve!(Z, init.E, grid, def, adams)
+    adams, ΔE, Z = adams_moulton_solve!(Z, inE.E, grid, def, adams)
 
     nodes = def.pos.nodes
     
     nodes == n′ || println("nodes failed")   
 
-    init.ΔE = ΔE  # ΔE from here on in use for reporting only (nodes == n′)
+    inE.ΔE = ΔE  # ΔE from here on in use for reporting only (nodes == n′)
     
     if msg
         str1 = nodes == n′ ? "$(nodes) - node search completed\n" : error("Error: after $i iterations nodes = $(nodes) - should be $(n′) (increase imax?)")
-        str =  Printf.@sprintf "%.20g, " init.Emin 
-        str *= Printf.@sprintf "%.20g, " init.E
-        str *= Printf.@sprintf "%.20g, " init.Emax
-        str *= Printf.@sprintf "%.4g" init.ΔE
-        println(str1 * "initiate ΔE: $(nodes) nodes - init = (" * str * ")")
+        str =  Printf.@sprintf "%.20g, " inE.Emin 
+        str *= Printf.@sprintf "%.20g, " inE.E
+        str *= Printf.@sprintf "%.20g, " inE.Emax
+        str *= Printf.@sprintf "%.4g" inE.ΔE
+        println(str1 * "initiate ΔE: $(nodes) nodes - inE = (" * str * ")")
     end
     
     t2 = time()
-    adams_moulton_report_nodes(i, init, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
+    adams_moulton_report_nodes(i, inE, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
 
-    return def, adams, init, Z
+    return def, adams, inE, Z
 
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#            adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-6, msg=true)
+#            adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1e-6, msg=true)
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+    adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
 """
-function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1.0e-6, msg=true) where T<:Real
+function adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1.0e-6, msg=true) where T<:Real
     
     t1 = time()
 
@@ -449,16 +449,16 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     #pot = def.potscr
 
     if msg
-        str =  Printf.@sprintf "%.20g, " init.Emin 
-        str *= Printf.@sprintf "%.20g, " init.E
-        str *= Printf.@sprintf "%.20g, " init.Emax
-        str *= Printf.@sprintf "%.4g" init.ΔE
-        println("\n--- adams_moulton_iterate!:\nresume solution: $(nodes) nodes - init = (" * str * ")")
+        str =  Printf.@sprintf "%.20g, " inE.Emin 
+        str *= Printf.@sprintf "%.20g, " inE.E
+        str *= Printf.@sprintf "%.20g, " inE.Emax
+        str *= Printf.@sprintf "%.4g" inE.ΔE
+        println("\n--- adams_moulton_iterate!:\nresume solution: $(nodes) nodes - inE = (" * str * ")")
     end
     
-    Emin = init.Emin
-    E = init.E
-    Emax = init.Emax
+    Emin = inE.Emin
+    E = inE.E
+    Emax = inE.Emax
     ΔE = 1.1e-3 * E
 
    (Emin ≤ E ≤ Emax) || error("Error: Emin ≤ E ≤ Emax interval violated")     
@@ -466,8 +466,8 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     i = 0
     while abs(ΔE/E) > 1e-3 # convergence goal
         adams, ΔE, Z = adams_moulton_solve!(Z, E, grid, def, adams)
-        init = init!(init, ΔE, def)
-        E = init.E
+        inE = inE!(inE, ΔE, def)
+        E = inE.E
         i += 1
         i < imax || break
     end
@@ -475,51 +475,51 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, init::Init{T}, grid::Cami
     while abs(big(ΔE)/big(E)) > ϵ # convergence goal
         ref = abs(ΔE)
         adams, ΔE, Z = adams_moulton_solve_refine!(Z, E, grid, def, adams)
-        init = init!(init, ΔE, def)
-        E = init.E
+        inE = inE!(inE, ΔE, def)
+        E = inE.E
         i += 1
         i < imax || break
         abs(ΔE) < ref || break
     end
     
     if msg
-        str =  Printf.@sprintf "%.20g, " init.Emin 
-        str *= Printf.@sprintf "%.20g, " init.E
-        str *= Printf.@sprintf "%.20g, " init.Emax
-        str *= Printf.@sprintf "%.4g" init.ΔE
-        println(                        "     upgrade ΔE: $(nodes) nodes - init = (" * str * ")")
+        str =  Printf.@sprintf "%.20g, " inE.Emin 
+        str *= Printf.@sprintf "%.20g, " inE.E
+        str *= Printf.@sprintf "%.20g, " inE.Emax
+        str *= Printf.@sprintf "%.4g" inE.ΔE
+        println(                        "     upgrade ΔE: $(nodes) nodes - inE = (" * str * ")")
     end
     
     t2 = time()
-    adams_moulton_report_iterate(i, imax, init, ϵ, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
+    adams_moulton_report_iterate(i, imax, inE, ϵ, grid, def, _strΔt(t2,t1); unitIn="Hartree", msg)
     msg && println("grid range and special points: rmax = $(round(Float64(grid.r[grid.N]))) a.u.:  " * listPos(def.pos) )
     
-    return def, adams, init, Z
+    return def, adams, inE, Z
 
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#          adams_moulton_report_nodes(it::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+#          adams_moulton_report_nodes(it::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+    adams_moulton_report_nodes(i::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
 """
-function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+function adams_moulton_report_nodes(i::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
-    ΔE = init.ΔE
+    ΔE = inE.ΔE
     Δf = convertUnit(abs(ΔE), def.codata)
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
-    strΔErel = repr(ΔE/init.E, context=:compact => true)
+    strΔErel = repr(ΔE/inE.E, context=:compact => true)
     n′= def.spinorbit.n′
     n = def.pos.nodes
 
     str = "\nadams_moulton_nodes: report for " * _defspecs(grid, def) * " (using $T)\n"
     str *= n == n′ ? "target of $n nodes achieved after $(i) iterations in " * strΔT * "\n" :
                      "found $n nodes in $(i) iterations - Error: $(n′) nodes expected - increase imax and/or N\n" 
-    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
+    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" inE.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative precision: ΔE/E = " * strΔErel * ""                   :
@@ -530,22 +530,22 @@ function adams_moulton_report_nodes(i::Int, init::Init{T}, grid::CamiDiff.Grid{T
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#          adams_moulton_report_iterate(i, init, ϵ, grid, def::Def{T}, strΔT::String; unitIn="Hartree", ϵ, msg=true)
+#          adams_moulton_report_iterate(i, inE, ϵ, grid, def::Def{T}, strΔT::String; unitIn="Hartree", ϵ, msg=true)
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+    adams_moulton_report_iterate(i::Int, imax::Int, inE::Ein{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
 """
-function adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+function adams_moulton_report_iterate(i::Int, imax::Int, inE::Ein{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
     ϵ = T(ϵ)
-    ΔE = init.ΔE
-    ϵv = abs(ΔE/init.E)
+    ΔE = inE.ΔE
+    ϵv = abs(ΔE/inE.E)
     Δf = convertUnit(abs(ΔE), def.codata)
     strΔf = " (" * strValue(Δf) * ")"
     strΔE = repr(ΔE, context=:compact => true)
-    strΔErel = repr(ΔE/init.E, context=:compact => true)
+    strΔErel = repr(ΔE/inE.E, context=:compact => true)
     n′= def.spinorbit.n′
     n = def.pos.nodes
     strNodes = n′ == n ? "Passed node test ($n nodes); " : "Failed nodes test ($(n′) ≠ $n); "
@@ -557,7 +557,7 @@ function adams_moulton_report_iterate(i::Int, imax::Int, init::Init{T}, ϵ, grid
         str *= i == imax ? ("Warning: stopped at i=imax=$(i) after " * strΔT * " - failed to reach covergence goal ($(Float64(ϵv)) > ϵ = $(Float64(ϵ))) - increase imax and/or N (or increase ϵ)\n") : 
                            ("Warning: reached numerical resolution limit ($(Float64(ϵv))) after $(i) iterations in " * strΔT * " - consider BigFloat resolution\n")
     end
-    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" init.E unitIn
+    str *= Printf.@sprintf "    binding energy: E = %.20g %s \n" inE.E unitIn
     str *= ΔE ≠ 0 ? "absolute precision: ΔE = " * strΔE * " " * unitIn * strΔf * "\n" :
                     "absolute precision: ΔE = 0 (exact under $T precision)\n"
     str *= ΔE ≠ 0 ? "relative precision: ΔE/E = " * strΔErel * ""                   :
@@ -580,9 +580,9 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    init = castInit(E, def) # init = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    inE = castEin(E, def) # inE = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
     
-    E = init.E
+    E = inE.E
 
     adams = castAdams(E, grid, def)
     

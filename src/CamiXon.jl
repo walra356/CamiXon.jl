@@ -109,9 +109,9 @@ export svp
 export latent_heat_vaporization
 export melting_point
 
-export Init
-export castInit
-export init!
+export Ein
+export castEin
+export inE!
 
 export matG
 export matσ 
@@ -181,7 +181,7 @@ include("thermal-properties.jl")
 include("grid_autoset.jl")
 include("pos.jl")
 include("def.jl")
-include("init.jl")
+include("inE.jl")
 include("hydrogen.jl")
 include("adams.jl")
 include("outsch.jl")

@@ -223,12 +223,12 @@ orbit2 = castOrbit(n=2, ℓ=0; msg=true)
 scr = nothing
 grid = autoGrid(atom, [orbit1,orbit2], Float64; Nboost=1, msg=true)
 def1 = castDef(grid, atom, spinorbit1, codata; scr)
-E = initE(def1)
+E = inEE(def1)
 adams = castAdams(E, grid, def1)
 E, def, adams, Z1 = adams_moulton_master(E, grid, def1, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
 def2 = castDef(grid, atom, spinorbit2, codata; scr)
-E = initE(def2)
+E = inEE(def2)
 adams = castAdams(E, grid, def2)
 E, def, adams, Z2 = adams_moulton_master(E, grid, def2, adams; Δν=Value(1,"kHz"), imax=50, msg=false);
 
@@ -291,8 +291,8 @@ grid = autoGrid(atom, orbit, Float64; msg=true);
 def = castDef(grid, atom, orbit, codata);
 E = 0;
 scr = zeros(grid.T,grid.N);       
-def, adams, init, Z = adams_moulton_nodes(E, scr, grid, def; imax=100, msg=false);
-def, adams, init, Z = adams_moulton_iterate!(Z, init, grid, def, adams; imax=25, ϵ=1e-10, msg=false);
+def, adams, inE, Z = adams_moulton_nodes(E, scr, grid, def; imax=100, msg=false);
+def, adams, inE, Z = adams_moulton_iterate!(Z, inE, grid, def, adams; imax=25, ϵ=1e-10, msg=false);
 P1 = real(Z);
 UF0P1 = UF(0, P1, grid);
 plot_function(scrUF0P1, 1:grid.N, grid; title="He4(1s,1s):  direct screening potential")
