@@ -369,7 +369,7 @@ function adams_moulton_nodes(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, de
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    inE = castEin(E, def)     # inE =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    inE = castInE(E, def)     # inE =(E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
 
     adams = castAdams(inE.E, grid, def)
     
@@ -436,10 +436,10 @@ end
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
+    adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::InE{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1e-6, msg=true) where T<:Real
     
 """
-function adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1.0e-6, msg=true) where T<:Real
+function adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::InE{T}, grid::CamiDiff.Grid{T}, def::Def{T}, adams::Adams{T}; imax=25, ϵ=1.0e-6, msg=true) where T<:Real
     
     t1 = time()
 
@@ -499,14 +499,14 @@ function adams_moulton_iterate!(Z::Vector{Complex{T}}, inE::Ein{T}, grid::CamiDi
 end
 
 # --------------------------------------------------------------------------------------------------------------
-#          adams_moulton_report_nodes(it::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+#          adams_moulton_report_nodes(it::Int, inE::InE{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report_nodes(i::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+    adams_moulton_report_nodes(i::Int, inE::InE{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
 """
-function adams_moulton_report_nodes(i::Int, inE::Ein{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+function adams_moulton_report_nodes(i::Int, inE::InE{T}, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
     ΔE = inE.ΔE
     Δf = convertUnit(abs(ΔE), def.codata)
@@ -534,10 +534,10 @@ end
 # --------------------------------------------------------------------------------------------------------------
 
 @doc raw"""
-    adams_moulton_report_iterate(i::Int, imax::Int, inE::Ein{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+    adams_moulton_report_iterate(i::Int, imax::Int, inE::InE{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
 """
-function adams_moulton_report_iterate(i::Int, imax::Int, inE::Ein{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
+function adams_moulton_report_iterate(i::Int, imax::Int, inE::InE{T}, ϵ, grid::CamiDiff.Grid{T}, def::Def{T}, strΔT::String; unitIn="Hartree", msg=true) where T<:Real
 
     ϵ = T(ϵ)
     ΔE = inE.ΔE
@@ -580,7 +580,7 @@ function test_adams_moulton(E::Real, scr::Vector{T}, grid::CamiDiff.Grid{T}, def
         def.potscr[n] = def.pot[n] + scr[n]
     end
     
-    inE = castEin(E, def) # inE = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
+    inE = castInE(E, def) # inE = (E[Nlctp], E[Nmin], E[Nuctp], ΔE=0.0)
     
     E = inE.E
 

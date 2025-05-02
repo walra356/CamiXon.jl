@@ -21,15 +21,15 @@
 # SOFTWARE.
 
 # ==============================================================================
-#                               init.jl
+#                               inE.jl
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-#                               Ein{T}
+#                               InE{T}
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    Ein{T} where T<:Real
+    InE{T} where T<:Real
 
 Energy object with fields:
 
@@ -38,7 +38,7 @@ Energy object with fields:
 * ` .Emax` : upper energy limit (`::T`)
 * ` .ΔE` : difference with respect to previous E used to calculate current E  (`::T`)
 """
-mutable struct Ein{T}
+mutable struct InE{T}
 
     Emin::T     # lowest allowed energy
     E::T        # trial energy
@@ -48,13 +48,13 @@ mutable struct Ein{T}
 end
 
 # ------------------------------------------------------------------------------
-#                               castEin{T}
+#                               castInE{T}
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    castEin(E::T, def::Def{T}) where T<:Real
+    castInE(E::T, def::Def{T}) where T<:Real
 
-Create and initialize the energy object [`Ein`](@ref) according to the 
+Create and initialize the energy object [`InE`](@ref) according to the 
 specifications given in the [`Def`](@ref) object.
 
 * ` .Emin` : lower energy limit (`::T`)
@@ -62,7 +62,7 @@ specifications given in the [`Def`](@ref) object.
 * ` .Emax` : upper energy limit (`::T`)
 * ` .ΔE` : difference with respect to previous E used to calculate current E  (`::T`)
 """
-function castEin(E::T, def::Def{T}) where T<:Real
+function castInE(E::T, def::Def{T}) where T<:Real
 
     N = def.pos.N
     ℓ = def.spinorbit.ℓ
@@ -80,7 +80,7 @@ function castEin(E::T, def::Def{T}) where T<:Real
         E = (Emin < E < Emax) ? E : iszero(ℓ) ? 10Emax : (Emin+Emax)/two
     end
 
-    return Ein(Emin, E, Emax, nul)
+    return InE(Emin, E, Emax, nul)
         
 end
 
@@ -88,7 +88,7 @@ end
 #                               inE!{T}
 # ------------------------------------------------------------------------------
 
-function inE!(inE::Ein{T}, ΔE::T, def::Def{T}) where T<:Real
+function inE!(inE::InE{T}, ΔE::T, def::Def{T}) where T<:Real
     
     n′= def.spinorbit.n′     # radial quantum number (number of nodes)
     ℓ = def.spinorbit.ℓ

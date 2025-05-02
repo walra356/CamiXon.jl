@@ -109,8 +109,8 @@ export svp
 export latent_heat_vaporization
 export melting_point
 
-export Ein
-export castEin
+export InE
+export castInE
 export inE!
 
 export matG
