@@ -6,7 +6,7 @@ expandConfig(config::String; Err=true)
 formatConfig(config::String; Err=true)
 splitConfig(config::String; Err=true)
 collectConfig(config::String)
-listConfigurations(Q::Int)
+listConfigurations(Z1::Int, Z2::Int; Q=0)
 ```
 
 ## Orbital

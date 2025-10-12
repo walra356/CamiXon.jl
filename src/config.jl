@@ -131,13 +131,16 @@ end
 # ------------------------------------------------------------------------------
 
 @doc raw"""
-    listConfigurations(Q:Int)
+    listConfigurations(Z1::Int, Z2::Int; Q=0)
 
 List of groundstate configurations of atoms with atomic charge `Q`.
 #### Example
 ```
-julia> expandConfig("[Ar]4s¹") == ["1s²", "2s²", "2p⁶", "3s²", "3p⁶", "4s¹"]
-true
+julia> listConfigurations(1:4; Q=0)
+(1, " 1s¹", "1s¹")
+(2, "1s² ", "[He]")
+(3, "1s² 2s¹", "[He]2s¹")
+(4, "1s²2s² ", "[Be]")
 ```
 """
 function listConfigurations(Z1::Int, Z2::Int; Q=0)
