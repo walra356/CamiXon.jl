@@ -47,6 +47,7 @@ println("CamiXon.jl | 166 runtests | runtime 40s (estimated) | start")
     @test collectConfig("[Be]2p⁵") == ["1s↓0", "1s↑0", "2s↓0", "2s↑0", "2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
     @test collectConfig("2p⁵") ==  ["2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
     @test collectConfig("[Be]") ==  ["1s↓0", "1s↑0", "2s↓0", "2s↑0"]
+    
     @test collectConfig("1s²2p¹") == ["1s↓0", "1s↑0", "2p↓-1"]
 
     @test collectSpinorbit("[Be]2p⁵") == collectSpinorbit("1s²2s²2p⁵")
