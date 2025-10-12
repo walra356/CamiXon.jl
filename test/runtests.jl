@@ -9,7 +9,7 @@ using CamiMath
 using LinearAlgebra
 using Test 
 
-println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
+println("CamiXon.jl | 166 runtests | runtime 40s (estimated) | start")
 
 @testset "CamiXon.jl" begin 
     @test CamiMath.frac(-5 // 2) == "-⁵/₂"
@@ -35,20 +35,19 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     @test bohrformula(2, 4) == -1 // 8
     @test get(dictAtomicNumber, "Rb", nothing) == 37
     @test get(dictElement, 37, nothing) == ("rubidium", "Rb", 85.468)
-    @test get(dictIsotope, (10, 21), nothing) ==  ("²¹Ne" , "neon"     ,  10,  21,  11, 2.9695,  20.99384669, 3//2, 1, 1.0e100, -0.6617, 0.1016, 0.27)
+    @test get(dictIsotope, (10, 21), nothing) ==  ("²¹Ne" , "neon"     ,  10,  21,  11, 2.9695,  20.99384669, 3//2, 1, Inf, -0.6617, 0.1016, 0.27)
     @test get(dictAtomicOrbital, "3s", nothing) == (3, 0)
     Z = get(dictAtomicNumber, "Ta", nothing);
     @test get(dictConfiguration, (Z,0), nothing) == "[Yb]5d³"
-    @test get(dictCoreConfiguration, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶5s²4d¹⁰5p⁶6s²4f¹⁴"
+    @test get(dictCoreConfiguration, "[Yb]", nothing) == "1s²2s²2p⁶3s²3p⁶3d¹⁰4s²4p⁶4d¹⁰4f¹⁴5s²5p⁶6s²"
     
-    @test extractCore("[Ar]4s¹") == "1s²2s²2p⁶3s²3p⁶"
-    @test extractValence("[Ar]4s¹") == "4s¹"
-    @test extractValence("1s²2s²2p⁶3s²3p⁶4s¹") == "1s²2s²2p⁶3s²3p⁶4s¹"
+    @test expandConfig("[Ar]4s¹") == ["1s²", "2s²", "2p⁶", "3s²", "3p⁶", "4s¹"]
+    @test formatConfig("[Ar]4s¹") == "1s²2s²2p⁶3s²3p⁶ 4s¹"
 
     @test collectConfig("[Be]2p⁵") == ["1s↓0", "1s↑0", "2s↓0", "2s↑0", "2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
     @test collectConfig("2p⁵") ==  ["2p↓-1", "2p↓0", "2p↓1", "2p↑-1", "2p↑0"]
     @test collectConfig("[Be]") ==  ["1s↓0", "1s↑0", "2s↓0", "2s↑0"]
-    @test collectConfig("1s↑1s↓02p↑-1") == ["1s↑", "1s↓0", "2p↑-1"]
+    @test collectConfig("1s²2p¹") == ["1s↓0", "1s↑0", "2p↓-1"]
 
     @test collectSpinorbit("[Be]2p⁵") == collectSpinorbit("1s²2s²2p⁵")
 
@@ -67,21 +66,21 @@ println("CamiXon.jl | 167 runtests | runtime 40s (estimated) | start")
     @test listElement(1; fmt=Info, msg=false) == "Element: hydrogen\n  symbol: H\n  atomic number: Z = 1\n  atomic weight (relative atomic mass): 1.008"
     @test listElements(1, 3) == listElements(1:3)
     @test listElements(1:2; fmt=String) == ["H, hydrogen, Z=1, weight=1.008", "He, helium, Z=2, weight=4.0026"]
-    @test castIsotope(Z=1, A=1, msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855)
+    @test castIsotope(Z=1, A=1, msg=false) == Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, Inf, 2.792847351, 0.0, 99.9855)
     @test castIsotope("Rb"; A=87, msg=false) == castIsotope(Z=37, A=87, msg=false)
     @test_throws DomainError listIsotope(1,3; fmt=1, msg=false)
     @test listIsotope(2, 3; fmt=Latex) == "2 & helium & \$^{3}\$He & 3\\, & 1 & 1.9661 & 3.016029322 & 1/2\$^+\$ & -2.12762531 & 0.0 & 0.0002 \\\\\n"
-    @test listIsotope(2, 3; fmt=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002%, (stable)"
-    @test listIsotope(1,3; fmt=Info, msg=false) == "Isotope: tritium-3\n  symbol: ³T\n  element: tritium\n  atomic number: Z = 1\n  atomic mass number: A = 3\n  neutron number: N = 2\n  rms nuclear charge radius: R = 1.7591 fm\n  atomic mass: M = 3.016049281 amu\n  nuclear spin: I = 1/2 ħ\n  parity of nuclear state: π = even\n  nuclear magnetic dipole moment: μI = 2.97896246 μN\n  nuclear electric quadrupole moment: Q = 0.0 barn\n  relative abundance: RA = trace\n  lifetime: 12.33 years"
+    @test listIsotope(2, 3; fmt=String) == "³He, helium, Z=2, A=3, N=1, R=1.9661, M=3.016029322, I=1/2⁺, μI=-2.12762531, Q=0.0, RA=0.0002, (stable)"
+    @test listIsotope(1,3; fmt=Info, msg=false) == "Isotope: tritium-3\n  symbol: ³T\n  element: tritium\n  atomic number: Z = 1\n  atomic mass number: A = 3\n  neutron number: N = 2\n  rms nuclear charge radius: R = 1.7591 fm\n  atomic mass: M = 3.016049281 amu\n  nuclear spin: I = 1/2 ħ\n  parity of nuclear state: π = even\n  nuclear magnetic dipole moment: μI = 2.97896246 μN\n  nuclear electric quadrupole moment: Q = 0.0 barn\n  relative abundance: RA = 'trace'\n  lifetime: 12.33 yr"
     @test listIsotopes(1,3) == listIsotopes(1:3)
     @test_throws DomainError listAtom(1,3,0; fmt=Latex)
     @test listAtom("H", 3, 0) == listAtom(1, 3, 0)
-    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2, config=[bare nucleus]"
-    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2\n  electron configuration: [bare nucleus]"
+    @test listAtom(1, 3, 1; fmt=String) == "tritium ion, ³Tᐩ, Z=1, A=3, Q=1, Zc=2, config=bare nucleus"
+    @test listAtom(1, 3, 1; fmt=Info, msg=false) == "Atom: tritium ion\n  symbol: ³Tᐩ\n  atomic charge: Z = 1\n  Rydberg charge: Zc = 2\n  electron configuration: bare nucleus"
     @test listAtoms(2:2, 0; fmt=String) == Any["helium, neutral atom, ³He, Z=2, A=3, Q=0, Zc=1, config=[He]", "helium, neutral atom, ⁴He, Z=2, A=4, Q=0, Zc=1, config=[He]"]
     @test castAtom("Rb"; A=87, Q=0, msg=false) == castAtom(Z=37, A=87, Q=0, msg=false)
 #   ---------------------------------------------------------------------------------
-    @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, 1.0e100, 2.792847351, 0.0, 99.9855), "1s¹")
+    @test castAtom(Z=1, A=1, Q=0, msg=true) == Atom(1, 1, 0, 1, Element("hydrogen", "H", 1.008), Isotope("¹H", "hydrogen", 1, 1, 0, 0.8783, 1.007825032, 1 // 2, 1, Inf, 2.792847351, 0.0, 99.9855), "1s¹")
     @test castOrbit("2s"; msg=true) == Orbit("2s", 2, 1, 0, 0)
 
     @test castTerm(1; ℓ=0, S=1 // 2, L=0, J=1 // 2, msg=true) == Term("1s ²S₁⸝₂", 1, 0, 0, 1 // 2, 0, 1 // 2)

@@ -62,9 +62,12 @@ export dictMeltingPoint
 export dictCoreConfiguration
 export dictConfiguration
 
-export extractCore
-export extractValence
+export splitConfig
+export expandConfig
+export formatConfig
 export collectConfig
+export listConfigurations
+
 export collectSpinorbit
 
 export bohrformula
@@ -177,6 +180,8 @@ include("element.jl")
 include("isotope.jl")
 include("atom.jl")
 include("orbit.jl")
+include("shell.jl")
+include("config.jl")
 include("thermal-properties.jl")
 include("grid_autoset.jl")
 include("pos.jl")

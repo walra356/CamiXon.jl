@@ -2,9 +2,11 @@
 
 ## Configuration tools
 ```@docs
-extractCore(config::String)
-extractValence(config::String)
+expandConfig(config::String; Err=true)
+formatConfig(config::String; Err=true)
+splitConfig(config::String; Err=true)
 collectConfig(config::String)
+listConfigurations(Q::Int)
 ```
 
 ## Orbital

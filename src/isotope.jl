@@ -59,9 +59,24 @@ struct Isotope                     # Isotopic properties
      T½::Float64                   # lifetime (years)
      mdm::Float64                  # nuclear magnetic dipole moment
      eqm::Union{Float64, Nothing}  # nuclear electric quadrupole moment
-     ra::Union{Float64, Nothing}   # relative abundance (%)
+     ra::Union{Float64, String}    # relative abundance (%)
 end
 
+# ..............................................................................
+function _tlist(t::Float64)
+
+    d = 1/365
+    h = 1/365/24
+    m = 1/365/24/60
+    s = 1/365/24/3600
+
+    o = t > 1 ? (Printf.@sprintf "%.4g %s" t "yr") : 
+        t > d ? (Printf.@sprintf "%.4g %s" t/d "day") :
+        t > h ? (Printf.@sprintf "%.4g %s" t/h "hr") :
+        t > m ? (Printf.@sprintf "%.4g %s" t/m "min") : (Printf.@sprintf "%.4g %s" t/m "sec") 
+
+    return o
+end
 # ..............................................................................
 function _stdIsotope(Z::Int, A::Int)
 
@@ -79,8 +94,7 @@ function _strIsotope(Z::Int, A::Int)
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "⁺" : "⁻"
-    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra) * "%"
-    strT½ = isotope.T½ == 1e100 ? "stable" : "radioactive"
+    strT½ = isinf(isotope.T½) ? "(stable)" : "T½=" * _tlist(isotope.T½)
 
     str = isotope.symbol
     str *= ", " * isotope.name
@@ -92,13 +106,14 @@ function _strIsotope(Z::Int, A::Int)
     str *= ", I=" * strRational(isotope.I) * strπ
     str *= ", μI=" * repr(isotope.mdm)
     str *= ", Q=" * repr(isotope.eqm)
-    str *= ", RA=" * strRA
-    str *= ", (" * strT½ * ")"
+    str *= ", RA=" * string(isotope.ra)
+    str *= ", " * strT½
 
     return str
 
 end
 # ..............................................................................
+    
 function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope properties
 
     dict = dictIsotope
@@ -107,8 +122,7 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
 
     strπ = isotope.π == 1 ? "\$^+\$" : "\$^-\$"
     name = isotope.name
-    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra)
-    strT½ = isotope.T½ == 1e100 ? "\\," : "*\$\\!\\!\$"
+    strT½ = isinf(isotope.T½) ? "\\," : "*\$\\!\\!\$"
     symbol = name=="deuterium" ? "D" : name=="tritium" ? "T" : symbol
 
     str = indent ? "" : repr(isotope.Z)
@@ -121,7 +135,7 @@ function _texIsotope(Z::Int, A::Int; indent=false)              # Isotope proper
     str *= " & " * strRational(isotope.I) * strπ
     str *= " & " * repr(isotope.mdm)
     str *= " & " * repr(isotope.eqm)
-    str *= " & " * strRA
+    str *= " & " * string(isotope.ra)
     str *= " \\\\\n"
 
     return str
@@ -134,8 +148,7 @@ function _infoIsotope(Z::Int, A::Int, msg=true)
     isotope = (Z, A) ∈ keys(dict) ? castIsotope(;Z, A, msg=false) : return nothing
 
     strπ = isotope.π == 1 ? "even" : "odd"
-    strRA = isnothing(isotope.ra) ? "trace" : repr(isotope.ra) * "%"
-    strT½ = isotope.T½ == 1e100 ? "stable" : repr(isotope.T½) * " years"
+    strT½ = isinf(isotope.T½) ? "stable" : _tlist(isotope.T½)
 
     str = "Isotope: " * isotope.name * "-" * repr(isotope.A)
     str *= "\n  symbol: " * isotope.symbol
@@ -149,7 +162,7 @@ function _infoIsotope(Z::Int, A::Int, msg=true)
     str *= "\n  parity of nuclear state: π = " * strπ
     str *= "\n  nuclear magnetic dipole moment: μI = " * repr(isotope.mdm) * " μN"
     str *= "\n  nuclear electric quadrupole moment: Q = " * repr(isotope.eqm) * " barn"
-    str *= "\n  relative abundance: RA = " * strRA
+    str *= "\n  relative abundance: RA = " * string(isotope.ra)
     str *= "\n  lifetime: " * strT½
 
     msg && println(str)
@@ -180,7 +193,7 @@ Isotope: tritium-3
   nuclear magnetic dipole moment: μI = 2.97896246 μN
   nuclear electric quadrupole moment: Q = 0.0 barn
   relative abundance: RA = trace
-  lifetime: 12.33 years
+  lifetime: 12.33 yr
 ```
 """
 function listIsotope(Z::Int, A::Int; fmt=Object, msg=true)
