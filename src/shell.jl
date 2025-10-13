@@ -201,74 +201,74 @@ end
 #                       Core(name, N, n, ℓ)
 # ------------------------------------------------------------------------------
 
-@doc raw"""
-    Core(name, shells)
+#@doc raw"""
+#    Core
 
-Type for specification of electron core [`Core`](@ref) with fields:
-* `.name`: core configuration (`::String`)
-* `.count`: number of shells (`::Int`)
-* `.n`: array of shell principal quantum numers (`Vector{Int}`)
-* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
-* `.shell`: Array of Shells (`::Vector{Shell}`)
+#Type for specification of electron core [`Core`](@ref) with fields:
+#* `.name`: core configuration (`::String`)
+#* `.count`: number of shells (`::Int`)
+#* `.n`: array of shell principal quantum numers (`Vector{Int}`)
+#* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
+#* `.shell`: Array of Shells (`::Vector{Shell}`)
 
-The type `Core` is best created with the function `castCore`.
-"""
-struct Core
+#The type `Core` is best created with the function `castCore`.
+#"""
+#struct Core
     
-    name::String
-    count::Int
-    n::Vector{Int}
-    ℓ::Vector{Int}
-    shell::Vector{Shell}
-    
-end
+#    name::String
+#    count::Int
+#    n::Vector{Int}
+#    ℓ::Vector{Int}
+#    shell::Vector{Shell}
+#    
+#end
 
-@doc raw"""
-    castCore(name::String; msg=false)
-
-Create configuration of closed electron [`Shell`](@ref)s with fields:
-* `.name`: core configuration (`::String`)
-* `.count`: number of shells (`::Int`)
-* `.n`: array of shell principal quantum numers (`Vector{Int}`)
-* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
-* `.shell`: Array of Shells (`::Vector{Shell}`)
+#@doc raw"""
+#    castCore(name::String; msg=false)
+#
+#Create configuration of closed electron [`Shell`](@ref)s with fields:
+#* `.name`: core configuration (`::String`)
+#* `.count`: number of shells (`::Int`)
+#* `.n`: array of shell principal quantum numers (`Vector{Int}`)
+#* `.ℓ`: array of shell angular momenta (`::Vector{Int}`)
+#* `.shell`: Array of Shells (`::Vector{Shell}`)
 
 #### Example:
-```
+#```
+#
+#```
+#"""
+#function castCore(name::String; msg=false)
 
-```
-"""
-function castCore(name::String; msg=false)
-
-    nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]   
-    #sh = ["[He]", "[Be]", "[Ne]", "[Mg]", "[Ar]", "[Ca]", "[Zn]", "[Kr]", "[Sr]", "[Cd]", "[Xe]", "[Ba]", "[Yb]", "[Hg]", "[Rn]"]
+#    nl = ["1s","2s","2p","3s","3p","3d","4s","4p","4d","4f","5s","5p","5d","5f","5g","6s","6p","6d","7s"]   
+#    #sh = ["[He]", "[Be]", "[Ne]", "[Mg]", "[Ar]", "[Ca]", "[Zn]", "[Kr]", "[Sr]", "[Cd]", "[Xe]", "[Ba]", "[Yb]", "[Hg]", "[Rn]"]
     
- #   for i ∈ eachindex(sh)
- #       if occursin(sh, strShells)
- #           os = Shell[sh[i]]
- #       end
- #   end
+# #   for i ∈ eachindex(sh)
+# #       if occursin(sh, strShells)
+# #           os = Shell[sh[i]]
+# #       end
+# #   end
     
-    name = ""
-    os = Shell[]
-    on = Int[]
-    ol = Int[]
-    k = 0
-    for i ∈ eachindex(nl)
-        if occursin(nl[i], lowercase(strShells))
-            n, ℓ = get(dictAtomicOrbital, nl[i], nothing)
-            shell = castShell(;n, ℓ, msg)
-            push!(os, shell)
-            push!(on, ℓ)
-            push!(ol, ℓ)
-            name *= shell.name
-            k +=1
-        end
-    end
+#    name = ""
+#    os = Shell[]
+#    on = Int[]
+#    ol = Int[]
+#    k = 0
+#    for i ∈ eachindex(nl)
+#        if occursin(nl[i], lowercase(strShells))
+#            n, ℓ = get(dictAtomicOrbital, nl[i], nothing)
+#            shell = castShell(;n, ℓ, msg)
+#            push!(os, shell)
+#            push!(on, ℓ)
+#            push!(ol, ℓ)
+#            name *= shell.name
+#            k +=1
+#        end
+#    end
 
-    return Core(name, k, on, ol, os)
+#    return Core(name, k, on, ol, os)
         
-end
+#end
 
 
 
